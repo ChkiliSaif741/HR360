@@ -18,10 +18,11 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
     public void ajouter(Utilisateur utilisateur) throws SQLException {
 
         String req = "insert into utilisateur   (nom, prenom, email, role)"+
-                "values('"+utilisateur.getNom()+"','"+utilisateur.getPrenom()+"','"+utilisateur.getEmail()+"','"+utilisateur.getRole()+"')";
+                "values('"+utilisateur.getNom()+"','"+utilisateur.getPrenom()+"','"
+                +utilisateur.getEmail()+"','"+utilisateur.getRole()+"')";
         Statement statement = connection.createStatement();
         statement.executeUpdate(req);
-        System.out.println("Utilisateur ajouté");
+        System.out.println("Utilisateur ajouté!");
 
     }
 
