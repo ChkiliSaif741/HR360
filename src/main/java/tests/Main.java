@@ -1,21 +1,25 @@
 package tests;
 
 import entities.Personne;
+import entities.Projet;
 import services.ServicePersonne;
+import services.ServiceProjet;
 import utils.MyDatabase;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.sql.Date;
 
 public class Main {
     public static void main(String[] args) {
-        ServicePersonne servicePersonne= new ServicePersonne();
-        Personne p1= new Personne(22,"hafsi","oussema");
-        Personne p2= new Personne(1,25,"Sami","BenFoulen");
+        ServiceProjet serviceP= new ServiceProjet();
+        Projet p1= new Projet("projeet1","projet important",Date.valueOf("2003-12-25"),Date.valueOf("2004-02-25"));
+        Projet p2= new Projet(2,"projeet2","projet wow",Date.valueOf("2009-12-25"),Date.valueOf("2010-02-25"));
         try {
-            servicePersonne.ajouter(p1);
-            servicePersonne.modifier(p2);
-            servicePersonne.supprimer(9);
-            System.out.println(servicePersonne.afficher());
+            serviceP.ajouter(p1);
+            serviceP.modifier(p2);
+            serviceP.supprimer(3);
+            System.out.println(serviceP.afficher());
 
 
         } catch (SQLException e) {
