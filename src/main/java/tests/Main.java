@@ -1,25 +1,25 @@
 package tests;
 
-import entities.Personne;
-import services.ServicePersonne;
-import utils.MyDatabase;
+import entities.Utilisateur;
+import services.ServiceUtilisateur;
 
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
-        ServicePersonne servicePersonne= new ServicePersonne();
-        Personne p1= new Personne(22,"hafsi","oussema");
-        Personne p2= new Personne(1,25,"Sami","BenFoulen");
+        ServiceUtilisateur serviceUtilisateur= new ServiceUtilisateur();
+        Utilisateur u1= new Utilisateur("Farhani","Hamza","hamza.farhani@esprit.tn","Responsable RH");
+        Utilisateur u2 = new Utilisateur("Farhani","Yassine","yassine.farhani@esprit.tn","Employé");
+
+
         try {
-            servicePersonne.ajouter(p1);
-            servicePersonne.modifier(p2);
-            servicePersonne.supprimer(9);
-            System.out.println(servicePersonne.afficher());
-
-
+//            serviceUtilisateur.ajouter(u1);
+//            serviceUtilisateur.ajouter(u2);
+            serviceUtilisateur.modifier(u2);
+            //serviceUtilisateur.supprimer(12);
+            System.out.println(serviceUtilisateur.afficher());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
 
     }
