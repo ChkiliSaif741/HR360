@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceEmploye implements IService<Employe>{
+public class ServiceEmploye implements IService<Employe> {
 
     Connection connection;
 
@@ -65,6 +65,15 @@ public class ServiceEmploye implements IService<Employe>{
         }
     }
 
+    public void inscrireEmployeFormation(int idEmploye, int idFormation) throws SQLException {
+        String req = "UPDATE employe SET idFormation = ? WHERE idEmploye = ?";
+        PreparedStatement statement = connection.prepareStatement(req);
+        statement.setInt(1, idFormation);
+        statement.setInt(2, idEmploye);
+        statement.executeUpdate();
+        System.out.println("Employé inscrit à la formation.");
+    }
+
 
     @Override
     public void supprimer(int id) throws SQLException {
@@ -86,7 +95,7 @@ public class ServiceEmploye implements IService<Employe>{
     @Override
     public List<Employe> afficher() throws SQLException {
         List<Employe> employes = new ArrayList<>();
-        String req = "SELECT u.id, u.nom, u.prenom, u.email, u.role, e.poste, e.salaire " +
+        String req = "SELECT u.id, u.nom, u.prenom, u.email, u.role, e.poste, e.salaire , e.idFormation " +
                 "FROM employe e " +
                 "JOIN utilisateur u ON e.idEmploye = u.id";
 
@@ -102,7 +111,7 @@ public class ServiceEmploye implements IService<Employe>{
             employe.setRole(resultSet.getString("role"));
             employe.setPoste(resultSet.getString("poste"));
             employe.setSalaire(resultSet.getFloat("salaire"));
-
+            employe.setIdFormation(resultSet.getInt("idFormation"));
             employes.add(employe);
         }
 

@@ -1,11 +1,15 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Formation {
     private int id;
     private String titre;
     private String description;
     private int duree;
     private String dateFormation;
+    List<Employe> employees;
 
     public Formation() {}
     public Formation(int id, String titre, String description, int duree, String dateFormation) {
@@ -14,6 +18,7 @@ public class Formation {
         this.description = description;
         this.duree = duree;
         this.dateFormation = dateFormation;
+        this.employees = new ArrayList<>();
     }
 
     public Formation(String titre, String description, int duree, String dateFormation) {
@@ -21,6 +26,7 @@ public class Formation {
         this.description = description;
         this.duree = duree;
         this.dateFormation = dateFormation;
+        this.employees = new ArrayList<>();
     }
 
     public int getId() {
@@ -63,6 +69,14 @@ public class Formation {
         this.dateFormation = dateFormation;
     }
 
+    public List<Employe> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employe> employees) {
+        this.employees = employees;
+    }
+
     @Override
     public String toString() {
         return "Formation{" +
@@ -71,6 +85,7 @@ public class Formation {
                 ", description='" + description + '\'' +
                 ", duree=" + duree +
                 ", dateFormation='" + dateFormation + '\'' +
+                ", employees=" + employees.size() +
                 '}';
     }
 }

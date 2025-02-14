@@ -4,7 +4,7 @@ public class Employe extends Utilisateur{
 
     private String poste;
     private float salaire;
-
+    private int idFormation;
     public Employe() {}
 
 
@@ -30,8 +30,17 @@ public class Employe extends Utilisateur{
         this.salaire = salaire;
     }
 
+    public int getIdFormation() {
+        return idFormation;
+    }
+
+    public void setIdFormation(int idFormation) {
+        this.idFormation = idFormation;
+    }
+
     @Override
     public String toString() {
-        return "Employe{" + "poste=" + poste + ", salaire=" + salaire + '}';
+        return "Employe{" + "poste=" + poste + ", salaire=" + salaire +
+                ", idFormation=" + idFormation + '}';
     }
 }
