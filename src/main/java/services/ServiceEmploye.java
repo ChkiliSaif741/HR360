@@ -22,7 +22,6 @@ public class ServiceEmploye implements IService<Employe> {
         // 1. Ajouter d'abord l'utilisateur (héritage remplacé par une jointure)
         serviceUtilisateur.ajouter(employe);
 
-        // 2. Récupérer l'ID du dernier utilisateur inséré
         String reqId = "SELECT LAST_INSERT_ID() AS id";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(reqId);

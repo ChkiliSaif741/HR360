@@ -11,7 +11,9 @@ public class Formation {
     private String dateFormation;
     List<Employe> employees;
 
-    public Formation() {}
+    public Formation() {
+        employees = new ArrayList<>();
+    }
     public Formation(int id, String titre, String description, int duree, String dateFormation) {
         this.id = id;
         this.titre = titre;
