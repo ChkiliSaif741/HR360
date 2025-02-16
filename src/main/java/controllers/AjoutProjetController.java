@@ -15,6 +15,8 @@ import services.ServiceProjet;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class AjoutProjetController {
 
@@ -37,20 +39,33 @@ public class AjoutProjetController {
 
     @FXML
     void AjouterProjet(ActionEvent event) {
-        ServiceProjet serviceProjet = new ServiceProjet();
-        Projet projet = new Projet(nomTF.getText(),descriptionTF.getText(), Date.valueOf(dateStart.getValue()),Date.valueOf(dateEnd.getValue()));
-        try {
-            serviceProjet.ajouter(projet);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setContentText("Projet a ete ajouté avec succes !");
-            alert.show();
-        } catch (SQLException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Information");
-            alert.setContentText(e.getMessage());
-            alert.show();
-        }
+            LocalDate DateDebut = dateStart.getValue();
+            LocalDate DateFin = dateEnd.getValue();
+            if (nomTF.getText().isEmpty() || descriptionTF.getText().isEmpty() || DateDebut == null || DateFin == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setContentText("Veuillez remplir tous les champs !");
+                alert.show();
+            } else if (DateDebut.isAfter(DateFin)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setContentText("La date de début est avant la date fin !");
+                alert.show();
+            } else {
+                ServiceProjet serviceProjet = new ServiceProjet();
+                Projet projet = new Projet(nomTF.getText(), descriptionTF.getText(), Date.valueOf(DateDebut), Date.valueOf(DateFin));
+                try {
+                    serviceProjet.ajouter(projet);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setContentText("Projet a ete ajouté avec succes !");
+                    alert.show();
+                } catch (SQLException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Information");
+                    alert.setContentText(e.getMessage());
+                    alert.show();
+                }
+            }
     }
-
 }
