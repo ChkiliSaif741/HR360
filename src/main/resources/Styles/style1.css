@@ -1,0 +1,81 @@
+/* Style global de la racine */
+.root {
+    -fx-background-color: white;
+    -fx-padding: 30;
+    -fx-alignment: center;
+}
+
+/* Style de l'en-tête */
+.header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #d32f2f; /* Rouge foncé */
+}
+
+/* Style des champs d'entrée */
+.input {
+    -fx-pref-width: 300px;
+    -fx-padding: 5;
+    -fx-border-color: #bdbdbd;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: #f5f5f5;
+}
+
+/* Style des boutons de téléchargement, sauvegarde, et annulation */
+.upload-button, .save-button, .cancel-button, .modernButton {
+    -fx-background-color: #212121;
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+}
+
+.save-button {
+    -fx-background-color: #d32f2f; /* Rouge pour le bouton de sauvegarde */
+}
+
+.cancel-button {
+    -fx-background-color: #9e9e9e;
+}
+
+/* Style de la `ListView` pour une meilleure lisibilité */
+.list-view, .modernListView {
+    -fx-border-color: #bdbdbd;
+    -fx-border-width: 1px;
+    -fx-background-radius: 5px;
+    -fx-background-color: #fafafa; /* Fond plus clair */
+    -fx-selection-bar: #1976D2; /* Sélection bleue */
+    -fx-font-size: 14px;
+}
+
+.list-view .cell {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+}
+
+.list-view .cell:hover {
+    -fx-background-color: #e0e0e0; /* Couleur au survol */
+}
+
+/* Labels */
+.file-label {
+    -fx-text-fill: #424242;
+    -fx-font-style: italic;
+}
+
+/* Label d'erreur */
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-size: 12px;
+}
+
+/* Style du bouton Modifier et Supprimer dans le `ListView` */
+.modernButton:hover {
+    -fx-background-color: #ec0707; /* Vert pour l'effet au survol */
+}
+
+.modernButton:pressed {
+    -fx-background-color: #388e3c; /* Vert plus foncé quand pressé */
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.DateEntretien"
+      alignment="CENTER"
+      spacing="20"
+      style="-fx-padding: 20;">
+
+    <!-- Title -->
+    <Label text="Schedule Interview" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+    <!-- Date Picker -->
+    <HBox alignment="CENTER" spacing="10">
+        <Label text="Select Date:" />
+        <DatePicker fx:id="datePicker" />
+    </HBox>
+
+    <!-- Time Picker -->
+    <HBox alignment="CENTER" spacing="10">
+        <Label text="Select Time:" />
+        <ComboBox fx:id="timePicker" />
+    </HBox>
+
+    <!-- Confirm Button -->
+    <Button text="Confirm"
+            fx:id="confirmButton"
+            onAction="#handleConfirm"
+            style="-fx-background-color: #ec0707; -fx-text-fill: white;" />
+
+</VBox>
+

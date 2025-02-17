@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ListeCondidaturesController" stylesheets="@/Styles/style1.css" styleClass="root">
+
+    <VBox alignment="CENTER" spacing="20" prefWidth="800" prefHeight="600" styleClass="contentBox">
+        <ListView fx:id="listViewCondidatures" prefHeight="400" prefWidth="600" styleClass="modernListView"/>
+        <HBox alignment="CENTER" spacing="20">
+            <Button text="Modifier" onAction="#modifierCondidature" styleClass="modernButton"/>
+            <Button text="Supprimer" onAction="#supprimerCondidature" styleClass="modernButton"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

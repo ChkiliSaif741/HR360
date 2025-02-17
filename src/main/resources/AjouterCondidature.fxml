@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.AjouterCondidature"
+      alignment="CENTER" spacing="15" styleClass="root">
+
+    <Label text="Ajouter une Candidature" styleClass="header"/>
+
+    <VBox spacing="10">
+        <Button text="Télécharger le CV" onAction="#uploadCv" styleClass="upload-button"/>
+        <Label fx:id="cvLabel" text="Aucun fichier sélectionné" styleClass="file-label"/>
+        <Label fx:id="cvError" styleClass="error-label"/>
+    </VBox>
+
+    <VBox spacing="10">
+        <Button text="Télécharger la lettre de motivation" onAction="#uploadLettreMotivation" styleClass="upload-button"/>
+        <Label fx:id="lettreLabel" text="Aucun fichier sélectionné" styleClass="file-label"/>
+        <Label fx:id="lettreError" styleClass="error-label"/>
+    </VBox>
+
+    <!-- Ajouter un bouton pour ouvrir le calendrier -->
+    <VBox spacing="10">
+        <Button text="Sélectionner la date et l'heure de l'entretien" onAction="#choisirDateEntretien" styleClass="upload-button"/>
+        <Label fx:id="dateError" styleClass="error-label"/>
+    </VBox>
+
+    <HBox spacing="10">
+        <Button text="Enregistrer" onAction="#enregistrerCandidature" styleClass="save-button"/>
+        <Button text="Annuler" onAction="#annuler" styleClass="cancel-button"/>
+    </HBox>
+
+</VBox>
