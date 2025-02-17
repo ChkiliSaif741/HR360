@@ -3,6 +3,8 @@ package controllers;
 import entities.Projet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import services.ServiceProjet;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class ItemProjetController {
@@ -54,7 +57,19 @@ public class ItemProjetController {
 
     @FXML
     void ModifProjet(ActionEvent event) {
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifProjet.fxml"));
+        try {
+            Parent parent = loader.load();
+            ModifProjetController ModifController = loader.getController();
+            ModifController.setDateStart(projet.getDateDebut());
+            ModifController.setDateEnd(projet.getDateFin());
+            ModifController.setDescriptionTF(descriptionProjet.getText());
+            ModifController.setNomTF(nomProjet.getText());
+            ModifController.setIdProjet(projet.getId());
+            nomProjet.getScene().setRoot(parent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Projet projet;
