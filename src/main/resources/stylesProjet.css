@@ -6,7 +6,6 @@
     -fx-background-radius: 12px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
 }
-
 .vbox-card Label {
     -fx-text-fill: #333; /* Couleur du texte en gris foncé */
     -fx-font-family: "Arial"; /* Police moderne */
@@ -36,3 +35,31 @@
 #dateFin {
     -fx-text-fill: #cc0000; /* Rouge pour indiquer la fin */
 }
+
+/* Style général des boutons */
+.button-action {
+    -fx-background-color: #ce3234;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 12px;
+    -fx-border-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Changement de couleur au survol */
+.button-action:hover {
+    -fx-background-color: #db545a;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Style des icônes */
+.font-awesome-icon {
+    -fx-fill: white; /* Couleur de l'icône */
+}
+

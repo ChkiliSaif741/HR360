@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Projet;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +19,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class AffichageProjetController implements Initializable {
 
@@ -26,6 +29,17 @@ public class AffichageProjetController implements Initializable {
 
     @FXML
     private ScrollPane scrollProjet;
+
+    @FXML
+    void AjoutProjet(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutProjet.fxml"));
+        try {
+            Parent parent = loader.load();
+            scrollProjet.getScene().setRoot(parent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private List<Projet> projets=new ArrayList<>();
     @Override
