@@ -30,6 +30,50 @@ public class AffichageProjetController implements Initializable {
     @FXML
     private ScrollPane scrollProjet;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadProjects();
+    }
+
+    private void loadProjects() {
+        gridProjet.getChildren().clear(); // Vider le GridPane avant de recharger les projets
+        ServiceProjet serviceProjet = new ServiceProjet();
+        try {
+            projets.addAll(serviceProjet.afficher());
+            int column = 0;
+            int row = 0;
+            for (int i = 0; i < projets.size(); i++) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ItemProjet.fxml"));
+                AnchorPane anchorPane = loader.load();
+                ItemProjetController itemProjetController = loader.getController();
+                itemProjetController.SetData(projets.get(i));
+                itemProjetController.setParentController(this);
+                gridProjet.add(anchorPane, column, row);
+                column++;
+                if (column == 3) {
+                    column = 0;
+                    row++;
+                }
+                gridProjet.setMinWidth(Region.USE_COMPUTED_SIZE);
+                gridProjet.setMinHeight(Region.USE_COMPUTED_SIZE);
+                gridProjet.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                gridProjet.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                gridProjet.setMaxWidth(Region.USE_PREF_SIZE);
+                gridProjet.setMaxHeight(Region.USE_PREF_SIZE);
+
+                GridPane.setMargin(anchorPane,new Insets(15));
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Méthode pour rafraîchir la vue
+    public void refresh() {
+        projets.clear(); // Vider la liste des projets
+        loadProjects(); // Recharger les projets
+    }
+
     @FXML
     void AjoutProjet(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutProjet.fxml"));
@@ -42,41 +86,5 @@ public class AffichageProjetController implements Initializable {
     }
 
     private List<Projet> projets=new ArrayList<>();
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        ServiceProjet serviceProjet = new ServiceProjet();
-        try {
-            projets.addAll(serviceProjet.afficher());
-            int column=0;
-            int row=0;
-            for (int i=0;i<projets.size();i++){
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ItemProjet.fxml"));
-                AnchorPane anchorPane = loader.load();
-                ItemProjetController itemProjetController = loader.getController();
-                itemProjetController.SetData(projets.get(i));
-                gridProjet.add(anchorPane,column++,row);
-                if (column==3)
-                {
-                    column=0;
-                    row++;
-                }
-
-                gridProjet.setMinWidth(Region.USE_COMPUTED_SIZE);
-                gridProjet.setMinHeight(Region.USE_COMPUTED_SIZE);
-                gridProjet.setPrefWidth(Region.USE_COMPUTED_SIZE);
-                gridProjet.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                gridProjet.setMaxWidth(Region.USE_PREF_SIZE);
-                gridProjet.setMaxHeight(Region.USE_PREF_SIZE);
-
-                GridPane.setMargin(anchorPane,new Insets(15));
-            }
-
-
-        } catch (SQLException | IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
 
 }

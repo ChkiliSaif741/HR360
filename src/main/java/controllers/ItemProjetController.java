@@ -1,12 +1,30 @@
 package controllers;
 
 import entities.Projet;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import services.ServiceProjet;
+
+import java.sql.SQLException;
 
 public class ItemProjetController {
+
+    private AffichageProjetController parentController;
+
+    public void setParentController(AffichageProjetController parentController) {
+        this.parentController = parentController;
+    }
+
+    @FXML
+    private Button btnDel;
+
+    @FXML
+    private Button btnMod;
 
     @FXML
     private VBox cardContainer;
@@ -22,6 +40,22 @@ public class ItemProjetController {
 
     @FXML
     private Label nomProjet;
+
+    @FXML
+    void DeleteProjet(ActionEvent event) {
+        ServiceProjet serviceProjet = new ServiceProjet();
+        try {
+            serviceProjet.supprimer(projet.getId());
+            parentController.refresh(); // Rafraîchir la vue après la suppression
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void ModifProjet(ActionEvent event) {
+
+    }
 
     private Projet projet;
 

@@ -30,7 +30,7 @@
             </ScrollPane>
          </children>
       </HBox>
-       <Button fx:id="btnAdd" layoutX="310.0" layoutY="75.0" onAction="#AjoutProjet" styleClass="button-action">
+       <Button fx:id="btnAdd" layoutX="310.0" layoutY="75.0" onAction="#AjoutProjet" styleClass="button-action" stylesheets="@stylesProjet.css">
            <graphic>
                <Text style="-fx-font-family: 'FontAwesome'; -fx-font-size: 18;" text="+" />
            </graphic>
