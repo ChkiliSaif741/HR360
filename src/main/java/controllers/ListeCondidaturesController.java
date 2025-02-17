@@ -12,10 +12,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Alert.AlertType;
 import entities.Candidature;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import services.ServiceCandidature;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -49,22 +51,49 @@ public class ListeCondidaturesController {
                     if (empty || candidature == null) {
                         setText(null);
                     } else {
+                        // Create a VBox to display the data vertically
+                        javafx.scene.layout.VBox vBox = new javafx.scene.layout.VBox(5); // Spacing between elements
+
+                        // Format the dates if they are present
                         String dateEntretienFormatted = "Non défini";
+                        String dateModificationFormatted = "Non modifié";
 
                         if (candidature.getDateEntretien() != null) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
                             dateEntretienFormatted = candidature.getDateEntretien().format(formatter);
                         }
+                        if (candidature.getDateModification() != null) {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                            dateModificationFormatted = "Modifié à: " + candidature.getDateModification().format(formatter);
+                        }
 
-                        String info = "Statut: " + candidature.getStatut() +
-                                ", CV: " + candidature.getCv() +
-                                ", Lettre: " + candidature.getLettreMotivation() +
-                                ", Entretien: " + dateEntretienFormatted;
+                        // Extract the file names for the CV and Lettre
+                        String cvFileName = getFileName(candidature.getCv());
+                        String lettreFileName = getFileName(candidature.getLettreMotivation());
 
-                        setText(info);
+                        // Create labels for each piece of information with icons
+                        vBox.getChildren().addAll(
+                                createLabelWithIcon("Statut: ", candidature.getStatut(), "icon_statut.png"),
+                                createLabelWithIcon("CV: ", cvFileName, "icon_cv.png"),
+                                createLabelWithIcon("Lettre: ", lettreFileName, "icon_lettre.png"),
+                                createLabelWithIcon("Entretien: ", dateEntretienFormatted, "icon_entretien.png"),
+                                createLabelWithIcon("Description: ", (candidature.getDescription() != null ? candidature.getDescription() : "Non définie"), "icon_description.png"),
+                                new javafx.scene.control.Label(dateModificationFormatted)
+                        );
+
+                        // Set the VBox as the content of the cell
+                        setGraphic(vBox);
                     }
                 }
+                private String getFileName(String filePath) {
+                    if (filePath != null && !filePath.isEmpty()) {
+                        java.io.File file = new java.io.File(filePath);
+                        return file.getName();  // Extract file name from path
+                    }
+                    return "Aucun fichier"; // Return a default value if no file path is provided
+                }
             });
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,7 +104,26 @@ public class ListeCondidaturesController {
             alert.showAndWait();
         }
     }
+    private HBox createLabelWithIcon(String labelText, String valueText, String iconName) {
+        HBox hBox = new HBox(5); // Spacing between icon and label
 
+        // Load the icon using the correct path
+        InputStream iconStream = getClass().getResourceAsStream("/icons/" + iconName);
+        javafx.scene.image.Image iconImage = new javafx.scene.image.Image(iconStream); // Create Image from InputStream
+        javafx.scene.image.ImageView icon = new javafx.scene.image.ImageView(iconImage); // Create ImageView from Image
+
+        icon.setFitWidth(16); // Set icon width
+        icon.setFitHeight(16); // Set icon height
+        icon.setPreserveRatio(true);
+
+        javafx.scene.control.Label label = new javafx.scene.control.Label(labelText);
+        label.setStyle("-fx-font-weight: bold;"); // Make the label text bold
+
+        javafx.scene.control.Label valueLabel = new javafx.scene.control.Label(valueText);
+
+        hBox.getChildren().addAll(icon, label, valueLabel);
+        return hBox;
+    }
 
     public void modifierCondidature() {
         int selectedIndex = listViewCondidatures.getSelectionModel().getSelectedIndex();

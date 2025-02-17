@@ -9,7 +9,7 @@
 .header {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #d32f2f; /* Rouge foncé */
+    -fx-text-fill: black; /* Couleur du texte en noir */
 }
 
 /* Style des champs d'entrée */
@@ -20,12 +20,13 @@
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-background-color: #f5f5f5;
+    -fx-text-fill: black; /* Couleur du texte en noir */
 }
 
 /* Style des boutons de téléchargement, sauvegarde, et annulation */
 .upload-button, .save-button, .cancel-button, .modernButton {
     -fx-background-color: #212121;
-    -fx-text-fill: white;
+    -fx-text-fill: white; /* Texte en blanc */
     -fx-padding: 10 20;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
@@ -40,7 +41,7 @@
     -fx-background-color: #9e9e9e;
 }
 
-/* Style de la `ListView` pour une meilleure lisibilité */
+/* Centrer la ListView */
 .list-view, .modernListView {
     -fx-border-color: #bdbdbd;
     -fx-border-width: 1px;
@@ -48,26 +49,50 @@
     -fx-background-color: #fafafa; /* Fond plus clair */
     -fx-selection-bar: #1976D2; /* Sélection bleue */
     -fx-font-size: 14px;
+    -fx-alignment: center; /* Centrer le contenu */
 }
 
+/* Correct path to the image */
+.list-view {
+    -fx-background-image: url("/icons/image.jpg"); /* Note the leading '/' */
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-radius: 5px;
+    -fx-border-color: #bdbdbd;
+    -fx-border-width: 1px;
+    -fx-selection-bar: #1976D2;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-background-color: rgba(255, 255, 255, 0.5); /* Arrière-plan semi-transparent blanc */
+}
+
+/* Style des cellules */
 .list-view .cell {
     -fx-padding: 10px;
-    -fx-background-color: transparent;
+    -fx-background-color: rgba(224, 224, 224, 0.19);
+    -fx-text-fill: black; /* Couleur du texte en noir */
 }
 
+/* Style des cellules au survol */
 .list-view .cell:hover {
-    -fx-background-color: #e0e0e0; /* Couleur au survol */
+    -fx-background-color: rgba(224, 224, 224, 0.67); /* Couleur au survol avec transparence */
+}
+
+/* Style des cellules sélectionnées avec focus */
+.list-view .cell:selected:focused {
+    -fx-text-fill: black; /* Texte en noir */
+    -fx-background-color: rgba(236, 7, 7, 0.61); /* Couleur de fond sélectionnée */
 }
 
 /* Labels */
 .file-label {
-    -fx-text-fill: #424242;
+    -fx-text-fill: black; /* Texte en noir */
     -fx-font-style: italic;
 }
 
 /* Label d'erreur */
 .error-label {
-    -fx-text-fill: red;
+    -fx-text-fill: black; /* Texte en noir */
     -fx-font-size: 12px;
 }
 
@@ -76,6 +101,23 @@
     -fx-background-color: #ec0707; /* Vert pour l'effet au survol */
 }
 
-.modernButton:pressed {
-    -fx-background-color: #388e3c; /* Vert plus foncé quand pressé */
+/* Style pour le TextArea */
+.modernTextArea {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 100px;
+    -fx-padding: 10;
+    -fx-border-color: #bdbdbd;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: #151414;
+    -fx-text-fill: black; /* Texte en noir */
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #9e9e9e;
+}
+
+/* Effet de focus */
+.modernTextArea:focused {
+    -fx-border-color: #d32f2f;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(211, 47, 47, 0.3), 5, 0, 0, 2);
 }

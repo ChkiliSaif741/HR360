@@ -28,6 +28,11 @@ public class AjouterCondidature implements Initializable {
 
 
     @FXML
+    private javafx.scene.control.TextArea descriptionField;
+    @FXML
+    private Label descriptionError;
+
+    @FXML
     private Label cvLabel;
     private LocalDateTime dateEntretien;
     @FXML
@@ -91,6 +96,15 @@ public class AjouterCondidature implements Initializable {
     @FXML
     public void enregistrerCandidature() {
         boolean isValid = true;
+        // Validation de la description
+        String description = descriptionField.getText().trim();
+        if (description.isEmpty() || description.length() < 10 || description.length() > 500) {
+            descriptionError.setText("La description doit comporter entre 10 et 500 caractères.");
+            isValid = false;
+            showAlert(AlertType.ERROR, "Erreur de description", "Attention!!!!");
+        } else {
+            descriptionError.setText("");
+        }
 
         // Validation du CV
         if (cvFile == null || !cvFile.getName().endsWith(".pdf")) {
@@ -137,12 +151,14 @@ public class AjouterCondidature implements Initializable {
 
                 // Création de l'objet Candidature
                 Candidature candidature = new Candidature(
-                        LocalDateTime.now(), // Date de candidature
-                        dateEntretien, // Date de l'entretien
-                        statut,
-                        cvDest.getAbsolutePath(),
-                        lettreDest.getAbsolutePath(),
-                        5 // Exemple d'ID d'offre
+                        LocalDateTime.now(),          // Date de candidature
+                        dateEntretien,                // Date de l'entretien
+                        statut,                       // Statut
+                        cvDest.getAbsolutePath(),     // Chemin du CV
+                        lettreDest.getAbsolutePath(), // Chemin de la lettre
+                        5,                            // ID de l'offre
+                        descriptionField.getText(),   // Description (depuis le champ TextArea)
+                        LocalDateTime.now()           // Date de modification (initialisée à maintenant)
                 );
 
                 // Enregistrement dans la base de données

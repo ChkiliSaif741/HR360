@@ -5,21 +5,25 @@ import java.time.LocalDateTime;
 public class Candidature {
     private int id_candidature;
     private LocalDateTime dateCandidature;
-    private LocalDateTime dateEntretien; // Nouveau champ ajouté
+    private LocalDateTime dateEntretien;
     private String statut;
     private String cv;
     private String lettreMotivation;
-    private int id_offre; // Clé étrangère
+    private int id_offre;
+    private String description; // Nouveau champ ajouté
+    private LocalDateTime dateModification; // Nouveau champ ajouté
 
     public Candidature() {}
 
-    public Candidature(LocalDateTime dateCandidature, LocalDateTime dateEntretien, String statut, String cv, String lettreMotivation, int id_offre) {
+    public Candidature(LocalDateTime dateCandidature, LocalDateTime dateEntretien, String statut, String cv, String lettreMotivation, int id_offre, String description, LocalDateTime dateModification) {
         this.dateCandidature = dateCandidature;
         this.dateEntretien = dateEntretien;
         this.statut = statut;
         this.cv = cv;
         this.lettreMotivation = lettreMotivation;
         this.id_offre = id_offre;
+        this.description = description;
+        this.dateModification = dateModification;
     }
 
     public int getId_candidature() {
@@ -50,6 +54,14 @@ public class Candidature {
         return id_offre;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getDateModification() {
+        return dateModification;
+    }
+
     public void setId_candidature(int id_candidature) {
         this.id_candidature = id_candidature;
     }
@@ -78,6 +90,14 @@ public class Candidature {
         this.id_offre = id_offre;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDateModification(LocalDateTime dateModification) {
+        this.dateModification = dateModification;
+    }
+
     @Override
     public String toString() {
         return "Candidature{" +
@@ -88,6 +108,8 @@ public class Candidature {
                 ", cv='" + cv + '\'' +
                 ", lettreMotivation='" + lettreMotivation + '\'' +
                 ", id_offre=" + id_offre +
+                ", description='" + description + '\'' +
+                ", dateModification=" + dateModification +
                 '}';
     }
 }

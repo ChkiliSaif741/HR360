@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
+<?import javafx.scene.control.TextArea?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.AjouterCondidature"
       alignment="CENTER" spacing="15" styleClass="root">
 
@@ -27,10 +28,12 @@
         <Button text="Sélectionner la date et l'heure de l'entretien" onAction="#choisirDateEntretien" styleClass="upload-button"/>
         <Label fx:id="dateError" styleClass="error-label"/>
     </VBox>
-
+    <TextArea fx:id="descriptionField" promptText="Entrez la description" styleClass="modernTextArea" />
+    <Label fx:id="descriptionError" textFill="RED" />
     <HBox spacing="10">
         <Button text="Enregistrer" onAction="#enregistrerCandidature" styleClass="save-button"/>
         <Button text="Annuler" onAction="#annuler" styleClass="cancel-button"/>
     </HBox>
+
 
 </VBox>

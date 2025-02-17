@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -18,6 +19,8 @@ import java.time.LocalDateTime;
 public class ModifierCondidature {
 
     @FXML
+    private TextArea descriptionField;
+    @FXML
     private Label cvLabel;
     private LocalDateTime dateEntretien;
     @FXML
@@ -29,6 +32,7 @@ public class ModifierCondidature {
     @FXML
     private Label dateError;
 
+    private String nouvelleDescription;
     private Candidature candidatureSelectionnee;
     private String nouveauCvPath;  // Variable temporaire pour stocker le nouveau CV
     private String nouvelleLettrePath;  // Variable temporaire pour stocker la nouvelle lettre de motivation
@@ -36,10 +40,15 @@ public class ModifierCondidature {
     public void initialize() {
         // Initialisation des champs avec les valeurs de la candidature sélectionnée
         if (candidatureSelectionnee != null) {
+            System.out.println(candidatureSelectionnee);
             cvLabel.setText(candidatureSelectionnee.getCv());
             lettreLabel.setText(candidatureSelectionnee.getLettreMotivation());
+            descriptionField.setText(candidatureSelectionnee.getDescription() /*!= null ? candidatureSelectionnee.getDescription() : ""*/);        }
+        else {
+            System.out.println("candidat null");
         }
     }
+
 
     public void setCandidatureSelectionnee(Candidature candidature) {
         this.candidatureSelectionnee = candidature;
@@ -48,6 +57,7 @@ public class ModifierCondidature {
         if (candidatureSelectionnee != null) {
             cvLabel.setText(candidatureSelectionnee.getCv() != null ? candidatureSelectionnee.getCv() : "Aucun CV");
             lettreLabel.setText(candidatureSelectionnee.getLettreMotivation() != null ? candidatureSelectionnee.getLettreMotivation() : "Aucune lettre de motivation");
+                    descriptionField.setText(candidatureSelectionnee.getDescription() );
         }
     }
 
@@ -104,6 +114,9 @@ public class ModifierCondidature {
     private void modifierCandidature() {
         boolean isModified = false;
 
+        // Récupérer la nouvelle description depuis le TextArea
+        String nouvelleDescription = descriptionField.getText();
+
         // Vérifier si le CV a été modifié
         if (nouveauCvPath != null && !nouveauCvPath.equals(candidatureSelectionnee.getCv())) {
             isModified = true;
@@ -119,10 +132,15 @@ public class ModifierCondidature {
             isModified = true;
         }
 
-        // Si aucun changement n'a été effectué, ne pas afficher l'alerte
+        // Vérifier si la description a été modifiée
+        if (nouvelleDescription != null && !nouvelleDescription.equals(candidatureSelectionnee.getDescription())) {
+            isModified = true;
+        }
+
+        // Si aucun changement n'a été effectué, ne pas afficher l'alerte et sortir de la méthode
         if (!isModified) {
             System.out.println("Aucune modification effectuée.");
-            return; // Sortir de la méthode sans afficher l'alerte
+            return; // Sortir de la méthode sans afficher l'alerte ou faire de modifications
         }
 
         // Alerte de confirmation si des modifications ont été effectuées
@@ -149,6 +167,9 @@ public class ModifierCondidature {
             if (dateEntretien != null) {
                 candidatureSelectionnee.setDateEntretien(dateEntretien); // Mettre à jour la date d'entretien
             }
+            if (nouvelleDescription != null) {
+                candidatureSelectionnee.setDescription(nouvelleDescription); // Mettre à jour la description
+            }
 
             // Mise à jour dans la base de données en appelant la méthode modifier du service
             try {
@@ -170,6 +191,8 @@ public class ModifierCondidature {
             System.out.println("Modification annulée.");
         }
     }
+
+
 
 
 

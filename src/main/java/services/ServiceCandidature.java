@@ -4,6 +4,7 @@ import entities.Candidature;
 import utils.MyDatabase;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,23 +17,23 @@ public class ServiceCandidature implements IService<Candidature> {
 
     @Override
     public void ajouter(Candidature candidature) throws SQLException {
-        String req = "INSERT INTO candidature (dateCandidature, dateEntretien, statut, cv, lettreMotivation, id_offre) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO candidature (dateCandidature, dateEntretien, statut, cv, lettreMotivation, id_offre, description, dateModification) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, NULL)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(req);
         preparedStatement.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
 
-        // Vérification de la dateEntretien avant insertion
         if (candidature.getDateEntretien() != null) {
             preparedStatement.setTimestamp(2, Timestamp.valueOf(candidature.getDateEntretien()));
         } else {
-            preparedStatement.setNull(2, Types.TIMESTAMP);  // Si la dateEntretien est null, insérez NULL
+            preparedStatement.setNull(2, Types.TIMESTAMP);
         }
 
         preparedStatement.setString(3, candidature.getStatut());
         preparedStatement.setString(4, candidature.getCv());
         preparedStatement.setString(5, candidature.getLettreMotivation());
         preparedStatement.setInt(6, candidature.getId_offre());
+        preparedStatement.setString(7, candidature.getDescription());
 
         preparedStatement.executeUpdate();
         System.out.println("Candidature ajoutée avec succès.");
@@ -41,24 +42,31 @@ public class ServiceCandidature implements IService<Candidature> {
 
 
 
+
     @Override
     public void modifier(Candidature candidature) throws SQLException {
-        String req = "UPDATE candidature SET dateCandidature=?, dateEntretien=?, statut=?, cv=?, lettreMotivation=? WHERE id_candidature=?";
+        String req = "UPDATE candidature SET dateCandidature=?, dateEntretien=?, statut=?, cv=?, lettreMotivation=?, description=?, dateModification=? WHERE id_candidature=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(req)) {
             preparedStatement.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
 
-            // Vérification de la dateEntretien avant mise à jour
             if (candidature.getDateEntretien() != null) {
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(candidature.getDateEntretien()));
             } else {
-                preparedStatement.setNull(2, Types.TIMESTAMP);  // Si la dateEntretien est null, insérez NULL
+                preparedStatement.setNull(2, Types.TIMESTAMP);
             }
 
             preparedStatement.setString(3, candidature.getStatut());
             preparedStatement.setString(4, candidature.getCv());
             preparedStatement.setString(5, candidature.getLettreMotivation());
-            preparedStatement.setInt(6, candidature.getId_candidature());
+            preparedStatement.setString(6, candidature.getDescription());
+
+            // Mise à jour de la dateModification avec la date et heure actuelle
+            LocalDateTime now = LocalDateTime.now();
+            preparedStatement.setTimestamp(7, Timestamp.valueOf(now));
+            candidature.setDateModification(now);
+
+            preparedStatement.setInt(8, candidature.getId_candidature());
 
             int verif = preparedStatement.executeUpdate();
             if (verif > 0) {
@@ -68,6 +76,7 @@ public class ServiceCandidature implements IService<Candidature> {
             }
         }
     }
+
 
 
 
@@ -100,7 +109,6 @@ public class ServiceCandidature implements IService<Candidature> {
             candidature.setId_candidature(rs.getInt("id_candidature"));
             candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
 
-            // Vérification si dateEntretien est présente
             Timestamp dateEnt = rs.getTimestamp("dateEntretien");
             if (dateEnt != null && !rs.wasNull()) {
                 candidature.setDateEntretien(dateEnt.toLocalDateTime());
@@ -112,18 +120,18 @@ public class ServiceCandidature implements IService<Candidature> {
             candidature.setCv(rs.getString("cv"));
             candidature.setLettreMotivation(rs.getString("lettreMotivation"));
             candidature.setId_offre(rs.getInt("id_offre"));
+            candidature.setDescription(rs.getString("description"));
 
-            // Ajouter la candidature à la liste
+            Timestamp dateMod = rs.getTimestamp("dateModification");
+            if (dateMod != null) {
+                candidature.setDateModification(dateMod.toLocalDateTime());
+            }
+
             candidatures.add(candidature);
         }
-
-        // Afficher l'offre associée une seule fois (si nécessaire)
-        if (!candidatures.isEmpty()) {
-            System.out.println("Offre associée: " + candidatures.get(0).getId_offre());
-        }
-
         return candidatures;
     }
+
 
 
 }
