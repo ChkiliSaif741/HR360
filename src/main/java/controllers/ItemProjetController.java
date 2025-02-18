@@ -5,11 +5,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import services.ServiceProjet;
 
 import java.io.IOException;
@@ -80,6 +83,19 @@ public class ItemProjetController {
         dateDebut.setText("Date début: "+projet.getDateDebut().toString());
         dateFin.setText("Date fin: "+projet.getDateFin().toString());
         descriptionProjet.setText(projet.getDescription());
+    }
+
+    @FXML
+    private void handleCardClick(MouseEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageTache.fxml"));
+        try {
+            Parent root = loader.load();
+            AffichageTacheController affichageTacheController = loader.getController();
+            affichageTacheController.setIdProjet(projet.getId());
+            nomProjet.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

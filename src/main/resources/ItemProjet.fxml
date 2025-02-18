@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="148.0" prefWidth="209.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ItemProjetController">
-    <VBox fx:id="cardContainer" layoutX="14.0" layoutY="7.0" prefHeight="128.0" prefWidth="183.0" styleClass="vbox-card" stylesheets="@stylesProjet.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+    <VBox fx:id="cardContainer" layoutX="14.0" layoutY="7.0" onMouseClicked="#handleCardClick" prefHeight="128.0" prefWidth="183.0" styleClass="vbox-card" stylesheets="@stylesProjet.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
         <Label fx:id="nomProjet" text="Nom du projet" />
         <Text fx:id="descriptionProjet" text="Description du projet" />
         <Label fx:id="dateDebut" text="Date début: 01/01/2024" />
