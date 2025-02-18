@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+   <VBox prefHeight="106.0" prefWidth="750.0"  xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ItemTacheController">
+      <children>
+          <VBox fx:id="contentBox" spacing="5" stylesheets="@stylesProjet.css">
+              <Label fx:id="nomTache" styleClass="task-name" stylesheets="@stylesProjet.css" text="sssssssss" />
+              <Text fx:id="descriptionTache" styleClass="task-description" text="aaaaaa" />
+              <Label fx:id="statutTache" styleClass="task-status" stylesheets="@stylesProjet.css" text="sssss" />
+          </VBox>
+           <HBox spacing="10">
+               <Label fx:id="dateDebut" styleClass="task-date" stylesheets="@stylesProjet.css" />
+               <Label fx:id="dateFin" styleClass="task-date" stylesheets="@stylesProjet.css" />
+           </HBox>
+      </children>
+   </VBox>
+

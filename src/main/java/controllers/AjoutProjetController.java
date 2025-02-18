@@ -1,6 +1,5 @@
 package controllers;
 
-import entities.Personne;
 import entities.Projet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,14 +8,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import services.ServicePersonne;
 import services.ServiceProjet;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 public class AjoutProjetController {
 

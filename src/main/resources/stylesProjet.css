@@ -62,4 +62,181 @@
 .font-awesome-icon {
     -fx-fill: white; /* Couleur de l'icône */
 }
+/* Style de la carte */
+.task-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.5, 0, 1);
+    -fx-padding: 10px;
+}
+
+/* Style du nom de la tâche */
+.task-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Style de la description de la tâche */
+.task-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+/* Style des dates */
+.task-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #888888;
+}
+
+/* Style du statut */
+.task-status {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #4CAF50; /* Vert par défaut */
+    -fx-padding: 5px;
+    -fx-background-radius: 3px;
+    -fx-alignment: center;
+}
+
+/* Couleurs personnalisées pour les statuts */
+.task-status.en-cours {
+    -fx-background-color: #FFC107; /* Jaune pour "En cours" */
+}
+
+.task-status.termine {
+    -fx-background-color: #4CAF50; /* Vert pour "Terminé" */
+}
+
+.task-status.en-retard {
+    -fx-background-color: #F44336; /* Rouge pour "En retard" */
+}
+
+.button-44 {
+    -fx-background-color: #e62143;
+    -fx-background-radius: 11px;
+    -fx-text-fill: white;
+    -fx-font-family: "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-text-alignment: center;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 2, 2);
+    -fx-border-width: 0;
+}
+
+.button-44:hover {
+    -fx-background-color: #db545a;  /* Darker red when hovered */
+}
+
+.button-44:pressed {
+    -fx-background-color: #b81d2e;  /* Even darker red when clicked */
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0, 1, 1);
+}
+
+.button-44:focused {
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+}
+
+/* Base Style for TextField and DatePicker */
+.text-field, .date-picker {
+    -fx-padding: 0 16px 0 12px; /* Padding */
+    -fx-pref-width: 100%; /* Full width */
+    -fx-pref-height: 32px; /* Height */
+
+    -fx-border-color: #dddbda; /* Default border color */
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px; /* Rounded corners */
+
+    -fx-background-color: #fff; /* White background */
+    -fx-text-fill: rgb(8, 7, 7); /* Dark text color */
+
+    -fx-transition: border-color 0.1s linear, background-color 0.1s linear; /* Transition effect */
+}
+.date-picker {
+    -fx-max-width: Infinity; /* Fill available width */
+    -fx-pref-width: 100%; /* Match parent width */
+    -fx-background-insets: 0; /* Remove default insets */
+    -fx-padding: 0; /* Remove default padding */
+}
+/* Focus Effect */
+.text-field:focused, .date-picker:focused {
+    -fx-border-color: #db545a; /* Red border when focused */
+    -fx-effect: dropshadow(gaussian, rgba(219, 84, 90, 0.7), 5, 0, 0, 0); /* Red shadow */
+    -fx-text-fill: black; /* Keep text color */
+}
+
+/* Style the DatePicker's button */
+.date-picker .arrow-button {
+    -fx-background-color: #db545a; /* Red background */
+    -fx-border-radius: 4px; /* Rounded corners */
+    -fx-padding: 4px;
+}
+
+/* Hover effect for the DatePicker button */
+.date-picker .arrow-button:hover {
+    -fx-background-color: #b53d48; /* Darker red on hover */
+}
+
+/* Pressed effect */
+.date-picker .arrow-button:pressed {
+    -fx-background-color: #a02c35; /* Even darker red when clicked */
+}
+
+/* Change the calendar icon to white */
+.date-picker .arrow-button .arrow {
+    -fx-background-color: white; /* White calendar icon */
+}
+
+/* Popup content styling */
+.date-picker .popup-content {
+    -fx-background-color: #fff; /* White background */
+    -fx-border-color: #db545a; /* Red border */
+    -fx-border-radius: 4px;
+}
+
+/* Calendar header (Month/Year) */
+.date-picker .month-year-pane {
+    -fx-background-color: #db545a; /* Red background */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Calendar day cells */
+.date-picker .cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px;
+}
+
+/* Hover effect for calendar days */
+.date-picker .cell:hover {
+    -fx-background-color: #db545a;
+    -fx-text-fill: white;
+}
+
+/* Selected date styling */
+.date-picker .cell:focused {
+    -fx-background-color: #db545a;
+    -fx-text-fill: white;
+}
+
+/* Today's date styling */
+.date-picker .today {
+    -fx-background-color: #ffd700;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+/* Disabled state */
+.date-picker:disabled {
+    -fx-opacity: 0.5;
+}
 

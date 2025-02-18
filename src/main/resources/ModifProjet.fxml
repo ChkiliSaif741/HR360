@@ -37,13 +37,13 @@
                         </Label>
                     </children>
                 </VBox>
-                <VBox prefHeight="270.0" prefWidth="257.0" spacing="40.0">
+                <VBox prefHeight="270.0" prefWidth="257.0" spacing="40.0" stylesheets="@stylesProjet.css">
                     <children>
                         <TextField fx:id="nomTF" />
                         <TextField fx:id="descriptionTF" />
                         <DatePicker fx:id="dateStart" />
                         <DatePicker fx:id="dateEnd" />
-                        <Button fx:id="ModifProjet" mnemonicParsing="false" onAction="#ModifProjet" prefHeight="41.0" prefWidth="181.0" text="Modifier Projet">
+                        <Button fx:id="ModifProjet" mnemonicParsing="false" onAction="#ModifProjet" prefHeight="41.0" prefWidth="181.0" styleClass="button-44" stylesheets="@stylesProjet.css" text="Modifier Projet">
                             <font>
                                 <Font size="19.0" />
                             </font>

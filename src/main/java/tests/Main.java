@@ -1,16 +1,10 @@
 package tests;
 
-import entities.Personne;
-import entities.Projet;
 import entities.Tache;
 import entities.TacheStatus;
-import services.ServicePersonne;
-import services.ServiceProjet;
 import services.ServiceTache;
-import utils.MyDatabase;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.sql.Date;
 
 public class Main {

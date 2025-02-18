@@ -39,11 +39,11 @@
             </VBox>
             <VBox prefHeight="270.0" prefWidth="257.0" spacing="40.0">
                <children>
-                    <TextField fx:id="nomTF" />
-                    <TextField fx:id="descriptionTF" />
-                  <DatePicker fx:id="dateStart" />
-                  <DatePicker fx:id="dateEnd" />
-                    <Button mnemonicParsing="false" onAction="#AjouterProjet" prefHeight="41.0" prefWidth="181.0" text="Ajouter Projet">
+                    <TextField fx:id="nomTF" stylesheets="@stylesProjet.css" />
+                    <TextField fx:id="descriptionTF" stylesheets="@stylesProjet.css" />
+                  <DatePicker fx:id="dateStart" prefHeight="32.0" stylesheets="@stylesProjet.css" />
+                  <DatePicker fx:id="dateEnd" prefHeight="32.0" stylesheets="@stylesProjet.css" />
+                    <Button mnemonicParsing="false" onAction="#AjouterProjet" prefHeight="41.0" prefWidth="181.0" styleClass="button-44" stylesheets="@stylesProjet.css" text="Ajouter Projet">
                      <font>
                         <Font size="19.0" />
                      </font>
