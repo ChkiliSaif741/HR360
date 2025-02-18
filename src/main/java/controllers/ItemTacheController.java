@@ -3,6 +3,8 @@ package controllers;
 import entities.Tache;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -10,6 +12,7 @@ import javafx.scene.text.Text;
 import services.ServiceProjet;
 import services.ServiceTache;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class ItemTacheController {
@@ -78,6 +81,20 @@ public class ItemTacheController {
 
     @FXML
     void ModifTache(ActionEvent event) {
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifTache.fxml"));
+        try {
+            Parent parent = loader.load();
+            ModifTacheController ModifController = loader.getController();
+            ModifController.setDateStart(tache.getDateDebut());
+            ModifController.setDateEnd(tache.getDateFin());
+            ModifController.setDescriptionTF(descriptionTache.getText());
+            ModifController.setNomTF(nomTache.getText());
+            ModifController.setStatutDD(tache.getStatut());
+            ModifController.setIdProjet(tache.getIdProjet());
+            ModifController.setIdTache(tache.getId());
+            nomTache.getScene().setRoot(parent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
