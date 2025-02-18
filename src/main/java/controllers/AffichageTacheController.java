@@ -1,9 +1,11 @@
 package controllers;
 
 import entities.Tache;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import services.ServiceTache;
 
@@ -47,5 +49,17 @@ public class AffichageTacheController implements Initializable {
     public void setIdProjet(int idProjet) {
         this.idProjet = idProjet;
         loadTasks();
+    }
+    @FXML
+    void AjouterTache(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutTache.fxml"));
+        try {
+            Parent parent = loader.load();
+            AjoutTacheController controller = loader.getController();
+            controller.setIdProjet(idProjet);
+            contentBox.getScene().setRoot(parent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

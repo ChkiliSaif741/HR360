@@ -30,11 +30,6 @@ public class AjoutProjetController {
     private TextField nomTF;
 
     @FXML
-    void AfficherProjet(ActionEvent event) {
-
-    }
-
-    @FXML
     void AjouterProjet(ActionEvent event) {
             LocalDate DateDebut = dateStart.getValue();
             LocalDate DateFin = dateEnd.getValue();
