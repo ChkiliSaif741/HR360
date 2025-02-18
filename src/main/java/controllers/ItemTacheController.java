@@ -1,11 +1,16 @@
 package controllers;
 
 import entities.Tache;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import services.ServiceProjet;
+import services.ServiceTache;
+
+import java.sql.SQLException;
 
 public class ItemTacheController {
 
@@ -36,7 +41,10 @@ public class ItemTacheController {
     @FXML
     private AnchorPane taskCard;
 
+    private Tache tache;
+
     public void setTaskData(Tache tache) {
+        this.tache = tache;
         nomTache.setText(tache.getNom());
         descriptionTache.setText(tache.getDescription());
         this.dateDebut.setText("Début: " + tache.getDateDebut());
@@ -56,5 +64,20 @@ public class ItemTacheController {
             default:
                 statutTache.getStyleClass().add("termine"); // Par défaut
         }
+    }
+    @FXML
+    void DeleteTache(ActionEvent event) {
+        ServiceTache serviceTache = new ServiceTache();
+        try {
+            serviceTache.supprimer(tache.getId());
+            parentController.loadTasks(); // Rafraîchir la vue après la suppression
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void ModifTache(ActionEvent event) {
+
     }
 }

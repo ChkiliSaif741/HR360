@@ -52,7 +52,7 @@ public class ItemProjetController {
         ServiceProjet serviceProjet = new ServiceProjet();
         try {
             serviceProjet.supprimer(projet.getId());
-            parentController.refresh(); // Rafraîchir la vue après la suppression
+            parentController.refresh();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -27,6 +27,7 @@ public class AffichageTacheController implements Initializable {
     }
 
     public void loadTasks(){
+        contentBox.getChildren().clear();
         ServiceTache serviceTache = new ServiceTache();
         try {
             List<Tache> taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).toList();
@@ -62,4 +63,5 @@ public class AffichageTacheController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 }

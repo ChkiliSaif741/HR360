@@ -10,7 +10,7 @@
    <children>
       <ScrollPane layoutX="329.6000061035156" layoutY="52.0" AnchorPane.rightAnchor="20.0">
          <content>
-            <VBox fx:id="contentBox" prefHeight="387.0" prefWidth="750.0" />
+            <VBox fx:id="contentBox" prefHeight="387.0" prefWidth="750.0" spacing="10.0" />
          </content>
       </ScrollPane>
       <Button fx:id="btnAdd" layoutX="291.0" layoutY="69.0" onAction="#AjouterTache" styleClass="button-action" stylesheets="@stylesProjet.css">

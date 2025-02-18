@@ -240,3 +240,17 @@
     -fx-opacity: 0.5;
 }
 
+.list-item {
+    -fx-background-color: #9f9f9f;
+    -fx-background-radius: 11px;
+    -fx-text-fill: white;
+    -fx-font-family: "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-text-alignment: center;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 2, 2);
+    -fx-border-width: 0;
+
+}
