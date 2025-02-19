@@ -5,19 +5,17 @@ import java.time.LocalDateTime;
 public class Candidature {
     private int id_candidature;
     private LocalDateTime dateCandidature;
-    private LocalDateTime dateEntretien;
     private String statut;
     private String cv;
     private String lettreMotivation;
     private int id_offre;
-    private String description; // Nouveau champ ajouté
-    private LocalDateTime dateModification; // Nouveau champ ajouté
+    private String description;
+    private LocalDateTime dateModification;
 
     public Candidature() {}
 
-    public Candidature(LocalDateTime dateCandidature, LocalDateTime dateEntretien, String statut, String cv, String lettreMotivation, int id_offre, String description, LocalDateTime dateModification) {
+    public Candidature(LocalDateTime dateCandidature, String statut, String cv, String lettreMotivation, int id_offre, String description, LocalDateTime dateModification) {
         this.dateCandidature = dateCandidature;
-        this.dateEntretien = dateEntretien;
         this.statut = statut;
         this.cv = cv;
         this.lettreMotivation = lettreMotivation;
@@ -32,10 +30,6 @@ public class Candidature {
 
     public LocalDateTime getDateCandidature() {
         return dateCandidature;
-    }
-
-    public LocalDateTime getDateEntretien() {
-        return dateEntretien;
     }
 
     public String getStatut() {
@@ -70,10 +64,6 @@ public class Candidature {
         this.dateCandidature = dateCandidature;
     }
 
-    public void setDateEntretien(LocalDateTime dateEntretien) {
-        this.dateEntretien = dateEntretien;
-    }
-
     public void setStatut(String statut) {
         this.statut = statut;
     }
@@ -103,7 +93,6 @@ public class Candidature {
         return "Candidature{" +
                 "id_candidature=" + id_candidature +
                 ", dateCandidature=" + dateCandidature +
-                ", dateEntretien=" + dateEntretien +
                 ", statut='" + statut + '\'' +
                 ", cv='" + cv + '\'' +
                 ", lettreMotivation='" + lettreMotivation + '\'' +

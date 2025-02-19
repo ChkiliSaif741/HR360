@@ -17,56 +17,38 @@ public class ServiceCandidature implements IService<Candidature> {
 
     @Override
     public void ajouter(Candidature candidature) throws SQLException {
-        String req = "INSERT INTO candidature (dateCandidature, dateEntretien, statut, cv, lettreMotivation, id_offre, description, dateModification) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, NULL)";
+        String req = "INSERT INTO candidature (dateCandidature, statut, cv, lettreMotivation, id_offre, description, dateModification) " +
+                "VALUES (?, ?, ?, ?, ?, ?, NULL)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(req);
         preparedStatement.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
-
-        if (candidature.getDateEntretien() != null) {
-            preparedStatement.setTimestamp(2, Timestamp.valueOf(candidature.getDateEntretien()));
-        } else {
-            preparedStatement.setNull(2, Types.TIMESTAMP);
-        }
-
-        preparedStatement.setString(3, candidature.getStatut());
-        preparedStatement.setString(4, candidature.getCv());
-        preparedStatement.setString(5, candidature.getLettreMotivation());
-        preparedStatement.setInt(6, candidature.getId_offre());
-        preparedStatement.setString(7, candidature.getDescription());
+        preparedStatement.setString(2, candidature.getStatut());
+        preparedStatement.setString(3, candidature.getCv());
+        preparedStatement.setString(4, candidature.getLettreMotivation());
+        preparedStatement.setInt(5, candidature.getId_offre());
+        preparedStatement.setString(6, candidature.getDescription());
 
         preparedStatement.executeUpdate();
         System.out.println("Candidature ajoutée avec succès.");
     }
 
-
-
-
-
     @Override
     public void modifier(Candidature candidature) throws SQLException {
-        String req = "UPDATE candidature SET dateCandidature=?, dateEntretien=?, statut=?, cv=?, lettreMotivation=?, description=?, dateModification=? WHERE id_candidature=?";
+        String req = "UPDATE candidature SET dateCandidature=?, statut=?, cv=?, lettreMotivation=?, description=?, dateModification=? WHERE id_candidature=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(req)) {
             preparedStatement.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
-
-            if (candidature.getDateEntretien() != null) {
-                preparedStatement.setTimestamp(2, Timestamp.valueOf(candidature.getDateEntretien()));
-            } else {
-                preparedStatement.setNull(2, Types.TIMESTAMP);
-            }
-
-            preparedStatement.setString(3, candidature.getStatut());
-            preparedStatement.setString(4, candidature.getCv());
-            preparedStatement.setString(5, candidature.getLettreMotivation());
-            preparedStatement.setString(6, candidature.getDescription());
+            preparedStatement.setString(2, candidature.getStatut());
+            preparedStatement.setString(3, candidature.getCv());
+            preparedStatement.setString(4, candidature.getLettreMotivation());
+            preparedStatement.setString(5, candidature.getDescription());
 
             // Mise à jour de la dateModification avec la date et heure actuelle
             LocalDateTime now = LocalDateTime.now();
-            preparedStatement.setTimestamp(7, Timestamp.valueOf(now));
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(now));
             candidature.setDateModification(now);
 
-            preparedStatement.setInt(8, candidature.getId_candidature());
+            preparedStatement.setInt(7, candidature.getId_candidature());
 
             int verif = preparedStatement.executeUpdate();
             if (verif > 0) {
@@ -76,9 +58,6 @@ public class ServiceCandidature implements IService<Candidature> {
             }
         }
     }
-
-
-
 
     @Override
     public void supprimer(int id) throws SQLException {
@@ -108,14 +87,6 @@ public class ServiceCandidature implements IService<Candidature> {
             Candidature candidature = new Candidature();
             candidature.setId_candidature(rs.getInt("id_candidature"));
             candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
-
-            Timestamp dateEnt = rs.getTimestamp("dateEntretien");
-            if (dateEnt != null && !rs.wasNull()) {
-                candidature.setDateEntretien(dateEnt.toLocalDateTime());
-            } else {
-                candidature.setDateEntretien(null);
-            }
-
             candidature.setStatut(rs.getString("statut"));
             candidature.setCv(rs.getString("cv"));
             candidature.setLettreMotivation(rs.getString("lettreMotivation"));
@@ -131,7 +102,4 @@ public class ServiceCandidature implements IService<Candidature> {
         }
         return candidatures;
     }
-
-
-
 }

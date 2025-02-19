@@ -10,6 +10,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import entities.Candidature;
@@ -29,12 +31,19 @@ import java.util.ResourceBundle;
 public class ListCandidatureBack implements Initializable {
 
     @FXML
+    private ImageView imageViewUpdt;
+    @FXML
     private ListView<Candidature> listViewCandidatures;
 
     private ServiceCandidature serviceCandidature;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setSaturation(-1); // Désature l'image (noir et blanc)
+        colorAdjust.setBrightness(1); // Rend l'image blanche
+
+        imageViewUpdt.setEffect(colorAdjust);
         serviceCandidature = new ServiceCandidature();
 
         // Charger les candidatures depuis la base de données

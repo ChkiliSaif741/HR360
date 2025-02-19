@@ -22,7 +22,6 @@ public class ModifierCondidature {
     private TextArea descriptionField;
     @FXML
     private Label cvLabel;
-    private LocalDateTime dateEntretien;
     @FXML
     private Label lettreLabel;
     @FXML
@@ -87,28 +86,6 @@ public class ModifierCondidature {
         }
     }
 
-    @FXML
-    private void choisirDateEntretien() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DateEntretien.fxml"));
-            Stage stage = new Stage();
-            stage.setScene(new Scene(loader.load()));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            DateEntretien controller = loader.getController();
-
-            // Passer la dateEntretien existante au contrôleur de la fenêtre modale
-            if (candidatureSelectionnee != null && candidatureSelectionnee.getDateEntretien() != null) {
-                controller.setDateEntretien(candidatureSelectionnee.getDateEntretien());
-            }
-
-            stage.showAndWait();
-
-            // Récupérer la date sélectionnée
-            dateEntretien = controller.getSelectedDateTime();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     private void modifierCandidature() {
@@ -127,10 +104,7 @@ public class ModifierCondidature {
             isModified = true;
         }
 
-        // Vérifier si la date d'entretien a été modifiée
-        if (dateEntretien != null && !dateEntretien.equals(candidatureSelectionnee.getDateEntretien())) {
-            isModified = true;
-        }
+
 
         // Vérifier si la description a été modifiée
         if (nouvelleDescription != null && !nouvelleDescription.equals(candidatureSelectionnee.getDescription())) {
@@ -164,9 +138,7 @@ public class ModifierCondidature {
             if (nouvelleLettrePath != null) {
                 candidatureSelectionnee.setLettreMotivation(nouvelleLettrePath);
             }
-            if (dateEntretien != null) {
-                candidatureSelectionnee.setDateEntretien(dateEntretien); // Mettre à jour la date d'entretien
-            }
+
             if (nouvelleDescription != null) {
                 candidatureSelectionnee.setDescription(nouvelleDescription); // Mettre à jour la description
             }

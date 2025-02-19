@@ -29,7 +29,28 @@
 
     <!-- HBox pour les boutons, centrée -->
     <HBox alignment="CENTER" spacing="20">
-        <Button text="Modifier" onAction="#modifierOffre" styleClass="modernButton"/>
-        <Button text="Supprimer" onAction="#supprimerOffre" styleClass="modernButton"/>
+        <!-- Bouton Modifier avec icône -->
+        <Button fx:id="btnModifier" text="Modifier" onAction="#modifierOffre" styleClass="modernButton">
+            <graphic>
+                <ImageView fx:id="imageViewModifier">
+                    <Image url="@icons/edit.png"/>
+                    <fitWidth>20</fitWidth>
+                    <fitHeight>20</fitHeight>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Bouton Supprimer avec icône -->
+        <Button fx:id="btnSupprimer" text="Supprimer" onAction="#supprimerOffre" styleClass="modernButton">
+            <graphic>
+                <ImageView fx:id="imageViewSupprimer">
+                    <Image url="@icons/delete.png"/>
+                    <fitWidth>20</fitWidth>
+                    <fitHeight>20</fitHeight>
+                </ImageView>
+            </graphic>
+        </Button>
     </HBox>
+
+
 </VBox>

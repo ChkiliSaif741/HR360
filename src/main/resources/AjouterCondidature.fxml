@@ -22,12 +22,6 @@
         <Label fx:id="lettreLabel" text="Aucun fichier sélectionné" styleClass="file-label"/>
         <Label fx:id="lettreError" styleClass="error-label"/>
     </VBox>
-
-    <!-- Ajouter un bouton pour ouvrir le calendrier -->
-    <VBox spacing="10">
-        <Button text="Sélectionner la date et l'heure de l'entretien" onAction="#choisirDateEntretien" styleClass="upload-button"/>
-        <Label fx:id="dateError" styleClass="error-label"/>
-    </VBox>
     <TextArea fx:id="descriptionField" promptText="Entrez la description" styleClass="modernTextArea" />
     <Label fx:id="descriptionError" styleClass="error-label" />
     <HBox spacing="10">

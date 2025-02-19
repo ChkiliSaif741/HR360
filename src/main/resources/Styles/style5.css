@@ -191,3 +191,11 @@
 .hbox-offre .value {
     -fx-text-fill: white; /* Applique le texte blanc aux valeurs */
 }
+.t-label {
+    -fx-font-size: 24px; /* Taille du texte */
+    -fx-font-weight: bold; /* Mettre le titre en gras */
+    -fx-text-fill: #333; /* Couleur du texte */
+    -fx-padding: 10px 0; /* Espacement autour du texte */
+    -fx-alignment: CENTER; /* Centrer le texte */
+    -fx-font-family: "Arial", sans-serif; /* Police moderne */
+}

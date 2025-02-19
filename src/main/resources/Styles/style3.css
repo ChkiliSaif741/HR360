@@ -100,7 +100,7 @@
 /* Style pour les rectangles qui entourent chaque titre/valeur */
 .rectangle-frame {
     -fx-fill: transparent;
-    -fx-stroke: gray;
+    -fx-stroke: rgba(224, 224, 224, 0.13);
     -fx-stroke-width: 1;
 }
 
@@ -142,10 +142,7 @@
     -fx-alignment: CENTER; /* Centrer le texte */
     -fx-font-family: "Arial", sans-serif; /* Police moderne */
 }
-/* style1.css */
-.root {
-    -fx-background-color: #f4f4f4;
-}
+
 
 
 

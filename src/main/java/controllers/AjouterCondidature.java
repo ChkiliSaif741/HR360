@@ -34,7 +34,6 @@ public class AjouterCondidature implements Initializable {
 
     @FXML
     private Label cvLabel;
-    private LocalDateTime dateEntretien;
     @FXML
     private Label lettreLabel;
 
@@ -53,23 +52,6 @@ public class AjouterCondidature implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Plus besoin de gérer le statut ici
-    }
-    @FXML
-    private void choisirDateEntretien() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DateEntretien.fxml"));
-            Stage stage = new Stage();
-            stage.setScene(new Scene(loader.load()));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            DateEntretien controller = loader.getController();
-            stage.showAndWait();
-
-            // Retrieve the selected date and time
-            dateEntretien = controller.getSelectedDateTime();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     public void initData(int idOffre) {
         this.idOffre = idOffre;
@@ -131,11 +113,7 @@ public class AjouterCondidature implements Initializable {
             lettreError.setText("");
         }
 
-        // Vérifier si la date d'entretien a été sélectionnée
-        if (dateEntretien == null) {
-            showAlert(AlertType.ERROR, "Erreur de date", "Veuillez sélectionner une date et une heure pour l'entretien.");
-            isValid = false;
-        }
+
 
         // Si tout est valide, on enregistre la candidature
         if (isValid) {
@@ -159,7 +137,6 @@ public class AjouterCondidature implements Initializable {
                 // Création de l'objet Candidature
                 Candidature candidature = new Candidature(
                         LocalDateTime.now(),          // Date de candidature
-                        dateEntretien,                // Date de l'entretien
                         statut,                       // Statut
                         cvDest.getAbsolutePath(),     // Chemin du CV
                         lettreDest.getAbsolutePath(), // Chemin de la lettre

@@ -92,11 +92,11 @@ public class ListeOffresFront {
 
                         // Create labels for each piece of information with icons
                         vBox.getChildren().addAll(
-                                createLabelWithIcon("Titre: ", offre.getTitre(), "icon_cv.png"),
+                                createLabelWithIcon("Titre: ", offre.getTitre(), "titre.png"),
                                 createLabelWithIcon("Description: ", (offre.getDescription() != null ? offre.getDescription() : "Non définie"), "icon_description.png"),
-                                createLabelWithIcon("Publication: ", datePublicationFormatted, "icon_cv.png"),
-                                createLabelWithIcon("Expiration: ", dateExpirationFormatted, "icon_cv.png"),
-                                createLabelWithIcon("Statut: ", offre.getStatut(), "icon_cv.png")
+                                createLabelWithIcon("Publication: ", datePublicationFormatted, "publier.png"),
+                                createLabelWithIcon("Expiration: ", dateExpirationFormatted, "expire.png"),
+                                createLabelWithIcon("Statut: ", offre.getStatut(), "icon_statut.png")
                         );
 
                         // Set the VBox as the content of the cell

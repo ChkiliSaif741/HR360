@@ -4,14 +4,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ListCell;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -26,11 +25,24 @@ import java.util.List;
 public class ListeOffresController {
 
     @FXML
+    private Button btnModifier, btnSupprimer;
+
+    @FXML
+    private ImageView imageViewModifier, imageViewSupprimer;
+    @FXML
     private ListView<Offre> listViewOffres;
 
     private ServiceOffre serviceOffre;
 
     public void initialize() {
+        // Appliquer l'effet pour rendre l'image blanche
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setSaturation(-1); // Désature l'image (noir et blanc)
+        colorAdjust.setBrightness(1);  // Rend l'image blanche
+
+        // Appliquer l'effet aux icônes
+        imageViewModifier.setEffect(colorAdjust);
+        imageViewSupprimer.setEffect(colorAdjust);
         serviceOffre = new ServiceOffre();
 
         // Charger les offres depuis la base de données
