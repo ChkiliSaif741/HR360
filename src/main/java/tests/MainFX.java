@@ -16,11 +16,12 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterCondidature.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Staaart.fxml"));
         try {
             Parent parent = loader.load();
             Scene scene = new Scene(parent);
-            scene.getStylesheets().add(getClass().getResource("/Styles/style1.css").toExternalForm());
+
+
             primaryStage.setScene(scene);
             primaryStage.setTitle("Ajouter Condidature");
             primaryStage.show();

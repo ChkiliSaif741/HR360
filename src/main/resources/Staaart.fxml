@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.Staaart"
+            prefHeight="400.0" prefWidth="600.0"
+            fx:id="anchorPane"> <!-- Ajoutez fx:id ici -->
+
+    <!-- Add a Button that will trigger the action -->
+    <Button text="Aller vers ListeOffres" onAction="#goToListeOffres" layoutX="200.0" layoutY="150.0"/>
+
+</AnchorPane>

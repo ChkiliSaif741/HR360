@@ -4,6 +4,7 @@ import entities.Offre;
 import utils.MyDatabase;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,4 +95,27 @@ public class ServiceOffre implements IService<Offre> {
 
         return offres;
     }
+    public List<Offre> recupererOffres() throws SQLException {
+        List<Offre> offres = new ArrayList<>();
+        // Code pour récupérer les offres depuis la base de données
+
+        for (Offre offre : offres) {
+            if (offre.getDateExpiration().isBefore(LocalDateTime.now())) {
+                offre.setStatut("Expirée");
+            } else {
+                offre.setStatut("Publiée");
+            }
+        }
+
+        return offres;
+    }
+    public void mettreAJourStatutOffre(Offre offre) throws SQLException {
+        String query = "UPDATE offres SET statut = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, offre.getStatut());
+            ps.setInt(2, offre.getId());
+            ps.executeUpdate();
+        }
+    }
+
 }

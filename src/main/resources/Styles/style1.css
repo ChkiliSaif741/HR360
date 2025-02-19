@@ -115,9 +115,49 @@
     -fx-prompt-text-fill: #9e9e9e;
 }
 
-/* Effet de focus */
+/* Effet de focus pour TextArea */
 .modernTextArea:focused {
     -fx-border-color: #d32f2f;
     -fx-background-color: #ffffff;
     -fx-effect: dropshadow(gaussian, rgba(211, 47, 47, 0.3), 5, 0, 0, 2);
 }
+
+/* Style du TextField avec bordure */
+.bordered-textfield {
+    -fx-border-color: #151414;
+    -fx-border-width: 10px;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: black;
+    -fx-prompt-text-fill: #9e9e9e;
+    -fx-font-size: 14px;
+}
+
+/* Effet de focus pour TextField */
+.bordered-textfield:focused {
+    -fx-border-color: #d32f2f;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(211, 47, 47, 0.3), 5, 0, 0, 2);
+}
+/* Animation de la couleur du bouton lors du survol avec une transition fluide */
+.upload-button {
+    -fx-background-color: #212121;
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.2s ease-in-out; /* transition fluide */
+}
+/* Style pour les labels d'erreur */
+.error-label {
+    -fx-text-fill: red; /* Texte rouge */
+    -fx-font-size: 14px; /* Taille de police plus petite */
+    -fx-font-weight: bold; /* Mettre en gras pour attirer l'attention */
+    -fx-padding: 5px; /* Ajouter de l'espace autour du texte */
+}
+
+
+

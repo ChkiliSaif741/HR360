@@ -45,6 +45,8 @@ public class AjouterCondidature implements Initializable {
 
     private File cvFile;
     private File lettreFile;
+    private int idOffre;
+
 
     private final ServiceCandidature serviceCandidature = new ServiceCandidature();
 
@@ -68,6 +70,11 @@ public class AjouterCondidature implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void initData(int idOffre) {
+        this.idOffre = idOffre;
+        System.out.println("ID Offre reçu : " + idOffre);
+        // Vous pouvez afficher l'ID dans un champ ou l'utiliser pour insérer la candidature
     }
     @FXML
     public void uploadCv() {
@@ -156,7 +163,7 @@ public class AjouterCondidature implements Initializable {
                         statut,                       // Statut
                         cvDest.getAbsolutePath(),     // Chemin du CV
                         lettreDest.getAbsolutePath(), // Chemin de la lettre
-                        5,                            // ID de l'offre
+                        idOffre,                            // ID de l'offre
                         descriptionField.getText(),   // Description (depuis le champ TextArea)
                         LocalDateTime.now()           // Date de modification (initialisée à maintenant)
                 );

@@ -28,8 +28,8 @@ public class DateEntretien {
     public void initialize() {
         // Ajouter des heures prédéfinies au ComboBox
         timePicker.getItems().addAll(
-                "09:00", "10:00", "11:00", "12:00",
-                "14:00", "15:00", "16:00", "17:00"
+                "08:00","12:00", "23:59","00:00"
+
         );
     }
 
@@ -39,7 +39,7 @@ public class DateEntretien {
 
         // Validation de la date et de l'heure
         if (datePicker.getValue() == null || timePicker.getValue() == null) {
-            showAlert(AlertType.ERROR, "Erreur", "Veuillez sélectionner la date et l'heure de l'entretien.");
+            showAlert(AlertType.ERROR, "Erreur", "Veuillez sélectionner la date et l'heure de l'offre.");
             isValid = false;
         } else {
             LocalDate dateEntretien = datePicker.getValue();

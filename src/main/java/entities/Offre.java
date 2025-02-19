@@ -12,12 +12,20 @@ private String titre,description,statut;
     // Constructeurs
     public Offre() {}
 
-    public Offre(String titre, String description, LocalDateTime datePublication, LocalDateTime dateExpiration, String statut) {
+    public Offre(String titre, String description, LocalDateTime datePublication, LocalDateTime dateExpiration) {
         this.titre = titre;
         this.description = description;
         this.datePublication = datePublication;
         this.dateExpiration = dateExpiration;
-        this.statut = statut;
+        this.statut = "Publiée"; // Vous pouvez définir un statut par défaut
+    }
+
+    public void mettreAJourStatut() {
+        if (dateExpiration.isBefore(LocalDateTime.now())) {
+            setStatut("Expirée");
+        } else {
+            setStatut("Publiée");
+        }
     }
 
     // Getters et Setters

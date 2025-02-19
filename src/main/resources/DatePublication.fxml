@@ -9,7 +9,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllers.DateEntretien"
+      fx:controller="controllers.DatePublication"
       alignment="CENTER"
       spacing="20"
       styleClass="dialog-container"

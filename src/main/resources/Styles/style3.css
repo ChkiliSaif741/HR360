@@ -1,0 +1,153 @@
+/* style1.css */
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+.modernListView {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+.modernListView .list-cell {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-margin: 5px;
+}
+
+/* Style pour les cellules sélectionnées */
+.modernListView .list-cell:filled:selected {
+    -fx-background-color: #e0e0e0; /* Couleur de fond de la cellule sélectionnée */
+}
+
+/* Style pour le texte des cellules sélectionnées */
+.modernListView .list-cell:filled:selected .label {
+    -fx-text-fill: red; /* Couleur du texte en rouge */
+}
+
+/* Style pour les labels */
+.label-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.label-value {
+    -fx-text-fill: #555;
+}
+
+.modernButton {
+    -fx-background-color: #212121; /* Couleur de fond sombre */
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.2s ease-in-out; /* Transition fluide */
+}
+
+/* Effet de survol */
+.modernButton:hover {
+    -fx-background-color: #333333; /* Couleur plus claire au survol */
+}
+
+/* Style pour le bouton de sauvegarde */
+.save-button {
+    -fx-background-color: #d32f2f; /* Rouge pour le bouton de sauvegarde */
+    -fx-text-fill: white;
+}
+
+/* Effet de survol pour le bouton de sauvegarde */
+.save-button:hover {
+    -fx-background-color: #c62828;
+}
+
+/* Style pour le bouton d'annulation */
+.cancel-button {
+    -fx-background-color: #9e9e9e;
+    -fx-text-fill: white;
+}
+
+/* Effet de survol pour le bouton d'annulation */
+.cancel-button:hover {
+    -fx-background-color: #757575;
+}
+.title-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;  /* Ajustez la taille du texte si nécessaire */
+}
+/* Style pour les titres (en gras) */
+/* Style pour les titres (en gras) */
+.title-label {
+    font-weight: bold;
+    -fx-font-size: 14px; /* Taille de police */
+}
+
+/* Style pour chaque cadre (VBox) */
+.vbox-item {
+    -fx-padding: 10px;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-background-color: #f9f9f9;
+    -fx-max-width: 150px; /* Limiter la largeur du VBox */
+    -fx-min-height: 40px; /* Hauteur minimale pour chaque élément */
+    -fx-pref-width: 150px; /* Fixer la largeur à 150px */
+}
+
+/* Style pour les rectangles qui entourent chaque titre/valeur */
+.rectangle-frame {
+    -fx-fill: transparent;
+    -fx-stroke: gray;
+    -fx-stroke-width: 1;
+}
+
+/* Style pour les Labels qui doivent revenir à la ligne */
+.value-label {
+    -fx-wrap-text: true; /* Permet le retour à la ligne */
+    -fx-max-width: 150px; /* Limiter la largeur du Label */
+    -fx-text-alignment: left; /* Alignement du texte */
+}
+/* Style pour la bande colorée au-dessus de la ListView */
+.top-band {
+    -fx-background-color: #77aad9; /* Couleur de fond */
+    -fx-pref-height: 10px; /* Hauteur de la bande */
+    -fx-min-height: 10px; /* Hauteur minimale */
+}
+
+/* Style pour la ListView */
+.modernListView {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+/* Style pour les boutons */
+.modernButton {
+    -fx-background-color: #212121; /* Couleur de fond sombre */
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.2s ease-in-out;
+}
+
+.modernButton:hover {
+    -fx-background-color: #333333; /* Couleur plus claire au survol */
+}
+.t-label {
+    -fx-font-size: 24px; /* Taille du texte */
+    -fx-font-weight: bold; /* Mettre le titre en gras */
+    -fx-text-fill: #333; /* Couleur du texte */
+    -fx-padding: 10px 0; /* Espacement autour du texte */
+    -fx-alignment: CENTER; /* Centrer le texte */
+    -fx-font-family: "Arial", sans-serif; /* Police moderne */
+}
+
+
+
