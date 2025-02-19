@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class AffichageProjetController implements Initializable {
@@ -61,7 +60,7 @@ public class AffichageProjetController implements Initializable {
                 gridProjet.setMaxWidth(Region.USE_PREF_SIZE);
                 gridProjet.setMaxHeight(Region.USE_PREF_SIZE);
 
-                GridPane.setMargin(anchorPane,new Insets(15));
+
             }
         } catch (SQLException | IOException e) {
             e.printStackTrace();

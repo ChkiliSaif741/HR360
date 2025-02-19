@@ -42,7 +42,7 @@ public class ItemProjetController {
     private Label dateFin;
 
     @FXML
-    private Text descriptionProjet;
+    private Label descriptionProjet;
 
     @FXML
     private Label nomProjet;
@@ -80,8 +80,8 @@ public class ItemProjetController {
     public void SetData(Projet projet) {
         this.projet = projet;
         nomProjet.setText(projet.getNom());
-        dateDebut.setText("Date début: "+projet.getDateDebut().toString());
-        dateFin.setText("Date fin: "+projet.getDateFin().toString());
+        dateDebut.setText(projet.getDateDebut().toString());
+        dateFin.setText(projet.getDateFin().toString());
         descriptionProjet.setText(projet.getDescription());
     }
 
