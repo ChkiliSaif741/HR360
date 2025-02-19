@@ -1,0 +1,193 @@
+/* Style global de la racine */
+.root {
+    -fx-background-color: white;
+    -fx-padding: 30;
+    -fx-alignment: center;
+}
+
+/* Style de l'en-tête */
+.header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212121; /* Couleur du texte en gris foncé */
+}
+
+/* Style des champs d'entrée */
+.input {
+    -fx-pref-width: 300px;
+    -fx-padding: 5;
+    -fx-border-color: #bdbdbd;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: #f5f5f5;
+    -fx-text-fill: #212121; /* Texte en gris foncé */
+}
+
+/* Style des boutons de téléchargement, sauvegarde, et annulation */
+.upload-button, .save-button, .cancel-button, .modernButton {
+    -fx-background-color: #212121;
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+}
+
+.save-button {
+    -fx-background-color: #d32f2f; /* Rouge pour le bouton de sauvegarde */
+}
+
+.cancel-button {
+    -fx-background-color: #9e9e9e;
+}
+
+/* Centrer la ListView */
+.list-view, .modernListView {
+    -fx-border-color: #bdbdbd;
+    -fx-border-width: 1px;
+    -fx-background-radius: 5px;
+    -fx-background-color: #fafafa; /* Fond plus clair */
+    -fx-selection-bar: #1976D2; /* Sélection bleue */
+    -fx-font-size: 14px;
+    -fx-alignment: center; /* Centrer le contenu */
+}
+
+/* Correct path to the image */
+.list-view {
+    -fx-background-image: url("/images/4782.jpg"); /* Note the leading '/' */
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-radius: 5px;
+    -fx-border-color: #bdbdbd;
+    -fx-border-width: 1px;
+    -fx-selection-bar: #1976D2;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-background-color: rgba(255, 255, 255, 0.5); /* Arrière-plan semi-transparent blanc */
+}
+
+/* Style des cellules */
+.list-view .cell {
+    -fx-padding: 10px;
+    -fx-background-color: rgba(224, 224, 224, 0.19);
+    -fx-text-fill: #212121; /* Texte en gris foncé */
+}
+
+/* Style des cellules au survol */
+.list-view .cell:hover {
+    -fx-background-color: rgba(224, 224, 224, 0.67); /* Couleur au survol avec transparence */
+}
+
+/* Style des cellules sélectionnées avec focus */
+.list-view .cell:selected:focused {
+    -fx-text-fill: #212121; /* Texte en gris foncé */
+    -fx-background-color: rgba(236, 7, 7, 0.61); /* Couleur de fond sélectionnée */
+}
+
+/* Labels */
+.file-label {
+    -fx-text-fill: #212121; /* Texte en gris foncé */
+    -fx-font-style: italic;
+}
+
+/* Label d'erreur */
+.error-label {
+    -fx-text-fill: red; /* Texte en rouge */
+    -fx-font-size: 12px;
+}
+
+/* Style du bouton Modifier et Supprimer dans le `ListView` */
+.modernButton:hover {
+    -fx-background-color: #ec0707; /* Vert pour l'effet au survol */
+}
+
+/* Style pour le TextArea */
+.modernTextArea {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 100px;
+    -fx-padding: 10;
+    -fx-border-color: #bdbdbd;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: #151414;
+    -fx-text-fill: #ffffff; /* Texte en blanc */
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #9e9e9e;
+}
+
+/* Effet de focus pour TextArea */
+.modernTextArea:focused {
+    -fx-border-color: #d32f2f;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(211, 47, 47, 0.3), 5, 0, 0, 2);
+}
+
+/* Style du TextField avec bordure */
+.bordered-textfield {
+    -fx-border-color: #151414;
+    -fx-border-width: 10px;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #212121; /* Texte en gris foncé */
+    -fx-prompt-text-fill: #9e9e9e;
+    -fx-font-size: 14px;
+}
+
+/* Effet de focus pour TextField */
+.bordered-textfield:focused {
+    -fx-border-color: #d32f2f;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(211, 47, 47, 0.3), 5, 0, 0, 2);
+}
+
+/* Animation de la couleur du bouton lors du survol avec une transition fluide */
+.upload-button {
+    -fx-background-color: #212121;
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.2s ease-in-out; /* transition fluide */
+}
+
+/* Style pour les labels d'erreur */
+.error-label {
+    -fx-text-fill: red; /* Texte rouge */
+    -fx-font-size: 14px; /* Taille de police plus petite */
+    -fx-font-weight: bold; /* Mettre en gras pour attirer l'attention */
+    -fx-padding: 5px; /* Ajouter de l'espace autour du texte */
+}
+
+.bold-label {
+    -fx-font-weight: bold;
+}
+/* Style général pour l'affichage des candidatures dans le ListView */
+.list-cell {
+    -fx-text-fill: white; /* Applique la couleur blanche au texte des cellules */
+    -fx-background-color: #333333; /* Fond sombre pour contraster avec le texte blanc */
+    -fx-padding: 10px;
+}
+
+/* Style des labels à l'intérieur des VBox */
+.bold-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: white; /* Texte blanc pour les labels */
+}
+
+/* Style des labels des valeurs de chaque attribut */
+.value-label {
+    -fx-text-fill: white; /* Texte blanc pour les valeurs */
+}
+
+/* Applique la couleur blanche aux titres dans les labels avec icônes */
+.hbox-offre .title {
+    -fx-text-fill: white; /* Applique le texte blanc aux titres */
+}
+
+/* Applique la couleur blanche aux valeurs dans les labels avec icônes */
+.hbox-offre .value {
+    -fx-text-fill: white; /* Applique le texte blanc aux valeurs */
+}

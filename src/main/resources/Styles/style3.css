@@ -112,18 +112,12 @@
 }
 /* Style pour la bande colorée au-dessus de la ListView */
 .top-band {
-    -fx-background-color: #77aad9; /* Couleur de fond */
+    -fx-background-color: #7baddb; /* Couleur de fond */
     -fx-pref-height: 10px; /* Hauteur de la bande */
     -fx-min-height: 10px; /* Hauteur minimale */
 }
 
-/* Style pour la ListView */
-.modernListView {
-    -fx-background-color: white;
-    -fx-border-color: #ddd;
-    -fx-border-radius: 5px;
-    -fx-padding: 10px;
-}
+
 
 /* Style pour les boutons */
 .modernButton {
@@ -147,6 +141,10 @@
     -fx-padding: 10px 0; /* Espacement autour du texte */
     -fx-alignment: CENTER; /* Centrer le texte */
     -fx-font-family: "Arial", sans-serif; /* Police moderne */
+}
+/* style1.css */
+.root {
+    -fx-background-color: #f4f4f4;
 }
 
 

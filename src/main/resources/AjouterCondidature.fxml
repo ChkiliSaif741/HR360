@@ -29,7 +29,7 @@
         <Label fx:id="dateError" styleClass="error-label"/>
     </VBox>
     <TextArea fx:id="descriptionField" promptText="Entrez la description" styleClass="modernTextArea" />
-    <Label fx:id="descriptionError" textFill="RED" />
+    <Label fx:id="descriptionError" styleClass="error-label" />
     <HBox spacing="10">
         <Button text="Enregistrer" onAction="#enregistrerCandidature" styleClass="save-button"/>
         <Button text="Annuler" onAction="#annuler" styleClass="cancel-button"/>

@@ -135,6 +135,7 @@ public class ModifierOffre {
     @FXML
     private void enregistrerOffre() {
         boolean isValid = true;
+        boolean isModified = false; // Indicateur pour savoir si une modification a eu lieu
 
         // Récupérer les nouvelles valeurs
         String nouveauTitre = titreField.getText().trim();
@@ -184,40 +185,49 @@ public class ModifierOffre {
 
         // Si tout est valide, on enregistre les modifications dans la base de données
         if (isValid) {
-            // Mise à jour de l'objet Offre
+            // Mise à jour de l'objet Offre seulement si les nouvelles valeurs sont différentes
             if (nouveauTitre != null && !nouveauTitre.equals(offreSelectionnee.getTitre())) {
                 offreSelectionnee.setTitre(nouveauTitre);
+                isModified = true; // Marquer comme modifié
             }
             if (nouvelleDescription != null && !nouvelleDescription.equals(offreSelectionnee.getDescription())) {
                 offreSelectionnee.setDescription(nouvelleDescription);
+                isModified = true; // Marquer comme modifié
             }
             if (datePublication != null && !datePublication.equals(offreSelectionnee.getDatePublication())) {
                 offreSelectionnee.setDatePublication(datePublication);
+                isModified = true; // Marquer comme modifié
             }
             if (dateExpiration != null && !dateExpiration.equals(offreSelectionnee.getDateExpiration())) {
                 offreSelectionnee.setDateExpiration(dateExpiration);
+                isModified = true; // Marquer comme modifié
             }
 
             // Mettre à jour le statut en fonction de la date d'expiration
-            if (dateExpiration.isBefore(LocalDateTime.now())) {
+            if (dateExpiration != null && dateExpiration.isBefore(LocalDateTime.now())) {
                 offreSelectionnee.setStatut("Expirée");
             } else {
                 offreSelectionnee.setStatut("Publiée");
             }
 
-            // Enregistrer les modifications dans la base de données
-            try {
-                ServiceOffre serviceOffre = new ServiceOffre();
-                serviceOffre.modifier(offreSelectionnee); // Utilisation de la méthode pour modifier
+            // Enregistrer les modifications dans la base de données si une modification a eu lieu
+            if (isModified) {
+                try {
+                    ServiceOffre serviceOffre = new ServiceOffre();
+                    serviceOffre.modifier(offreSelectionnee); // Utilisation de la méthode pour modifier
 
-                showAlert(Alert.AlertType.INFORMATION, "Succès", "Offre modifiée avec succès.");
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Offre modifiée avec succès.");
 
-                // Fermer la fenêtre après l'enregistrement
-                Stage stage = (Stage) titreField.getScene().getWindow();
-                stage.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de la modification de l'offre.");
+                    // Fermer la fenêtre après l'enregistrement
+                    Stage stage = (Stage) titreField.getScene().getWindow();
+                    stage.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de la modification de l'offre.");
+                }
+            } else {
+                // Si aucune modification n'a eu lieu
+                showAlert(Alert.AlertType.INFORMATION, "Aucune modification", "Aucune modification n'a été apportée à l'offre.");
             }
         }
     }

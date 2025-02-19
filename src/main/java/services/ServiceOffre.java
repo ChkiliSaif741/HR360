@@ -117,5 +117,15 @@ public class ServiceOffre implements IService<Offre> {
             ps.executeUpdate();
         }
     }
+    // Service ou méthode pour récupérer l'offre par son id
+    // Méthode pour récupérer une offre par son id (simulé ici)
+    public Offre getOffreById(int id_offre) {
+        // Vous pouvez remplacer ce code par une récupération réelle depuis la base de données
+        if (id_offre == 1) {
+            return new Offre("Développeur Java", "Description de l'offre", LocalDateTime.now(), LocalDateTime.now().plusDays(30));
+        }
+        // Retourner null si l'offre n'est pas trouvée
+        return null;
+    }
 
 }

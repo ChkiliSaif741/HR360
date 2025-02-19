@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Offre;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import entities.Candidature;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import services.ServiceCandidature;
+import services.ServiceOffre;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,40 +53,49 @@ public class ListeCondidaturesController {
                     if (empty || candidature == null) {
                         setText(null);
                     } else {
-                        // Create a VBox to display the data vertically
-                        javafx.scene.layout.VBox vBox = new javafx.scene.layout.VBox(5); // Spacing between elements
+                        // Créer une VBox pour afficher les informations de la candidature
+                        javafx.scene.layout.VBox vBox = new javafx.scene.layout.VBox(5);
 
-                        // Format the dates if they are present
-                        String dateEntretienFormatted = "Non défini";
+                        // Format des dates si présentes
+                        String dateCandidatureFormatted = "Non défini";
                         String dateModificationFormatted = "Non modifié";
 
-                        if (candidature.getDateEntretien() != null) {
+                        if (candidature.getDateCandidature() != null) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-                            dateEntretienFormatted = candidature.getDateEntretien().format(formatter);
+                            dateCandidatureFormatted = candidature.getDateCandidature().format(formatter);
                         }
                         if (candidature.getDateModification() != null) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
                             dateModificationFormatted = "Modifié à: " + candidature.getDateModification().format(formatter);
                         }
 
-                        // Extract the file names for the CV and Lettre
+                        // Extraire les noms de fichier pour le CV et la Lettre
                         String cvFileName = getFileName(candidature.getCv());
                         String lettreFileName = getFileName(candidature.getLettreMotivation());
 
-                        // Create labels for each piece of information with icons
+                        // Récupérer l'offre en fonction de l'id_offre de la candidature
+                        Offre offre = getOffreById(candidature.getId_offre());
+                        String titreOffre = (offre != null) ? offre.getTitre() : "Offre non trouvée";
+
+                        // Ajouter les informations à la VBox
                         vBox.getChildren().addAll(
+
+                                new javafx.scene.control.Label("Offre: " + titreOffre){{
+                                    getStyleClass().add("bold-label"); // Applique la classe CSS 'bold-label'
+                                }},
                                 createLabelWithIcon("Statut: ", candidature.getStatut(), "icon_statut.png"),
                                 createLabelWithIcon("CV: ", cvFileName, "icon_cv.png"),
                                 createLabelWithIcon("Lettre: ", lettreFileName, "icon_lettre.png"),
-                                createLabelWithIcon("Entretien: ", dateEntretienFormatted, "icon_entretien.png"),
+                                createLabelWithIcon("Date: ", dateCandidatureFormatted, "icon_entretien.png"),
                                 createLabelWithIcon("Description: ", (candidature.getDescription() != null ? candidature.getDescription() : "Non définie"), "icon_description.png"),
                                 new javafx.scene.control.Label(dateModificationFormatted)
                         );
 
-                        // Set the VBox as the content of the cell
+                        // Définir la VBox comme contenu de la cellule
                         setGraphic(vBox);
                     }
                 }
+
                 private String getFileName(String filePath) {
                     if (filePath != null && !filePath.isEmpty()) {
                         java.io.File file = new java.io.File(filePath);
@@ -103,6 +114,20 @@ public class ListeCondidaturesController {
             alert.setContentText("Une erreur est survenue lors du chargement des données.");
             alert.showAndWait();
         }
+    }
+    private Offre getOffreById(int id_offre) {
+        ServiceOffre serviceOffre = new ServiceOffre();
+        try {
+            List<Offre> offres = serviceOffre.afficher();
+            for (Offre offre : offres) {
+                if (offre.getId() == id_offre) {
+                    return offre;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if the offer is not found
     }
     private HBox createLabelWithIcon(String labelText, String valueText, String iconName) {
         HBox hBox = new HBox(5); // Spacing between icon and label

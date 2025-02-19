@@ -9,7 +9,7 @@
 <VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.ListeOffresFront"
-            prefHeight="400.0" prefWidth="600.0" stylesheets="@/Styles/style1.css">
+            prefHeight="600.0" prefWidth="1000.0" stylesheets="@/Styles/style5.css">
     <!-- ListView centrée -->
     <ListView fx:id="listViewOffres" prefHeight="400" prefWidth="600" styleClass="modernListView"/>
 </VBox>
