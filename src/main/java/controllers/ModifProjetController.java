@@ -46,8 +46,10 @@ public class ModifProjetController {
             alert.setTitle("Information");
             alert.setContentText("Projet a ete Mis a jour avec succes !");
             alert.show();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageProjet.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
             Parent parent=loader.load();
+            Controller controller = loader.getController();
+            controller.loadPage("/AffichageProjet.fxml");
             nomTF.getScene().setRoot(parent);
         } catch (SQLException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

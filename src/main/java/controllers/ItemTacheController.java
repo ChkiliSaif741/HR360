@@ -1,5 +1,6 @@
 package controllers;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import entities.Tache;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +28,9 @@ public class ItemTacheController {
     private VBox contentBox;
 
     @FXML
+    private VBox IconContainerStatus;
+
+    @FXML
     private Label dateDebut;
 
     @FXML
@@ -40,6 +44,9 @@ public class ItemTacheController {
 
     @FXML
     private Label statutTache;
+
+    @FXML
+    private FontAwesomeIcon IconStatus;
 
     @FXML
     private AnchorPane taskCard;
@@ -57,12 +64,18 @@ public class ItemTacheController {
         switch (tache.getStatut().getValue()) {
             case "En cours":
                 statutTache.getStyleClass().add("en-cours");
+                IconStatus.setGlyphName("SPINNER");
+                IconContainerStatus.getStyleClass().add("en-cours");
                 break;
             case "Terminée":
                 statutTache.getStyleClass().add("termine");
+                IconStatus.setGlyphName("CHECK");
+                IconContainerStatus.getStyleClass().add("termine");
                 break;
             case "A faire":
                 statutTache.getStyleClass().add("en-retard");
+                IconStatus.setGlyphName("TASKS");
+                IconContainerStatus.getStyleClass().add("en-retard");
                 break;
             default:
                 statutTache.getStyleClass().add("termine"); // Par défaut
@@ -73,7 +86,7 @@ public class ItemTacheController {
         ServiceTache serviceTache = new ServiceTache();
         try {
             serviceTache.supprimer(tache.getId());
-            parentController.loadTasks(); // Rafraîchir la vue après la suppression
+            parentController.loadTasks();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -81,10 +94,11 @@ public class ItemTacheController {
 
     @FXML
     void ModifTache(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifTache.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
         try {
             Parent parent = loader.load();
-            ModifTacheController ModifController = loader.getController();
+            Controller controller = loader.getController();
+            ModifTacheController ModifController = controller.loadPage("/ModifTache.fxml").getController();
             ModifController.setDateStart(tache.getDateDebut());
             ModifController.setDateEnd(tache.getDateFin());
             ModifController.setDescriptionTF(descriptionTache.getText());

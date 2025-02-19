@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifTacheController">
+<AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifTacheController">
     <children>
-      <HBox layoutX="603.0" layoutY="204.0" prefHeight="413.0" prefWidth="422.0">
+      <HBox layoutX="389.0" layoutY="148.0" prefHeight="413.0" prefWidth="422.0">
          <children>
             <VBox prefHeight="207.0" prefWidth="168.0" spacing="40.0">
                <children>
@@ -49,7 +49,7 @@
                     <TextField fx:id="descriptionTF" stylesheets="@stylesProjet.css" />
                   <DatePicker fx:id="dateStart" prefHeight="32.0" stylesheets="@stylesProjet.css" />
                   <DatePicker fx:id="dateEnd" prefHeight="32.0" stylesheets="@stylesProjet.css" />
-                  <ComboBox fx:id="StatutDD" prefHeight="26.0" prefWidth="278.0" />
+                  <ComboBox fx:id="StatutDD" prefHeight="26.0" prefWidth="278.0" promptText="A faire" />
                     <Button mnemonicParsing="false" onAction="#ModifTache" prefHeight="41.0" prefWidth="181.0" styleClass="button-44" stylesheets="@stylesProjet.css" text="Modifier Tache">
                      <font>
                         <Font size="19.0" />

@@ -53,11 +53,12 @@ public class AffichageTacheController implements Initializable {
     }
     @FXML
     void AjouterTache(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutTache.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
         try {
             Parent parent = loader.load();
-            AjoutTacheController controller = loader.getController();
-            controller.setIdProjet(idProjet);
+            Controller controller = loader.getController();
+            AjoutTacheController controller1 = controller.loadPage("/AjoutTache.fxml").getController();
+            controller1.setIdProjet(idProjet);
             contentBox.getScene().setRoot(parent);
         } catch (IOException e) {
             throw new RuntimeException(e);

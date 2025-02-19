@@ -60,10 +60,11 @@ public class ItemProjetController {
 
     @FXML
     void ModifProjet(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifProjet.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
         try {
             Parent parent = loader.load();
-            ModifProjetController ModifController = loader.getController();
+            Controller controller = loader.getController();
+            ModifProjetController ModifController = controller.loadPage("/ModifProjet.fxml").getController();
             ModifController.setDateStart(projet.getDateDebut());
             ModifController.setDateEnd(projet.getDateFin());
             ModifController.setDescriptionTF(descriptionProjet.getText());
@@ -87,10 +88,11 @@ public class ItemProjetController {
 
     @FXML
     private void handleCardClick(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageTache.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/sample.fxml"));
         try {
             Parent root = loader.load();
-            AffichageTacheController affichageTacheController = loader.getController();
+            Controller controller = loader.getController();
+            AffichageTacheController affichageTacheController = controller.loadPage("/AffichageTache.fxml").getController();
             affichageTacheController.setIdProjet(projet.getId());
             nomProjet.getScene().setRoot(root);
         } catch (IOException e) {

@@ -75,9 +75,11 @@ public class AffichageProjetController implements Initializable {
 
     @FXML
     void AjoutProjet(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutProjet.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
         try {
             Parent parent = loader.load();
+            Controller con=loader.getController();
+            con.loadPage("/AjoutProjet.fxml");
             scrollProjet.getScene().setRoot(parent);
         } catch (IOException e) {
             throw new RuntimeException(e);

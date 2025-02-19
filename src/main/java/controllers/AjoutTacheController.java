@@ -57,9 +57,10 @@ public class AjoutTacheController {
                 alert.setTitle("Information");
                 alert.setContentText("Tache a ete ajouté avec succes !");
                 alert.show();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageTache.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
                 Parent parent=loader.load();
-                AffichageTacheController controller = loader.getController();
+                Controller controller0 = loader.getController();
+                AffichageTacheController controller = controller0.loadPage("/AffichageTache.fxml").getController();
                 controller.setIdProjet(idProjet);
                 nomTF.getScene().setRoot(parent);
             } catch (SQLException | IOException e) {

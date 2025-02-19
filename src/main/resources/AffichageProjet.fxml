@@ -7,10 +7,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AffichageProjetController">
+<AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AffichageProjetController">
    <children>
       <HBox layoutX="309.6000061035156" layoutY="107.19999694824219" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="25.0">
          <children>
@@ -27,6 +26,9 @@
                            <padding>
                               <Insets top="20.0" />
                            </padding>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
       
                         </GridPane>
                      </children>
@@ -35,7 +37,7 @@
             </ScrollPane>
          </children>
       </HBox>
-       <Button fx:id="btnAdd" layoutX="310.0" layoutY="75.0" onAction="#AjoutProjet" styleClass="button-action" stylesheets="@stylesProjet.css">
+       <Button fx:id="btnAdd" layoutX="105.0" layoutY="49.0" onAction="#AjoutProjet" styleClass="button-action" stylesheets="@stylesProjet.css">
            <graphic>
                <Text style="-fx-font-family: 'FontAwesome'; -fx-font-size: 18;" text="+" />
            </graphic>

@@ -52,8 +52,10 @@ public class AjoutProjetController {
                     alert.setTitle("Information");
                     alert.setContentText("Projet a ete ajouté avec succes !");
                     alert.show();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageProjet.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
                     Parent parent=loader.load();
+                    Controller con=loader.getController();
+                    con.loadPage("/AffichageProjet.fxml");
                     nomTF.getScene().setRoot(parent);
                 } catch (SQLException | IOException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);

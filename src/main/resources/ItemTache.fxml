@@ -38,9 +38,14 @@
                           <Text fx:id="descriptionTache" styleClass="task-description" text="aaaaaa" />
                           <Label fx:id="statutTache" styleClass="task-status" stylesheets="@stylesProjet.css" text="sssss" />
                           <HBox spacing="10">
-                              <Label fx:id="dateDebut" styleClass="task-date" stylesheets="@stylesProjet.css" />
-                              <Label fx:id="dateFin" styleClass="task-date" stylesheets="@stylesProjet.css" />
+                              <Label fx:id="dateDebut" styleClass="task-date" stylesheets="@stylesProjet.css" text="date 1" />
+                              <Label fx:id="dateFin" styleClass="task-date" stylesheets="@stylesProjet.css" text="date 2" />
                           </HBox>
+               <VBox fx:id="IconContainerStatus" styleClass="task-status" stylesheets="@stylesProjet.css">
+                  <children>
+                     <FontAwesomeIcon fx:id="IconStatus" fill="WHITE" glyphName="CHECK" styleClass="task-status" />
+                  </children>
+               </VBox>
                       </VBox>
          </children>
       </HBox>
