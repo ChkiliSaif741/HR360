@@ -17,10 +17,10 @@ public class Main {
         ServiceEmploye serviceEmploye= new ServiceEmploye();
         ServiceCandidat serviceCandidat= new ServiceCandidat();
         ServiceFormation serviceFormation= new ServiceFormation();
-        Utilisateur u1= new Utilisateur("Farhani","Hamza","hamza.farhani@esprit.tn","Responsable RH");
-        Utilisateur u2 = new Utilisateur("Farhani","Yassine","yassine.farhani@esprit.tn","Employé");
-        Employe e1 = new Employe("Farhani","Hamza","hamza.farhani@esprit.tn","Développeur",3000);
-        Candidat c1 = new Candidat("Farhani","Yassine","yassine.farhani@esprit.tn","yassine_cv.pdf");
+        Utilisateur u1= new Utilisateur("Farhani","Hamza","hamza.farhani@esprit.tn","","Responsable RH");
+        Utilisateur u2 = new Utilisateur("Farhani","Yassine","yassine.farhani@esprit.tn","","Employé");
+        Employe e1 = new Employe("Farhani","Hamza","hamza.farhani@esprit.tn","","Développeur",3000);
+        Candidat c1 = new Candidat("Farhani","Yassine","yassine.farhani@esprit.tn","","yassine_cv.pdf");
         Formation f1= new Formation("Gestion du temps et Productivité",
                 "Apprenez à gérer votre temps de manière plus efficace" +
                 " pour améliorer la productivité et réduire le stress.",

@@ -6,24 +6,45 @@ public class Utilisateur {
     private String nom;
     private String prenom;
     private String email;
+    private String password;
     private String role;
+    private String imgSrc;
+
+    public String getImgSrc() {
+        return imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
+    }
 
     public Utilisateur() {
     }
 
-    public Utilisateur(int id, String nom, String prenom, String email, String role) {
+    public Utilisateur(int id, String nom, String prenom, String email, String password ,String role) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
+        this.password = password;
         this.role = role;
     }
 
-    public Utilisateur(String nom, String prenom, String email, String role) {
+    public Utilisateur(String nom, String prenom, String email, String password ,String role) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
+        this.password = password;
         this.role = role;
+    }
+
+    public Utilisateur(String prenom, String nom, String email, String password, String role, String imgSrc) {
+        this.prenom = prenom;
+        this.nom = nom;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.imgSrc = imgSrc;
     }
 
     public int getId() {
@@ -64,6 +85,14 @@ public class Utilisateur {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

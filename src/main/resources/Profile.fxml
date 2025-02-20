@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@StyleProfile.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProfileController">
+
+    <VBox alignment="CENTER" spacing="20" styleClass="formContainer" stylesheets="@StyleProfile.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <Label stylesheets="@StyleProfile.css" text="Profil Utilisateur" textFill="#333333">
+            <font><Font name="Cambria Bold" size="24.0" /></font>
+         <styleClass>
+            <String fx:value="label-title" />
+            <String fx:value="label-title" />
+         </styleClass>
+        </Label>
+
+        <TextField fx:id="nomField" prefWidth="300.0" promptText="Nom" styleClass="text-field" stylesheets="@StyleProfile.css" />
+        <TextField fx:id="prenomField" prefWidth="300.0" promptText="Prénom" styleClass="text-field" stylesheets="@StyleProfile.css" />
+        <TextField fx:id="emailField" prefWidth="300.0" promptText="Email" styleClass="text-field" stylesheets="@StyleProfile.css" />
+        <ImageView fx:id="photoProfil" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-picture" />
+        <Button fx:id="btnChangerPhoto" onAction="#changerPhoto" styleClass="Button" stylesheets="@StyleProfile.css" text="Changer Photo" />
+
+        <Button fx:id="btnEnregistrer" onAction="#enregistrerModifications" prefWidth="300.0" stylesheets="@StyleProfile.css" text="Enregistrer les modifications" />
+    </VBox>
+   <styleClass>
+      <String fx:value="AnchorPane" />
+      <String fx:value="formContainer" />
+   </styleClass>
+</AnchorPane>

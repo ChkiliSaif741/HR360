@@ -17,7 +17,7 @@ public class MyDatabase {
     private MyDatabase(){
         try {
             connection= DriverManager.getConnection(URL,USERNAME,PASSWORD);
-            System.out.println("Connexion établie");
+            System.out.println("Connexion etablie");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

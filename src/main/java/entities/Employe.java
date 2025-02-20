@@ -8,8 +8,8 @@ public class Employe extends Utilisateur{
     public Employe() {}
 
 
-    public Employe(String nom, String prenom, String email, String poste, float salaire) {
-        super(nom, prenom, email, "Employe");
+    public Employe(String nom, String prenom, String email, String password ,String poste, float salaire) {
+        super(nom, prenom, email, password ,"Employe");
         this.poste = poste;
         this.salaire = salaire;
     }

@@ -7,8 +7,8 @@ public class Candidat extends Utilisateur{
     public Candidat() {
     }
 
-    public Candidat(String nom, String prenom, String email, String cv) {
-        super(nom, prenom, email, "Candidat"); // Appelle le constructeur de Utilisateur
+    public Candidat(String nom, String prenom, String email, String password ,String cv) {
+        super(nom, prenom, email, password ,"Candidat"); // Appelle le constructeur de Utilisateur
         this.cv = cv;
     }
 
