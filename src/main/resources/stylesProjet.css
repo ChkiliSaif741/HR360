@@ -154,7 +154,7 @@
 
 /* Style du statut */
 .task-status {
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-text-fill: #ffffff;
     -fx-background-color: #4CAF50; /* Vert par défaut */

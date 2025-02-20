@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import services.ServiceProjet;
@@ -28,7 +29,7 @@ public class ItemTacheController {
     private VBox contentBox;
 
     @FXML
-    private VBox IconContainerStatus;
+    private HBox IconContainerStatus;
 
     @FXML
     private Label dateDebut;
@@ -50,6 +51,7 @@ public class ItemTacheController {
 
     @FXML
     private AnchorPane taskCard;
+
 
     private Tache tache;
 

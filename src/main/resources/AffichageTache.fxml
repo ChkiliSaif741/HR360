@@ -13,7 +13,7 @@
             <VBox fx:id="contentBox" prefHeight="387.0" prefWidth="750.0" spacing="10.0" />
          </content>
       </ScrollPane>
-      <Button fx:id="btnAdd" layoutX="291.0" layoutY="69.0" onAction="#AjouterTache" styleClass="button-action" stylesheets="@stylesProjet.css">
+      <Button fx:id="btnAdd" layoutX="126.0" layoutY="52.0" onAction="#AjouterTache" styleClass="button-action" stylesheets="@stylesProjet.css">
          <graphic>
             <Text style="-fx-font-family: 'FontAwesome'; -fx-font-size: 18;" text="+" />
          </graphic>
