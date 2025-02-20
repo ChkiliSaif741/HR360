@@ -1,11 +1,15 @@
 package entities;
 
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+
 import java.time.LocalDate;
 import java.util.Date;
 
 public class Evaluation {
     private int idEvaluation;
-    private float noteTechnique;
+        private float noteTechnique;
     private float noteSoftSkills;
     private String commentaire;
     private LocalDate dateEvaluation;
@@ -22,6 +26,17 @@ public class Evaluation {
         this.idEntretien = idEntretien;
         this.id = id;
     }
+    public Evaluation(int idEvaluation,float noteTechnique, float noteSoftSkills, String commentaire, LocalDate dateEvaluation, int idEntretien, int id ) {
+        this.idEvaluation = idEvaluation;
+        this.noteTechnique = noteTechnique;
+        this.noteSoftSkills = noteSoftSkills;
+        this.commentaire = commentaire;
+        this.dateEvaluation = dateEvaluation;
+        this.idEntretien = idEntretien;
+        this.id = id;
+    }
+
+
 
     public int getIdEvaluation() {
         return idEvaluation;

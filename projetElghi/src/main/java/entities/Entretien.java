@@ -1,10 +1,9 @@
 package entities;
 import utils.type;
 import utils.statut;
-import java.sql.Time;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 public class Entretien {
     private int idEntretien;

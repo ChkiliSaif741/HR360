@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="578.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutEntretien">
+    <children>
+        <VBox prefHeight="578.0" prefWidth="238.0" style="-fx-background-color: #ce3234;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Pane prefHeight="90.0" prefWidth="238.0">
+                    <children>
+                        <Label layoutX="85.0" layoutY="25.0" prefHeight="40.0" prefWidth="86.0" text="HR360">
+                            <font>
+                                <Font size="22.0" />
+                            </font>
+                        </Label>
+                        <ImageView fitHeight="54.0" fitWidth="54.0" layoutX="31.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../images/logo.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </Pane>
+                <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="250.0" style="-fx-background-color: #ce3234;" text="Dashboard" textFill="#efe8e8">
+
+                    <padding>
+                        <Insets left="50.0" />
+                    </padding>
+                </Button>
+                <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="250.0" style="-fx-background-color: #ce3234;" text="Entretien" textFill="#efe8e8">
+
+                    <padding>
+                        <Insets left="50.0" />
+                    </padding>
+                </Button>
+                <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="68.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="250.0" style="-fx-background-color: #ce3234;" text="Evaluation" textFill="#efe8e8">
+
+                    <padding>
+                        <Insets left="50.0" />
+                    </padding>
+                </Button>
+                <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="125.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="250.0" style="-fx-background-color: #ce3234;" text="Users" textFill="#efe8e8">
+
+                    <padding>
+                        <Insets left="50.0" />
+                    </padding>
+                </Button>
+                <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="183.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="250.0" style="-fx-background-color: #ce3234;" text="Ressources" textFill="#efe8e8">
+
+                    <padding>
+                        <Insets left="50.0" />
+                    </padding>
+                </Button>
+                <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="240.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="250.0" style="-fx-background-color: #ce3234;" text="Projets" textFill="#efe8e8">
+
+                    <padding>
+                        <Insets left="50.0" />
+                    </padding>
+                </Button>
+                <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="298.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="250.0" style="-fx-background-color: #ce3234;" text="Offres" textFill="#efe8e8">
+
+                    <padding>
+                        <Insets left="50.0" />
+                    </padding>
+                </Button>
+            </children>
+        </VBox>
+        <VBox layoutX="387.0" layoutY="96.0" prefHeight="452.0" prefWidth="446.0" spacing="5.0">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date" />
+                <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="460.0" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Heure" />
+                <TextField fx:id="heureField" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
+                <ComboBox fx:id="typeComboBox" prefHeight="26.0" prefWidth="449.0" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Statut" />
+                <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="455.0" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lien meet" />
+                <TextField fx:id="lienMeetField" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Localisation" />
+                <TextField fx:id="localisationField" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id candidature" />
+                <ComboBox fx:id="idCandidatureComboBox" prefHeight="26.0" prefWidth="459.0" />
+            <Button lineSpacing="10.0" mnemonicParsing="false" onAction="#AddEntretien" prefHeight="40.0" prefWidth="93.0" text="ADD">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            </children>
+        </VBox>
+        <Label layoutX="280.0" layoutY="23.0" prefHeight="40.0" prefWidth="170.0" text="Entretien" textFill="#77aad9">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

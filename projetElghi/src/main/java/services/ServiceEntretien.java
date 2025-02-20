@@ -1,15 +1,15 @@
 package services;
 
-import interfaces.IEntretien;
+import interfaces.IService;
 import entities.Entretien;
 import utils.MyDatabase;
 import utils.type;
-import utils.statut;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceEntretien implements IEntretien<Entretien> {
+public class ServiceEntretien implements IService<Entretien> {
 
     Connection connection;
     public ServiceEntretien(){
@@ -97,6 +97,20 @@ public class ServiceEntretien implements IEntretien<Entretien> {
             entretiens.add(entretien);
         }
         return entretiens;
+    }
+
+
+
+    public List<Integer> getIdsCandidature() throws SQLException {
+        List<Integer> ids = new ArrayList<>();
+        String req = "SELECT idCandidature FROM candidature"; // Remplacez "candidature" par le nom de votre table
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(req);
+
+        while (resultSet.next()) {
+            ids.add(resultSet.getInt("idCandidature"));
+        }
+        return ids;
     }
 
 }

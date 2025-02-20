@@ -25,21 +25,21 @@ public class Main {
         Entretien entretien = new Entretien(LocalDate.of(2000,9,4), LocalTime.of(5,40,27), type.En_ligne, statut.Planifié, "https://meet.google.com/test" ,null,1);
         Entretien entretien2 = new Entretien(LocalDate.of(2004,1,1), LocalTime.of(10,18,0), type.En_ligne, statut.Reporté, "https://meet.google.com/test" ,null,1);
 
-        Evaluation evaluation = new Evaluation(15.5f, 17.0f, "Bonne prestation", LocalDate.now(), 5, 1);
-        Evaluation evaluation2 = new Evaluation(17.5f, 10.0f, "bien", LocalDate.now(), 5, 1);
+        Evaluation evaluation = new Evaluation(15.5f, 17.0f, "Bonne prestation", LocalDate.now(), 7, 1);
+        Evaluation evaluation2 = new Evaluation(17.5f, 10.0f, "bien", LocalDate.now(), 8, 1);
 
         try {
-            serviceEntretien.ajouter(entretien2);
+            //serviceEntretien.ajouter(entretien2);
             //entretien2.setIdEntretien(5);
             //serviceEntretien.modifier(entretien2);
             //System.out.println(serviceEntretien.afficher());
             //serviceEntretien.supprimer(4);
 
-            //serviceEvaluation.ajouter(evaluation);
+            serviceEvaluation.ajouter(evaluation);
             //evaluation2.setIdEvaluation(10);
             //serviceEvaluation.modifier(evaluation2);
             //serviceEvaluation.supprimer(12);
-            System.out.println(serviceEvaluation.afficher());
+            System.out.println(serviceEntretien.afficher());
 
 
 
