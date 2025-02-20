@@ -30,22 +30,26 @@ public class ModifCandidatureBack {
     @FXML
     private void modifierCandidature() {
         if (candidatureSelectionnee != null) {
-            candidatureSelectionnee.setStatut(statutComboBox.getValue());
-            try {
-                // Appel du service pour modifier la candidature dans la base de données
-                ServiceCandidature serviceCandidature = new ServiceCandidature();
-                serviceCandidature.modifier(candidatureSelectionnee); // On utilise la méthode modifier
+            // Vérifier si le statut a changé
+            String nouveauStatut = statutComboBox.getValue();
+            if (!nouveauStatut.equals(candidatureSelectionnee.getStatut())) {
+                candidatureSelectionnee.setStatut(nouveauStatut);
+                try {
+                    // Appel du service pour modifier la candidature dans la base de données
+                    ServiceCandidature serviceCandidature = new ServiceCandidature();
+                    serviceCandidature.modifier(candidatureSelectionnee); // On utilise la méthode modifier
 
-                System.out.println("Modifications enregistrées pour : " + candidatureSelectionnee);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("Erreur lors de la modification dans la base de données.");
+                    System.out.println("Modifications enregistrées pour : " + candidatureSelectionnee);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.out.println("Erreur lors de la modification dans la base de données.");
+                }
+            } else {
+                // Aucun changement effectué, ne rien faire
+                System.out.println("Aucun changement effectué.");
             }
-            // Ajouter ici la logique de mise à jour en base de données
-            System.out.println("Candidature mise à jour: " + candidatureSelectionnee.getStatut());
         }
     }
-
     @FXML
     private void annuler() {
         statutComboBox.getScene().getWindow().hide();

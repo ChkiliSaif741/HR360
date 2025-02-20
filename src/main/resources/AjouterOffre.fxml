@@ -10,10 +10,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.AjouterOffre"
-      alignment="CENTER" spacing="15" styleClass="root" stylesheets="@/Styles/style1.css">
+      alignment="CENTER" spacing="15" styleClass="root" stylesheets="@/Styles/style1.css"
+      prefWidth="100" prefHeight="200">
+
+
+
 
     <!-- Image pour le titre -->
-    <ImageView fx:id="imageView" fitWidth="100" fitHeight="100" preserveRatio="true">
+    <ImageView fx:id="imageView" fitWidth="60" fitHeight="100" preserveRatio="true">
         <Image url="@/icons/offre.png" />
     </ImageView>
     <Label text="Ajouter une Offre" styleClass="header"/>

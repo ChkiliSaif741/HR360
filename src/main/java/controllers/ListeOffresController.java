@@ -28,7 +28,7 @@ public class ListeOffresController {
     private Button btnModifier, btnSupprimer;
 
     @FXML
-    private ImageView imageViewModifier, imageViewSupprimer;
+    private ImageView imageViewModifier, imageViewSupprimer ,imageViewAjouter;
     @FXML
     private ListView<Offre> listViewOffres;
 
@@ -43,6 +43,7 @@ public class ListeOffresController {
         // Appliquer l'effet aux icônes
         imageViewModifier.setEffect(colorAdjust);
         imageViewSupprimer.setEffect(colorAdjust);
+        imageViewAjouter.setEffect(colorAdjust);
         serviceOffre = new ServiceOffre();
 
         // Charger les offres depuis la base de données
@@ -107,6 +108,31 @@ public class ListeOffresController {
 
         return vbox;
     }
+    @FXML
+    private void ajouterOff() {
+        try {
+            // Charger la scène pour l'ajout d'une offre
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root=loader.load();
+            Controller controller = loader.getController();
+            controller.loadPage("/AjouterOffre.fxml");
+
+            listViewOffres.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors de l'ouverture de la fenêtre d'ajout.");
+        }
+    }
+    public void refreshListView() {
+        try {
+            List<Offre> offres = serviceOffre.afficher(); // Recharger les offres depuis la base de données
+            listViewOffres.getItems().setAll(offres); // Mettre à jour la ListView
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du chargement des offres : " + e.getMessage());
+        }
+    }
+
 
 
 

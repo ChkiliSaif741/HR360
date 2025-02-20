@@ -54,7 +54,7 @@
 
 /* Correct path to the image */
 .list-view {
-    -fx-background-image: url("/images/4782.jpg"); /* Note the leading '/' */
+    -fx-background-image: url("/Images/4782.jpg"); /* Note the leading '/' */
     -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-background-radius: 5px;

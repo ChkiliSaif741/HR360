@@ -30,6 +30,16 @@
     <!-- HBox pour les boutons, centrée -->
     <HBox alignment="CENTER" spacing="20">
         <!-- Bouton Modifier avec icône -->
+        <Button fx:id="btnAjouter" text="Ajouter" onAction="#ajouterOff" styleClass="modernButton">
+            <graphic>
+                <ImageView fx:id="imageViewAjouter">
+                    <Image url="@icons/add.png"/>
+                    <fitWidth>20</fitWidth>
+                    <fitHeight>20</fitHeight>
+                </ImageView>
+            </graphic>
+        </Button>
+        <!-- Bouton Modifier avec icône -->
         <Button fx:id="btnModifier" text="Modifier" onAction="#modifierOffre" styleClass="modernButton">
             <graphic>
                 <ImageView fx:id="imageViewModifier">

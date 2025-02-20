@@ -113,8 +113,6 @@ public class AjouterCondidature implements Initializable {
             lettreError.setText("");
         }
 
-
-
         // Si tout est valide, on enregistre la candidature
         if (isValid) {
             File uploadsDir = new File("uploads");
@@ -142,7 +140,8 @@ public class AjouterCondidature implements Initializable {
                         lettreDest.getAbsolutePath(), // Chemin de la lettre
                         idOffre,                            // ID de l'offre
                         descriptionField.getText(),   // Description (depuis le champ TextArea)
-                        LocalDateTime.now()           // Date de modification (initialisée à maintenant)
+                        LocalDateTime.now() ,
+                        1 // Date de modification (initialisée à maintenant)
                 );
 
                 // Enregistrement dans la base de données
@@ -153,26 +152,16 @@ public class AjouterCondidature implements Initializable {
                 }
                 showAlert(AlertType.INFORMATION, "Succès", "Candidature enregistrée avec succès.");
 
-                try {
-                    // Charger le fichier FXML
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeCondidatures.fxml"));
-                    Parent root = loader.load();
-
-                    // Obtenir la scène actuelle et la remplacer par la nouvelle scène
-                    Stage stage = (Stage) cvLabel.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                } catch (IOException e) {
-                    // Afficher l'erreur complète
-                    e.printStackTrace();
-                    showAlert(AlertType.ERROR, "Erreur de chargement", "Impossible de charger la vue ListeCondidatures.fxml : " + e.getMessage());
-                }
-
+                // Fermer l'interface actuelle (fenêtre de l'ajout)
+                Stage currentStage = (Stage) cvLabel.getScene().getWindow();
+                currentStage.close();
             } catch (IOException e) {
                 System.err.println("Erreur lors de la sauvegarde des fichiers : " + e.getMessage());
                 showAlert(AlertType.ERROR, "Erreur de fichier", "Une erreur est survenue lors de la sauvegarde des fichiers.");
             }
         }
     }
+
 
     @FXML
     private void annuler(ActionEvent event) {

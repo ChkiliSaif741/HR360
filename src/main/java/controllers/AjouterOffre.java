@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.Glow;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import entities.Offre;
@@ -92,7 +94,7 @@ public class AjouterOffre implements Initializable {
 
 
     // Cette méthode est appelée lors du clic sur un bouton
-    public void animateButton(javafx.scene.input.MouseEvent event) {
+    public void animateButton(MouseEvent event) {
         Node button = (Node) event.getSource();
 
         // Appliquer un effet "glow" (luminosité) au bouton
@@ -103,10 +105,10 @@ public class AjouterOffre implements Initializable {
         // Créer une animation de changement de couleur du bouton
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO,
-                        new javafx.animation.KeyValue(button.styleProperty(), "-fx-background-color: #FF9800;") // Couleur plus claire
+                        new KeyValue(button.styleProperty(), "-fx-background-color: #FF9800;") // Couleur plus claire
                 ),
                 new KeyFrame(Duration.seconds(0.2),
-                        new javafx.animation.KeyValue(button.styleProperty(), "-fx-background-color: #212121;") // Retour à la couleur d'origine
+                        new KeyValue(button.styleProperty(), "-fx-background-color: #212121;") // Retour à la couleur d'origine
                 )
         );
 
@@ -116,6 +118,8 @@ public class AjouterOffre implements Initializable {
 
         timeline.play(); // Joue l'animation
     }
+
+
 
     @FXML
     public void enregistrerOffre() {
@@ -186,18 +190,28 @@ public class AjouterOffre implements Initializable {
             try {
                 serviceOffre.ajouter(offre);
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Offre enregistrée avec succès.");
+                try {
+                    // Charger la scène pour l'ajout d'une offre
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+                    Parent root=loader.load();
+                    Controller controller = loader.getController();
+                    controller.loadPage("/ListeOffres.fxml");
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeOffres.fxml"));
-                Parent root = loader.load();
+                    titreField.getScene().setRoot(root);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR,"Erreur", "Erreur lors de l'ouverture de la fenêtre d'ajout.");
+                }
 
-                Stage stage = (Stage) titreField.getScene().getWindow();
-                stage.setScene(new Scene(root));
-            } catch (SQLException | IOException e) {
+
+            } catch (SQLException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de l'enregistrement de l'offre.");
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de l'ajout de l'offre.");
             }
+
         }
     }
+
 
     @FXML
     private void annuler() {
