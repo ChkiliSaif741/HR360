@@ -59,19 +59,21 @@ public class ItemEvaluation {
     @javafx.fxml.FXML
     public void modifierEva(Event event) throws IOException {
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierEvaluation.fxml"));
-        Parent parent = loader.load();
-        ModifierEvaluation controller = loader.getController();
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierEvaluation.fxml"));
+        Parent root = loader.load();
+        Controller controller = loader.getController();
+         ModifierEvaluation ModifEvaluation = controller.loadPage("/modifierEvaluation.fxml").getController();
         //controller.getIdEntretien(idEntretien);
         //controller.getIdEvaluation(idEvaluation);
-        controller.setIdEntretien(idEntretien);
-        controller.setEvaluationData(evaluation); // Passer l'objet Evaluation sélectionné
+        ModifEvaluation.setIdEntretien(idEntretien);
+        ModifEvaluation.setEvaluationData(evaluation); // Passer l'objet Evaluation sélectionné
 
         // Passer l'entretien sélectionné au contrôleur de ajoute
 
         //controller.setIdEntretien(idEntretien);
-        commentaire.getScene().setRoot(parent);
+        commentaire.getScene().setRoot(root);
 
 
 

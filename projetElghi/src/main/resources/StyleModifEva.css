@@ -1,0 +1,108 @@
+/* Style général pour le formulaire */
+AnchorPane {
+    -fx-background-color: #f4f4f4; /* Couleur de fond */
+}
+
+/* Style pour les labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333; /* Couleur du texte */
+    -fx-padding: 5px 0; /* Espacement */
+}
+
+
+
+/* Style pour les Text (titre des champs) */
+.text {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: #333333; /* Couleur du texte */
+    -fx-padding: 5px 0; /* Espacement */
+}
+
+/* Style pour les champs de texte (TextField) */
+.text-field {
+    -fx-font-size: 14px;
+    -fx-pref-height: 35px; /* Hauteur fixe */
+    -fx-pref-width: 450px; /* Largeur fixe */
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 5px;
+}
+
+.text-field:focused {
+    -fx-border-color: #77aad9; /* Bordure bleue au focus */
+    -fx-effect: dropshadow(three-pass-box, rgba(119, 170, 217, 0.5), 5, 0, 0, 0); /* Ombre au focus */
+}
+
+/* Style pour les DatePicker */
+.date-picker {
+    -fx-font-size: 14px;
+    -fx-pref-height: 35px; /* Hauteur fixe */
+    -fx-pref-width: 450px; /* Largeur fixe */
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.date-picker:focused {
+    -fx-border-color: #77aad9;
+    -fx-effect: dropshadow(three-pass-box, rgba(119, 170, 217, 0.5), 5, 0, 0, 0);
+}
+
+/* Style pour les ComboBox */
+.combo-box {
+    -fx-font-size: 14px;
+    -fx-pref-height: 35px; /* Hauteur fixe */
+    -fx-pref-width: 450px; /* Largeur fixe */
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.combo-box:focused {
+    -fx-border-color: #77aad9;
+    -fx-effect: dropshadow(three-pass-box, rgba(119, 170, 217, 0.5), 5, 0, 0, 0);
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333333;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #77aad9;
+    -fx-text-fill: #ffffff;
+}
+
+/* Style pour le bouton Modifier */
+#ModEvaluation {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* Texte blanc */
+    -fx-background-color: #77aad9; /* Fond bleu */
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand; /* Curseur en main au survol */
+}
+
+#ModEvaluation:hover {
+    -fx-background-color: #5c8db8; /* Fond bleu plus foncé au survol */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 0); /* Ombre au survol */
+}
+
+#ModEvaluation:pressed {
+    -fx-background-color: #4a7a9e; /* Fond bleu encore plus foncé au clic */
+}
+
+/* Style pour les messages d'erreur */
+.label-error {
+    -fx-text-fill: #ff0000; /* Texte rouge */
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+}

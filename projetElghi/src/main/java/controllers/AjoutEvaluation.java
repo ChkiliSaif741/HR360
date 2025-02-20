@@ -130,14 +130,21 @@ public class AjoutEvaluation {
             // Créer et ajouter l'évaluation
             Evaluation evaluation = new Evaluation(noteTech, noteSS, comment, dateEva, idEva, idE);
             serviceEvaluation.ajouter(evaluation);
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation ajoutée avec succès !");
+            //showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation ajoutée avec succès !");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root=loader.load();
+            Controller controller = loader.getController();
+            AfficheEvaluation AffEva = controller.loadPage("/afficheevaluation.fxml").getController();
+            AffEva.setIdEntretien(idEntretien);
+            commentaire.getScene().setRoot(root);
 
             // Redirection vers la page d'affichage
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheevaluation.fxml"));
+            /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheevaluation.fxml"));
             Parent parent = loader.load();
             AfficheEvaluation controller = loader.getController();
             controller.setIdEntretien(idEntretien);
-            commentaire.getScene().setRoot(parent);
+            commentaire.getScene().setRoot(parent);*/
 
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Erreur lors de l'ajout de l'évaluation : " + e.getMessage());

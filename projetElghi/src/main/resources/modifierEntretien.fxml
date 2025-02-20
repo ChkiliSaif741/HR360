@@ -8,36 +8,35 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierEntretien">
+<AnchorPane prefHeight="634.4" prefWidth="924.0" stylesheets="@StyleAjoutEnt.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierEntretien">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="930.0">
          <children>
-            <VBox layoutX="242.0" layoutY="108.0" prefHeight="418.0" prefWidth="446.0" spacing="5.0">
+            <VBox layoutX="260.0" layoutY="29.0" prefHeight="585.0" prefWidth="399.0" spacing="5.0" stylesheets="@StyleModifEnt.css">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date" />
-                  <DatePicker fx:id="datePickerMod" prefHeight="26.0" prefWidth="460.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Heure" />
-                  <TextField fx:id="heureFieldMod" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
-                  <ComboBox fx:id="typeComboBoxMod" prefHeight="26.0" prefWidth="449.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Statut" />
-                  <ComboBox fx:id="statutComboBoxMod" prefHeight="26.0" prefWidth="455.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lien meet" />
+                  <Label fx:id="datePickerLabel" text="Date" />
+                  <DatePicker fx:id="datePickerMod" prefHeight="46.0" prefWidth="451.0" />
+                  <Label fx:id="heureFieldLabel" text="Heure" />
+                  <TextField fx:id="heureFieldMod" prefHeight="33.0" prefWidth="370.0" />
+                  <Label fx:id="typeComboBoxLabel" text="Type" />
+                  <ComboBox fx:id="typeComboBoxMod" prefHeight="42.0" prefWidth="456.0" />
+                  <Label fx:id="statutComboBoxLabel" text="Statut" />
+                  <ComboBox fx:id="statutComboBoxMod" prefHeight="42.0" prefWidth="446.0" />
+                  <Label fx:id="lienMeetFieldLabel" text="Lien meet" />
                   <TextField fx:id="lienMeetFieldMod" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Localisation" />
+                  <Label fx:id="localisationFieldLabel" text="Localisation" />
                   <TextField fx:id="localisationFieldMod" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id candidature" />
-                  <ComboBox fx:id="idCandidatureComboBoxMod" prefHeight="26.0" prefWidth="459.0" />
-                  <Button lineSpacing="10.0" mnemonicParsing="false" onAction="#ModifierEntretien" prefHeight="40.0" prefWidth="93.0" text="MODIFIER">
+                  <Label fx:id="idCandidatureComboBoxLabel" text="Id candidature" />
+                  <ComboBox fx:id="idCandidatureComboBoxMod" prefHeight="40.0" prefWidth="350.0" />
+                  <Button fx:id="btnMod" lineSpacing="10.0" mnemonicParsing="false" onAction="#ModifierEntretien" prefHeight="41.0" prefWidth="146.0" text="MODIFIER">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
                </children>
             </VBox>
-            <Label layoutX="280.0" layoutY="23.0" prefHeight="40.0" prefWidth="170.0" text="Entretien" textFill="#77aad9">
+            <Label layoutX="90.0" layoutY="29.0" prefHeight="40.0" prefWidth="170.0" text="Entretien" textFill="#77aad9">
                <font>
                   <Font size="36.0" />
                </font>

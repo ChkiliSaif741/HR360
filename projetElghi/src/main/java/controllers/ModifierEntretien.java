@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Entretien;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 public class ModifierEntretien {
 
@@ -36,6 +38,27 @@ public class ModifierEntretien {
 
     private Entretien entretien;
 
+    ServiceEntretien serviceEntretien;
+    @FXML
+    private Label datePickerLabel;
+    @FXML
+    private Label lienMeetFieldLabel;
+    @FXML
+    private Label localisationFieldLabel;
+    @FXML
+    private Label typeComboBoxLabel;
+    @FXML
+    private Label statutComboBoxLabel;
+    @FXML
+    private Label idCandidatureComboBoxLabel;
+    @FXML
+    private Label heureFieldLabel;
+    @FXML
+    private Button btnMod;
+
+    private boolean formSubmittedMod = false;
+
+
     public void setEntretien(Entretien entretien) {
         this.entretien = entretien;
         datePickerMod.setValue(entretien.getDate());
@@ -49,6 +72,8 @@ public class ModifierEntretien {
 
     @FXML
     public void initialize() {
+        serviceEntretien = new ServiceEntretien();
+
         typeComboBoxMod.getItems().setAll(type.values());
         statutComboBoxMod.getItems().setAll(statut.values());
         try {
@@ -56,11 +81,126 @@ public class ModifierEntretien {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+
+        // Remplir les ComboBox avec les valeurs des énumérations
+        //typeComboBoxMod.setItems(FXCollections.observableArrayList(type.values()));
+        //statutComboBoxMod.setItems(FXCollections.observableArrayList(statut.values()));
+        typeComboBoxMod.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == type.En_ligne) {
+                lienMeetFieldMod.setVisible(true);
+                localisationFieldMod.setVisible(false);
+                lienMeetFieldLabel.setVisible(true);
+                localisationFieldLabel.setVisible(false);
+            } else {
+                lienMeetFieldMod.setVisible(false);
+                localisationFieldMod.setVisible(true);
+                localisationFieldLabel.setVisible(true);
+                lienMeetFieldLabel.setVisible(false);
+
+            }
+        });
+
+        lienMeetFieldMod.setVisible(false);
+        localisationFieldMod.setVisible(false);
+        localisationFieldLabel.setVisible(false);
+        lienMeetFieldLabel.setVisible(false);
+
+        //validateNumericField(idCandidatureComboBox.getEditor());
+
     }
+
+
+
+
+    private void validateNumericField(TextField field) {
+        field.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                field.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+    }
+
+    private void validateTextOnlyField(TextField field) {
+        field.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("^[a-zA-Z\\s]*$")) {
+                field.setText(newValue.replaceAll("[^a-zA-Z\\s]", ""));
+            }
+        });
+    }
+
+    private void validateURLField(TextField field) {
+        field.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!isValidURL(newValue)) {
+                field.setText("Lien Meet invalide !");
+            } else {
+                field.setText("");
+            }
+        });
+    }
+
+    private boolean isValidURL(String url) {
+        return url.matches("^(https?://)?(www\\.)?meet\\.google\\.com/[a-zA-Z0-9-]+$");
+    }
+
+
 
     @FXML
     public void ModifierEntretien(ActionEvent actionEvent) {
         try {
+            //
+
+            // Vérifier que tous les champs obligatoires sont remplis
+            if (datePickerMod.getValue() == null || !datePickerMod.getValue().isAfter(LocalDate.now())) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "La date est obligatoire !");
+                datePickerLabel.setText("Sélectionnez une date future !");
+                return;
+            }
+
+            LocalTime heure;
+            try {
+                heure = LocalTime.parse(heureFieldMod.getText());
+                if (heure.isBefore(LocalTime.of(8, 0)) || heure.isAfter(LocalTime.of(18, 0))) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "L'heure doit être entre 8h et 18h !");
+                    return;
+                }
+            } catch (DateTimeParseException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Format d'heure invalide (HH:mm) !");
+                return;
+            }
+
+            if (typeComboBoxMod.getValue() == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le type est obligatoire !");
+                return;
+            }
+
+            if (statutComboBoxMod.getValue() == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le statut est obligatoire !");
+                return;
+            }
+
+            if (typeComboBoxMod.getValue() == type.Presentiel) {
+                if (localisationFieldMod.getText().isEmpty() || !localisationFieldMod.getText().matches("^[a-zA-Z\\s]+$")) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Localisation invalide (lettres et espaces uniquement) !");
+                    return;
+                }
+            }
+
+            if (typeComboBoxMod.getValue() == type.En_ligne) {
+                if (lienMeetFieldMod.getText().isEmpty() || !isValidURL(lienMeetFieldMod.getText())) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Lien Meet invalide !");
+                    return;
+                }
+            }
+
+            if (idCandidatureComboBoxMod.getValue() == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "L'ID Candidature est obligatoire !");
+                return;
+            }
+
+
+
             // Mettre à jour les informations de l'entretien
             entretien.setDate(datePickerMod.getValue());
             entretien.setHeure(LocalTime.parse(heureFieldMod.getText()));
@@ -70,18 +210,27 @@ public class ModifierEntretien {
             entretien.setLocalisation(localisationFieldMod.getText());
             entretien.setIdCandidature(idCandidatureComboBoxMod.getValue());
 
-
-
             // Enregistrer les modifications dans la base de données
             ServiceEntretien serviceEntretien = new ServiceEntretien();
             serviceEntretien.modifier(entretien);
-
-            // Fermer la fenêtre de modification
-            Stage currentStage = (Stage) datePickerMod.getScene().getWindow();
-            currentStage.close();
-
             // Ouvrir la fenêtre afficheEntretien.fxml
             ouvrirAfficheEntretien();
+
+            // Contrôle de saisie
+           /* if (datePickerMod == null || heureFieldMod == null || typeComboBoxMod == null || statutComboBoxMod == null || lienMeetFieldMod == null || localisationFieldMod == null || idCandidatureComboBoxMod == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Tous les champs obligatoires doivent être remplis.");
+                return;
+            }*/
+
+
+
+
+
+            // Fermer la fenêtre de modification
+            //Stage currentStage = (Stage) datePickerMod.getScene().getWindow();
+            //currentStage.close();
+
+
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -89,11 +238,15 @@ public class ModifierEntretien {
 
     private void ouvrirAfficheEntretien() throws IOException {
         // Charger le fichier FXML de la fenêtre afficheEntretien.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheEntretien.fxml"));
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheEntretien.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         Parent root = loader.load();
+        Controller controller = loader.getController();
+        controller.loadPage("/afficheentretien.fxml");
+        statutComboBoxMod.getScene().setRoot(root);
 
         // Créer une nouvelle scène
-        Scene scene = new Scene(root);
+        /*Scene scene = new Scene(root);
 
         // Créer une nouvelle fenêtre (Stage)
         Stage stage = new Stage();
@@ -101,7 +254,7 @@ public class ModifierEntretien {
         stage.setTitle("Liste des entretiens");
 
         // Afficher la fenêtre
-        stage.show();
+        stage.show();*/
     }
 
     // Méthode pour afficher des alertes
@@ -112,4 +265,5 @@ public class ModifierEntretien {
         alert.setContentText(message);
         alert.show();
     }
+
 }

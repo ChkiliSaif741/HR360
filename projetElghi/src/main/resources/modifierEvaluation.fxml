@@ -8,30 +8,29 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierEvaluation">
+<AnchorPane prefHeight="634.4" prefWidth="924.0" stylesheets="@StyleModifEva.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierEvaluation">
    <children>
       <AnchorPane layoutX="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="929.0">
          <children>
-            <Label layoutX="280.0" layoutY="23.0" prefHeight="40.0" prefWidth="170.0" text="Evaluation" textFill="#77aad9">
+            <Label layoutX="77.0" layoutY="60.0" prefHeight="40.0" prefWidth="170.0" text="Evaluation" textFill="#77aad9">
                <font>
                   <Font size="36.0" />
                </font>
             </Label>
-            <VBox layoutX="300.0" layoutY="109.0" prefHeight="368.0" prefWidth="371.0" spacing="5.0">
+            <VBox layoutX="274.0" layoutY="119.0" prefHeight="458.0" prefWidth="454.0" spacing="5.0" stylesheets="@StyleModifEva.css">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Note Technique" />
+                  <Label text="Note Technique" />
                   <TextField fx:id="noteTechniqueMod" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Note SoftSkills" />
+                  <Label text="Note SoftSkills" />
                   <TextField fx:id="noteSoftSkillsMod" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Commentaire" />
+                  <Label text="Commentaire" />
                   <TextField fx:id="commentaireMod" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date Evaluation" />
-                  <DatePicker fx:id="dateEvaluationMod" prefHeight="26.0" prefWidth="458.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id Evaluateur" />
-                  <ComboBox fx:id="idMod" prefHeight="26.0" prefWidth="459.0" />
-                  <Button fx:id="ModEvaluation" lineSpacing="10.0" mnemonicParsing="false" onAction="#ModifierEvaluation" prefHeight="40.0" prefWidth="93.0" text="MODIFIER" translateY="10.0">
+                  <Label text="Date Evaluation" />
+                  <DatePicker fx:id="dateEvaluationMod" prefHeight="46.0" prefWidth="477.0" />
+                  <Label text="Id Evaluateur" />
+                  <ComboBox fx:id="idMod" prefHeight="42.0" prefWidth="485.0" />
+                  <Button fx:id="ModEvaluation" lineSpacing="10.0" mnemonicParsing="false" onAction="#ModifierEvaluation" prefHeight="41.0" prefWidth="125.0" text="MODIFIER" translateY="10.0">
                      <font>
                         <Font size="14.0" />
                      </font>

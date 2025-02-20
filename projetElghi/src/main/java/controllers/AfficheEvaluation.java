@@ -119,9 +119,18 @@ public class AfficheEvaluation implements Initializable {
 
     @FXML
     void addEvaluation(MouseEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+
         try {
+
+
+            Parent parent = loader.load();
+            Controller controller = loader.getController();
+            AjoutEvaluation ajoutEva = controller.loadPage("/ajoutEvaluation.fxml").getController();
+            ajoutEva.setIdEntretien(idEntretien);
+            gridEva.getScene().setRoot(parent);
             // Fermer la fenêtre actuelle
-            Stage currentStage = (Stage) gridEva.getScene().getWindow();
+            /*Stage currentStage = (Stage) gridEva.getScene().getWindow();
             currentStage.close();
 
             // Charger la fenêtre d'ajout (ajoutEvaluation.fxml)
@@ -141,7 +150,7 @@ public class AfficheEvaluation implements Initializable {
             stage.setTitle("Ajouter un Evaluation");
 
             // Afficher la fenêtre
-            stage.show();
+            stage.show();*/
         } catch (IOException e) {
             e.printStackTrace();
         }

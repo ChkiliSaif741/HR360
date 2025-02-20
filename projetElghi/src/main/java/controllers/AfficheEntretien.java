@@ -19,6 +19,7 @@ import services.ServiceEntretien;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -142,23 +143,30 @@ public class AfficheEntretien implements Initializable {
         System.out.println(entretien);
 
         // Fermer la fenêtre actuelle
-        Stage currentStage = (Stage) gridPane.getScene().getWindow();
-        currentStage.close();
+        /*Stage currentStage = (Stage) gridPane.getScene().getWindow();
+        currentStage.close();*/
 
         // Charger la fenêtre de modification (modifierEntretien.fxml)
         System.out.println(entretien.getIdEntretien());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheevaluation.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheevaluation.fxml"));
         Parent root = null;
         try {
 
             root = loader.load();
+            Controller controller = loader.getController();
+            AfficheEvaluation affichageEvaluController = controller.loadPage("/afficheevaluation.fxml").getController();
+            affichageEvaluController.setIdEntretien(entretien.getIdEntretien());
+            scrollPane.getScene().setRoot(root);
+
             // Passer l'entretien sélectionné au contrôleur de modification
-            AfficheEvaluation affichageEva =loader.getController();
+            /*AfficheEvaluation affichageEva =loader.getController();
             System.out.println(entretien.getIdEntretien());
-            affichageEva.setIdEntretien(entretien.getIdEntretien());
+            affichageEva.setIdEntretien(entretien.getIdEntretien());*/
 
             // Créer une nouvelle scène
-            Scene scene = new Scene(root);
+            /*Scene scene = new Scene(root);
 
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
@@ -166,7 +174,7 @@ public class AfficheEntretien implements Initializable {
             stage.setTitle("Modifier un entretien");
 
             // Afficher la fenêtre
-            stage.show();
+            stage.show();*/
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -227,25 +235,30 @@ public class AfficheEntretien implements Initializable {
 
     // Méthode pour ouvrir la fenêtre de modification
     public void UpdateEntretien(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+
         try {
             // Récupérer l'objet Entretien à partir du bouton
             Button clickedButton = (Button) actionEvent.getSource();
             Entretien entretien = (Entretien) clickedButton.getUserData();
-            System.out.println(entretien.getIdEntretien());
+            //System.out.println(entretien.getIdEntretien());
             // Fermer la fenêtre actuelle
-            Stage currentStage = (Stage) gridPane.getScene().getWindow();
-            currentStage.close();
+            /*Stage currentStage = (Stage) gridPane.getScene().getWindow();
+            currentStage.close();*/
 
             // Charger la fenêtre de modification (modifierEntretien.fxml)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/modifierEntretien.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/modifierEntretien.fxml"));
             Parent root = loader.load();
 
             // Passer l'entretien sélectionné au contrôleur de modification
-            ModifierEntretien controller = loader.getController();
-            controller.setEntretien(entretien);
+            Controller controller = loader.getController();
+            ModifierEntretien Modifentretien = controller.loadPage("/modifierEntretien.fxml").getController();
+
+            Modifentretien.setEntretien(entretien);
+            scrollPane.getScene().setRoot(root);
 
             // Créer une nouvelle scène
-            Scene scene = new Scene(root);
+            /*Scene scene = new Scene(root);
 
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
@@ -253,7 +266,7 @@ public class AfficheEntretien implements Initializable {
             stage.setTitle("Modifier un entretien");
 
             // Afficher la fenêtre
-            stage.show();
+            stage.show();*/
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre de modification.");
@@ -262,25 +275,35 @@ public class AfficheEntretien implements Initializable {
 
     @FXML
     public void AddE(ActionEvent actionEvent) {
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+
         try {
+
+
             // Fermer la fenêtre actuelle
-            Stage currentStage = (Stage) gridPane.getScene().getWindow();
-            currentStage.close();
+            //Stage currentStage = (Stage) gridPane.getScene().getWindow();
+            //currentStage.close();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
 
             // Charger la fenêtre d'ajout (ajoutEntretien.fxml)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ajoutEntretien.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/ajoutEntretien.fxml"));
             Parent root = loader.load();
 
+            Controller con=loader.getController();
+            con.loadPage("/ajoutEntretien.fxml");
+            scrollPane.getScene().setRoot(root);
+
             // Créer une nouvelle scène
-            Scene scene = new Scene(root);
+            //Scene scene = new Scene(root);
 
             // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Ajouter un entretien");
+            //Stage stage = new Stage();
+            //stage.setScene(scene);
+            //stage.setTitle("Ajouter un entretien");
 
             // Afficher la fenêtre
-            stage.show();
+            //stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre d'ajout.");

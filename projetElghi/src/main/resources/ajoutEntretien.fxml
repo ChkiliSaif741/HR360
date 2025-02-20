@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutEntretien">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" stylesheets="@StyleAjoutEnt.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutEntretien">
     <children>
-        <VBox layoutX="238.0" layoutY="109.0" prefHeight="452.0" prefWidth="446.0" spacing="5.0">
+        <VBox layoutX="262.0" layoutY="24.0" prefHeight="558.0" prefWidth="400.0" spacing="5.0">
             <children>
             <Label fx:id="labeldate" text="Date" />
                 <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="460.0" />
             <Label fx:id="labelheure" text="Heure" />
                 <TextField fx:id="heureField" />
             <Label fx:id="labeltype" text="Type" />
-                <ComboBox fx:id="typeComboBox" prefHeight="26.0" prefWidth="449.0" />
+                <ComboBox fx:id="typeComboBox" prefHeight="42.0" prefWidth="407.0" stylesheets="@StyleAjoutEnt.css" />
             <Label fx:id="labelstatut" text="Statut" />
                 <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="455.0" />
             <Label fx:id="labellienmeet" text="Lien meet" />
@@ -34,7 +34,7 @@
             </Button>
             </children>
         </VBox>
-        <Label layoutX="280.0" layoutY="23.0" prefHeight="40.0" prefWidth="170.0" text="Entretien" textFill="#77aad9">
+        <Label layoutX="75.0" layoutY="14.0" prefHeight="40.0" prefWidth="170.0" text="Entretien" textFill="#77aad9">
             <font>
                 <Font size="36.0" />
             </font>

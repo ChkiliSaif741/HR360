@@ -153,14 +153,14 @@ public class AjoutEntretien implements Initializable {
         }
 
         // Contrôle du lien Meet
-        if (typeComboBox.getValue() == type.En_ligne) {
+        /*if (typeComboBox.getValue() == type.En_ligne) {
             if (lienMeetField.getText().isEmpty() || !isValidURL(lienMeetField.getText())) {
                 labellienmeet.setText("Lien Meet invalide !");
                 isValid = false;
             } else {
                 labellienmeet.setText("");
             }
-        }
+        }*/
 
         // Contrôle de l'ID Candidature
         if (idCandidatureComboBox.getValue() == null) {
@@ -193,7 +193,7 @@ public class AjoutEntretien implements Initializable {
         });
     }
 
-    /*private void validateTextOnlyField(TextField field) {
+    private void validateTextOnlyField(TextField field) {
         field.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("^[a-zA-Z\\s]*$")) {
                 field.setText(newValue.replaceAll("[^a-zA-Z\\s]", ""));
@@ -201,7 +201,7 @@ public class AjoutEntretien implements Initializable {
         });
     }
 
-    private void validateURLField(TextField field) {
+    /*private void validateURLField(TextField field) {
         field.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!isValidURL(newValue)) {
                 field.setText("Lien Meet invalide !");
@@ -209,11 +209,11 @@ public class AjoutEntretien implements Initializable {
                 field.setText("");
             }
         });
-    }*/
+    }
 
     private boolean isValidURL(String url) {
         return url.matches("^(https?://)?(www\\.)?meet\\.google\\.com/[a-zA-Z0-9-]+$");
-    }
+    }*/
 
     // Méthode pour charger les idCandidature dans la ComboBox
     private void chargerIdCandidature() {
@@ -274,28 +274,36 @@ public class AjoutEntretien implements Initializable {
             // Réinitialiser les champs après l'ajout
             reinitialiserChamps();
 
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+
+
 
             // Fermer la fenêtre actuelle et ouvrir la fenêtre d'affichage
             Stage currentStage = (Stage) datePicker.getScene().getWindow();
 
             try {
-                // Charger le fichier FXML de la fenêtre d'affichage
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheentretien.fxml"));
-                Parent root = loader.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
 
+
+                // Charger le fichier FXML de la fenêtre d'affichage
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheentretien.fxml"));
+                Parent root = loader.load();
+                Controller con=loader.getController();
+                con.loadPage("/afficheentretien.fxml");
+                statutComboBox.getScene().setRoot(root);
                 // Créer une nouvelle scène
-                Scene scene = new Scene(root);
+                //Scene scene = new Scene(root);
 
                 // Créer une nouvelle fenêtre (Stage)
-                Stage newStage = new Stage(); // Utiliser un nom différent pour éviter le conflit
-                newStage.setScene(scene);
-                newStage.setTitle("Affichage des entretiens");
+                //Stage newStage = new Stage(); // Utiliser un nom différent pour éviter le conflit
+                //newStage.setScene(scene);
+                //newStage.setTitle("Affichage des entretiens");
 
                 // Afficher la fenêtre
-                newStage.show();
+                //newStage.show();
 
                 // Fermer la fenêtre actuelle
-                currentStage.close();
+                //currentStage.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre d'affichage.");

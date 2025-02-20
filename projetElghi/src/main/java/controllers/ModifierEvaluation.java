@@ -96,15 +96,20 @@ public class ModifierEvaluation implements Initializable {
             // Modifier l'évaluation dans la base de données
             serviceEvaluation.modifier(evaluation);
 
+
             // Afficher un message de succès
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation modifiée avec succès !");
-
-            // Rediriger vers l'affichage des évaluations
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheevaluation.fxml"));
-            Parent parent = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root=loader.load();
+            Controller controller0 = loader.getController();
+            AfficheEvaluation controller = controller0.loadPage("/afficheevaluation.fxml").getController();
+            controller.setIdEntretien(idEntretien);
+            commentaireMod.getScene().setRoot(root);            // Rediriger vers l'affichage des évaluations
+            /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheevaluation.fxml"));
+            Parent root = loader.load();
             AfficheEvaluation controller = loader.getController();
             controller.setIdEntretien(idEntretien); // Transmettre l'idEntretien à AfficheEvaluation
-            commentaireMod.getScene().setRoot(parent);
+            commentaireMod.getScene().setRoot(root);*/
 
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Les notes doivent être des nombres valides !");
