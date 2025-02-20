@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -19,7 +18,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class AffichageProjetController implements Initializable {
 
@@ -75,7 +73,7 @@ public class AffichageProjetController implements Initializable {
 
     @FXML
     void AjoutProjet(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
         try {
             Parent parent = loader.load();
             Controller con=loader.getController();

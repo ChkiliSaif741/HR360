@@ -53,7 +53,7 @@ public class AffichageTacheController implements Initializable {
     }
     @FXML
     void AjouterTache(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
         try {
             Parent parent = loader.load();
             Controller controller = loader.getController();

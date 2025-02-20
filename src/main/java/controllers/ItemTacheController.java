@@ -11,7 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import services.ServiceProjet;
 import services.ServiceTache;
 
 import java.io.IOException;
@@ -96,7 +95,7 @@ public class ItemTacheController {
 
     @FXML
     void ModifTache(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
         try {
             Parent parent = loader.load();
             Controller controller = loader.getController();

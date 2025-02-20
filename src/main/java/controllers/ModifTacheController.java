@@ -1,6 +1,5 @@
 package controllers;
 
-import entities.Projet;
 import entities.Tache;
 import entities.TacheStatus;
 import javafx.collections.FXCollections;
@@ -12,7 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import services.ServiceProjet;
 import services.ServiceTache;
 
 import java.io.IOException;
@@ -53,7 +51,7 @@ public class ModifTacheController {
             alert.setTitle("Information");
             alert.setContentText("Tache a ete Mis a jour avec succes !");
             alert.show();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
             Parent parent=loader.load();
             Controller controller0 = loader.getController();
             AffichageTacheController controller = controller0.loadPage("/AffichageTache.fxml").getController();

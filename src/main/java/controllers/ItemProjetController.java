@@ -5,14 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import services.ServiceProjet;
 
 import java.io.IOException;
@@ -60,7 +56,7 @@ public class ItemProjetController {
 
     @FXML
     void ModifProjet(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
         try {
             Parent parent = loader.load();
             Controller controller = loader.getController();
@@ -88,7 +84,7 @@ public class ItemProjetController {
 
     @FXML
     private void handleCardClick(MouseEvent event) {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("/sample.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
         try {
             Parent root = loader.load();
             Controller controller = loader.getController();
