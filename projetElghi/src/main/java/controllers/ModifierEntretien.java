@@ -70,6 +70,8 @@ public class ModifierEntretien {
             entretien.setLocalisation(localisationFieldMod.getText());
             entretien.setIdCandidature(idCandidatureComboBoxMod.getValue());
 
+
+
             // Enregistrer les modifications dans la base de données
             ServiceEntretien serviceEntretien = new ServiceEntretien();
             serviceEntretien.modifier(entretien);
@@ -100,5 +102,14 @@ public class ModifierEntretien {
 
         // Afficher la fenêtre
         stage.show();
+    }
+
+    // Méthode pour afficher des alertes
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
     }
 }

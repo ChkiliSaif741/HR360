@@ -23,7 +23,7 @@
 }
 
 /* Style commun aux boutons */
-.delete-button, .update-button {
+.delete-button, .update-button ,.evaluation-button{
     -fx-text-fill: white;
     -fx-border-color: black;
     -fx-border-width: 2;
@@ -110,4 +110,21 @@
 /* Effet au clic */
 .add-button:pressed {
     -fx-background-color: #388E3C;
+}
+
+
+/* Style pour le bouton Delete */
+.evaluation-button {
+    -fx-background-color: #FFD700;
+}
+
+/* Effet au survol */
+.evaluation-button:hover {
+    -fx-background-color: #FFC400;
+    -fx-cursor: hand; /* 🖱️ Change le curseur */
+}
+
+/* Effet au clic */
+.evaluation-button:pressed {
+    -fx-background-color: #8B0000; /* Rouge plus foncé */
 }

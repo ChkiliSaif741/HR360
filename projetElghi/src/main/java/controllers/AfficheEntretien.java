@@ -51,7 +51,7 @@ public class AfficheEntretien implements Initializable {
         gridPane.getColumnConstraints().clear();
         for (int i = 0; i < 9; i++) {
             ColumnConstraints col = new ColumnConstraints();
-            col.setPercentWidth(100.0 / 8);
+            col.setPercentWidth(100.0 / 9);
             gridPane.getColumnConstraints().add(col);
         }
 
@@ -115,6 +115,7 @@ public class AfficheEntretien implements Initializable {
 
                 // Bouton Update
                 Button evaluationButton = new Button("Evaluation");
+                evaluationButton.getStyleClass().add("evaluation-button");
                 ActionEvent Event =new ActionEvent();
                 evaluationButton.setUserData(entretien);
                 evaluationButton.setOnAction(this::EntretienEva);
