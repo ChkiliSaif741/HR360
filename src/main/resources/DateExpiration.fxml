@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.DateExpiration"
+      alignment="CENTER"
+      spacing="20"
+      styleClass="dialog-container"
+      stylesheets="@/Styles/style2.css">
+
+    <!-- Title -->
+    <Label text="Select offer Date and Time"
+           styleClass="title-label" />
+
+    <!-- Date Picker -->
+    <HBox alignment="CENTER" spacing="10" styleClass="input-container">
+        <Label text="Select Date:" styleClass="input-label"/>
+        <DatePicker fx:id="datePicker" styleClass="date-picker"/>
+    </HBox>
+
+    <!-- Time Picker -->
+    <HBox alignment="CENTER" spacing="10" styleClass="input-container">
+        <Label text="Select Time:" styleClass="input-label"/>
+        <ComboBox fx:id="timePicker" styleClass="combo-box"/>
+    </HBox>
+
+    <!-- Confirm Button -->
+    <Button text="Confirm"
+            fx:id="confirmButton"
+            onAction="#handleConfirm"
+            styleClass="confirm-button" />
+
+    <!-- Cancel Button -->
+    <Button text="Cancel"
+            fx:id="cancelButton"
+            onAction="#annuler"
+            styleClass="cancel-button" />
+</VBox>
