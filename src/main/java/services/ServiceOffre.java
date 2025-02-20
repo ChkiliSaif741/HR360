@@ -95,37 +95,4 @@ public class ServiceOffre implements IService<Offre> {
 
         return offres;
     }
-    public List<Offre> recupererOffres() throws SQLException {
-        List<Offre> offres = new ArrayList<>();
-        // Code pour récupérer les offres depuis la base de données
-
-        for (Offre offre : offres) {
-            if (offre.getDateExpiration().isBefore(LocalDateTime.now())) {
-                offre.setStatut("Expirée");
-            } else {
-                offre.setStatut("Publiée");
-            }
-        }
-
-        return offres;
-    }
-    public void mettreAJourStatutOffre(Offre offre) throws SQLException {
-        String query = "UPDATE offres SET statut = ? WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, offre.getStatut());
-            ps.setInt(2, offre.getId());
-            ps.executeUpdate();
-        }
-    }
-    // Service ou méthode pour récupérer l'offre par son id
-    // Méthode pour récupérer une offre par son id (simulé ici)
-    public Offre getOffreById(int id_offre) {
-        // Vous pouvez remplacer ce code par une récupération réelle depuis la base de données
-        if (id_offre == 1) {
-            return new Offre("Développeur Java", "Description de l'offre", LocalDateTime.now(), LocalDateTime.now().plusDays(30));
-        }
-        // Retourner null si l'offre n'est pas trouvée
-        return null;
-    }
-
 }

@@ -56,7 +56,6 @@ public class AjouterCondidature implements Initializable {
     public void initData(int idOffre) {
         this.idOffre = idOffre;
         System.out.println("ID Offre reçu : " + idOffre);
-        // Vous pouvez afficher l'ID dans un champ ou l'utiliser pour insérer la candidature
     }
     @FXML
     public void uploadCv() {
@@ -66,7 +65,7 @@ public class AjouterCondidature implements Initializable {
 
         if (cvFile != null) {
             cvLabel.setText(cvFile.getName());
-            cvError.setText(""); // Clear error if file is valid
+            cvError.setText("");
         }
     }
 
@@ -78,7 +77,7 @@ public class AjouterCondidature implements Initializable {
 
         if (lettreFile != null) {
             lettreLabel.setText(lettreFile.getName());
-            lettreError.setText(""); // Clear error if file is valid
+            lettreError.setText("");
         }
     }
 
@@ -140,8 +139,8 @@ public class AjouterCondidature implements Initializable {
                         lettreDest.getAbsolutePath(), // Chemin de la lettre
                         idOffre,                            // ID de l'offre
                         descriptionField.getText(),   // Description (depuis le champ TextArea)
-                        LocalDateTime.now() ,
-                        1 // Date de modification (initialisée à maintenant)
+                        LocalDateTime.now() ,// Date de modification (initialisée à maintenant)
+                        1
                 );
 
                 // Enregistrement dans la base de données
