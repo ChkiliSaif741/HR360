@@ -107,14 +107,14 @@ public class Main {
                         List<Reservation> reservations = serviceReservation.afficher();
                         System.out.println("\n=== Liste des Réservations avec Ressources ===");
                         for (Reservation r : reservations) {
-                            System.out.println("📌 Réservation ID: " + r.getId());
-                            System.out.println("   📅 Date Début: " + r.getDateDebut());
-                            System.out.println("   📅 Date Fin: " + r.getDateFin());
-                            System.out.println("   👤 Réservée par: " + r.getUtilisateur());
-                            System.out.println("   🔹 Ressource: " + r.getRessource().getNom() + " (ID: " + r.getRessource().getId() + ")");
-                            System.out.println("   🔹 Type: " + r.getRessource().getType());
-                            System.out.println("   🔹 État: " + r.getRessource().getEtat());
-                            System.out.println("   👤 Propriétaire: " + r.getRessource().getUtilisateur());
+                            System.out.println(" Réservation ID: " + r.getId());
+                            System.out.println("    Date Début: " + r.getDateDebut());
+                            System.out.println("    Date Fin: " + r.getDateFin());
+                            System.out.println("    Réservée par: " + r.getUtilisateur());
+                            System.out.println("    Ressource: " + r.getRessource().getNom() + " (ID: " + r.getRessource().getId() + ")");
+                            System.out.println("    Type: " + r.getRessource().getType());
+                            System.out.println("    État: " + r.getRessource().getEtat());
+                            System.out.println("    Propriétaire: " + r.getRessource().getUtilisateur());
                             System.out.println("--------------------------------------------------");
                         }
                         break;
@@ -135,9 +135,9 @@ public class Main {
 
                             Reservation reservationM = new Reservation(idResv, 0, newDateDebut, newDateFin, newUtilisateur);
                             serviceReservation.modifier(reservationM);
-                            System.out.println("✅ Réservation modifiée !");
+                            System.out.println(" Réservation modifiée !");
                         } else {
-                            System.out.println("❌ ID invalide !");
+                            System.out.println(" ID invalide !");
                         }
                         break;
 
@@ -152,12 +152,12 @@ public class Main {
 
 
                     case 9:
-                        System.out.println("👋 Au revoir !");
+                        System.out.println(" Au revoir !");
                         scanner.close();
                         System.exit(0);
 
                     default:
-                        System.out.println("❌ Choix invalide !");
+                        System.out.println(" Choix invalide !");
                         break;
                 }
             }

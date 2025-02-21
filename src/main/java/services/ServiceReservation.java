@@ -30,67 +30,25 @@ public class ServiceReservation implements IService<Reservation> {
     }
 
 
-    @Override
+
     public void modifier(Reservation reservation) throws SQLException {
-        String selectQuery = "SELECT id_ressource FROM reservation WHERE id = ?";
-        PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
-        selectStmt.setInt(1, reservation.getId());
-        ResultSet rsExisting = selectStmt.executeQuery();
-        if (!rsExisting.next()) {
-            System.out.println("Erreur : La réservation avec ID " + reservation.getId() + " n'existe pas !");
-            return;
-        }
-        int currentRessourceId = rsExisting.getInt("id_ressource");
+        String checkQuery = "SELECT COUNT(*) FROM reservation WHERE id = ?";
+        PreparedStatement checkStmt = connection.prepareStatement(checkQuery);
+        checkStmt.setInt(1, reservation.getId());
+        ResultSet rs = checkStmt.executeQuery();
 
-        if (reservation.getIdRessource() <= 0) {
-            reservation.setIdRessource(currentRessourceId);
-        }
-
-        String checkRessourceQuery = "SELECT COUNT(*) FROM ressource WHERE id = ?";
-        PreparedStatement checkRessourceStmt = connection.prepareStatement(checkRessourceQuery);
-        checkRessourceStmt.setInt(1, reservation.getIdRessource());
-        ResultSet rsRessource = checkRessourceStmt.executeQuery();
-        rsRessource.next();
-        if (rsRessource.getInt(1) == 0) {
-            System.out.println("Erreur : La ressource avec ID " + reservation.getIdRessource() + " n'existe pas !");
-            return;
-        }
-
-        String checkAvailabilityQuery = "SELECT COUNT(*) FROM reservation WHERE id_ressource = ? AND id != ? " +
-                "AND ((date_debut BETWEEN ? AND ?) OR (date_fin BETWEEN ? AND ?) " +
-                "OR (? BETWEEN date_debut AND date_fin) OR (? BETWEEN date_debut AND date_fin))";
-        PreparedStatement checkAvailabilityStmt = connection.prepareStatement(checkAvailabilityQuery);
-        checkAvailabilityStmt.setInt(1, reservation.getIdRessource());
-        checkAvailabilityStmt.setInt(2, reservation.getId());
-        checkAvailabilityStmt.setDate(3, reservation.getDateDebut());
-        checkAvailabilityStmt.setDate(4, reservation.getDateFin());
-        checkAvailabilityStmt.setDate(5, reservation.getDateDebut());
-        checkAvailabilityStmt.setDate(6, reservation.getDateFin());
-        checkAvailabilityStmt.setDate(7, reservation.getDateDebut());
-        checkAvailabilityStmt.setDate(8, reservation.getDateFin());
-        ResultSet rsAvailability = checkAvailabilityStmt.executeQuery();
-        rsAvailability.next();
-        if (rsAvailability.getInt(1) > 0) {
-            System.out.println("La ressource est déjà réservée pour cette période !");
-            return;
-        }
-
-        String updateQuery = "UPDATE reservation SET id_ressource = ?, date_debut = ?, date_fin = ?, utilisateur = ? WHERE id = ?";
-        PreparedStatement updateStmt = connection.prepareStatement(updateQuery);
-        updateStmt.setInt(1, reservation.getIdRessource());
-        updateStmt.setDate(2, reservation.getDateDebut());
-        updateStmt.setDate(3, reservation.getDateFin());
-        updateStmt.setString(4, reservation.getUtilisateur());
-        updateStmt.setInt(5, reservation.getId());
-
-        int rowsUpdated = updateStmt.executeUpdate();
-        if (rowsUpdated > 0) {
-            System.out.println("Réservation mise à jour avec succès !");
+        if (rs.next() && rs.getInt(1) > 0) {
+            String query = "UPDATE reservation SET date_debut = ?, date_fin = ?, utilisateur = ? WHERE id = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setDate(1, reservation.getDateDebut());
+            stmt.setDate(2, reservation.getDateFin());
+            stmt.setString(3, reservation.getUtilisateur());
+            stmt.setInt(4,reservation.getId());
+            stmt.executeUpdate();
         } else {
-            System.out.println("Erreur lors de la mise à jour !");
+            System.out.println("Erreur : La reservation avec l'ID " + reservation.getId() + " n'existe pas !");
         }
     }
-
 
 
 
@@ -148,7 +106,7 @@ public class ServiceReservation implements IService<Reservation> {
     }
 
 
-    private boolean estDisponible(Reservation reservation) throws SQLException {
+    public boolean estDisponible(Reservation reservation) throws SQLException {
         String query = "SELECT COUNT(*) FROM reservation WHERE id_ressource = ? AND " +
                 "(date_debut BETWEEN ? AND ? OR date_fin BETWEEN ? AND ?)";
         PreparedStatement stmt = connection.prepareStatement(query);

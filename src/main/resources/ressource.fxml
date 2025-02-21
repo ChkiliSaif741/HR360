@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane onMouseClicked="#ClikedRessource" prefHeight="215.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RessourceController">
+   <children>
+      <VBox alignment="CENTER" layoutX="14.0" layoutY="8.0" prefHeight="200.0" prefWidth="100.0" stylesheets="@CSSFiles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="58.0" prefWidth="122.0">
+               <children>
+                  <Label fx:id="nameL" alignment="CENTER" contentDisplay="CENTER" prefHeight="39.0" prefWidth="194.0" text="Name">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font name="HoboStd" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="58.0" prefWidth="226.0">
+               <children>
+                  <Label fx:id="etatL" prefHeight="44.0" prefWidth="109.0" text="Etat">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font name="HoboStd" size="10.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="typeL" prefHeight="48.0" prefWidth="105.0" text="Type">
+                     <font>
+                        <Font name="HoboStd" size="10.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+            </HBox>
+            <Label fx:id="propL" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="212.0" text="Prop">
+               <font>
+                  <Font name="HoboStd" size="13.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="57.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/4577275.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="resourceIdLabel" visible="false" />
+            <Button maxWidth="114.0" mnemonicParsing="false" onAction="#ajouterRessource" prefHeight="38.0" prefWidth="92.0" style="-fx-background-radius: 15; -fx-background-color: blue; -fx-border-radius: 15;" styleClass="add-button" stylesheets="@CSSFiles/styles.css" text="Reservation">
+               <VBox.margin>
+                  <Insets bottom="6.0" />
+               </VBox.margin>
+            </Button>
+            <HBox prefHeight="83.0" prefWidth="226.0" spacing="15.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#modifierRessource" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="add-button" stylesheets="@CSSFiles/styles.css" text="Update">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="deleteBtn" mnemonicParsing="false" onAction="#deleteBtn" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="cancel-button" stylesheets="@CSSFiles/styles.css" text="Delete">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <styleClass>
+            <String fx:value="fruit-item" />
+            <String fx:value="shadow" />
+         </styleClass>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -7,6 +7,7 @@ public class Ressource {
     private String etat;
     private String utilisateur;
 
+    public Ressource(){};
     public Ressource(int id, String nom, String type, String etat, String utilisateur) {
         this.id = id;
         this.nom = nom;

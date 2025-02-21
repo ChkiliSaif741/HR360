@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="215.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReservationController">
+    <children>
+        <VBox alignment="CENTER" layoutX="14.0" layoutY="8.0" prefHeight="200.0" prefWidth="100.0" stylesheets="@CSSFiles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="CENTER" prefHeight="58.0" prefWidth="226.0">
+                    <children>
+                        <Label fx:id="labelRessource" alignment="CENTER" prefHeight="44.0" prefWidth="185.0" text="utilisateur">
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                            <font>
+                                <Font name="HoboStd" size="13.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="58.0" prefWidth="226.0">
+                    <children>
+                        <Label fx:id="labelDateDebut" prefHeight="43.0" prefWidth="106.0" text="date_debut">
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                            <font>
+                                <Font name="HoboStd" size="10.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="labelDateFin" prefHeight="48.0" prefWidth="105.0" text="date_fin">
+                            <font>
+                                <Font name="HoboStd" size="10.0" />
+                            </font>
+                        </Label>
+                  <Label fx:id="labelId" prefHeight="4.0" prefWidth="0.0" text="id">
+                     <font>
+                        <Font name="Cambria Bold" size="1.0" />
+                     </font>
+                  </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </HBox>
+                <ImageView fitHeight="51.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@Images/reserved.png" />
+                    </image>
+                </ImageView>
+            <Button mnemonicParsing="false" style="-fx-background-color: bleu;" text="Reservé" />
+            <HBox prefHeight="46.0" prefWidth="181.0" spacing="15.0">
+               <children>
+                      <Button fx:id="deleteBtn" mnemonicParsing="false" onAction="#deleteBtn" prefHeight="36.0" prefWidth="82.0" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="cancel-button" text="Delete">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Button>
+                      <Button mnemonicParsing="false" onAction="#modifierReservation" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="add-button" text="Update">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+                <Label fx:id="resourceIdLabel" visible="false" />
+            </children>
+            <styleClass>
+                <String fx:value="fruit-item" />
+                <String fx:value="shadow" />
+            </styleClass>
+        </VBox>
+    </children>
+</AnchorPane>
