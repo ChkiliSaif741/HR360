@@ -129,4 +129,6 @@ public class Controller implements Initializable {
         });
     }
 
+    public void afficherRessource(ActionEvent actionEvent) {
+    }
 }
