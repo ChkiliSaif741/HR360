@@ -62,7 +62,7 @@ public class Controller implements Initializable {
     void AffichEntretien(ActionEvent event) {
 
         try {
-            loadPage("//afficheentretien.fxml");
+            loadPage("/afficheentretien.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

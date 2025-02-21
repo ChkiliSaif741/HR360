@@ -284,12 +284,19 @@ public class LoginController {
                         stage.setScene(new Scene(root));
                         stage.show();
                         return;
+                    } else if ("zz".equals(utilisateur.getNom()) && "ee".equals(utilisateur.getPassword())) {
+                        loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                        root = loader.load();
+                        Stage stage = (Stage) login_username.getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                        return;
                     } else {
                         // Charger la scène pour l'ajout d'une offre
                         FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
-                        Parent root1=loader1.load();
+                        Parent root1 = loader1.load();
                         Controller controller = loader1.getController();
-                        ProfileController controller1=controller.loadPage("/Profile.fxml").getController();
+                        ProfileController controller1 = controller.loadPage("/Profile.fxml").getController();
 
                         //controller.container.getScene().setRoot(root1);
                         Stage stage = (Stage) login_username.getScene().getWindow();
@@ -333,8 +340,6 @@ public class LoginController {
             photoProfil.setImage(image);
         }
     }
-
-
 
 
     @FXML
@@ -490,7 +495,6 @@ public class LoginController {
     }
 
 
-
     private void openCandidatDetailsWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/CandidatDetails.fxml"));
@@ -515,8 +519,6 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-
-
 
 
     public void registerClearFields() {
