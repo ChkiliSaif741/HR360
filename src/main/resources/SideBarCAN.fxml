@@ -126,7 +126,7 @@
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@Images/add.png" />
+                                    <Image url="@Images/add1.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -143,7 +143,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="formations" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" onAction="#onFormationbtn" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="formations" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>

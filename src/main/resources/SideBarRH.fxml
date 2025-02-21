@@ -38,11 +38,11 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton onAction="#ajouterRessource" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="ADD">
+                                <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="ADD">
                                     <graphic>
                                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@image/add1.png" />
+                                                <Image url="@Images/add1.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -119,19 +119,19 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" onAction="#AffichProjet" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Employes" textFill="WHITE">
+                                <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Employes" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>
                                     <graphic>
                                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@image/add.png" />
+                                                <Image url="@image/add1.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" onAction="#AffichoffresBack" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Offres" textFill="WHITE">
+                                <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Offres" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>
@@ -143,7 +143,7 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" onAction="#afficherRessource" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="ressources" textFill="WHITE">
+                                <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="ressources" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>
@@ -155,7 +155,7 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" layoutX="23.0" layoutY="200.0" onAction="#onFormationbtn" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="formations" textFill="WHITE">
+                                <JFXButton alignment="BASELINE_LEFT" layoutX="23.0" layoutY="200.0" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="formations" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>
@@ -180,18 +180,6 @@
                                     </graphic>
                                 </JFXButton>
                                 <JFXButton alignment="BASELINE_LEFT" layoutX="11.0" layoutY="277.0" onAction="#AffichcondBack" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Candidature" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="15.0" />
-                                    </font>
-                                    <graphic>
-                                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                            <image>
-                                                <Image url="@image/data.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" layoutX="11.0" layoutY="316.0" onAction="#AffichUser" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Users" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>

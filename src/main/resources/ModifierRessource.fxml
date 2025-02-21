@@ -41,9 +41,9 @@
                                         <ComboBox fx:id="etatComboBox" prefHeight="52.0" prefWidth="733.0" styleClass="combo-box">
                                             <items>
                                                 <FXCollections fx:factory="observableArrayList">
-                                                    <String fx:value="Disponible" />
-                                                    <String fx:value="En cours d'utilisation" />
-                                                    <String fx:value="Hors service" />
+                                                    <String fx:value="Neuf" />
+                                                    <String fx:value="Bon état" />
+                                                    <String fx:value="Moyenne état" />
                                                 </FXCollections>
                                             </items>
                                         </ComboBox>
