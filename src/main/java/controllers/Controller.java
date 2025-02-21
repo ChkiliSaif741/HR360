@@ -43,15 +43,6 @@ public class Controller implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
-    @FXML
-    void AffichProjet(ActionEvent event) {
-        try {
-            loadPage("/AffichageProjet.fxml");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -91,4 +82,58 @@ public class Controller implements Initializable {
             });
         });
     }
-}
+
+    @FXML
+    void AffichOffres(ActionEvent event) {
+        try {
+            loadPage("/ListeOffresFront.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    void AffichoffresBack(ActionEvent event) {
+        try {
+            loadPage("/ListeOffres.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void AffichEntretien(ActionEvent event) {
+
+        try {
+            loadPage("//afficheentretien.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    void AffichCandidature(ActionEvent event) {
+        try {
+            loadPage("/ListeCondidatures.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    void AffichProjet(ActionEvent event) {
+        try {
+            loadPage("/AffichageProjet.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void AffichcondBack(ActionEvent event) {
+        try {
+            loadPage("/ListCandidatureBack.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    }
+
+

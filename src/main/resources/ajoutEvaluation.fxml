@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="634.4" prefWidth="924.0" stylesheets="@StyleAjoutEva.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutEvaluation">
+   <children>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0">
+         <children>
+            <VBox layoutX="268.0" layoutY="121.0" prefHeight="438.0" prefWidth="446.0" spacing="5.0">
+               <children>
+                  <Label text="Note Technique" />
+                  <TextField fx:id="noteTechnique" />
+                  <Label text="Note SoftSkills" />
+                  <TextField fx:id="noteSoftSkills" />
+                  <Label text="Commentaire" />
+                  <TextField fx:id="commentaire" />
+                  <Label text="Date Evaluation" />
+                  <DatePicker fx:id="dateEvaluation" prefHeight="26.0" prefWidth="458.0" />
+                  <Label text="Id Evaluateur" />
+                  <ComboBox fx:id="id" prefHeight="26.0" prefWidth="459.0" />
+                  <Button lineSpacing="10.0" mnemonicParsing="false" onAction="#AddEvaluation" prefHeight="42.0" prefWidth="97.0" stylesheets="@StyleAjoutEva.css" text="ADD">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <Label layoutX="79.0" layoutY="64.0" prefHeight="40.0" prefWidth="170.0" text="Evaluation" textFill="#77aad9">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

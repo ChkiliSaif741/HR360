@@ -119,7 +119,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onAction="#AffichProjet" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Offres" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" onAction="#AffichOffres" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Offres" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -131,7 +131,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Mes candidatures" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" onAction="#AffichCandidature" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Mes candidatures" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
