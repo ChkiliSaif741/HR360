@@ -180,28 +180,14 @@ public class FormationController implements Initializable {
             Button clickedButton = (Button) actionEvent.getSource();
             Formation formation = (Formation) clickedButton.getUserData();
 
-            // Fermer la fenêtre actuelle
-            Stage currentStage = (Stage) gridPane.getScene().getWindow();
-            currentStage.close();
 
             // Charger la fenêtre de modification (modifierEntretien.fxml)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFormation.fxml"));
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root=loader.load();
+            Controller controller = loader.getController();
+            controller.loadPage("/ModifierFormation.fxml");
+            gridPane.getScene().setRoot(root);
 
-            // Passer l'formation sélectionné au contrôleur de modification
-            ModifierFormation controller = loader.getController();
-            controller.setFormation(formation);
-
-            // Créer une nouvelle scène
-            Scene scene = new Scene(root);
-
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Modifier un formation");
-
-            // Afficher la fenêtre
-            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre de modification.");
@@ -211,24 +197,14 @@ public class FormationController implements Initializable {
     @FXML
     public void AddF(ActionEvent actionEvent) {
         try {
-            // Fermer la fenêtre actuelle
-            Stage currentStage = (Stage) gridPane.getScene().getWindow();
-            currentStage.close();
 
-            // Charger la fenêtre d'ajout (ajoutEntretien.fxml)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutFormation.fxml")); // Assurez-vous que le chemin est correct
-            Parent root = loader.load();
+            // Charger la scène pour l'ajout d'une offre
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root=loader.load();
+            Controller controller = loader.getController();
+            controller.loadPage("/AjoutFormation.fxml");
+            gridPane.getScene().setRoot(root);
 
-            // Créer une nouvelle scène
-            Scene scene = new Scene(root);
-
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Ajouter une formation");
-
-            // Afficher la fenêtre
-            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre d'ajout.");

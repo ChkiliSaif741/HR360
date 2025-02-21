@@ -1,5 +1,7 @@
 package controllers;
 
+import entities.Candidat;
+import entities.Employe;
 import entities.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +15,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import services.ServiceCandidat;
+import services.ServiceEmploye;
 import services.ServiceUtilisateur;
 import utils.alertMessage;
 
@@ -100,6 +105,9 @@ public class LoginController {
 
     private File selectedImageFile;
 
+    private Employe utilisateurTemporaire; // Utilisez Employe si vous avez choisi la Solution 2
+    private Candidat utilisateurTemporaire1;
+
 
     public void setNom(String nom) {
         this.signup_nom.setText(nom);
@@ -132,6 +140,16 @@ public class LoginController {
         changepass_form.setVisible(false);
         signup_selectRole.setItems(FXCollections.observableArrayList(ROLE_LIST));
         forgotListRole();
+
+        signup_selectRole.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if ("Employé".equals(newValue)) {
+                // Ouvrir la fenêtre de saisie du salaire et du poste
+                openEmployeeDetailsWindow();
+            } else if ("Candidat".equals(newValue)) {
+                // Ouvrir la fenêtre de saisie du CV
+                openCandidatDetailsWindow();
+            }
+        });
 
     }
 
@@ -255,37 +273,38 @@ public class LoginController {
             if (utilisateur.getPassword().equals(login_password.getText().trim())) {
 
                 try {
+
                     FXMLLoader loader;
                     Parent root = null;
 
                     if ("Farhani".equals(utilisateur.getNom()) && "zzzzz".equals(utilisateur.getPassword())) {
-                        loader = new FXMLLoader(getClass().getResource("/Display.fxml"));
+                        loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                         root = loader.load();
                         Stage stage = (Stage) login_username.getScene().getWindow();
                         stage.setScene(new Scene(root));
                         stage.show();
                         return;
                     } else {
-                        loader = new FXMLLoader(getClass().getResource("/Profile.fxml"));
+                        // Charger la scène pour l'ajout d'une offre
+                        FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
+                        Parent root1=loader1.load();
+                        Controller controller = loader1.getController();
+                        ProfileController controller1=controller.loadPage("/Profile.fxml").getController();
 
-                        if (loader.getLocation() == null) {
+                        //controller.container.getScene().setRoot(root1);
+                        Stage stage = (Stage) login_username.getScene().getWindow();
+                        stage.setScene(new Scene(root1));
+                        stage.show();
+
+
+                        if (loader1.getLocation() == null) {
                             System.out.println("Erreur : Profile.fxml introuvable !");
                             alert.errorMessage("Fichier Profile.fxml introuvable !");
                             return;
                         }
 
-                        // Charger la vue avant d'accéder au contrôleur
-                        root = loader.load();
-                        // Accéder au contrôleur après avoir chargé la vue
-                        ProfileController profileController = loader.getController();
-                        if (profileController == null) {
-                            System.out.println("Erreur : Impossible de charger ProfileController !");
-                            alert.errorMessage("Impossible de charger le contrôleur Profile.fxml !");
-                            return;
-                        }
-
                         // Passer l'utilisateur au contrôleur
-                        profileController.setUtilisateur(utilisateur);
+                        controller1.setUtilisateur(utilisateur);
                     }
 
                     // Changer la scène
@@ -314,6 +333,7 @@ public class LoginController {
             photoProfil.setImage(image);
         }
     }
+
 
 
 
@@ -346,23 +366,80 @@ public class LoginController {
 
         System.out.println("Chemin de l'image : " + imagePath);
 
-        // Création de l'utilisateur
-        ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-        Utilisateur utilisateur = new Utilisateur(
-                signup_nom.getText(),
-                signup_prenom.getText(),
-                signup_email.getText(),
-                signup_password.getText(),
-                role,
-                imagePath
-        );
+        // Création de l'utilisateur, de l'employé ou du candidat
+        if ("Employé".equals(role)) {
+            // Créer un Employe si le rôle est "Employé"
+            Employe employe = new Employe();
+            employe.setNom(signup_nom.getText());
+            employe.setPrenom(signup_prenom.getText());
+            employe.setEmail(signup_email.getText());
+            employe.setPassword(signup_password.getText());
+            employe.setRole(role);
+            employe.setImgSrc(imagePath);
 
+            // Utiliser les informations saisies dans EmployeeDetails
+            if (utilisateurTemporaire != null) {
+                employe.setPoste(utilisateurTemporaire.getPoste());
+                employe.setSalaire(utilisateurTemporaire.getSalaire());
+                employe.setIdFormation(utilisateurTemporaire.getIdFormation());
+            }
+
+            try {
+                // Ajouter l'employé à la table Employe
+                ServiceEmploye serviceEmploye = new ServiceEmploye();
+                serviceEmploye.ajouter(employe);
+                alert.successMessage("Employé ajouté avec succès !");
+            } catch (SQLException e) {
+                alert.errorMessage("Erreur lors de l'ajout de l'employé : " + e.getMessage());
+                return;
+            }
+        } else if ("Candidat".equals(role)) {
+            // Créer un Candidat si le rôle est "Candidat"
+            Candidat candidat = new Candidat();
+            candidat.setNom(signup_nom.getText());
+            candidat.setPrenom(signup_prenom.getText());
+            candidat.setEmail(signup_email.getText());
+            candidat.setPassword(signup_password.getText());
+            candidat.setRole(role);
+            candidat.setImgSrc(imagePath);
+
+            // Utiliser les informations saisies dans CandidateDetails
+            if (utilisateurTemporaire != null) {
+                candidat.setCv(((Candidat) utilisateurTemporaire1).getCv());
+            }
+
+            try {
+                // Ajouter le candidat à la table Candidat
+                ServiceCandidat serviceCandidat = new ServiceCandidat();
+                serviceCandidat.ajouter(candidat);
+                alert.successMessage("Candidat ajouté avec succès !");
+            } catch (SQLException e) {
+                alert.errorMessage("Erreur lors de l'ajout du candidat : " + e.getMessage());
+                return;
+            }
+        } else {
+            // Créer un Utilisateur standard
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setNom(signup_nom.getText());
+            utilisateur.setPrenom(signup_prenom.getText());
+            utilisateur.setEmail(signup_email.getText());
+            utilisateur.setPassword(signup_password.getText());
+            utilisateur.setRole(role);
+            utilisateur.setImgSrc(imagePath);
+
+            try {
+                // Ajouter l'utilisateur à la table Utilisateur
+                ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
+                serviceUtilisateur.ajouter(utilisateur);
+                alert.successMessage("Utilisateur ajouté avec succès !");
+            } catch (SQLException e) {
+                alert.errorMessage("Erreur lors de l'ajout de l'utilisateur : " + e.getMessage());
+                return;
+            }
+        }
+
+        // Chargement du contrôleur de connexion
         try {
-            // Ajout de l'utilisateur à la base de données
-            serviceUtilisateur.ajouter(utilisateur);
-            alert.successMessage("Inscription réussie !");
-
-            // Chargement du contrôleur de connexion
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
             Parent parent = loader.load();
             LoginController controller = loader.getController();
@@ -379,13 +456,66 @@ public class LoginController {
 
             // Réinitialisation des champs
             registerClearFields();
-
-        } catch (SQLException e) {
-            alert.errorMessage("Erreur lors de l'inscription : " + e.getMessage());
         } catch (IOException e) {
             alert.errorMessage("Erreur de chargement de la page de connexion.");
         }
     }
+
+
+    private void openEmployeeDetailsWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EmployeeDetails.fxml"));
+            Parent root = loader.load();
+
+            EmployeeDetailsController controller = loader.getController();
+
+            // Initialiser utilisateurTemporaire
+            utilisateurTemporaire = new Employe();
+            controller.setEmploye(utilisateurTemporaire);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Détails du candidat");
+            stage.showAndWait(); // Utiliser showAndWait() pour attendre que la fenêtre soit fermée
+
+            // Après la fermeture de la fenêtre, récupérer les informations saisies
+            if (utilisateurTemporaire.getPoste() != null && utilisateurTemporaire.getSalaire() > 0) {
+                System.out.println("Poste : " + utilisateurTemporaire.getPoste());
+                System.out.println("Salaire : " + utilisateurTemporaire.getSalaire());
+                System.out.println("ID Formation : " + utilisateurTemporaire.getIdFormation());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private void openCandidatDetailsWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/CandidatDetails.fxml"));
+            Parent root = loader.load();
+
+            CandidatDetailsController controller = loader.getController();
+
+            // Initialiser utilisateurTemporaire
+            utilisateurTemporaire1 = new Candidat();
+            controller.setCandidat(utilisateurTemporaire1);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Détails du Candidat");
+            stage.showAndWait(); // Utiliser showAndWait() pour attendre que la fenêtre soit fermée
+
+            // Après la fermeture de la fenêtre, récupérer les informations saisies
+            if (utilisateurTemporaire1.getCv() != null) {
+                System.out.println("Cv : " + utilisateurTemporaire1.getCv());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 

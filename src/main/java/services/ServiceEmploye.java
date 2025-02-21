@@ -15,6 +15,19 @@ public class ServiceEmploye implements IService<Employe> {
         connection = MyDatabase.getInstance().getConnection();
     }
 
+    /*public void ajouter(Employe employe) throws SQLException {
+        String req = "INSERT INTO Employe (poste, salaire, idFormation) VALUES (?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(req)) {
+            stmt.setString(1, employe.getPoste());
+            stmt.setDouble(2, employe.getSalaire());
+            stmt.setInt(3, employe.getIdFormation());
+            stmt.executeUpdate();
+        }
+    }*/
+
+
+
+
     @Override
     public void ajouter(Employe employe) throws SQLException {
         ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
@@ -22,6 +35,7 @@ public class ServiceEmploye implements IService<Employe> {
         // 1. Ajouter d'abord l'utilisateur (héritage remplacé par une jointure)
         serviceUtilisateur.ajouter(employe);
 
+        // 2. Récupérer l'ID de l'utilisateur ajouté
         String reqId = "SELECT LAST_INSERT_ID() AS id";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(reqId);
@@ -33,13 +47,15 @@ public class ServiceEmploye implements IService<Employe> {
 
         // 3. Insérer les informations spécifiques de l'employé dans la table employe
         if (idUtilisateur != -1) {
-            String req = "INSERT INTO employe (idEmploye, poste, salaire) VALUES ('"
-                    + idUtilisateur + "', '"
-                    + employe.getPoste() + "', "
-                    + employe.getSalaire() + ")";
-
-            statement.executeUpdate(req);
-            System.out.println("Employé ajouté avec succès !");
+            String req = "INSERT INTO employe (idEmploye, poste, salaire, idFormation) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(req)) {
+                stmt.setInt(1, idUtilisateur);
+                stmt.setString(2, employe.getPoste());
+                stmt.setFloat(3, employe.getSalaire());
+                stmt.setInt(4, employe.getIdFormation()); // Assurez-vous que cette valeur est définie
+                stmt.executeUpdate();
+                System.out.println("Employé ajouté avec succès !");
+            }
         } else {
             System.out.println("Erreur : impossible de récupérer l'ID de l'utilisateur.");
         }

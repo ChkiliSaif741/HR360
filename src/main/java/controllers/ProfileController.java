@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Utilisateur;
+import javafx.scene.layout.VBox;
 import services.ServiceUtilisateur;
 import services.ServiceUtilisateur;
 import javafx.event.ActionEvent;
@@ -33,6 +34,9 @@ public class ProfileController {
 
     @FXML
     private TextField prenomField;
+
+    @FXML
+    private VBox container;
 
 
     private Utilisateur utilisateurActuel;

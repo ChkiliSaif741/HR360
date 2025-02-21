@@ -12,6 +12,12 @@ public class Candidat extends Utilisateur{
         this.cv = cv;
     }
 
+    public Candidat(String nom, String prenom, String email, String password ,String imgSrc,String cv) {
+        super(nom, prenom, email, password ,"Candidat",imgSrc); // Appelle le constructeur de Utilisateur
+        this.cv = cv;
+    }
+
+
     public String getCv() {
         return cv;
     }

@@ -14,6 +14,19 @@ public class Employe extends Utilisateur{
         this.salaire = salaire;
     }
 
+    public Employe(String nom, String prenom, String email, String password ,String poste, float salaire,String imgSrc){
+        super(nom, prenom, email, password ,"Employe",imgSrc);
+        this.poste = poste;
+        this.salaire = salaire;
+    }
+
+    public Employe(String nom, String prenom, String email, String password ,String poste, float salaire,String imgSrc,int idFormation){
+        super(nom, prenom, email, password ,"Employe",imgSrc);
+        this.poste = poste;
+        this.salaire = salaire;
+        this.idFormation = idFormation;
+    }
+
     public String getPoste() {
         return poste;
     }
