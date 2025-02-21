@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="785.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FormulaireAjoutReservationController">
+    <children>
+        <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="676.0" prefWidth="780.0" stylesheets="@CSSFiles/styles.css">
+            <children>
+                <BorderPane layoutX="-7.0" layoutY="-8.0" prefHeight="570.0" prefWidth="786.0">
+                    <center>
+                        <StackPane alignment="CENTER">
+                            <children>
+                                <VBox alignment="CENTER" prefHeight="570.0" prefWidth="793.0" spacing="15" styleClass="card">
+                                    <children>
+                                        <HBox alignment="CENTER" spacing="10">
+                                            <children>
+                                                <ImageView fitHeight="30" fitWidth="30">
+                                                    <image>
+                                                        <Image url="@Images/icons8-admin-settings-male-96.png" />
+                                                    </image>
+                                                </ImageView>
+                                                <Label styleClass="title" text="Ajouter une Réservation" />
+                                            </children>
+                                        </HBox>
+
+                                        <!-- Sélection des dates -->
+                                        <DatePicker fx:id="dateDebutPicker" promptText="Date de début" styleClass="input-field" />
+                                        <DatePicker fx:id="dateFinPicker" promptText="Date de fin" styleClass="input-field" />
+
+                                        <!-- Champ Utilisateur -->
+                                        <TextField fx:id="utilisateurField" promptText="Utilisateur" styleClass="input-field" />
+
+                                        <!-- Boutons d'action -->
+                                        <HBox alignment="CENTER" spacing="15">
+                                            <children>
+                                                <Button fx:id="btnAnnuler" onAction="#annulerAjout" styleClass="cancel-button" text="Annuler" />
+                                                <Button fx:id="btnAjouter" onAction="#ajouterReservation" styleClass="add-button" text="Ajouter" />
+                                                <Button fx:id="btnRetour" onAction="#retour" style="-fx-background-color: blue;" styleClass="return-button" text="Retour" />
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets bottom="1.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                                    </children>
+                                    <StackPane.margin>
+                                        <Insets left="-3.0" top="-4.0" />
+                                    </StackPane.margin>
+                                </VBox>
+                            </children>
+                        </StackPane>
+                    </center>
+                </BorderPane>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

@@ -1,0 +1,143 @@
+.search-box{
+    -fx-background-color:#FFFFFF;
+    -fx-background-radius: 100;
+}
+
+.transparent{
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+.search-button{
+    -fx-background-color: #828282;
+    -fx-background-radius: 30;
+}
+
+.right-bar{
+    -fx-background-color: #D3D3D3;
+}
+
+.shadow{
+    -fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0);
+}
+
+.chosen-fruit-card{
+    -fx-background-color: #F16C31;
+    -fx-background-radius: 30;
+}
+
+.comboBox{
+    -fx-background-color: rgba(255,255,255,0.3);
+    -fx-background-radius: 30;
+}
+
+.add-btn{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 100;
+}
+
+.free-delivery-card{
+    -fx-background-color: #D3D3D3;
+    -fx-background-radius: 30;
+}
+
+.shopping-online-card{
+    -fx-background-color: #BAEAC3;
+    -fx-background-radius: 30;
+}
+
+.fruit-item{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 30;
+
+}
+
+
+
+
+/* Card principale */
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 25px;
+    -fx-border-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 2, 2);
+}
+
+/* Titre */
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+/* Champs de texte */
+.input-field, .combo-box {
+    -fx-font-size: 14px;
+    -fx-pref-width: 300px;
+    -fx-padding: 10px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #BDC3C7;
+    -fx-background-color: #F7F9F9;
+}
+
+/* Animation au focus */
+.input-field:focused, .combo-box:focused {
+    -fx-border-color: #3498DB;
+    -fx-background-color: #ECF0F1;
+}
+
+/* Boutons */
+.button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-pref-width: 120px;
+    -fx-padding: 8px;
+    -fx-border-radius: 8px;
+    -fx-text-fill: white;
+}
+
+/* Bouton Ajouter */
+.add-button {
+    -fx-background-color: #27AE60;
+    -fx-border-color: #1E8449;
+}
+
+.add-button:hover {
+    -fx-background-color: #1E8449;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Bouton Annuler */
+.cancel-button {
+    -fx-background-color: #E74C3C;
+    -fx-border-color: #C0392B;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #C0392B;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+
+/* Bouton Retour */
+.return-button {
+    -fx-background-color: #BDC3C7;
+    -fx-border-color: #95A5A6;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-pref-width: 120px;
+    -fx-padding: 8px;
+    -fx-border-radius: 8px;
+    -fx-text-fill: white;
+}
+
+.return-button:hover {
+    -fx-background-color: #95A5A6;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+
+
+

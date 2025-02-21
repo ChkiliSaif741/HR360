@@ -1,5 +1,4 @@
 package controllers;
-
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import javafx.scene.layout.BorderPane;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,7 +34,7 @@ public class Controller implements Initializable {
     FXMLLoader loadPage(String page) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(page));
         try {
-            Pane view=loader.load();
+            Pane view = loader.load();
             mainPane.setCenter(view);
             return loader;
         } catch (IOException e) {
@@ -49,7 +47,7 @@ public class Controller implements Initializable {
     void AffichOffres(ActionEvent event) {
         try {
             loadPage("/ListeOffresFront.fxml");
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -70,7 +68,7 @@ public class Controller implements Initializable {
     void AffichcondBack(ActionEvent event) {
         try {
             loadPage("/ListCandidatureBack.fxml");
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -92,7 +90,7 @@ public class Controller implements Initializable {
 
             slider.setTranslateX(-176);
 
-            slide.setOnFinished((ActionEvent e)-> {
+            slide.setOnFinished((ActionEvent e) -> {
                 Menu.setVisible(false);
                 MenuClose.setVisible(true);
             });
@@ -108,7 +106,7 @@ public class Controller implements Initializable {
 
             slider.setTranslateX(0);
 
-            slide.setOnFinished((ActionEvent e)-> {
+            slide.setOnFinished((ActionEvent e) -> {
                 Menu.setVisible(true);
                 MenuClose.setVisible(false);
             });
@@ -120,31 +118,41 @@ public class Controller implements Initializable {
     void AffichoffresBack(ActionEvent event) {
         try {
             loadPage("/ListeOffres.fxml");
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+        @FXML
+        void afficherRessource (ActionEvent event){
+            try {
+                loadPage("/AfficherRessource.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-    void AffichCandidature(ActionEvent event) {
+        void AffichCandidature (ActionEvent event){
+            try {
+                loadPage("/ListeCondidatures.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        @FXML
+        void AffichProjet (ActionEvent event){
+            try {
+                loadPage("/AffichageProjet.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    public void ajouterRessource(ActionEvent actionEvent) {
         try {
-            loadPage("/ListeCondidatures.fxml");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    void AffichProjet(ActionEvent event) {
-        try {
-            loadPage("/AffichageProjet.fxml");
-        }catch (IOException e){
+            loadPage("/FormulaireAjoutRessource.fxml");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-
-    }
-
-
-
+}
 

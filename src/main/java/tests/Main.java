@@ -1,7 +1,6 @@
 
 package tests;
 
-
 import entities.Tache;
 import entities.TacheStatus;
 import services.ServiceTache;
@@ -31,5 +30,4 @@ public class Main {
 
     }
 }
-
 

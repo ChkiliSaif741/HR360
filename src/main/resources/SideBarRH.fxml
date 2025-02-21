@@ -29,6 +29,15 @@
                         </Pane>
                         <HBox layoutX="239.0" layoutY="1.0" prefHeight="43.0" prefWidth="525.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                             <children>
+                                <JFXButton onAction="#ajouterRessource" prefHeight="38.0" prefWidth="138.0" styleClass="menuItem" text="Ajouter Ressource">
+                                    <graphic>
+                                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/data1.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </JFXButton>
                                 <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Dashboard">
                                     <graphic>
                                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -56,11 +65,11 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="BackUp">
+                                <JFXButton layoutX="10.0" layoutY="10.0" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Dashboard">
                                     <graphic>
                                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@image/data1.png" />
+                                                <Image url="@image/dash1.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -143,7 +152,7 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="ressources" textFill="WHITE">
+                                <JFXButton alignment="BASELINE_LEFT" onAction="#afficherRessource" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="ressources" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>
