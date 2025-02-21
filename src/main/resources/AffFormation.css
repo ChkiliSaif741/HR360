@@ -1,0 +1,113 @@
+/* Style pour les en-têtes */
+.header-label {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-alignment: center;
+    -fx-padding: 10;
+    -fx-min-width: 100px;
+    -fx-min-height: 40px;
+}
+
+/* Style pour les labels normaux */
+.normal-label {
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-background-color: #FFFFFF;
+    -fx-alignment: center;
+    -fx-padding: 10;
+    -fx-min-width: 100px;
+    -fx-min-height: 40px;
+}
+
+/* Style commun aux boutons */
+.delete-button, .update-button {
+    -fx-text-fill: white;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-min-width: 100px;
+    -fx-min-height: 40px;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-cursor: hand; /* 🖱️ Change le curseur au survol */
+}
+
+/* Style pour le bouton Delete */
+.delete-button {
+    -fx-background-color: red;
+}
+
+/* Effet au survol */
+.delete-button:hover {
+    -fx-background-color: darkred;
+    -fx-cursor: hand; /* 🖱️ Change le curseur */
+}
+
+/* Effet au clic */
+.delete-button:pressed {
+    -fx-background-color: #8B0000; /* Rouge plus foncé */
+}
+
+/* Style pour le bouton Update */
+.update-button {
+    -fx-background-color: blue;
+}
+
+/* Effet au survol */
+.update-button:hover {
+    -fx-background-color: darkblue;
+    -fx-cursor: hand; /* 🖱️ Change le curseur */
+}
+
+/* Effet au clic */
+.update-button:pressed {
+    -fx-background-color: #00008B; /* Bleu plus foncé */
+}
+
+/* Style pour le GridPane */
+.grid-pane {
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-padding: 10;
+    -fx-background-color: #F8F8F8;
+}
+
+/* Style pour le ScrollPane */
+.scroll-pane {
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+    -fx-hbar-policy: as-needed;
+    -fx-vbar-policy: as-needed;
+}
+
+/* Style pour le bouton AddE */
+.add-button {
+    -fx-background-color: #4CAF50; /* Vert */
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-font-weight: bold;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-min-width: 100px;
+    -fx-min-height: 40px;
+    -fx-alignment: center;
+    -fx-cursor: hand; /* 🖱️ Change le curseur */
+}
+
+/* Effet au survol */
+.add-button:hover {
+    -fx-background-color: #45a049; /* Vert un peu plus foncé */
+    -fx-cursor: hand;
+}
+
+/* Effet au clic */
+.add-button:pressed {
+    -fx-background-color: #388E3C;
+}

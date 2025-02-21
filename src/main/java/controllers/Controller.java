@@ -1,4 +1,6 @@
+
 package controllers;
+import com.jfoenix.controls.JFXButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +32,9 @@ public class Controller implements Initializable {
 
     @FXML
     private BorderPane mainPane;
+
+    @FXML
+    private JFXButton formationBtn;
 
     FXMLLoader loadPage(String page) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(page));
@@ -63,6 +68,24 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    void onFormationbtn(ActionEvent event) {
+        try {
+            loadPage("/Formation.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void AffichUser(ActionEvent event) {
+        try {
+            loadPage("/Display.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void AffichcondBack(ActionEvent event) {
@@ -122,30 +145,30 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
-        @FXML
-        void afficherRessource (ActionEvent event){
-            try {
-                loadPage("/AfficherRessource.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    @FXML
+    void afficherRessource (ActionEvent event){
+        try {
+            loadPage("/AfficherRessource.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        void AffichCandidature (ActionEvent event){
-            try {
-                loadPage("/ListeCondidatures.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    }
+    @FXML
+    void AffichCandidature (ActionEvent event){
+        try {
+            loadPage("/ListeCondidatures.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        @FXML
-        void AffichProjet (ActionEvent event){
-            try {
-                loadPage("/AffichageProjet.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    }
+    @FXML
+    void AffichProjet (ActionEvent event){
+        try {
+            loadPage("/AffichageProjet.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
     public void ajouterRessource(ActionEvent actionEvent) {
         try {
             loadPage("/FormulaireAjoutRessource.fxml");
@@ -155,4 +178,3 @@ public class Controller implements Initializable {
     }
 
 }
-

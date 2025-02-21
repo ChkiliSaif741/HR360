@@ -1,0 +1,92 @@
+/* Style général pour l'AnchorPane */
+.user-item {
+    -fx-background-color: #FFFFFF; /* Fond blanc */
+    -fx-background-radius: 15; /* Coins arrondis */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 10); /* Ombre légère */
+    -fx-border-radius: 15; /* Coins arrondis pour la bordure */
+    -fx-border-color: #E0E0E0; /* Couleur de bordure grise */
+    -fx-border-width: 1; /* Épaisseur de la bordure */
+}
+
+/* Style pour le VBox */
+.user-item .vbox {
+    -fx-spacing: 10; /* Espacement entre les éléments */
+    -fx-padding: 10; /* Marge intérieure */
+    -fx-alignment: center; /* Centrer les éléments */
+}
+
+/* Style pour le HBox */
+.user-item .hbox {
+    -fx-spacing: 10; /* Espacement entre les éléments */
+    -fx-alignment: center-left; /* Aligner les éléments à gauche */
+}
+
+/* Style pour les Labels */
+.user-item .label {
+    -fx-text-fill: #333333; /* Couleur du texte */
+    -fx-font-family: "Cambria"; /* Police de caractères */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style pour l'ImageView */
+.user-item .image-view {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 5); /* Ombre légère */
+    -fx-border-radius: 10; /* Coins arrondis pour l'image */
+    -fx-border-color: #E0E0E0; /* Couleur de bordure grise */
+    -fx-border-width: 1; /* Épaisseur de la bordure */
+}
+
+/* Style pour le bouton Delete */
+.user-item .button {
+    -fx-background-color: #FF4444; /* Fond rouge */
+    -fx-text-fill: #FFFFFF; /* Texte blanc */
+    -fx-font-family: "Cambria"; /* Police de caractères */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-background-radius: 10; /* Coins arrondis */
+    -fx-padding: 8 16; /* Marge intérieure */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 5); /* Ombre légère */
+}
+
+/* Effet de survol pour le bouton */
+.user-item .button:hover {
+    -fx-background-color: #CC0000; /* Fond rouge plus foncé au survol */
+    -fx-cursor: hand; /* Curseur en forme de main */
+}
+
+/* Effet de clic pour le bouton */
+.user-item .button:pressed {
+    -fx-background-color: #990000; /* Fond rouge encore plus foncé au clic */
+}
+
+
+
+.grid-pane {
+    -fx-padding: 20px;
+    -fx-hgap: 30px; /* Espace horizontal entre les cartes */
+    -fx-vgap: 20px; /* Espace vertical entre les cartes */
+    -fx-alignment: center;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-border-radius: 15px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 10, 0, 0, 5);
+}
+
+.label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-alignment: center;
+}
+
+.button {
+    -fx-background-color: #e63946;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 8, 0, 0, 4);
+}
