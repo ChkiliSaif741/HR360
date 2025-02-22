@@ -29,6 +29,7 @@
     </VBox>
 
     <VBox spacing="10">
+        <Label fx:id="labelDatePublicationModif" text="Date de publication : Non sélectionnée" styleClass="info-label"/>
         <Button text="Sélectionner la date et l'heure de publication"
                 onAction="#choisirDatePublication"
                 onMouseClicked="#animateButton"
@@ -37,6 +38,7 @@
     </VBox>
 
     <VBox spacing="10">
+        <Label fx:id="labelDateExpirationModif" text="Date d'expiration : Non sélectionnée" styleClass="info-label"/>
         <Button text="Sélectionner la date et l'heure d'expiration"
                 onAction="#choisirDateExpiration"
                 onMouseClicked="#animateButton"

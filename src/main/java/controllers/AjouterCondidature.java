@@ -9,12 +9,15 @@ import javafx.scene.control.Alert;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import entities.Candidature;
 import services.ServiceCandidature;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,17 +44,37 @@ public class AjouterCondidature implements Initializable {
     private Label cvError;
     @FXML
     private Label lettreError;
+    @FXML
+    private ImageView cvIcon;
+    @FXML
+    private ImageView lettreIcon;
 
     private File cvFile;
     private File lettreFile;
     private int idOffre;
 
+    private final Image pdfIconImage = new Image(getClass().getResourceAsStream("/icons/pdf-file-format.png"));
 
     private final ServiceCandidature serviceCandidature = new ServiceCandidature();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Plus besoin de gérer le statut ici
+        cvIcon.setVisible(false);
+        lettreIcon.setVisible(false);
+        // Ajout d'un événement de clic sur l'icône du CV
+        cvIcon.setOnMouseClicked(event -> {
+            if (cvFile != null) {
+                ouvrirFichier(cvFile);
+            }
+        });
+
+        // Ajout d'un événement de clic sur l'icône de la lettre de motivation
+        lettreIcon.setOnMouseClicked(event -> {
+            if (lettreFile != null) {
+                ouvrirFichier(lettreFile);
+            }
+        });
     }
     public void initData(int idOffre) {
         this.idOffre = idOffre;
@@ -64,20 +87,43 @@ public class AjouterCondidature implements Initializable {
         cvFile = fileChooser.showOpenDialog(new Stage());
 
         if (cvFile != null) {
-            cvLabel.setText(cvFile.getName());
+            cvIcon.setImage(pdfIconImage);
+            cvIcon.setVisible(true);
             cvError.setText("");
         }
     }
 
-    @FXML
     public void uploadLettreMotivation() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
         lettreFile = fileChooser.showOpenDialog(new Stage());
 
         if (lettreFile != null) {
-            lettreLabel.setText(lettreFile.getName());
+            lettreIcon.setImage(pdfIconImage);
+            lettreIcon.setVisible(true);
             lettreError.setText("");
+        }
+    }
+    @FXML
+    private void ouvrirFichierCv() {
+        if (cvFile != null) {
+            ouvrirFichier(cvFile);
+        }
+    }
+
+    @FXML
+    private void ouvrirFichierLettre() {
+        if (lettreFile != null) {
+            ouvrirFichier(lettreFile);
+        }
+    }
+
+
+    private void ouvrirFichier(File fichier) {
+        try {
+            Desktop.getDesktop().open(fichier);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir le fichier.");
         }
     }
 

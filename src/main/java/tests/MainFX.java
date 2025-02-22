@@ -13,10 +13,10 @@ public class MainFX extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+//SideBarCAN
     @Override
     public void start(Stage primaryStage) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
         try {
             Parent parent = loader.load();
             Scene scene = new Scene(parent);

@@ -45,6 +45,15 @@ public class ListeOffresFront {
             listViewOffres.setOnMouseClicked(event -> {
                 Offre selectedOffre = listViewOffres.getSelectionModel().getSelectedItem();
                 if (selectedOffre != null) {
+                    if (selectedOffre.getStatut().equalsIgnoreCase("Expirée")) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Offre Expirée");
+                        alert.setHeaderText("Cette offre a expiré !");
+                        alert.setContentText("Vous ne pouvez plus postuler à cette offre.");
+                        alert.showAndWait();
+                        return; // Empêche l'ouverture de la candidature
+                    }
+                    else{
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Postuler à l'offre");
                     alert.setHeaderText("Voulez-vous postuler à cette offre ?");
@@ -61,9 +70,10 @@ public class ListeOffresFront {
                         if (response == buttonOui) {
                             ouvrirAjouterCandidature(selectedOffre.getId());
                         }
-                    });
+                    });}
                 }
             });
+
 
             // Use a custom CellFactory to display relevant details
             listViewOffres.setCellFactory(param -> new ListCell<Offre>() {

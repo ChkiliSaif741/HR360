@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class AjouterOffre implements Initializable {
@@ -38,6 +39,10 @@ public class AjouterOffre implements Initializable {
     private TextArea descriptionField;
     @FXML
     private Label descriptionError;
+    @FXML
+    private Label labelDatePublication;
+    @FXML
+    private Label labelDateExpiration;
 
     @FXML
     private Label datePublicationError;
@@ -62,12 +67,14 @@ public class AjouterOffre implements Initializable {
             stage.setScene(new Scene(loader.load()));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            // Utiliser le bon type de contrôleur
             DatePublication controller = loader.getController();
             stage.showAndWait();
 
-            // Récupérer la date et l'heure sélectionnées
             datePublication = controller.getSelectedDateTime();
+
+            if (datePublication != null) {
+                labelDatePublication.setText("Date de publication : " + datePublication.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,12 +88,14 @@ public class AjouterOffre implements Initializable {
             stage.setScene(new Scene(loader.load()));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            // Utiliser le bon type de contrôleur
             DateExpiration controller = loader.getController();
             stage.showAndWait();
 
-            // Récupérer la date et l'heure sélectionnées
             dateExpiration = controller.getSelectedDateTime();
+
+            if (dateExpiration != null) {
+                labelDateExpiration.setText("Date d'expiration : " + dateExpiration.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

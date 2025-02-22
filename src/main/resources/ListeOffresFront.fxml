@@ -21,6 +21,9 @@
     </ImageView>
     <Label text="Les Offres disponibles" styleClass="t-label" />
     </HBox>
+    <!-- Label ajouté pour informer l'utilisateur -->
+    <Label text="Cliquer sur une offre pour postuler" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: black;"/>
+
     <!-- ListView centrée -->
     <ListView fx:id="listViewOffres" prefHeight="400" prefWidth="600" styleClass="modernListView"/>
 </VBox>

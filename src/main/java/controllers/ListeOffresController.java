@@ -21,9 +21,18 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListeOffresController {
 
+    @FXML
+    private ComboBox<String> comboTrieDateExpiration;
+
+    @FXML
+    private ComboBox<String> comboTrieStatut;
+
+    @FXML
+    private TextField textFieldRecherche;
     @FXML
     private Button btnModifier, btnSupprimer;
 
@@ -45,6 +54,12 @@ public class ListeOffresController {
         imageViewSupprimer.setEffect(colorAdjust);
         imageViewAjouter.setEffect(colorAdjust);
         serviceOffre = new ServiceOffre();
+        // Initialiser les ComboBox pour le tri
+        comboTrieDateExpiration.getItems().addAll("Croissant", "Décroissant");
+        comboTrieStatut.getItems().addAll("Publiée", "Expirée");
+        //Modification en temp reel
+        textFieldRecherche.textProperty().addListener((observable, oldValue, newValue) -> rechercherOffre());
+
 
         // Charger les offres depuis la base de données
         try {
@@ -52,7 +67,8 @@ public class ListeOffresController {
             listViewOffres.getItems().setAll(offres);
             // Récupérer les offres et mettre à jour leur statut
 
-
+            // Charger les offres depuis la base de données
+            refreshListView();
             // Utilisation d'une CellFactory personnalisée pour afficher les détails comme un tableau
             listViewOffres.setCellFactory(param -> new ListCell<Offre>() {
                 @Override
@@ -123,6 +139,58 @@ public class ListeOffresController {
             showAlert("Erreur", "Erreur lors de l'ouverture de la fenêtre d'ajout.");
         }
     }
+    @FXML
+    private void trierParDateExpiration() {
+        String choix = comboTrieDateExpiration.getValue();
+        if (choix != null) {
+            List<Offre> offresTriees = listViewOffres.getItems().stream()
+                    .sorted((o1, o2) -> choix.equals("Croissant") ?
+                            o1.getDateExpiration().compareTo(o2.getDateExpiration()) :
+                            o2.getDateExpiration().compareTo(o1.getDateExpiration()))
+                    .collect(Collectors.toList());
+            listViewOffres.getItems().setAll(offresTriees);
+        }
+    }
+
+    @FXML
+    private void trierParStatut() {
+        String choix = comboTrieStatut.getValue();
+        if (choix != null) {
+            List<Offre> offresTriees = listViewOffres.getItems().stream()
+                    .sorted((o1, o2) -> {
+                        if (o1.getStatut().equals(choix) && !o2.getStatut().equals(choix)) {
+                            return -1; // Met en premier les offres correspondant au statut sélectionné
+                        } else if (!o1.getStatut().equals(choix) && o2.getStatut().equals(choix)) {
+                            return 1; // Met en dernier celles qui ne correspondent pas
+                        } else {
+                            return 0; // Garde le même ordre pour les autres
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+            listViewOffres.getItems().setAll(offresTriees);
+        }
+    }
+
+
+    @FXML
+    private void rechercherOffre() {
+        String recherche = textFieldRecherche.getText().trim().toLowerCase();
+
+        if (recherche.isEmpty()) {
+            // Si la recherche est vide, afficher la liste complète
+            refreshListView();
+        } else {
+            // Filtrer uniquement selon le titre
+            List<Offre> offresFiltrees = listViewOffres.getItems().stream()
+                    .filter(offre -> offre.getTitre().toLowerCase().contains(recherche))
+                    .collect(Collectors.toList());
+
+            listViewOffres.getItems().setAll(offresFiltrees);
+        }
+    }
+
+
     public void refreshListView() {
         try {
             List<Offre> offres = serviceOffre.afficher(); // Recharger les offres depuis la base de données
@@ -132,6 +200,7 @@ public class ListeOffresController {
             showAlert("Erreur", "Erreur lors du chargement des offres : " + e.getMessage());
         }
     }
+
 
 
 

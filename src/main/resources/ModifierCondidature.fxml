@@ -4,33 +4,43 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
-
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ModifierCondidature"
       alignment="CENTER" spacing="15" styleClass="root"
       stylesheets="@/Styles/style1.css">
 
     <Label text="Modifier la Candidature" styleClass="header"/>
 
+    <!-- CV Section -->
     <VBox spacing="10">
         <Button text="Télécharger le CV" onAction="#uploadCv" styleClass="upload-button"/>
-        <Label fx:id="cvLabel" text="Aucun fichier sélectionné" styleClass="file-label"/>
+        <HBox spacing="5">
+            <ImageView fx:id="cvIcon" fitWidth="24" fitHeight="24" onMouseClicked="#ouvrirFichierCv"/>
+            <Label fx:id="cvLabel" text="Aucun fichier sélectionné" styleClass="file-label"/>
+        </HBox>
         <Label fx:id="cvError" styleClass="error-label"/>
     </VBox>
 
+    <!-- Lettre de Motivation Section -->
     <VBox spacing="10">
         <Button text="Télécharger la lettre de motivation" onAction="#uploadLettreMotivation" styleClass="upload-button"/>
-        <Label fx:id="lettreLabel" text="Aucun fichier sélectionné" styleClass="file-label"/>
+        <HBox spacing="5">
+            <ImageView fx:id="lettreIcon" fitWidth="24" fitHeight="24" onMouseClicked="#ouvrirFichierLettre"/>
+            <Label fx:id="lettreLabel" text="Aucun fichier sélectionné" styleClass="file-label"/>
+        </HBox>
         <Label fx:id="lettreError" styleClass="error-label"/>
     </VBox>
 
-
+    <!-- Description Text Area -->
     <TextArea fx:id="descriptionField" promptText="Entrez la description" styleClass="modernTextArea" />
     <Label fx:id="descriptionError" textFill="RED" />
+
+    <!-- Action Buttons -->
     <HBox spacing="10">
         <Button text="Enregistrer les modifications" onAction="#modifierCandidature" styleClass="save-button"/>
         <Button text="Annuler" onAction="#annuler" styleClass="cancel-button"/>
     </HBox>
 
 </VBox>
-
