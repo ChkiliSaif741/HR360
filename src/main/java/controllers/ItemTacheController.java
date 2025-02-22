@@ -37,7 +37,7 @@ public class ItemTacheController {
     private Label dateFin;
 
     @FXML
-    private Text descriptionTache;
+    private Label descriptionTache;
 
     @FXML
     private Label nomTache;

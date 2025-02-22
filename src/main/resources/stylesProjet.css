@@ -162,7 +162,8 @@
 /* Style de la description de la tâche */
 .task-description {
     -fx-font-size: 14px;
-    -fx-text-fill: #666666;
+    -fx-text-fill: #191818;
+    -fx-text-overrun: ellipsis;
 }
 
 /* Style des dates */
