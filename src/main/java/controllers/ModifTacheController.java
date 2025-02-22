@@ -1,5 +1,6 @@
 package controllers;
 
+import com.jfoenix.controls.JFXTextArea;
 import entities.Projet;
 import entities.Tache;
 import entities.TacheStatus;
@@ -30,7 +31,7 @@ public class ModifTacheController {
     private DatePicker dateStart;
 
     @FXML
-    private TextField descriptionTF;
+    private JFXTextArea descriptionTF;
 
     @FXML
     private TextField nomTF;

@@ -1,5 +1,6 @@
 package controllers;
 
+import com.jfoenix.controls.JFXTextArea;
 import entities.Projet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,7 +53,7 @@ public class AjoutProjetController implements Initializable {
     private DatePicker dateStart;
 
     @FXML
-    private TextField descriptionTF;
+    private JFXTextArea descriptionTF;
 
     @FXML
     private TextField nomTF;
