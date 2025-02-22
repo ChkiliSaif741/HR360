@@ -200,6 +200,9 @@ public class AjoutEntretien implements Initializable {
             }
         });
     }
+    private boolean isValidURL(String url) {
+        return url.matches("^(https?://)?(www\\.)?meet\\.google\\.com/[a-zA-Z0-9-]+$");
+    }
 
     /*private void validateURLField(TextField field) {
         field.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -261,6 +264,12 @@ public class AjoutEntretien implements Initializable {
         } catch (DateTimeParseException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le format de l'heure est invalide. Utilisez HH:mm.");
             return;
+        }
+        if (typeComboBox.getValue() == type.En_ligne) {
+            if (lienMeetField.getText().isEmpty() || !isValidURL(lienMeetField.getText())) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Lien Meet invalide !");
+                return;
+            }
         }
 
         // Créer l'objet Entretien

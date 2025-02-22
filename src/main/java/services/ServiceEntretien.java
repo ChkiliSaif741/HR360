@@ -3,9 +3,12 @@ package services;
 import interfaces.IService;
 import entities.Entretien;
 import utils.MyDatabase;
+import utils.statut;
 import utils.type;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,6 +114,67 @@ public class ServiceEntretien implements IService<Entretien> {
             ids.add(resultSet.getInt("idCandidature"));
         }
         return ids;
+    }
+
+
+    /*public List<Entretien> getEntretiensDans24Heures() throws SQLException {
+        List<Entretien> entretiens = new ArrayList<>();
+        String query = "SELECT * FROM entretien WHERE date = ? AND heure BETWEEN ? AND ?";
+        LocalDate aujourdHui = LocalDate.now();
+        LocalTime maintenant = LocalTime.now();
+        LocalTime dans24Heures = maintenant.plusHours(24);
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setDate(1, Date.valueOf(aujourdHui));
+            ps.setTime(2, Time.valueOf(maintenant));
+            ps.setTime(3, Time.valueOf(dans24Heures));
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Entretien entretien = new Entretien(
+                        rs.getInt("idEntretien"),
+                        rs.getDate("date").toLocalDate(),
+                        rs.getTime("heure").toLocalTime(),
+                        type.valueOf(rs.getString("type")),
+                        statut.valueOf(rs.getString("statut")),
+                        rs.getString("lien_meet"),
+                        rs.getString("localisation"),
+                        rs.getInt("idCandidature")
+                );
+                entretiens.add(entretien);
+            }
+        }
+        return entretiens;
+    }*/
+
+    public List<Entretien> getEntretiensDans24Heures() throws SQLException {
+        List<Entretien> entretiens = new ArrayList<>();
+        String query = "SELECT * FROM entretien WHERE date = ? AND heure = ?";
+        LocalDate aujourdHui = LocalDate.now();
+        LocalTime maintenant = LocalTime.now();
+        LocalDate dateDans24Heures = aujourdHui.plusDays(1); // Date dans 24 heures
+        LocalTime heureDans24Heures = maintenant; // Heure actuelle (pour correspondre à l'heure exacte)
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setDate(1, Date.valueOf(dateDans24Heures)); // Date dans 24 heures
+            ps.setTime(2, Time.valueOf(heureDans24Heures)); // Heure actuelle
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Entretien entretien = new Entretien(
+                        rs.getInt("idEntretien"),
+                        rs.getDate("date").toLocalDate(),
+                        rs.getTime("heure").toLocalTime(),
+                        type.valueOf(rs.getString("type")),
+                        statut.valueOf(rs.getString("statut")),
+                        rs.getString("lien_meet"),
+                        rs.getString("localisation"),
+                        rs.getInt("idCandidature")
+                );
+                entretiens.add(entretien);
+            }
+        }
+        return entretiens;
     }
 
 }

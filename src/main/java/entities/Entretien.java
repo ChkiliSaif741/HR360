@@ -31,6 +31,17 @@ public class Entretien {
 
     }
 
+    public Entretien(int idEntretien, LocalDate date, LocalTime heure, type type, statut statut, String lien_meet, String localisation, int idCandidature) {
+        this.idEntretien = idEntretien;
+        this.date = date;
+        this.heure = heure;
+        this.type = type;
+        this.statut = statut;
+        this.lien_meet = lien_meet;
+        this.localisation = localisation;
+        this.idCandidature = idCandidature;
+    }
+
     public int getIdEntretien() {
         return idEntretien;
     }
