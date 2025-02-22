@@ -60,4 +60,19 @@ public class ServiceProjet implements IService<Projet> {
         }
         return projets;
     }
+
+    public Projet getById(int id) throws SQLException {
+        String req="SELECT * FROM projet WHERE id="+id;
+        Statement statement= connection.createStatement();
+        ResultSet rs= statement.executeQuery(req);
+        Projet projet= new Projet();
+        while (rs.next()) {
+            projet.setId(rs.getInt("id"));
+            projet.setNom(rs.getString("nom"));
+            projet.setDescription(rs.getString("description"));
+            projet.setDateDebut(rs.getDate("dateDebut"));
+            projet.setDateFin(rs.getDate("dateFin"));
+        }
+        return projet;
+    }
 }

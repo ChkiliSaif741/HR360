@@ -62,7 +62,26 @@
     -fx-scale-y: 1.02;
     -fx-transition: all 0.2s ease-in-out;
 }
+.button-action-add{
+    -fx-background-color:#2E5077;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 12px;
+    -fx-border-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
 
+/* Changement de couleur au survol */
+.button-action-add:hover {
+    -fx-background-color:#4DA1A9;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
 /* Style général des boutons */
 .button-action-delete,.button-action-delete-2 {
     -fx-background-color: #ce3234;

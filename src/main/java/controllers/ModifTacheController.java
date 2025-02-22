@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Projet;
 import entities.Tache;
 import entities.TacheStatus;
 import javafx.collections.FXCollections;
@@ -7,10 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.util.Callback;
+import services.ServiceProjet;
 import services.ServiceTache;
 
 import java.io.IOException;
@@ -85,8 +85,36 @@ public class ModifTacheController {
     public void setNomTF(String nomTF) {
         this.nomTF.setText(nomTF);
     }
+    public void setDatesLimits(int idProjet){
+        ServiceProjet serviceProjet = new ServiceProjet();
+        try {
+            Projet projet=serviceProjet.getById(idProjet);
+            LocalDate startDate = projet.getDateDebut().toLocalDate();
+            LocalDate endDate = projet.getDateFin().toLocalDate();
+            Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+                @Override
+                public DateCell call(final DatePicker datePicker) {
+                    return new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (item.isAfter(endDate) || item.isBefore(startDate)) {
+                                setDisable(true);
+                                setStyle("-fx-text-fill: #3a3a3a;");
+                            }
+                        }
+                    };
+                }
+            };
+            dateStart.setDayCellFactory(dayCellFactory);
+            dateEnd.setDayCellFactory(dayCellFactory);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void setIdProjet(int idProjet) {
         this.idProjet = idProjet;
+        setDatesLimits(idProjet);
     }
 
     public void setIdTache(int idTache) {
