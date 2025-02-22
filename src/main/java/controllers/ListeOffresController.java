@@ -40,6 +40,8 @@ public class ListeOffresController {
     private ImageView imageViewModifier, imageViewSupprimer ,imageViewAjouter;
     @FXML
     private ListView<Offre> listViewOffres;
+    @FXML
+    private ComboBox<String> comboFiltreStatut;
 
     private ServiceOffre serviceOffre;
 
@@ -59,6 +61,9 @@ public class ListeOffresController {
         comboTrieStatut.getItems().addAll("Publiée", "Expirée");
         //Modification en temp reel
         textFieldRecherche.textProperty().addListener((observable, oldValue, newValue) -> rechercherOffre());
+        //Filter
+        comboFiltreStatut.getItems().addAll("Tous", "Publiée", "Expirée");
+        comboFiltreStatut.setValue("Tous"); // Valeur par défaut
 
 
         // Charger les offres depuis la base de données
@@ -156,21 +161,54 @@ public class ListeOffresController {
     private void trierParStatut() {
         String choix = comboTrieStatut.getValue();
         if (choix != null) {
-            List<Offre> offresTriees = listViewOffres.getItems().stream()
-                    .sorted((o1, o2) -> {
-                        if (o1.getStatut().equals(choix) && !o2.getStatut().equals(choix)) {
-                            return -1; // Met en premier les offres correspondant au statut sélectionné
-                        } else if (!o1.getStatut().equals(choix) && o2.getStatut().equals(choix)) {
-                            return 1; // Met en dernier celles qui ne correspondent pas
-                        } else {
-                            return 0; // Garde le même ordre pour les autres
-                        }
-                    })
-                    .collect(Collectors.toList());
+            try {
+                List<Offre> offres = serviceOffre.afficher(); // Récupérer toutes les offres depuis la base de données
 
-            listViewOffres.getItems().setAll(offresTriees);
+                // Trier en plaçant les offres avec le statut sélectionné en premier
+                List<Offre> offresTriees = offres.stream()
+                        .sorted((o1, o2) -> {
+                            if (o1.getStatut().equals(choix) && !o2.getStatut().equals(choix)) {
+                                return -1; // o1 avant o2
+                            } else if (!o1.getStatut().equals(choix) && o2.getStatut().equals(choix)) {
+                                return 1; // o2 avant o1
+                            }
+                            return 0; // Conserver l'ordre relatif sinon
+                        })
+                        .collect(Collectors.toList());
+
+                listViewOffres.getItems().setAll(offresTriees);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                showAlert("Erreur", "Erreur lors du tri des offres : " + e.getMessage());
+            }
         }
     }
+
+
+
+    @FXML
+    private void filtrerParStatut() {
+        String statutChoisi = comboFiltreStatut.getValue();
+
+        try {
+            List<Offre> toutesLesOffres = serviceOffre.afficher(); // Toujours récupérer toutes les offres depuis la base de données
+
+            List<Offre> offresFiltrees;
+            if (statutChoisi == null || statutChoisi.equals("Tous")) {
+                offresFiltrees = toutesLesOffres; // Afficher toutes les offres
+            } else {
+                offresFiltrees = toutesLesOffres.stream()
+                        .filter(offre -> offre.getStatut().equals(statutChoisi))
+                        .collect(Collectors.toList());
+            }
+
+            listViewOffres.getItems().setAll(offresFiltrees);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du filtrage des offres : " + e.getMessage());
+        }
+    }
+
 
 
     @FXML
@@ -193,13 +231,23 @@ public class ListeOffresController {
 
     public void refreshListView() {
         try {
-            List<Offre> offres = serviceOffre.afficher(); // Recharger les offres depuis la base de données
-            listViewOffres.getItems().setAll(offres); // Mettre à jour la ListView
+            List<Offre> offres = serviceOffre.afficher();
+
+            // Appliquer le filtre actuel après le rafraîchissement
+            String statutChoisi = comboFiltreStatut.getValue();
+            if (statutChoisi != null && !statutChoisi.equals("Tous")) {
+                offres = offres.stream()
+                        .filter(offre -> offre.getStatut().equals(statutChoisi))
+                        .collect(Collectors.toList());
+            }
+
+            listViewOffres.getItems().setAll(offres);
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Erreur", "Erreur lors du chargement des offres : " + e.getMessage());
         }
     }
+
 
 
 

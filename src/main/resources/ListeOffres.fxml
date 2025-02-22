@@ -37,6 +37,11 @@
         <Label text="Trier par statut:" />
         <ComboBox fx:id="comboTrieStatut" onAction="#trierParStatut" />
     </HBox>
+    <HBox spacing="10">
+        <Label text="Filtrer par statut:" />
+        <ComboBox fx:id="comboFiltreStatut" onAction="#filtrerParStatut" />
+    </HBox>
+
 
     <!-- HBox pour la recherche -->
     <HBox alignment="TOP_RIGHT" spacing="10">
