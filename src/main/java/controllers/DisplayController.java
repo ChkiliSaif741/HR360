@@ -85,7 +85,6 @@ public class DisplayController implements Initializable {
             for (Utilisateur user : users) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Item.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
-
                 ItemController itemController = fxmlLoader.getController();
                 itemController.setParentControler(this);
                 itemController.setUtilisateur(user);
@@ -121,9 +120,9 @@ public class DisplayController implements Initializable {
         }
     }
 
-    public DisplayController getController(){
+    /*public DisplayController getController(){
         return this;
-    }
+    }*/
 
     public void Logout(ActionEvent event) {
         // Créer une boîte de dialogue de confirmation

@@ -55,7 +55,6 @@ public class AjoutFormationController implements Initializable {
     ServiceFormation serviceFormation;
 
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         serviceFormation = new ServiceFormation();
@@ -125,4 +124,4 @@ public class AjoutFormationController implements Initializable {
         }
     }
 
-    }
+}

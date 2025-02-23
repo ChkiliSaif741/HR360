@@ -15,16 +15,6 @@ public class ServiceEmploye implements IService<Employe> {
         connection = MyDatabase.getInstance().getConnection();
     }
 
-    /*public void ajouter(Employe employe) throws SQLException {
-        String req = "INSERT INTO Employe (poste, salaire, idFormation) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(req)) {
-            stmt.setString(1, employe.getPoste());
-            stmt.setDouble(2, employe.getSalaire());
-            stmt.setInt(3, employe.getIdFormation());
-            stmt.executeUpdate();
-        }
-    }*/
-
 
 
 

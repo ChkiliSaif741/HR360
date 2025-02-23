@@ -17,12 +17,12 @@ public class MainFx extends Application {
     @Override
     public void start(Stage primaryStage) {
         FXMLLoader loader = new FXMLLoader(getClass().
-                getResource("/Login.fxml"));
+                getResource("/test.fxml"));
 
         try {
             Parent parent = loader.load();
             Scene scene = new Scene(parent);
-            scene.getStylesheets().add(getClass().getResource("/design.css").toExternalForm());
+            //scene.getStylesheets().add(getClass().getResource("/design.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("HR360");
             primaryStage.show();
