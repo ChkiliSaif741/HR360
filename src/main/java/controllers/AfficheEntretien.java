@@ -334,7 +334,7 @@ public class AfficheEntretien implements Initializable {
 
     public void startScheduler() {
         System.out.println("Démarrage du planificateur...");
-        scheduler.scheduleAtFixedRate(this::checkUpcomingEntretiens, 0, 1, TimeUnit.HOURS);
+        scheduler.scheduleAtFixedRate(this::checkUpcomingEntretiens, 0, 3, TimeUnit.HOURS);
     }
 
     private void checkUpcomingEntretiens() {
