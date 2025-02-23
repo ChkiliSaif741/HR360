@@ -1,5 +1,4 @@
 package controllers;
-
 import entities.Offre;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +16,14 @@ import javafx.scene.control.Label;
 import entities.Candidature;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+
+import javafx.stage.FileChooser;
+import java.io.File;
+
 import javafx.stage.Stage;
 import services.ServiceCandidature;
 import services.ServiceOffre;
@@ -164,6 +171,82 @@ public class ListCandidatureBack implements Initializable {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature à modifier.");
         }
     }
+    @FXML
+    private void afficherStatistiques() {
+        try {
+            // Charger le fichier FXML de la fenêtre des statistiques
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/StatistiquesCandidatures.fxml"));
+            Parent root = loader.load();
+
+            // Afficher la nouvelle fenêtre
+            Stage stage = new Stage();
+            stage.setTitle("Statistiques des Candidatures");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'afficher les statistiques.");
+        }
+    }
+    @FXML
+    private void enregistrerListeCandidaturesEnPdf() {
+        try {
+            // Choisir l'emplacement pour enregistrer le fichier PDF
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+            File file = fileChooser.showSaveDialog(null);
+
+            if (file != null) {
+                String dest = file.getAbsolutePath();
+                PdfWriter writer = new PdfWriter(dest);
+                PdfDocument pdf = new PdfDocument(writer);
+                Document document = new Document(pdf);
+
+                // Ajouter un titre
+                document.add(new Paragraph("Liste des Candidatures").setBold().setFontSize(16));
+                document.add(new Paragraph("\n"));
+
+                // Récupérer la liste des candidatures
+                List<Candidature> candidatures = listViewCandidatures.getItems();
+
+                // Parcourir la liste des candidatures et les ajouter au PDF
+                for (Candidature candidature : candidatures) {
+                    // Récupérer l'offre associée
+                    Offre offre = getOffreById(candidature.getId_offre());
+                    String titreOffre = (offre != null) ? offre.getTitre() : "Offre non trouvée";
+
+                    // Ajouter les détails de la candidature
+                    Paragraph details = new Paragraph()
+                            .add("Titre Offre: " + titreOffre + "\n")
+                            .add("Date Candidature: " + candidature.getDateCandidature().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n")
+                            .add("Statut: " + candidature.getStatut() + "\n")
+                            .add("CV: " + extractFileName(candidature.getCv()) + "\n")
+                            .add("Lettre de Motivation: " + extractFileName(candidature.getLettreMotivation()) + "\n")
+                            .add("Description: " + candidature.getDescription() + "\n")
+                            .add("Date Modification: " + (candidature.getDateModification() != null ? candidature.getDateModification().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "Non modifié") + "\n");
+
+                    document.add(details);
+                    document.add(new Paragraph("\n")); // Ajouter un espace entre les candidatures
+                }
+
+                // Fermer le document
+                document.close();
+
+                // Afficher un message de succès
+                showAlert("Succès", "La liste des candidatures a été enregistrée dans le fichier PDF : " + dest);
+            } else {
+                showAlert("Annulé", "L'enregistrement du PDF a été annulé.");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors de la génération du PDF : " + e.getMessage());
+        }
+    }
+
+
+
+
 
 
     private void showAlert(String title, String message) {

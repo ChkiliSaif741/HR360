@@ -42,4 +42,23 @@
         </Button>
 
     </HBox>
+    <Button text="Afficher Statistiques" onAction="#afficherStatistiques" styleClass="modernButton">
+        <graphic>
+            <ImageView>
+                <Image url="@icons/stats.png"/>
+                <fitWidth>30</fitWidth>
+                <fitHeight>30</fitHeight>
+            </ImageView>
+        </graphic>
+    </Button>
+    <Button text="Imprimer" onAction="#enregistrerListeCandidaturesEnPdf" styleClass="modernButton">
+        <graphic>
+            <ImageView>
+                <Image url="@icons/printer.png"/>
+                <fitWidth>30</fitWidth>
+                <fitHeight>30</fitHeight>
+            </ImageView>
+        </graphic>
+    </Button>
+
 </VBox>

@@ -119,4 +119,17 @@ public class ServiceCandidature implements IService<Candidature> {
         }
         return candidatures;
     }
+    public int compterParStatut(String statut) throws SQLException {
+        String query = "SELECT COUNT(*) FROM candidature WHERE statut = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) { // Correction ici
+            pst.setString(1, statut);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+
 }
