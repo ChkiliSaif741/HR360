@@ -5,14 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.Label;
 import entities.Candidature;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -22,13 +19,14 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 
 import javafx.stage.FileChooser;
-import java.io.File;
+
+import java.io.*;
 
 import javafx.stage.Stage;
 import services.ServiceCandidature;
 import services.ServiceOffre;
 
-import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
@@ -243,6 +241,100 @@ public class ListCandidatureBack implements Initializable {
             showAlert("Erreur", "Erreur lors de la génération du PDF : " + e.getMessage());
         }
     }
+    @FXML
+    private void analyserCandidature() {
+        /*Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
+        if (selectedCandidature != null) {
+            // Lancer l'analyse du CV et de l'offre d'emploi
+            try {
+                // Ouvrir la fenêtre UploadJobOffer et passer le fichier CV
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/UploadJobOffer.fxml"));
+                Parent root = loader.load();
+
+                // Récupérer le contrôleur de la fenêtre UploadJobOffer
+                UploadJobOffer controller = loader.getController();
+                controller.setCvFile(new File(selectedCandidature.getCv())); // Passer le fichier CV à la fenêtre
+
+                // Afficher la fenêtre
+                Stage stage = new Stage();
+                stage.setTitle("Télécharger l'offre d'emploi");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Erreur", "Impossible d'ouvrir la fenêtre de téléchargement de l'offre d'emploi.");
+            }
+        } else {
+            showAlert("Aucune sélection", "Veuillez sélectionner une candidature à analyser.");
+        }*/
+            Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
+            if (selectedCandidature != null && selectedCandidature.getCv() != null) {
+                File cvFile = new File(selectedCandidature.getCv());
+
+                if (!cvFile.exists()) {
+                    showAlert("Erreur", "Le fichier CV est introuvable.");
+                    return;
+                }
+
+                try {
+                    // Envoi du CV à l'API de parsing et récupération des résultats
+                    String apiKey = "zTZ1nHeQ8KrCEQYawS4OCBe0Ldz5IsIa";  // Remplacez par votre clé API
+                    String apiUrl = "https://api.apilayer.com/resume_parser/upload";
+                    String jsonResponse = sendResumeToApi(apiUrl, apiKey, cvFile);
+
+                    // Afficher les résultats
+                    showParsingResults(jsonResponse);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert("Erreur", "Impossible d'analyser le CV : " + e.getMessage());
+                }
+            } else {
+                showAlert("Aucune sélection", "Veuillez sélectionner une candidature avec un CV valide.");
+            }
+
+    }
+    private String sendResumeToApi(String apiUrl, String apiKey, File cvFile) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/octet-stream");
+        connection.setRequestProperty("apikey", apiKey);
+        connection.setDoOutput(true);
+
+        try (OutputStream outputStream = connection.getOutputStream();
+             FileInputStream fileInputStream = new FileInputStream(cvFile)) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return response.toString();
+            }
+        } else {
+            return "Erreur API : " + responseCode;
+        }
+    }
+    private void showParsingResults(String jsonResponse) {
+        // Affichage des résultats dans le terminal
+        System.out.println("Résultats de l'analyse du CV :\n" + jsonResponse);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Résultats de l'analyse du CV");
+        alert.setHeaderText("Détails extraits du CV");
+        alert.setContentText(jsonResponse);
+        alert.showAndWait();
+    }
+
 
 
 

@@ -198,7 +198,8 @@ public class AjouterCondidature implements Initializable {
                 showAlert(AlertType.INFORMATION, "Succès", "Candidature enregistrée avec succès.");
 
                 // Fermer l'interface actuelle (fenêtre de l'ajout)
-                Stage currentStage = (Stage) cvLabel.getScene().getWindow();
+                Stage currentStage = (Stage) descriptionField.getScene().getWindow();
+
                 currentStage.close();
             } catch (IOException e) {
                 System.err.println("Erreur lors de la sauvegarde des fichiers : " + e.getMessage());

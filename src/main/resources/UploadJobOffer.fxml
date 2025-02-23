@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.stage.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.UploadJobOffer"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <!-- Title Label -->
+    <Label text="Upload Job Offer" layoutX="220.0" layoutY="20.0"/>
+
+    <!-- File Upload Button -->
+    <Button text="Upload Job Offer File"
+            layoutX="200.0" layoutY="100.0"
+            fx:id="uploadButton" onAction="#handleUploadButtonClick"/>
+
+    <!-- Label to show selected file name -->
+    <Label fx:id="fileNameLabel" text="No file selected" layoutX="200.0" layoutY="150.0" />
+
+    <!-- Label to show the result message -->
+    <Label fx:id="resultMessageLabel" text="" layoutX="200.0" layoutY="200.0" wrapText="true" />
+
+</AnchorPane>
