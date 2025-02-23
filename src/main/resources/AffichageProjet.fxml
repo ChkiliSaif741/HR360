@@ -45,12 +45,7 @@
                   <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="2em" />
                </graphic>
              </Button>
-            <Button onAction="#triOldest" styleClass="button-action-add" stylesheets="@stylesProjet.css" text="Oldest">
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="SORT" size="2em" />
-               </graphic>
-            </Button>
-            <Button onAction="#triRecent" styleClass="button-action-add" stylesheets="@stylesProjet.css" text="Recent">
+            <Button onAction="#Prioritize" styleClass="button-action-add" stylesheets="@stylesProjet.css" text="Prioritize">
                <graphic>
                   <FontAwesomeIcon fill="WHITE" glyphName="SORT" size="2em" />
                </graphic>

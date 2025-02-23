@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -116,25 +117,21 @@ public class AffichageProjetController implements Initializable {
             projets.clear();
             projets.addAll(projetSearched);
             loadProjects();
-            System.out.println(projets);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @FXML
-    void triOldest(ActionEvent event) {
-
-    }
-
-    @FXML
-    void triRecent(ActionEvent event) {
-
+    void Prioritize(ActionEvent event) {
+        projets.sort(Comparator.comparing(Projet::getDateFin));
+        loadProjects();
     }
 
     @FXML
     void RefreshPage(ActionEvent event) {
         refresh();
+        SearchBar.clear();
     }
 
 }
