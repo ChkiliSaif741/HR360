@@ -335,3 +335,45 @@
     -fx-border-width: 0;
 
 }
+
+.search-bar-container {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+/* Style for the TextField (input field) */
+.search-field {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 20px 0 0 20 px;
+    -fx-background-radius: 20px 0 0 20px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #999999;
+
+}
+
+/* Style for the TextField when focused */
+.search-field:focused {
+    -fx-border-color: #4d90fe;
+    -fx-effect: dropshadow(gaussian, rgba(77, 144, 254, 0.3), 10, 0, 0, 2);
+}
+
+/* Style for the search button */
+.search-button {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 12px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);
+}
+
+/* Hover effect for the search button */
+.search-button:hover {
+    -fx-background-color: #357abd;
+}
+
+/* Pressed effect for the search button */
+.search-button:pressed {
+    -fx-background-color: #2a5a8a;
+}

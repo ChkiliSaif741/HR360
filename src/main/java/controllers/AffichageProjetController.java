@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 public class AffichageProjetController implements Initializable {
 
     @FXML
@@ -27,16 +30,30 @@ public class AffichageProjetController implements Initializable {
     @FXML
     private ScrollPane scrollProjet;
 
+    @FXML
+    private TextField SearchBar;
+
+    private List<Projet> projets=new ArrayList<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadProjects();
+        try {
+            getProjects();
+            loadProjects();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void getProjects() throws SQLException
+    {
+        ServiceProjet service = new ServiceProjet();
+        projets.addAll(service.afficher());
     }
 
     private void loadProjects() {
         gridProjet.getChildren().clear(); // Vider le GridPane avant de recharger les projets
-        ServiceProjet serviceProjet = new ServiceProjet();
         try {
-            projets.addAll(serviceProjet.afficher());
             int column = 0;
             int row = 0;
             for (int i = 0; i < projets.size(); i++) {
@@ -60,15 +77,20 @@ public class AffichageProjetController implements Initializable {
 
 
             }
-        } catch (SQLException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     // Méthode pour rafraîchir la vue
     public void refresh() {
-        projets.clear(); // Vider la liste des projets
-        loadProjects(); // Recharger les projets
+        projets.clear();
+        try {
+            getProjects();
+            loadProjects();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -84,6 +106,35 @@ public class AffichageProjetController implements Initializable {
         }
     }
 
-    private List<Projet> projets=new ArrayList<>();
+    @FXML
+    void SearchProject(KeyEvent event) {
+        try {
+            projets.clear();
+            getProjects();
+            List<Projet> projetSearched = new ArrayList<>();
+            projetSearched.addAll(projets.stream().filter(p->p.getNom().startsWith(SearchBar.getText())).toList());
+            projets.clear();
+            projets.addAll(projetSearched);
+            loadProjects();
+            System.out.println(projets);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void triOldest(ActionEvent event) {
+
+    }
+
+    @FXML
+    void triRecent(ActionEvent event) {
+
+    }
+
+    @FXML
+    void RefreshPage(ActionEvent event) {
+        refresh();
+    }
 
 }
