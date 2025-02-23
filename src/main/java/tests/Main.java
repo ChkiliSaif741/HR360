@@ -1,11 +1,7 @@
 package tests;
 
-import entities.Candidat;
-import entities.Employe;
 import entities.Formation;
 import entities.Utilisateur;
-import services.ServiceCandidat;
-import services.ServiceEmploye;
 import services.ServiceFormation;
 import services.ServiceUtilisateur;
 
@@ -13,7 +9,7 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
-        ServiceUtilisateur serviceUtilisateur= new ServiceUtilisateur();
+        /*ServiceUtilisateur serviceUtilisateur= new ServiceUtilisateur();
         ServiceEmploye serviceEmploye= new ServiceEmploye();
         ServiceCandidat serviceCandidat= new ServiceCandidat();
         ServiceFormation serviceFormation= new ServiceFormation();
@@ -48,7 +44,5 @@ public class Main {
             //System.out.println(serviceCandidat.afficher());
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-
-    }
+        }*/     }
 }

@@ -1,11 +1,11 @@
 package controllers;
 
+import entities.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import entities.Employe;
 
 public class Employee_itemController {
 
@@ -37,11 +37,11 @@ public class Employee_itemController {
     private ImageView profilePhoto;
 
     private GestionEmployesController parentControler;
-    private Employe employe;
+    private Utilisateur employe;
 
 
 
-    public void setEmploye(Employe employee) {
+    public void setEmploye(Utilisateur employee) {
         this.employe = employee;
         firstName.setText(employee.getNom());
         lastName.setText(employee.getPrenom());

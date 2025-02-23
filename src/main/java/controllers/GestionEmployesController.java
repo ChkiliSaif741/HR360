@@ -1,8 +1,6 @@
 package controllers;
 
-import entities.Employe;
-import entities.Employe;
-import entities.Employe;
+import entities.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,8 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import services.ServiceEmploye;
-import services.ServiceEmploye;
+import services.ServiceUtilisateur;
 import utils.alertMessage;
 
 import java.io.File;
@@ -31,7 +28,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 /*implements Initializable*/
@@ -171,10 +167,10 @@ public class GestionEmployesController implements Initializable{
 
 
 
-    private ServiceEmploye serviceEmploye = new ServiceEmploye();
-    List<Employe> employees = new ArrayList<>();
+    private ServiceUtilisateur serviceEmploye = new ServiceUtilisateur();
+    List<Utilisateur> employees = new ArrayList<>();
 
-    private List<Employe> getEmployees() {
+    private List<Utilisateur> getEmployees() {
         try {
             employees = serviceEmploye.afficher();
             return employees;
@@ -214,7 +210,7 @@ public class GestionEmployesController implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList listData = FXCollections.observableArrayList("Developpeur", "Designer");
         addEmployee_position.setItems(listData);
-        List<Employe> employees = getEmployees();
+        List<Utilisateur> employees = getEmployees();
         int column = 0;
         int row = 0;
 
@@ -226,7 +222,7 @@ public class GestionEmployesController implements Initializable{
         grid.setMinWidth(Region.USE_COMPUTED_SIZE);
 
         try {
-            for (Employe employe : employees) {
+            for (Utilisateur employe : employees) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/employee_item.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
                 Employee_itemController controller = fxmlLoader.getController();
@@ -276,7 +272,7 @@ public class GestionEmployesController implements Initializable{
         //String date = dateField.getText();
 
         // Créer l'objet Employe
-        Employe employe = new Employe();
+        Utilisateur employe = new Utilisateur();
         employe.setNom(nom);
         employe.setPrenom(prenom);
         employe.setEmail(email);

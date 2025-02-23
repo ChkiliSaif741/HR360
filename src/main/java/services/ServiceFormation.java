@@ -1,7 +1,7 @@
 package services;
 
-import entities.Employe;
 import entities.Formation;
+import entities.Utilisateur;
 import utils.MyDatabase;
 
 import java.sql.*;
@@ -69,7 +69,7 @@ public class ServiceFormation implements IService<Formation> {
             formation.setDateFormation(rs.getString("dateFormation"));
 
             if (rs.getInt("idEmploye") != 0) { // Vérifiez si l'employé existe
-                Employe employe = new Employe();
+                Utilisateur employe = new Utilisateur();
                 employe.setId(rs.getInt("idEmploye"));
                 employe.setPoste(rs.getString("poste"));
                 employe.setSalaire(rs.getInt("salaire"));

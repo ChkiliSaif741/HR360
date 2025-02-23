@@ -1,10 +1,6 @@
 package controllers;
 
-import entities.Candidat;
-import entities.Employe;
 import entities.Utilisateur;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,21 +11,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import services.ServiceCandidat;
-import services.ServiceEmploye;
 import services.ServiceUtilisateur;
 import utils.alertMessage;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class LoginController {
+
+    @FXML
+    private TextField signup_competence;
 
     @FXML
     private ImageView photoProfil;
@@ -49,8 +44,6 @@ public class LoginController {
     @FXML
     private TextField forgot_username;
 
-    @FXML
-    private ComboBox<?> forgot_selectRole;
 
     @FXML
     private Button forgot_backBtn;
@@ -68,7 +61,7 @@ public class LoginController {
     private CheckBox login_selectShowPassword;
 
     @FXML
-    private TextField login_username;
+    private TextField login_email;
 
     @FXML
     private PasswordField login_password;
@@ -98,16 +91,9 @@ public class LoginController {
     private PasswordField signup_password, signup_cPassword;
 
     @FXML
-    private ComboBox<String> signup_selectRole;
-
-    @FXML
     private Button signup_btn, signup_loginAccount;
 
     private File selectedImageFile;
-
-    private Employe utilisateurTemporaire; // Utilisez Employe si vous avez choisi la Solution 2
-    private Candidat utilisateurTemporaire1;
-
 
     public void setNom(String nom) {
         this.signup_nom.setText(nom);
@@ -138,18 +124,6 @@ public class LoginController {
         login_form.setVisible(true);
         signup_form.setVisible(false);
         changepass_form.setVisible(false);
-        signup_selectRole.setItems(FXCollections.observableArrayList(ROLE_LIST));
-        forgotListRole();
-
-        signup_selectRole.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if ("Employé".equals(newValue)) {
-                // Ouvrir la fenêtre de saisie du salaire et du poste
-                openEmployeeDetailsWindow();
-            } else if ("Candidat".equals(newValue)) {
-                // Ouvrir la fenêtre de saisie du CV
-                openCandidatDetailsWindow();
-            }
-        });
 
     }
 
@@ -166,22 +140,13 @@ public class LoginController {
         }
     }
 
-    public void forgotListRole() {
 
-        List<String> listR = new ArrayList<String>();
-        for (String role : ROLE_LIST) {
-            listR.add(role);
-        }
-        ObservableList listData = FXCollections.observableArrayList(listR);
-        forgot_selectRole.setItems(listData);
-    }
 
     public void forgotPassword() {
         alertMessage alert = new alertMessage();
 
         // Vérification des champs vides
         if (forgot_username.getText().isEmpty() ||
-                forgot_selectRole.getSelectionModel().isEmpty() ||
                 forgot_email.getText().isEmpty()) {
 
             alert.errorMessage("Veuillez remplir tous les champs vides !");
@@ -190,12 +155,11 @@ public class LoginController {
 
         // Récupération des données saisies
         String username = forgot_username.getText();
-        String role = (String) forgot_selectRole.getSelectionModel().getSelectedItem();
         String email = forgot_email.getText();
         ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
 
         try {
-            Utilisateur user = serviceUtilisateur.getUserForPasswordReset(username, role, email);
+            Utilisateur user = serviceUtilisateur.getUserForPasswordReset(username, email);
 
             if (user != null) {
                 utilisateurVerifie = user;
@@ -237,7 +201,7 @@ public class LoginController {
                 changepass_form.setVisible(false);
                 forgot_form.setVisible(false);
 
-                login_username.setText("");
+                login_email.setText("");
                 login_password.setVisible(true);
                 login_password.setText("");
                 login_showPassword.setVisible(false);
@@ -261,13 +225,13 @@ public class LoginController {
     public void loginBtnOnAction(ActionEvent actionEvent) {
         alertMessage alert = new alertMessage();
 
-        if (login_username.getText().trim().isEmpty() || login_password.getText().trim().isEmpty()) {
+        if (login_email.getText().trim().isEmpty() || login_password.getText().trim().isEmpty()) {
             alert.errorMessage("Veuillez entrer votre Username et votre mot de passe !");
             return;
         }
 
         ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-        Utilisateur utilisateur = serviceUtilisateur.getUserByNom(login_username.getText().trim());
+        Utilisateur utilisateur = serviceUtilisateur.getUserByEmail(login_email.getText().trim());
 
         if (utilisateur != null) {
             if (utilisateur.getPassword().equals(login_password.getText().trim())) {
@@ -280,7 +244,7 @@ public class LoginController {
                     if ("Farhani".equals(utilisateur.getNom()) && "zzzzz".equals(utilisateur.getPassword())) {
                         loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                         root = loader.load();
-                        Stage stage = (Stage) login_username.getScene().getWindow();
+                        Stage stage = (Stage) login_email.getScene().getWindow();
                         stage.setScene(new Scene(root));
                         stage.show();
                         return;
@@ -292,7 +256,7 @@ public class LoginController {
                         ProfileController controller1=controller.loadPage("/Profile.fxml").getController();
 
                         //controller.container.getScene().setRoot(root1);
-                        Stage stage = (Stage) login_username.getScene().getWindow();
+                        Stage stage = (Stage) login_email.getScene().getWindow();
                         stage.setScene(new Scene(root1));
                         stage.show();
 
@@ -308,7 +272,7 @@ public class LoginController {
                     }
 
                     // Changer la scène
-                    Stage stage = (Stage) login_username.getScene().getWindow();
+                    Stage stage = (Stage) login_email.getScene().getWindow();
                     stage.setScene(new Scene(root));
                     stage.setTitle("Profil");
                     stage.show();
@@ -348,13 +312,6 @@ public class LoginController {
             return;
         }
 
-        // Vérification du rôle sélectionné
-        String role = signup_selectRole.getValue();
-        if (role == null || role.isEmpty()) {
-            alert.errorMessage("Veuillez sélectionner un rôle !");
-            return;
-        }
-
         // Vérification de la correspondance des mots de passe
         if (!signup_password.getText().equals(signup_cPassword.getText())) {
             alert.errorMessage("Les mots de passe ne correspondent pas !");
@@ -367,76 +324,25 @@ public class LoginController {
         System.out.println("Chemin de l'image : " + imagePath);
 
         // Création de l'utilisateur, de l'employé ou du candidat
-        if ("Employé".equals(role)) {
-            // Créer un Employe si le rôle est "Employé"
-            Employe employe = new Employe();
-            employe.setNom(signup_nom.getText());
-            employe.setPrenom(signup_prenom.getText());
-            employe.setEmail(signup_email.getText());
-            employe.setPassword(signup_password.getText());
-            employe.setRole(role);
-            employe.setImgSrc(imagePath);
-
-            // Utiliser les informations saisies dans EmployeeDetails
-            if (utilisateurTemporaire != null) {
-                employe.setPoste(utilisateurTemporaire.getPoste());
-                employe.setSalaire(utilisateurTemporaire.getSalaire());
-                employe.setIdFormation(utilisateurTemporaire.getIdFormation());
-            }
-
-            try {
-                // Ajouter l'employé à la table Employe
-                ServiceEmploye serviceEmploye = new ServiceEmploye();
-                serviceEmploye.ajouter(employe);
-                alert.successMessage("Employé ajouté avec succès !");
-            } catch (SQLException e) {
-                alert.errorMessage("Erreur lors de l'ajout de l'employé : " + e.getMessage());
-                return;
-            }
-        } else if ("Candidat".equals(role)) {
-            // Créer un Candidat si le rôle est "Candidat"
-            Candidat candidat = new Candidat();
+        // Créer un Candidat si le rôle est "Candidat"
+            Utilisateur candidat = new Utilisateur();
             candidat.setNom(signup_nom.getText());
             candidat.setPrenom(signup_prenom.getText());
             candidat.setEmail(signup_email.getText());
             candidat.setPassword(signup_password.getText());
-            candidat.setRole(role);
+            candidat.setRole("Candidat");
             candidat.setImgSrc(imagePath);
-
-            // Utiliser les informations saisies dans CandidateDetails
-            if (utilisateurTemporaire != null) {
-                candidat.setCv(((Candidat) utilisateurTemporaire1).getCv());
-            }
+            candidat.setCompetence(signup_competence.getText());
 
             try {
                 // Ajouter le candidat à la table Candidat
-                ServiceCandidat serviceCandidat = new ServiceCandidat();
+                ServiceUtilisateur serviceCandidat = new ServiceUtilisateur();
                 serviceCandidat.ajouter(candidat);
                 alert.successMessage("Candidat ajouté avec succès !");
             } catch (SQLException e) {
                 alert.errorMessage("Erreur lors de l'ajout du candidat : " + e.getMessage());
                 return;
             }
-        } else {
-            // Créer un Utilisateur standard
-            Utilisateur utilisateur = new Utilisateur();
-            utilisateur.setNom(signup_nom.getText());
-            utilisateur.setPrenom(signup_prenom.getText());
-            utilisateur.setEmail(signup_email.getText());
-            utilisateur.setPassword(signup_password.getText());
-            utilisateur.setRole(role);
-            utilisateur.setImgSrc(imagePath);
-
-            try {
-                // Ajouter l'utilisateur à la table Utilisateur
-                ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-                serviceUtilisateur.ajouter(utilisateur);
-                alert.successMessage("Utilisateur ajouté avec succès !");
-            } catch (SQLException e) {
-                alert.errorMessage("Erreur lors de l'ajout de l'utilisateur : " + e.getMessage());
-                return;
-            }
-        }
 
         // Chargement du contrôleur de connexion
         try {
@@ -461,71 +367,13 @@ public class LoginController {
         }
     }
 
-
-    private void openEmployeeDetailsWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EmployeeDetails.fxml"));
-            Parent root = loader.load();
-
-            EmployeeDetailsController controller = loader.getController();
-
-            // Initialiser utilisateurTemporaire
-            utilisateurTemporaire = new Employe();
-            controller.setEmploye(utilisateurTemporaire);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Détails du candidat");
-            stage.showAndWait(); // Utiliser showAndWait() pour attendre que la fenêtre soit fermée
-
-            // Après la fermeture de la fenêtre, récupérer les informations saisies
-            if (utilisateurTemporaire.getPoste() != null && utilisateurTemporaire.getSalaire() > 0) {
-                System.out.println("Poste : " + utilisateurTemporaire.getPoste());
-                System.out.println("Salaire : " + utilisateurTemporaire.getSalaire());
-                System.out.println("ID Formation : " + utilisateurTemporaire.getIdFormation());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    private void openCandidatDetailsWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/CandidatDetails.fxml"));
-            Parent root = loader.load();
-
-            CandidatDetailsController controller = loader.getController();
-
-            // Initialiser utilisateurTemporaire
-            utilisateurTemporaire1 = new Candidat();
-            controller.setCandidat(utilisateurTemporaire1);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Détails du Candidat");
-            stage.showAndWait(); // Utiliser showAndWait() pour attendre que la fenêtre soit fermée
-
-            // Après la fermeture de la fenêtre, récupérer les informations saisies
-            if (utilisateurTemporaire1.getCv() != null) {
-                System.out.println("Cv : " + utilisateurTemporaire1.getCv());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-
     public void registerClearFields() {
         signup_nom.clear();
         signup_prenom.clear();
         signup_email.clear();
         signup_password.clear();
         signup_cPassword.clear();
-        signup_selectRole.getSelectionModel().clearSelection();
+        signup_competence.clear();
     }
 
 
@@ -546,7 +394,6 @@ public class LoginController {
             forgot_form.setVisible(true);
             changepass_form.setVisible(false);
 
-            forgotListRole();
         } else if (event.getSource() == changepass_backBtn) {
             login_form.setVisible(false);
             changepass_form.setVisible(false);

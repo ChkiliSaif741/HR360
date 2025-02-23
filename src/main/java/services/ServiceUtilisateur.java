@@ -16,16 +16,27 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
     }
     @Override
     public void ajouter(Utilisateur utilisateur) throws SQLException {
-
-        String req = "insert into utilisateur   (nom, prenom, email,password, role , image)"+
-                "values('"+utilisateur.getNom()+"','"+utilisateur.getPrenom()+"','"
-                +utilisateur.getEmail()+"','"+utilisateur.getPassword()+"','"+utilisateur.getRole()+"'" +
-                " , '"+utilisateur.getImgSrc()+"')";
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(req);
-        System.out.println("Utilisateur ajouté!");
+        if(utilisateur.getRole() == "Employe"){
+            String req = "insert into utilisateur   (nom, prenom, email,password, role , image,salaire,poste)"+
+                    "values('"+utilisateur.getNom()+"','"+utilisateur.getPrenom()+"','"
+                    +utilisateur.getEmail()+"','"+utilisateur.getPassword()+"','"+utilisateur.getRole()+"'" +
+                    " , '"+utilisateur.getImgSrc()+"','"+utilisateur.getSalaire()+"','"+utilisateur.getPoste()+"')";
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(req);
+            System.out.println("Utilisateur ajouté!");
+        }else{
+            String req = "insert into utilisateur   (nom, prenom, email,password, role , image , competence)"+
+                    "values('"+utilisateur.getNom()+"','"+utilisateur.getPrenom()+"','"
+                    +utilisateur.getEmail()+"','"+utilisateur.getPassword()+"','"+utilisateur.getRole()+"'" +
+                    " , '"+utilisateur.getImgSrc()+"','"+utilisateur.getCompetence()+"')";
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(req);
+            System.out.println("Utilisateur ajouté!");
+        }
 
     }
+
+
 
     /*@Override
     public void modifier(Utilisateur utilisateur) throws SQLException {
@@ -107,10 +118,10 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
         return utilisateurs;
     }
 
-    public Utilisateur getUserByNom(String nom) {
-        String req = "SELECT * FROM utilisateur WHERE nom = ?";
+    public Utilisateur getUserByEmail(String email) {
+        String req = "SELECT * FROM utilisateur WHERE email = ?";
         try (PreparedStatement ps = connection.prepareStatement(req)) {
-            ps.setString(1, nom);
+            ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -129,13 +140,12 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
         return null;
     }
 
-    public Utilisateur getUserForPasswordReset(String username, String role, String email) throws SQLException {
-        String query = "SELECT * FROM utilisateur WHERE nom = ? AND role = ? AND email = ?";
+    public Utilisateur getUserForPasswordReset(String username, String email) throws SQLException {
+        String query = "SELECT * FROM utilisateur WHERE nom = ? AND email = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
-            ps.setString(2, role);
-            ps.setString(3, email);
+            ps.setString(2, email);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
