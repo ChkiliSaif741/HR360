@@ -142,28 +142,35 @@ public class ListCandidatureBack implements Initializable {
 
         return vbox;
     }
-
+    private boolean peutEtreModifiee(Candidature candidature) {
+        return "En attente".equalsIgnoreCase(candidature.getStatut());
+    }
     @FXML
     private void modifierCandidature() {
         Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
         if (selectedCandidature != null) {
-            try {
-                // Chargement du fichier FXML
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifCandidatureBack.fxml"));
-                Parent root = loader.load();
+            // Vérifier si la candidature peut être modifiée
+            if (peutEtreModifiee(selectedCandidature)) {
+                try {
+                    // Chargement du fichier FXML
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifCandidatureBack.fxml"));
+                    Parent root = loader.load();
 
-                // Récupération du contrôleur et transmission des données
-                ModifCandidatureBack controller = loader.getController();
-                controller.setCandidatureSelectionnee(selectedCandidature);
+                    // Récupération du contrôleur et transmission des données
+                    ModifCandidatureBack controller = loader.getController();
+                    controller.setCandidatureSelectionnee(selectedCandidature);
 
-                // Création et affichage de la nouvelle fenêtre
-                Stage stage = new Stage();
-                stage.setTitle("Modifier Candidature");
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-                showAlert("Erreur", "Impossible d'ouvrir la fenêtre de modification.");
+                    // Création et affichage de la nouvelle fenêtre
+                    Stage stage = new Stage();
+                    stage.setTitle("Modifier Candidature");
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert("Erreur", "Impossible d'ouvrir la fenêtre de modification.");
+                }
+            } else {
+                showAlert("Modification interdite", "Cette candidature ne peut plus être modifiée car son statut a déjà été changé.");
             }
         } else {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature à modifier.");
@@ -243,7 +250,7 @@ public class ListCandidatureBack implements Initializable {
     }
     @FXML
     private void analyserCandidature() {
-        /*Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
+        Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
         if (selectedCandidature != null) {
             // Lancer l'analyse du CV et de l'offre d'emploi
             try {
@@ -266,8 +273,8 @@ public class ListCandidatureBack implements Initializable {
             }
         } else {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature à analyser.");
-        }*/
-            Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
+        }
+           /* Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
             if (selectedCandidature != null && selectedCandidature.getCv() != null) {
                 File cvFile = new File(selectedCandidature.getCv());
 
@@ -291,11 +298,11 @@ public class ListCandidatureBack implements Initializable {
                 }
             } else {
                 showAlert("Aucune sélection", "Veuillez sélectionner une candidature avec un CV valide.");
-            }
+            }*/
 
     }
-    private String sendResumeToApi(String apiUrl, String apiKey, File cvFile) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();
+     /*private String sendResumeToApi(String apiUrl, String apiKey, File cvFile) throws IOException {
+       HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/octet-stream");
         connection.setRequestProperty("apikey", apiKey);
@@ -323,7 +330,7 @@ public class ListCandidatureBack implements Initializable {
         } else {
             return "Erreur API : " + responseCode;
         }
-    }
+    }*/
     private void showParsingResults(String jsonResponse) {
         // Affichage des résultats dans le terminal
         System.out.println("Résultats de l'analyse du CV :\n" + jsonResponse);

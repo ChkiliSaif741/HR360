@@ -12,13 +12,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.List;
-import java.util.Map;
 
 public class UploadJobOffer {
     @FXML
@@ -57,13 +54,9 @@ public class UploadJobOffer {
     @FXML
     private Label resultMessageLabel; // Ajoutez ce Label pour afficher le message de succès ou de refus
 
-    public void setResultMessageLabel(Label resultMessageLabel) {
-        this.resultMessageLabel = resultMessageLabel;
-    }
-
     private void analyseCvWithJobOffer(File cvFile, File jobOfferFile) throws IOException, InterruptedException {
         String url = "https://cv-resume-to-job-match-analysis-api.p.rapidapi.com/api:QQ6fvSXH/good_fit_external_API";
-        String apiKey = "45ceacae6bmshcdb32db2a45a369p150a62jsn97789d9d3d28"; // Clé API
+        String apiKey = "6255c8b044msh28badce0bfe5958p1b9f2ejsn8cacbdcfe517"; // Clé API
 
         HttpClient client = HttpClient.newHttpClient();
         String boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
@@ -125,9 +118,9 @@ public class UploadJobOffer {
         // Affichage du message basé sur le score de correspondance
         if ("Non disponible".equals(suitabilityScore)) {
             resultMessageLabel.setText("Le score de correspondance est indisponible.");
-        } else if (suitabilityScore.contains("Score faible") || suitabilityScore.equalsIgnoreCase("APPLICATION LITTLE CORRESPONDING")) {
+        } else if (suitabilityScore.contains("APPLICATION LITTLE CORRESPONDING") || suitabilityScore.equalsIgnoreCase("APPLICATION LITTLE CORRESPONDING")) {
             resultMessageLabel.setText("Score faible : peu de correspondance.");
-        } else if (suitabilityScore.contains("Score élevé") || suitabilityScore.equalsIgnoreCase("APPLICATION STRONGLY MATCHED")) {
+        } else if (suitabilityScore.contains("APPLICATION STRONGLY MATCHED") || suitabilityScore.equalsIgnoreCase("APPLICATION STRONGLY MATCHED")) {
             resultMessageLabel.setText("Score élevé : correspondance forte.");
         } else {
             resultMessageLabel.setText("Résultat inconnu.");
@@ -164,11 +157,6 @@ public class UploadJobOffer {
 
         return suitabilityScore;
     }
-
-
-
-
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

@@ -53,7 +53,7 @@
         <Button text="Analyser" onAction="#analyserCandidature" styleClass="modernButton">
             <graphic>
                 <ImageView>
-                    <Image url="@icons/updt.png"/>
+                    <Image url="@icons/analysing.png"/>
                     <fitWidth>30</fitWidth>
                     <fitHeight>30</fitHeight>
                 </ImageView>
