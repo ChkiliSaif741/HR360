@@ -58,11 +58,21 @@ public class AIProjectGeneratorController {
                 generator.GenerateTasksAndProjectDescript(nomTF.getText(),DateDebut,DateFin,tacheNbr);
                 String projetDescript=generator.getProjectDescrip();
                 List<Tache> tacheList=generator.getTasks();
+                Projet projet=new Projet(nomTF.getText(),projetDescript,Date.valueOf(DateDebut),Date.valueOf(DateFin));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                Parent parent=loader.load();
+                Controller con=loader.getController();
+                AIConfirmTasksGeneratorController controller=con.loadPage("/AIConfirmTasksGenerator.fxml").getController();
+                controller.setProjet(projet);
+                controller.setTacheList(tacheList);
+                nomTF.getScene().setRoot(parent);
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erreur");
                 alert.setContentText("Le nombre de tache doit etre entier");
                 alert.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             /*
             ServiceProjet serviceProjet = new ServiceProjet();
