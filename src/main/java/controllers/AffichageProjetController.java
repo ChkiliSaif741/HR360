@@ -134,4 +134,17 @@ public class AffichageProjetController implements Initializable {
         SearchBar.clear();
     }
 
+    @FXML
+    void GenerateProject(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        try {
+            Parent parent = loader.load();
+            Controller con=loader.getController();
+            con.loadPage("/AIProjectGenerator.fxml");
+            scrollProjet.getScene().setRoot(parent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

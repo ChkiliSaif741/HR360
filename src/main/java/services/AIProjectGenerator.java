@@ -1,171 +1,222 @@
 package services;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.*;
+import entities.TacheStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import entities.Projet;
 import entities.Tache;
-import entities.TacheStatus;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AIProjectGenerator {
-    private static final String API_KEY = "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"; // Replace with your API Key
-    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
-    public static void main(String[] args) {
-        // Example: Creating a project
-        Projet projet = new Projet("Website Redesign", "", Date.valueOf("2025-03-01"), Date.valueOf("2025-03-30"));
+    private static final String API_URL = "https://api.together.xyz/v1/chat/completions";  // Together AI API endpoint
+    private static final String API_KEY = "e499094f92e24b0998442f639ba731339642e363798e4b2f96459c8c40725dc7";  // 🔹 Replace with your Together AI API key
 
-        // Generate AI project details with tasks
-        Projet generatedProject = generateProjectDetails(projet);
+    private List<Tache> tasks = new ArrayList<>();
 
-        if (generatedProject != null) {
-            System.out.println(generatedProject);
-        }
-    }
+    private String projectDescrip;
 
-    public static Projet generateProjectDetails(Projet projet) {
-        int retries = 3;
-        int waitTime = 2000;
+    public static String getAIResponse(String prompt) {
+        try {
+            // Create JSON request body
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("model", "meta-llama/Llama-3.3-70B-Instruct-Turbo");  // Correct model name
+            requestBody.put("temperature", 0.7);
+            requestBody.put("max_tokens", 1000);
 
-        for (int attempt = 1; attempt <= retries; attempt++) {
-            try {
-                Thread.sleep(1000);
+            // Define messages array for chat completion
+            JSONArray messages = new JSONArray();
+            JSONObject userMessage = new JSONObject();
+            userMessage.put("role", "user");
+            userMessage.put("content", prompt);
+            messages.put(userMessage);
 
-                URL url = new URL(API_URL);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setDoOutput(true);
+            requestBody.put("messages", messages);
 
-                // AI Prompt with project start and end dates
-                String prompt = "Generate a project description for '" + projet.getNom() + "' with start date " +
-                        projet.getDateDebut() + " and end date " + projet.getDateFin() + ". "
-                        + "Then provide a list of tasks, each with a name, description, start date, and end date. "
-                        + "Ensure that all tasks start and end within the project's time frame.";
+            // Log the request body
+            System.out.println("Request Body: " + requestBody.toString());
 
-                JSONObject jsonRequest = new JSONObject();
-                jsonRequest.put("model", "gpt-4o-mini");
-                jsonRequest.put("temperature", 0.7);
-                jsonRequest.put("max_tokens", 800);
+            // Send API request
+            HttpURLConnection connection = (HttpURLConnection) new URL(API_URL).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
 
-                JSONArray messages = new JSONArray();
-                messages.put(new JSONObject().put("role", "system").put("content", "You are an AI assistant specializing in project management."));
-                messages.put(new JSONObject().put("role", "user").put("content", prompt));
-
-                jsonRequest.put("messages", messages);
-
-                try (OutputStream os = connection.getOutputStream()) {
-                    byte[] input = jsonRequest.toString().getBytes("utf-8");
-                    os.write(input, 0, input.length);
-                }
-
-                int statusCode = connection.getResponseCode();
-                if (statusCode == 200) {
-                    try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
-                        StringBuilder response = new StringBuilder();
-                        String responseLine;
-                        while ((responseLine = br.readLine()) != null) {
-                            response.append(responseLine.trim());
-                        }
-                        return parseAIResponse(response.toString(), projet);
-                    }
-                } else if (statusCode == 429) {
-                    System.out.println("API rate limit exceeded. Retrying in " + (waitTime / 1000) + " seconds...");
-                    Thread.sleep(waitTime);
-                    waitTime *= 2;
-                } else {
-                    System.out.println("Error: API request failed with status code " + statusCode);
-                    System.out.println("Response Message: " + connection.getResponseMessage());
-                    return null;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = requestBody.toString().getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
             }
-        }
-        return null;
-    }
 
-    public static Projet parseAIResponse(String jsonResponse, Projet projet) {
-        JSONObject responseObject = new JSONObject(jsonResponse);
-        JSONArray choices = responseObject.getJSONArray("choices");
+            // Log the response code
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
 
-        if (choices.length() > 0) {
-            String content = choices.getJSONObject(0).getJSONObject("message").getString("content");
-            System.out.println(content);
-            // Extract project description and tasks from AI response
-            String[] sections = content.split("\n\n");
-            String projectDescription = cleanProjectDescription(sections[2]);
-            projet.setDescription(projectDescription);
-
-            List<Tache> tasks = new ArrayList<>();
-            for (int i = 1; i < sections.length; i++) {
-                String[] taskDetails = sections[i].split("\n");
-                if (taskDetails.length >= 4) {
-                    String taskName = cleanTaskName(taskDetails[0]);  // Clean task name
-                    String taskDescription = cleanTaskDescription(taskDetails[1]);
-                    LocalDate startDate = DateParser.parseDate(taskDetails[2]);
-                    LocalDate endDate = DateParser.parseDate(taskDetails[3]);
-                    if (startDate == null || endDate == null) {
-                        System.err.println("❌ Skipping task due to invalid date.");
-                        return null;
+            // Log the error response if the request fails
+            if (responseCode != 200) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
+                    StringBuilder errorResponse = new StringBuilder();
+                    String errorLine;
+                    while ((errorLine = br.readLine()) != null) {
+                        errorResponse.append(errorLine.trim());
                     }
-                        // Ensure task dates are within project dates
-                        LocalDate projectStart = projet.getDateDebut().toLocalDate();
-                        LocalDate projectEnd = projet.getDateFin().toLocalDate();
-
-                        if (startDate.isBefore(projectStart)) startDate = projectStart;
-                        if (endDate.isAfter(projectEnd)) endDate = projectEnd;
-
-                        tasks.add(new Tache(taskName, taskDescription, Date.valueOf(startDate), Date.valueOf(endDate), TacheStatus.EN_COURS, projet.getId()));
-                    }
+                    System.err.println("Error Response: " + errorResponse.toString());
                 }
-
-                projet.setDescription(projectDescription);
-                System.out.println("\n=== AI Generated Project Details ===");
-                System.out.println(projet);
-
-                for (Tache tache : tasks) {
-                    System.out.println(tache);
-                }
-
-                return projet;
+                throw new IOException("Error calling Together AI API: " + responseCode);
             }
+
+            // Read and log the success response
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                System.out.println("Success Response: " + response.toString());
+                return response.toString();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
-    public static String cleanTaskName(String rawName) {
-        if (rawName == null) return "";
-
-        // Remove numbers at the beginning (e.g., "1. ", "2. ", etc.)
-        rawName = rawName.replaceAll("^\\d+\\.\\s*", "");
-
-        // Remove "**Task Name:**" and any markdown-style "**"
-        rawName = rawName.replace("**Task Name:**", "").replace("**", "").trim();
-
-        return rawName;
     }
 
-    public static String cleanTaskDescription(String rawDescription) {
-        if (rawDescription == null) return "";
+    public void GenerateTasksAndProjectDescript(String projectName,LocalDate date1,LocalDate date2,int nbrTasks) {
+        String prompt = "Generate a structured JSON project with "+nbrTasks+" tasks for a project named "+projectName
+                +" with start date: "+date1.toString()+" and end date: "+date2.toString()+"\n"
+                + "The JSON must follow this exact format without any extra text: "
+                + "{ \"projectName\": \"Project Name\", "
+                + "\"description\": \"Project Description\", "
+                + "\"startDate\": \"YYYY-MM-DD\", "
+                + "\"endDate\": \"YYYY-MM-DD\", "
+                + "\"tasks\": [ { \"name\": \"Task Name\", \"description\": \"Task Description\", "
+                + "\"startDate\": \"YYYY-MM-DD\", \"endDate\": \"YYYY-MM-DD\" } ] }"
+                + " Ensure all task dates are within the project start and end dates.Allow dates overlapping"
+                + "The task names should be meaningful and reflect the purpose of the task. "
+                + "The task descriptions should be detailed and explain what the task involves. "
+                + "For example, instead of 'Task 1', use 'Project Planning and Kickoff' as the task name, "
+                + "and provide a detailed description like 'Define project scope, objectives, and deliverables. "
+                + "Identify key stakeholders and set up initial project timelines.";
 
-        // Remove "**Description:**" and markdown-style "**"
-        rawDescription = rawDescription.replace("**Description:**", "").replace("**", "").trim();
+        String aiResponse = getAIResponse(prompt);
+        System.out.println("AI Response: " + aiResponse);
+        Projet projet=parseAIResponse(aiResponse);
+        this.projectDescrip=projet.getDescription();
+    }
+    public static void main(String[] args) {
+        /*
+        String projectName="RH application";
+        String date1="2025-02-25";
+        String date2="2025-04-25";
+        int nbrTasks=3;
+        String prompt = "Generate a structured JSON project with "+nbrTasks+" tasks for a project named "+projectName
+                +" with start date: "+date1+" and end date: "+date2+"\n"
+                + "The JSON must follow this exact format without any extra text: "
+                + "{ \"projectName\": \"Project Name\", "
+                + "\"description\": \"Project Description\", "
+                + "\"startDate\": \"YYYY-MM-DD\", "
+                + "\"endDate\": \"YYYY-MM-DD\", "
+                + "\"tasks\": [ { \"name\": \"Task Name\", \"description\": \"Task Description\", "
+                + "\"startDate\": \"YYYY-MM-DD\", \"endDate\": \"YYYY-MM-DD\" } ] }"
+                + " Ensure all task dates are within the project start and end dates.Allow dates overlapping"
+                + "The task names should be meaningful and reflect the purpose of the task. "
+                + "The task descriptions should be detailed and explain what the task involves. "
+                + "For example, instead of 'Task 1', use 'Project Planning and Kickoff' as the task name, "
+                + "and provide a detailed description like 'Define project scope, objectives, and deliverables. "
+                + "Identify key stakeholders and set up initial project timelines.";
 
-        return rawDescription;
+        String aiResponse = getAIResponse(prompt);
+        System.out.println("AI Response: " + aiResponse);
+        Projet projet=parseAIResponse(aiResponse);
+        System.out.println(projet);*/
     }
 
-    public static String cleanProjectDescription(String rawDescription) {
-        if (rawDescription == null) return "";
+    public  Projet parseAIResponse(String aiResponse) {
+        try {
+            if (aiResponse == null || aiResponse.isEmpty()) {
+                throw new IllegalArgumentException("AI response is empty");
+            }
 
-        rawDescription = rawDescription.replace("**Project Overview:**  \n", "").replace("**", "").trim();
+            // Parse AI response JSON
+            JSONObject responseObject = new JSONObject(aiResponse);
+            JSONArray choices = responseObject.getJSONArray("choices");
+            if (choices.length() == 0) {
+                throw new IllegalArgumentException("No valid choices in AI response");
+            }
 
-        return rawDescription;
+            // Extract content and convert to JSON
+            String content = choices.getJSONObject(0).getJSONObject("message").getString("content");
+            JSONObject projectData = new JSONObject(content);
+
+            // Extract project details
+            String name = projectData.getString("projectName");
+            String description = projectData.getString("description");
+            LocalDate startDate = LocalDate.parse(projectData.getString("startDate"));
+            LocalDate endDate = LocalDate.parse(projectData.getString("endDate"));
+
+            // Convert to SQL Date
+            Date sqlStartDate = Date.valueOf(startDate);
+            Date sqlEndDate = Date.valueOf(endDate);
+
+            // Create Project object
+            Projet project = new Projet(name, description, sqlStartDate, sqlEndDate);
+
+            // Extract tasks
+            List<Tache> taskList = new ArrayList<>();
+            JSONArray tasks = projectData.getJSONArray("tasks");
+            for (int i = 0; i < tasks.length(); i++) {
+                JSONObject taskObj = tasks.getJSONObject(i);
+
+                String taskName = taskObj.getString("name");
+                String taskDesc = taskObj.getString("description");
+                LocalDate taskStartDate = LocalDate.parse(taskObj.getString("startDate"));
+                LocalDate taskEndDate = LocalDate.parse(taskObj.getString("endDate"));
+
+                // Ensure tasks are within project dates
+                if (taskStartDate.isBefore(startDate) || taskEndDate.isAfter(endDate)) {
+                    System.err.println("❌ Task " + taskName + " has dates outside project range!");
+                    continue;
+                }
+
+                // Convert to SQL Date
+                Date sqlTaskStart = Date.valueOf(taskStartDate);
+                Date sqlTaskEnd = Date.valueOf(taskEndDate);
+
+                // Create Task object
+                Tache task = new Tache(taskName, taskDesc, sqlTaskStart, sqlTaskEnd, TacheStatus.A_FAIRE, project.getId());
+                taskList.add(task);
+            }
+
+            // Print tasks
+            for (Tache task : taskList) {
+                System.out.println(task);
+            }
+            this.tasks.clear();
+            this.tasks.addAll(taskList);
+            return project;
+        } catch (Exception e) {
+            System.err.println("Error parsing AI response: " + e.getMessage());
+            return null;
+        }
     }
 
+    public List<Tache> getTasks() {
+        return tasks;
+    }
+
+    public String getProjectDescrip() {
+        return projectDescrip;
+    }
 }
