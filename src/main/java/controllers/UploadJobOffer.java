@@ -1,4 +1,5 @@
 package controllers;
+import com.itextpdf.layout.Document;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.stage.FileChooser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +18,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
+import java.io.FileOutputStream;
+
 
 public class UploadJobOffer {
     @FXML
@@ -24,6 +31,7 @@ public class UploadJobOffer {
     private Label fileNameLabel;
 
     private File cvFile;
+    private File analysisPdfFile; // Variable pour stocker le fichier PDF
 
     public void setCvFile(File cvFile) {
         this.cvFile = cvFile;
@@ -101,6 +109,8 @@ public class UploadJobOffer {
         // Debug: afficher le corps de la réponse
         String responseBody = response.body().trim();
         System.out.println("Response Body: " + responseBody); // Afficher la réponse pour le débogage
+        // Générer le PDF avec l’analyse complète une fois responseBody défini
+        generateAnalysisPdf(responseBody);
 
         String suitabilityScore = "Non disponible"; // Valeur par défaut
 
@@ -133,6 +143,33 @@ public class UploadJobOffer {
             resultMessageLabel.setText("Erreur lors de l'analyse : " + response.statusCode());
         }
     }
+    private void generateAnalysisPdf(String analysisContent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le rapport d'analyse");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier PDF", "*.pdf"));
+        File saveFile = fileChooser.showSaveDialog(uploadButton.getScene().getWindow());
+
+        if (saveFile != null) {
+            try {
+                PdfWriter writer = new PdfWriter(new FileOutputStream(saveFile));
+                PdfDocument pdfDoc = new PdfDocument(writer);
+                Document document = new Document(pdfDoc);
+
+                document.add(new Paragraph("Résultat d'Analyse de l'Offre et du CV\n\n").setBold().setFontSize(18));
+                document.add(new Paragraph(analysisContent));
+
+                document.close();
+
+                // Stocker le fichier PDF généré dans la variable analysisPdfFile
+                analysisPdfFile = saveFile;
+
+                showAlert("Succès", "Le PDF a été généré avec succès !");
+            } catch (Exception e) {
+                showAlert("Erreur", "Impossible de générer le PDF : " + e.getMessage());
+            }
+        }
+    }
+
 
     private String extractSuitabilityScore(String responseBody) {
         String suitabilityScore = "Non disponible";
@@ -157,6 +194,20 @@ public class UploadJobOffer {
 
         return suitabilityScore;
     }
+    @FXML
+    private void handleOpenPdf() {
+        if (analysisPdfFile != null && analysisPdfFile.exists()) {
+            try {
+                Desktop.getDesktop().open(analysisPdfFile);
+            } catch (IOException e) {
+                showAlert("Erreur", "Impossible d'ouvrir le fichier PDF : " + e.getMessage());
+            }
+        } else {
+            showAlert("Fichier introuvable", "Aucun rapport généré. Veuillez d'abord analyser un CV.");
+        }
+    }
+
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

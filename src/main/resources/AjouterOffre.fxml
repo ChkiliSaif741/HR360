@@ -27,6 +27,9 @@
     <VBox spacing="10">
         <TextArea fx:id="descriptionField" promptText="Entrez la description de l'offre" styleClass="modernTextArea" />
         <Label fx:id="descriptionError" styleClass="error-label" />
+
+        <!-- Bouton pour générer une description avec AI -->
+        <Button text="Générer avec AI" onAction="#genererDescriptionAI" styleClass="generate-button"/>
     </VBox>
 
     <VBox spacing="10">
