@@ -23,6 +23,7 @@ public class MainFx extends Application {
             primaryStage.setScene(scene);
             primaryStage.setTitle("Entretien");
             primaryStage.show();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

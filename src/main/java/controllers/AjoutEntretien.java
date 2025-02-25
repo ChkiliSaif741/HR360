@@ -7,21 +7,28 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import services.ServiceEntretien;
 import utils.statut;
 import utils.type;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+
 
 public class AjoutEntretien implements Initializable {
     @FXML
@@ -228,37 +235,43 @@ public class AjoutEntretien implements Initializable {
         }
     }
 
-    @FXML
-    public void AddEntretien(ActionEvent actionEvent) {
+    //@FXML
+    /*public void AddEntretien(ActionEvent actionEvent) throws GeneralSecurityException, IOException {
         // Récupérer les valeurs des champs
         LocalDate date = datePicker.getValue();
         String heureText = heureField.getText();
         type type = (utils.type) typeComboBox.getValue();
         statut statut = (utils.statut) statutComboBox.getValue();
-        String lienMeet = lienMeetField.getText();
+        //String lienMeet = lienMeetField.getText();
         String localisation = localisationField.getText();
         Integer idCandidature = (Integer) idCandidatureComboBox.getValue();
+
+        String meetLink = GoogleCalendarAPI.createEventWithMeet();
+
+        //Entretien entretien = new Entretien();
+
+
 
         // Contrôle de saisie
         if (date == null || heureText == null || heureText.isEmpty() || type == null || statut == null || idCandidature == null) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Tous les champs obligatoires doivent être remplis.");
             return;
-        }
+        }*/
 
         // Vérifier si le type est "En_ligne" et que le lien Meet est vide
-        if (type == type.En_ligne && (lienMeet == null || lienMeet.isEmpty())) {
+        /*if (type == type.En_ligne && (lienMeet == null || lienMeet.isEmpty())) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le lien Meet est obligatoire pour un entretien en ligne.");
             return;
-        }
+        }*/
 
         // Vérifier si le type est "Presentiel" et que la localisation est vide
-        if (type == type.Presentiel && (localisation == null || localisation.isEmpty())) {
+        /*if (type == type.Presentiel && (localisation == null || localisation.isEmpty())) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "La localisation est obligatoire pour un entretien présentiel.");
             return;
-        }
+        }*/
 
         // Convertir l'heure en LocalTime
-        LocalTime heure;
+        /*LocalTime heure;
         try {
             heure = LocalTime.parse(heureText);
         } catch (DateTimeParseException e) {
@@ -273,7 +286,9 @@ public class AjoutEntretien implements Initializable {
         }
 
         // Créer l'objet Entretien
-        Entretien entretien = new Entretien(date, heure, type, statut, lienMeet, localisation, idCandidature);
+        Entretien entretien = new Entretien(date, heure, type, statut,  meetLink, localisation, idCandidature);
+
+        //entretien.setLien_meet(meetLink);
 
         // Ajouter l'entretien dans la base de données
         try {
@@ -313,6 +328,8 @@ public class AjoutEntretien implements Initializable {
 
                 // Fermer la fenêtre actuelle
                 //currentStage.close();
+                System.out.println("Entretien ajouté avec succès ! Lien Meet : " + meetLink);
+
             } catch (IOException e) {
                 e.printStackTrace();
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre d'affichage.");
@@ -320,8 +337,77 @@ public class AjoutEntretien implements Initializable {
 
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible d'ajouter l'entretien : " + e.getMessage());
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+
+
+    @FXML
+    public void AddEntretien(ActionEvent actionEvent) throws IOException, URISyntaxException {
+        // Récupérer les valeurs des champs
+        LocalDate date = datePicker.getValue();
+        String heureText = heureField.getText();
+        type type = (utils.type) typeComboBox.getValue();
+        statut statut = (utils.statut) statutComboBox.getValue();
+        String localisation = localisationField.getText();
+        Integer idCandidature = (Integer) idCandidatureComboBox.getValue();
+
+        // Contrôle de saisie
+        if (date == null || heureText == null || heureText.isEmpty() || type == null || statut == null || idCandidature == null) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Tous les champs obligatoires doivent être remplis.");
+            return;
+        }
+
+        // Vérifier si le type est "Presentiel" et que la localisation est vide
+        if (type == type.Presentiel && (localisation == null || localisation.isEmpty())) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "La localisation est obligatoire pour un entretien présentiel.");
+            return;
+        }
+
+        // Convertir l'heure en LocalTime
+        LocalTime heure;
+        try {
+            heure = LocalTime.parse(heureText);
+        } catch (DateTimeParseException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le format de l'heure est invalide. Utilisez HH:mm.");
+            return;
+        }
+
+
+
+        // Créer l'objet Entretien
+
+        Entretien entretien = new Entretien(date, heure, type, statut, null, localisation, idCandidature);
+
+        // Ajouter l'entretien dans la base de données
+        try {
+            serviceEntretien.ajouter(entretien);
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "L'entretien a été ajouté avec succès !");
+
+            // Réinitialiser les champs après l'ajout
+            reinitialiserChamps();
+
+            // Naviguer vers la page d'affichage
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root = loader.load();
+            Controller con = loader.getController();
+            con.loadPage("/afficheentretien.fxml");
+            statutComboBox.getScene().setRoot(root);
+
+            System.out.println("Entretien ajouté avec succès !");
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter l'entretien : " + e.getMessage());
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
         }
     }
+
+
+
 
     // Méthode pour réinitialiser les champs après l'ajout
     private void reinitialiserChamps() {

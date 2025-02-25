@@ -22,7 +22,7 @@
             <Label fx:id="labelstatut" text="Statut" />
                 <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="455.0" />
             <Label fx:id="labellienmeet" text="Lien meet" />
-                <TextField fx:id="lienMeetField" />
+                <TextField fx:id="lienMeetField" promptText="Lien Meet" editable="false"/>
             <Label fx:id="labellocalisation" text="Localisation" />
                 <TextField fx:id="localisationField" />
             <Label fx:id="labelidcandidature" text="Id candidature" />

@@ -6,21 +6,24 @@ import utils.MyDatabase;
 import utils.statut;
 import utils.type;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceEntretien implements IService<Entretien> {
 
     Connection connection;
+    private String accessToken;
+
     public ServiceEntretien(){
         connection= MyDatabase.getInstance().getConnection();
 
     }
 
-    @Override
+    /*@Override
     public void ajouter(Entretien entretien) throws SQLException {
         if ((entretien.getType() == type.En_ligne && (entretien.getLien_meet() == null || entretien.getLien_meet().isEmpty())) ||
                 (entretien.getType() == type.Presentiel && (entretien.getLocalisation() == null || entretien.getLocalisation().isEmpty()))) {
@@ -45,7 +48,37 @@ public class ServiceEntretien implements IService<Entretien> {
         preparedStatement.executeUpdate();
         System.out.println("Entretien ajouté avec succès !");
 
+    }*/
+
+
+    @Override
+    public void ajouter(Entretien entretien) throws SQLException, GeneralSecurityException, IOException {
+        String meetLink = null;
+
+        if (entretien.getType() == type.En_ligne) {
+            ZonedDateTime startDateTime = ZonedDateTime.of(entretien.getDate(), entretien.getHeure(), ZoneId.systemDefault());
+            ZonedDateTime endDateTime = startDateTime.plusHours(1); // Durée par défaut 1 heure
+            meetLink = GoogleMeetAPI.createMeetLink(startDateTime, endDateTime);
+        }
+
+        entretien.setLien_meet(meetLink);
+
+        String req = "INSERT INTO entretien (date, heure, type, statut, lien_meet, localisation, idCandidature) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(req)) {
+            preparedStatement.setDate(1, Date.valueOf(entretien.getDate()));
+            preparedStatement.setTime(2, Time.valueOf(entretien.getHeure()));
+            preparedStatement.setString(3, entretien.getType().name());
+            preparedStatement.setString(4, entretien.getStatut().name());
+            preparedStatement.setString(5, entretien.getLien_meet());
+            if (entretien.getType() == type.En_ligne) {
+                preparedStatement.setNull(6, Types.VARCHAR);
+            }
+            preparedStatement.setInt(7, entretien.getIdCandidature());
+            preparedStatement.executeUpdate();
+            System.out.println("Entretien ajouté avec succès ! Lien Meet : " + meetLink);
+        }
     }
+
 
     @Override
     public void modifier(Entretien entretien) throws SQLException {
