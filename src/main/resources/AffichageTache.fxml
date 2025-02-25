@@ -15,7 +15,7 @@
             <VBox fx:id="contentBox" maxWidth="670.0" prefHeight="387.0" prefWidth="670.0" spacing="10.0" />
          </content>
       </ScrollPane>
-      <HBox layoutX="451.0" layoutY="32.0" spacing="50.0">
+      <HBox layoutX="409.0" layoutY="31.0" spacing="50.0">
          <children>
             <Button fx:id="btnAdd" onAction="#AjouterTache" styleClass="button-action-add" stylesheets="@stylesProjet.css">
                <graphic>
@@ -32,9 +32,14 @@
                   <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" size="2em" />
                </graphic>
             </Button>
+            <Button layoutX="108.0" layoutY="10.0" onAction="#ExportExcel" styleClass="button-action-add" stylesheets="@stylesProjet.css" text="Export">
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="DOWNLOAD" size="2em" />
+               </graphic>
+            </Button>
          </children>
       </HBox>
-      <HBox layoutX="108.0" layoutY="36.0" prefHeight="38.0" prefWidth="305.0" styleClass="search-bar-container" stylesheets="@stylesProjet.css">
+      <HBox layoutX="42.0" layoutY="35.0" prefHeight="38.0" prefWidth="305.0" styleClass="search-bar-container" stylesheets="@stylesProjet.css">
          <children>
             <TextField fx:id="SearchBar" maxWidth="309.0" minWidth="280.0" onKeyTyped="#SearchTasks" prefHeight="38.0" prefWidth="279.0" styleClass="search-field" />
             <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="37.0" styleClass="search-button">

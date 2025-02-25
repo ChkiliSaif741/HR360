@@ -10,6 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import services.ExcelExporterProjet;
+import services.ServiceProjet;
 import services.ServiceTache;
 
 import java.io.IOException;
@@ -114,6 +117,16 @@ public class AffichageTacheController implements Initializable {
         }
     }
 
-
+    @FXML
+    void ExportExcel(ActionEvent event) {
+        ExcelExporterProjet excelExporterProjet = new ExcelExporterProjet();
+        ServiceProjet serviceProjet=new ServiceProjet();
+        try {
+            Projet projet=serviceProjet.getById(idProjet);
+            excelExporterProjet.exportToExcel(projet,taches,(Stage) contentBox.getScene().getWindow());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
