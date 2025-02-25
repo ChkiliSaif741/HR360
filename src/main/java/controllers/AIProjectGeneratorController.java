@@ -11,7 +11,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import services.AIProjectGenerator;
 import services.ServiceProjet;
-
+import javafx.concurrent.Task;
+import javafx.application.Platform;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -36,66 +37,66 @@ public class AIProjectGeneratorController {
     void GenerateProject(ActionEvent event) {
         LocalDate DateDebut = dateStart.getValue();
         LocalDate DateFin = dateEnd.getValue();
+
         if (nomTF.getText().isEmpty() || TasksNumber.getText().isEmpty() || DateDebut == null || DateFin == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setContentText("Veuillez remplir tous les champs !");
-            alert.show();
+            showAlert("Erreur", "Veuillez remplir tous les champs !");
         } else if (DateDebut.isAfter(DateFin)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setContentText("La date de début est avant la date fin !");
-            alert.show();
-        } else if (DateDebut.isBefore(LocalDate.now())|| DateFin.isBefore(LocalDate.now())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setContentText("Les dates doivent etre apres aujourdh'hui: "+LocalDate.now());
-            alert.show();
+            showAlert("Erreur", "La date de début est avant la date fin !");
+        } else if (DateDebut.isBefore(LocalDate.now()) || DateFin.isBefore(LocalDate.now())) {
+            showAlert("Erreur", "Les dates doivent être après aujourd'hui: " + LocalDate.now());
         } else {
             try {
-                int tacheNbr=Integer.parseInt(TasksNumber.getText());
+                int tacheNbr = Integer.parseInt(TasksNumber.getText());
                 AIProjectGenerator generator = new AIProjectGenerator();
-                generator.GenerateTasksAndProjectDescript(nomTF.getText(),DateDebut,DateFin,tacheNbr);
-                String projetDescript=generator.getProjectDescrip();
-                List<Tache> tacheList=generator.getTasks();
-                Projet projet=new Projet(nomTF.getText(),projetDescript,Date.valueOf(DateDebut),Date.valueOf(DateFin));
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
-                Parent parent=loader.load();
-                Controller con=loader.getController();
-                AIConfirmTasksGeneratorController controller=con.loadPage("/AIConfirmTasksGenerator.fxml").getController();
-                controller.setProjet(projet);
-                controller.setTacheList(tacheList);
-                nomTF.getScene().setRoot(parent);
+                // Run in a separate thread to prevent UI freezing
+                Task<Void> task = new Task<>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        generator.GenerateTasksAndProjectDescript(nomTF.getText(), DateDebut, DateFin, tacheNbr);
+                        return null;
+                    }
+                };
+
+                task.setOnSucceeded(event1 -> {
+                    Platform.runLater(() -> {
+                        String projetDescript = generator.getProjectDescrip();
+                        List<Tache> tacheList = generator.getTasks();
+                        Projet projet = new Projet(nomTF.getText(), projetDescript, Date.valueOf(DateDebut), Date.valueOf(DateFin));
+
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                            Parent parent = loader.load();
+                            Controller con = loader.getController();
+                            AIConfirmTasksGeneratorController controller = con.loadPage("/AIConfirmTasksGenerator.fxml").getController();
+                            controller.setProjet(projet);
+                            controller.setTacheList(tacheList);
+                            nomTF.getScene().setRoot(parent);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                });
+
+                task.setOnFailed(event1 -> {
+                    showAlert("Erreur", "Erreur lors de la génération du projet: " + task.getException().getMessage());
+                });
+
+                new Thread(task).start(); // Start background task
+
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setContentText("Le nombre de tache doit etre entier");
-                alert.show();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                showAlert("Erreur", "Le nombre de tâches doit être un entier.");
             }
-            /*
-            ServiceProjet serviceProjet = new ServiceProjet();
-            Projet projet = new Projet(nomTF.getText(), descriptionTF.getText(), Date.valueOf(DateDebut), Date.valueOf(DateFin));
-            try {
-                serviceProjet.ajouter(projet);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setContentText("Projet a ete ajouté avec succes !");
-                alert.show();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
-                Parent parent=loader.load();
-                Controller con=loader.getController();
-                con.loadPage("/AffichageProjet.fxml");
-                nomTF.getScene().setRoot(parent);
-            } catch (SQLException | IOException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setContentText(e.getMessage());
-                alert.show();
-            }*/
         }
     }
+
+    // Utility method to show alerts
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.show();
+    }
+
     public static boolean isParsableToInt(String str) {
         try {
             Integer.parseInt(str);
