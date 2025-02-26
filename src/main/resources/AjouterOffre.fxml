@@ -4,20 +4,18 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.AjouterOffre"
-      alignment="CENTER" spacing="15" styleClass="root" stylesheets="@/Styles/style1.css"
-      prefWidth="100" prefHeight="200">
+<VBox alignment="CENTER" prefHeight="400" prefWidth="400" spacing="1" styleClass="root" stylesheets="@/Styles/style1.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="controllers.AjouterOffre">
 
     <!-- Image pour le titre -->
-    <ImageView fx:id="imageView" fitWidth="60" fitHeight="100" preserveRatio="true">
+    <ImageView fx:id="imageView" fitHeight="100" fitWidth="60" preserveRatio="true">
         <Image url="@/icons/offre.png" />
     </ImageView>
-    <Label text="Ajouter une Offre" styleClass="header"/>
+    <Label styleClass="header" text="Ajouter une Offre" />
 
     <VBox spacing="10">
         <TextField fx:id="titreField" promptText="Titre de l'offre" styleClass="bordered-textfield" />
@@ -29,30 +27,24 @@
         <Label fx:id="descriptionError" styleClass="error-label" />
 
         <!-- Bouton pour générer une description avec AI -->
-        <Button text="Générer avec AI" onAction="#genererDescriptionAI" styleClass="generate-button"/>
+        <Button onAction="#genererDescriptionAI" styleClass="generate-button" text="Générer avec AI" />
     </VBox>
 
     <VBox spacing="10">
-        <Label fx:id="labelDatePublication" text="Date de publication : Non sélectionnée" styleClass="info-label"/>
-        <Button text="Sélectionner la date et l'heure de publication"
-                onAction="#choisirDatePublication"
-                onMouseClicked="#animateButton"
-                styleClass="upload-button"/>
-        <Label fx:id="datePublicationError" styleClass="error-label"/>
+        <Label fx:id="labelDatePublication" styleClass="info-label" text="Date de publication : Non sélectionnée" />
+        <Button onAction="#choisirDatePublication" onMouseClicked="#animateButton" styleClass="upload-button" text="Sélectionner la date et l'heure de publication" />
+        <Label fx:id="datePublicationError" styleClass="error-label" />
     </VBox>
 
     <VBox spacing="10">
-        <Label fx:id="labelDateExpiration" text="Date d'expiration : Non sélectionnée" styleClass="info-label"/>
-        <Button text="Sélectionner la date et l'heure d'expiration"
-                onAction="#choisirDateExpiration"
-                onMouseClicked="#animateButton"
-                styleClass="upload-button"/>
-        <Label fx:id="dateExpirationError" styleClass="error-label"/>
+        <Label fx:id="labelDateExpiration" styleClass="info-label" text="Date d'expiration : Non sélectionnée" />
+        <Button onAction="#choisirDateExpiration" onMouseClicked="#animateButton" styleClass="upload-button" text="Sélectionner la date et l'heure d'expiration" />
+        <Label fx:id="dateExpirationError" styleClass="error-label" />
     </VBox>
 
     <HBox spacing="10">
-        <Button text="Enregistrer" onAction="#enregistrerOffre" styleClass="save-button"/>
-        <Button text="Annuler" onAction="#annuler" styleClass="cancel-button"/>
+        <Button onAction="#enregistrerOffre" styleClass="save-button" text="Enregistrer" />
+        <Button onAction="#annuler" styleClass="cancel-button" text="Annuler" />
     </HBox>
 
 </VBox>

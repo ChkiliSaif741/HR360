@@ -104,7 +104,9 @@
 /* Style pour le TextArea */
 .modernTextArea {
     -fx-pref-width: 300px;
-    -fx-pref-height: 100px;
+    -fx-pref-height: 500px; /* Hauteur préférée */
+    -fx-min-height: 150px; /* Hauteur minimale */
+    -fx-max-height: 700px; /* Hauteur maximale */
     -fx-padding: 10;
     -fx-border-color: #bdbdbd;
     -fx-border-radius: 5;
