@@ -88,8 +88,8 @@ public class ItemProjetController {
         try {
             Parent root = loader.load();
             Controller controller = loader.getController();
-            AffichageTacheController affichageTacheController = controller.loadPage("/AffichageTache.fxml").getController();
-            affichageTacheController.setIdProjet(projet.getId());
+            DetailsProjetController detailsProjetController = controller.loadPage("/DetailsProjet.fxml").getController();
+            detailsProjetController.setIdProjet(projet.getId());
             nomProjet.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
