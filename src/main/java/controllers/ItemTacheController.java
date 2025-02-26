@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,19 +26,7 @@ public class ItemTacheController {
     }
 
     @FXML
-    private VBox contentBox;
-
-    @FXML
     private HBox IconContainerStatus;
-
-    @FXML
-    private Label dateDebut;
-
-    @FXML
-    private Label dateFin;
-
-    @FXML
-    private Label descriptionTache;
 
     @FXML
     private Label nomTache;
@@ -57,9 +46,6 @@ public class ItemTacheController {
     public void setTaskData(Tache tache) {
         this.tache = tache;
         nomTache.setText(tache.getNom());
-        descriptionTache.setText(tache.getDescription());
-        this.dateDebut.setText("Début: " + tache.getDateDebut());
-        this.dateFin.setText("Fin: " + tache.getDateFin());
         statutTache.setText(tache.getStatut().getValue());
 
         switch (tache.getStatut().getValue()) {
@@ -102,7 +88,7 @@ public class ItemTacheController {
             ModifTacheController ModifController = controller.loadPage("/ModifTache.fxml").getController();
             ModifController.setDateStart(tache.getDateDebut());
             ModifController.setDateEnd(tache.getDateFin());
-            ModifController.setDescriptionTF(descriptionTache.getText());
+            ModifController.setDescriptionTF(tache.getDescription());
             ModifController.setNomTF(nomTache.getText());
             ModifController.setStatutDD(tache.getStatut());
             ModifController.setIdProjet(tache.getIdProjet());
@@ -111,5 +97,10 @@ public class ItemTacheController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @FXML
+    void SelectTache(MouseEvent event) {
+        parentController.setTacheSelected(tache);
     }
 }

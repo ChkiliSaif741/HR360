@@ -7,8 +7,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ExcelExporterProjet;
@@ -30,10 +32,22 @@ public class AffichageTacheController implements Initializable {
 
     private List<Tache> taches=new ArrayList<>();
     @FXML
-    private VBox contentBox;
+    private Label DateEnd;
+
+    @FXML
+    private Label DateStart;
+
+    @FXML
+    private Label DescriptionTache;
 
     @FXML
     private TextField SearchBar;
+
+    @FXML
+    private VBox contentBox;
+
+    @FXML
+    private Label nomTacheL;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -47,10 +61,12 @@ public class AffichageTacheController implements Initializable {
     }
     public void loadTasks(){
         contentBox.getChildren().clear();
+        try {
+            setTaches();
             for (Tache tache : taches) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/ItemTache.fxml"));
-                    VBox taskItem = loader.load();
+                    HBox taskItem = loader.load();
                     ItemTacheController controller = loader.getController();
                     controller.setTaskData(tache);
                     controller.setParentController(this);
@@ -59,6 +75,10 @@ public class AffichageTacheController implements Initializable {
                     e.printStackTrace();
                 }
             }
+            setTacheSelected(taches.get(0));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     public void setIdProjet(int idProjet) {
         this.idProjet = idProjet;
@@ -129,4 +149,10 @@ public class AffichageTacheController implements Initializable {
         }
     }
 
+    public void setTacheSelected(Tache tacheSelected) {
+        nomTacheL.setText(tacheSelected.getNom());
+        DescriptionTache.setText(tacheSelected.getDescription());
+        DateEnd.setText(tacheSelected.getDateFin().toString());
+        DateStart.setText(tacheSelected.getDateDebut().toString());
+    }
 }
