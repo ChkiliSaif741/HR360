@@ -5,19 +5,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox onMouseClicked="#SelectTache" prefHeight="61.0" prefWidth="650.0" styleClass="list-item" stylesheets="@stylesProjet.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ItemTacheController">
+<HBox alignment="CENTER_LEFT" maxHeight="66.0" maxWidth="650.0" minHeight="66.0" minWidth="650.0" onMouseClicked="#SelectTache" prefHeight="66.0" prefWidth="650.0" styleClass="list-item" stylesheets="@stylesProjet.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ItemTacheController">
             <children>
-                <VBox alignment="CENTER">
+                  <Label fx:id="nomTache" prefHeight="27.0" prefWidth="299.0" styleClass="task-name" stylesheets="@stylesProjet.css" text="sssssssss" wrapText="true">
+         <HBox.margin>
+            <Insets left="20.0" />
+         </HBox.margin>
+      </Label>
+                <HBox fx:id="IconContainerStatus" alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="411.0" styleClass="task-status" stylesheets="@stylesProjet.css">
                     <children>
-                        <Label fx:id="nomTache" prefHeight="27.0" prefWidth="299.0" styleClass="task-name" stylesheets="@stylesProjet.css" text="sssssssss" wrapText="true" />
-                    </children>
-                </VBox>
-                <HBox fx:id="IconContainerStatus" alignment="TOP_RIGHT" prefHeight="56.0" prefWidth="411.0" styleClass="task-status" stylesheets="@stylesProjet.css">
-                    <children>
-                        <Label fx:id="statutTache" styleClass="task-status" stylesheets="@stylesProjet.css" text="sssss" textAlignment="RIGHT">
+                        <Label fx:id="statutTache" prefHeight="22.0" prefWidth="122.0" styleClass="task-status" stylesheets="@stylesProjet.css" text="sssss" textAlignment="RIGHT">
                             <font>
                                 <Font size="68.0" />
                             </font>
@@ -27,35 +26,24 @@
                         </Label>
                         <FontAwesomeIcon fx:id="IconStatus" fill="WHITE" glyphName="CHECK" size="2.5em" styleClass="task-status" textAlignment="RIGHT">
                <HBox.margin>
-                  <Insets right="-60.0" />
-               </HBox.margin></FontAwesomeIcon>
-                        <HBox alignment="CENTER" prefHeight="62.0" prefWidth="176.0">
-                            <children>
-                                <Button fx:id="btnDel" maxWidth="48.0" minWidth="48.0" onAction="#DeleteTache" prefWidth="48.0" styleClass="button-action-delete" stylesheets="@stylesProjet.css">
-                                    <graphic>
-                                        <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="2em" />
-                                    </graphic>
-                                    <HBox.margin>
-                                        <Insets />
-                                    </HBox.margin>
-                                </Button>
-                                <Button fx:id="btnMod" alignment="CENTER" maxWidth="48.0" minWidth="48.0" onAction="#ModifTache" prefWidth="48.0" styleClass="button-action-update" stylesheets="@stylesProjet.css">
-                                    <graphic>
-                                        <FontAwesomeIcon fill="WHITE" glyphName="EDIT" size="2em" />
-                                    </graphic>
-                                    <HBox.margin>
-                                        <Insets left="20.0" />
-                                    </HBox.margin>
-                                </Button>
-      
-                            </children>
-               <opaqueInsets>
                   <Insets />
-               </opaqueInsets>
-               <HBox.margin>
-                  <Insets left="60.0" right="-120.0" />
-               </HBox.margin>
-                        </HBox>
+               </HBox.margin></FontAwesomeIcon>
+                          <Button fx:id="btnMod" alignment="CENTER" maxWidth="48.0" minWidth="48.0" onAction="#ModifTache" prefWidth="48.0" styleClass="button-action-update" stylesheets="@stylesProjet.css">
+                              <graphic>
+                                  <FontAwesomeIcon fill="WHITE" glyphName="EDIT" size="2em" />
+                              </graphic>
+                              <HBox.margin>
+                                  <Insets left="20.0" />
+                              </HBox.margin>
+                          </Button>
+                          <Button fx:id="btnDel" alignment="CENTER" maxWidth="48.0" minWidth="48.0" onAction="#DeleteTache" prefWidth="48.0" styleClass="button-action-delete" stylesheets="@stylesProjet.css" textAlignment="RIGHT">
+                              <graphic>
+                                  <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="2em" />
+                              </graphic>
+                              <HBox.margin>
+                                  <Insets left="20.0" />
+                              </HBox.margin>
+                          </Button>
                     </children>
                 </HBox>
             </children>

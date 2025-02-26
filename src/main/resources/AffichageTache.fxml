@@ -13,9 +13,9 @@
 
 <AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AffichageTacheController">
    <children>
-      <ScrollPane layoutX="231.0" layoutY="98.0" prefHeight="251.0" prefWidth="678.0" AnchorPane.rightAnchor="15.0">
+      <ScrollPane layoutX="231.0" layoutY="98.0" prefHeight="251.0" prefWidth="766.0" AnchorPane.rightAnchor="15.0">
          <content>
-            <VBox fx:id="contentBox" maxWidth="670.0" prefHeight="244.0" prefWidth="670.0" spacing="10.0" />
+            <VBox fx:id="contentBox" maxWidth="758.0" prefHeight="244.0" prefWidth="758.0" spacing="10.0" />
          </content>
       </ScrollPane>
       <HBox layoutX="409.0" layoutY="31.0" spacing="50.0">
@@ -52,22 +52,26 @@
             </Button>
          </children>
       </HBox>
-      <VBox layoutX="230.0" layoutY="357.0" prefHeight="152.0" prefWidth="678.0">
+      <VBox layoutX="142.0" layoutY="357.0" prefHeight="210.0" prefWidth="766.0">
          <children>
             <HBox spacing="30.0">
                <children>
-                  <Label fx:id="nomTacheL" text="Nom Tache" textFill="#5eaeff">
+                  <Label fx:id="nomTacheL" prefHeight="47.0" prefWidth="682.0" text="Nom Tache" textFill="#5eaeff">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
                   </Label>
-                  <Label fx:id="DateStart" text="Date debut">
+               </children>
+            </HBox>
+            <HBox spacing="30.0">
+               <children>
+                  <Label fx:id="DateStart" prefHeight="47.0" prefWidth="172.0" text="01-15-2003">
                      <font>
                         <Font size="32.0" />
                      </font>
                   </Label>
                   <FontAwesomeIcon glyphName="ARROW_RIGHT" size="3em" />
-                  <Label fx:id="DateEnd" layoutX="212.0" layoutY="10.0" text="Date fin">
+                  <Label fx:id="DateEnd" text="01-15-2003">
                      <font>
                         <Font size="32.0" />
                      </font>
@@ -76,7 +80,7 @@
             </HBox>
             <TextFlow maxWidth="674.0" minWidth="354.0" prefHeight="175.0" prefWidth="674.0">
                <children>
-                  <Label fx:id="DescriptionTache" alignment="TOP_LEFT" disable="true" maxWidth="666.0" minWidth="354.0" prefHeight="175.0" prefWidth="666.0" styleClass="task-description" stylesheets="@stylesProjet.css" wrapText="true" />
+                  <Label fx:id="DescriptionTache" alignment="TOP_LEFT" maxWidth="666.0" minWidth="354.0" prefHeight="114.0" prefWidth="666.0" styleClass="task-description" wrapText="true" />
                </children>
             </TextFlow>
          </children>
