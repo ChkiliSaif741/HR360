@@ -23,12 +23,46 @@
     </VBox>
 
     <VBox spacing="10">
-        <TextArea fx:id="descriptionField" promptText="Entrez la description de l'offre" styleClass="modernTextArea" />
-        <Label fx:id="descriptionError" styleClass="error-label" />
+        <!-- HBox pour aligner les boutons -->
+        <HBox spacing="10" alignment="CENTER">
+            <!-- Bouton Générer avec AI -->
+            <Button onAction="#genererDescriptionAI" styleClass="generate-button" text="Générer avec AI">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                        <Image url="@/icons/ai.png"/> <!-- Vérifie que le fichier est bien placé -->
+                    </ImageView>
+                </graphic>
+            </Button>
 
-        <!-- Bouton pour générer une description avec AI -->
-        <Button onAction="#genererDescriptionAI" styleClass="generate-button" text="Générer avec AI" />
+            <!-- Bouton Exporter en PDF -->
+            <Button onAction="#exporterPDF" styleClass="pdf-button" text="Exporter PDF">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                        <Image url="@/icons/pdf-file-format.png"/> <!-- Vérifie que le fichier est bien placé -->
+                    </ImageView>
+                </graphic>
+            </Button>
+            <!-- Bouton Traduire en anglais -->
+            <Button onAction="#traduireDescription" styleClass="translate-button" text="Traduire en anglais">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                        <Image url="@/icons/translate.png"/> <!-- Assurez-vous que l'icône est bien placée -->
+                    </ImageView>
+                </graphic>
+            </Button>
+
+        </HBox>
+
+        <!-- Champ de description -->
+        <TextArea fx:id="descriptionField" promptText="Entrez la description de l'offre" styleClass="modernTextArea"/>
+        <Label fx:id="descriptionError" styleClass="error-label"/>
     </VBox>
+
+
+
+
+
+
 
     <VBox spacing="10">
         <Label fx:id="labelDatePublication" styleClass="info-label" text="Date de publication : Non sélectionnée" />

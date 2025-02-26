@@ -16,10 +16,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import entities.Offre;
 import javafx.util.Duration;
-import org.json.JSONArray;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import javafx.stage.FileChooser;
 import services.ServiceOffre;
 
 import java.io.IOException;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -29,8 +35,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
+
 
 public class AjouterOffre implements Initializable {
 
@@ -209,6 +215,58 @@ public class AjouterOffre implements Initializable {
         }
         // Retourner une valeur par défaut en cas d'erreur
         return "Impossible de générer une description pour le moment.";
+    }
+    @FXML
+    private void exporterPDF() {
+        String titreOffre = titreField.getText().trim();
+        String description = descriptionField.getText().trim();
+
+        if (titreOffre.isEmpty() || description.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Le titre et la description ne peuvent pas être vides.");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer l'offre d'emploi");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier PDF", "*.pdf"));
+        File saveFile = fileChooser.showSaveDialog(null);
+
+        if (saveFile != null) {
+            try {
+                PdfWriter writer = new PdfWriter(new FileOutputStream(saveFile));
+                PdfDocument pdfDoc = new PdfDocument(writer);
+                Document document = new Document(pdfDoc);
+
+                // Ajouter le contenu du fichier PDF
+                document.add(new Paragraph("Offre d'emploi\n").setBold().setFontSize(18));
+                document.add(new Paragraph("Titre : " + titreOffre + "\n\n"));
+                document.add(new Paragraph("Description :\n" + description));
+
+                document.close();
+
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Le fichier PDF a été généré avec succès !");
+            } catch (IOException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de générer le PDF.");
+            }
+        }
+    }
+    @FXML
+    private void traduireDescription() {
+        String description = descriptionField.getText().trim();
+
+        if (description.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "La description ne peut pas être vide.");
+            return;
+        }
+
+        DeepTranslateAPI translator = new DeepTranslateAPI();
+        try {
+            String translatedText = translator.translate(description);
+            descriptionField.setText(translatedText);
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Traduction réussie !");
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de traduire la description.");
+        }
     }
 
 

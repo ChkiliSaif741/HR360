@@ -20,7 +20,9 @@ import services.ServiceOffre;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ListeOffresController {
@@ -44,6 +46,7 @@ public class ListeOffresController {
     private ComboBox<String> comboFiltreStatut;
 
     private ServiceOffre serviceOffre;
+    private Map<Offre, Boolean> expandedItems = new HashMap<>();
 
     public void initialize() {
         // Appliquer l'effet pour rendre l'image blanche
@@ -56,47 +59,96 @@ public class ListeOffresController {
         imageViewSupprimer.setEffect(colorAdjust);
         imageViewAjouter.setEffect(colorAdjust);
         serviceOffre = new ServiceOffre();
+
         // Initialiser les ComboBox pour le tri
         comboTrieDateExpiration.getItems().addAll("Croissant", "Décroissant");
         comboTrieStatut.getItems().addAll("Publiée", "Expirée");
-        //Modification en temp reel
+
+        // Modification en temps réel
         textFieldRecherche.textProperty().addListener((observable, oldValue, newValue) -> rechercherOffre());
-        //Filter
+
+        // Filtre
         comboFiltreStatut.getItems().addAll("Tous", "Publiée", "Expirée");
         comboFiltreStatut.setValue("Tous"); // Valeur par défaut
-
 
         // Charger les offres depuis la base de données
         try {
             List<Offre> offres = serviceOffre.afficher();
             listViewOffres.getItems().setAll(offres);
-            // Récupérer les offres et mettre à jour leur statut
 
-            // Charger les offres depuis la base de données
-            refreshListView();
             // Utilisation d'une CellFactory personnalisée pour afficher les détails comme un tableau
             listViewOffres.setCellFactory(param -> new ListCell<Offre>() {
                 @Override
                 protected void updateItem(Offre offre, boolean empty) {
+                    listViewOffres.setOnMouseClicked(event -> {
+                        Offre selectedOffre = listViewOffres.getSelectionModel().getSelectedItem();
+                        if (selectedOffre != null) {
+                            boolean currentState = expandedItems.getOrDefault(selectedOffre, false);
+                            expandedItems.put(selectedOffre, !currentState); // Inverser l'état actuel
+                            listViewOffres.refresh(); // Rafraîchir la vue pour appliquer le changement
+                        }
+                    });
+
                     super.updateItem(offre, empty);
                     if (empty || offre == null) {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        // Créer un HBox pour afficher les titres et les attributs horizontalement
+                        // Créer un HBox pour afficher les éléments horizontalement
                         HBox hbox = new HBox(20); // Espacement entre les éléments
 
-                        // Ajouter chaque attribut avec son titre et sa valeur dans un cadre
+                        // Créer un Label pour la description
+                        Label descriptionLabel = new Label();
+                        String fullDescription = offre.getDescription();
+                        String shortDescription = (fullDescription.length() > 50) ? fullDescription.substring(0, 50) + "..." : fullDescription;
+
+                        // Vérifier si l'élément est déjà étendu ou non
+                        Boolean isExpanded = expandedItems.getOrDefault(offre, false);
+                        if (isExpanded) {
+                            descriptionLabel.setText(fullDescription); // Afficher la description complète
+                        } else {
+                            descriptionLabel.setText(shortDescription); // Afficher la description tronquée
+                        }
+                        descriptionLabel.setWrapText(true); // Activer le retour à la ligne
+
+                        // Gérer le clic sur la description pour basculer entre tronqué et complet
+                        descriptionLabel.setOnMouseClicked(event -> {
+                            // Basculer l'état de l'élément (étendu ou non)
+                            boolean newState = !expandedItems.getOrDefault(offre, false);
+                            expandedItems.put(offre, newState);
+                            // Actualiser l'affichage en fonction du nouvel état
+                            if (newState) {
+                                descriptionLabel.setText(fullDescription);  // Set full description
+                            } else {
+                                descriptionLabel.setText(shortDescription);  // Set truncated description
+                            }
+                            // Re-render the cell to reflect the change in the description
+                            updateItem(offre, false);  // Force the update of the ListCell
+                        });
+
+                        // Ajouter les éléments au HBox
                         hbox.getChildren().addAll(
                                 createLabeledItem("Titre", offre.getTitre()),
-                                createLabeledItem("Description", offre.getDescription()),
+                                createLabeledItem("Description", descriptionLabel.getText()), // Utiliser le texte du label
                                 createLabeledItem("Date de Publication", offre.getDatePublication().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
                                 createLabeledItem("Date d'Expiration", offre.getDateExpiration().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
                                 createLabeledItem("Statut", offre.getStatut())
                         );
 
-                        setGraphic(hbox); // Appliquer le HBox à la cellule
+                        // Appliquer le HBox à la cellule
+                        setGraphic(hbox);
                     }
+                }
+            });
+
+            // Écouter la sélection d'une ligne dans la ListView
+            listViewOffres.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    // Basculer l'état de l'élément sélectionné
+                    boolean isExpanded = expandedItems.getOrDefault(newValue, false);
+                    expandedItems.put(newValue, !isExpanded); // Inverser l'état actuel
+                    // Forcer la mise à jour de la cellule pour refléter le changement
+                    listViewOffres.refresh();
                 }
             });
 
