@@ -28,7 +28,7 @@
             </TextFlow>
          </children>
       </VBox>
-      <BarChart fx:id="BarChartTasks" layoutX="462.0" layoutY="341.0" prefHeight="271.0" prefWidth="428.0">
+      <BarChart fx:id="BarChartTasks" barGap="10.0" layoutX="462.0" layoutY="341.0" legendVisible="false" prefHeight="271.0" prefWidth="428.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
