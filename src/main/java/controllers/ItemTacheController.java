@@ -40,6 +40,9 @@ public class ItemTacheController {
     @FXML
     private AnchorPane taskCard;
 
+    @FXML
+    private HBox listItemConatianer;
+
 
     private Tache tache;
 
@@ -73,6 +76,7 @@ public class ItemTacheController {
         ServiceTache serviceTache = new ServiceTache();
         try {
             serviceTache.supprimer(tache.getId());
+            parentController.setIndiceTacheSelected(0);
             parentController.loadTasks();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,9 +102,18 @@ public class ItemTacheController {
             throw new RuntimeException(e);
         }
     }
+    void ResetTacheColor()
+    {
+        listItemConatianer.getStyleClass().add("list-item");
+    }
 
-    @FXML
-    void SelectTache(MouseEvent event) {
-        parentController.setTacheSelected(tache);
+    void SetSelectedTacheColor()
+    {
+        listItemConatianer.getStyleClass().add("list-item-selected");
+    }
+
+
+    public Tache getTache() {
+        return tache;
     }
 }

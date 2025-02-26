@@ -7,12 +7,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.w3c.dom.events.Event;
 import services.ExcelExporterProjet;
 import services.ServiceProjet;
 import services.ServiceTache;
@@ -49,6 +52,10 @@ public class AffichageTacheController implements Initializable {
     @FXML
     private Label nomTacheL;
 
+    private ItemTacheController itemTacheControllerSelected;
+
+    private int indiceTacheSelected;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -57,25 +64,33 @@ public class AffichageTacheController implements Initializable {
     public void setTaches() throws SQLException {
 
         ServiceTache serviceTache = new ServiceTache();
-        taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).collect(Collectors.toList());;
+        taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).collect(Collectors.toList());
     }
     public void loadTasks(){
         contentBox.getChildren().clear();
         try {
             setTaches();
-            for (Tache tache : taches) {
+            for (int i = 0; i < taches.size(); i++) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/ItemTache.fxml"));
                     HBox taskItem = loader.load();
                     ItemTacheController controller = loader.getController();
-                    controller.setTaskData(tache);
+                    controller.setTaskData(taches.get(i));
                     controller.setParentController(this);
+                    taskItem.setUserData(controller);
+                    taskItem.setOnMouseClicked(this::setTacheSelected);
                     contentBox.getChildren().add(taskItem);
+                    if (i==indiceTacheSelected) {
+                        controller.SetSelectedTacheColor();
+                    }
+                    else {
+                        controller.ResetTacheColor();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            setTacheSelected(taches.get(0));
+            displayTacheData(taches.get(indiceTacheSelected));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -149,10 +164,24 @@ public class AffichageTacheController implements Initializable {
         }
     }
 
-    public void setTacheSelected(Tache tacheSelected) {
-        nomTacheL.setText(tacheSelected.getNom());
-        DescriptionTache.setText(tacheSelected.getDescription());
-        DateEnd.setText(tacheSelected.getDateFin().toString());
-        DateStart.setText(tacheSelected.getDateDebut().toString());
+    public void displayTacheData(Tache tache)
+    {
+        nomTacheL.setText(tache.getNom());
+        DescriptionTache.setText(tache.getDescription());
+        DateEnd.setText(tache.getDateFin().toString());
+        DateStart.setText(tache.getDateDebut().toString());
+    }
+    public void setTacheSelected(MouseEvent event) {
+        HBox clickedButton = (HBox) event.getSource();
+        ItemTacheController ItemCon = (ItemTacheController) clickedButton.getUserData();
+        itemTacheControllerSelected = ItemCon;
+        Tache tacheSelected =itemTacheControllerSelected.getTache();
+        System.out.println(tacheSelected);
+        indiceTacheSelected=taches.indexOf(tacheSelected);
+        loadTasks();
+    }
+
+    public void setIndiceTacheSelected(int indiceTacheSelected) {
+        this.indiceTacheSelected = indiceTacheSelected;
     }
 }

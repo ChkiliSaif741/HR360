@@ -13,9 +13,9 @@
 
 <AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AffichageTacheController">
    <children>
-      <ScrollPane layoutX="231.0" layoutY="98.0" prefHeight="251.0" prefWidth="766.0" AnchorPane.rightAnchor="15.0">
+      <ScrollPane layoutX="231.0" layoutY="98.0" maxHeight="766.0" maxWidth="780.0" minWidth="780.0" prefHeight="251.0" prefWidth="780.0" AnchorPane.rightAnchor="15.0">
          <content>
-            <VBox fx:id="contentBox" maxWidth="758.0" prefHeight="244.0" prefWidth="758.0" spacing="10.0" />
+            <VBox fx:id="contentBox" maxWidth="760.0" minWidth="760.0" prefHeight="244.0" prefWidth="760.0" spacing="10.0" />
          </content>
       </ScrollPane>
       <HBox layoutX="409.0" layoutY="31.0" spacing="50.0">
