@@ -41,6 +41,26 @@ public class AfficheEntretien implements Initializable {
     private ScrollPane scrollPane; // Référence au ScrollPane dans le FXML
     @FXML
     private Button addButton;
+    @FXML
+    private ColumnConstraints typeAff;
+    @FXML
+    private ColumnConstraints LocalisationAff;
+    @FXML
+    private ColumnConstraints dateAff;
+    @FXML
+    private ColumnConstraints statutAff;
+    @FXML
+    private CheckBox tridate;
+    @FXML
+    private ColumnConstraints lienAff;
+    @FXML
+    private ColumnConstraints heureAff;
+    @FXML
+    private TextField Search;
+    @FXML
+    private CheckBox filtreenligne;
+    @FXML
+    private CheckBox filtrepresentiel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,7 +70,140 @@ public class AfficheEntretien implements Initializable {
         addButton.getStyleClass().add("add-button"); // Applique le style
         startScheduler();
 
+
+
+        // Ajouter un écouteur à la CheckBox pour trier les entretiens par date et heure
+        tridate.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (newValue) {
+                    // Trier les entretiens par date et heure
+                    trierEntretiensParDateEtHeure();
+                } else {
+                    // Afficher les entretiens sans tri
+                    afficherEntretiens();
+                }
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de trier les entretiens : " + e.getMessage());
+            }
+        });
+
+// Ajouter un écouteur au champ de recherche pour filtrer par statut
+        Search.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                rechercherEntretiensParStatut(newValue);
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de rechercher les entretiens : " + e.getMessage());
+            }
+        });
+
+
+
+        // Ajouter des écouteurs aux CheckBox pour filtrer par type (En_ligne ou Presentiel)
+        filtreenligne.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                filtrerEntretiensParType();
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de filtrer les entretiens : " + e.getMessage());
+            }
+        });
+
+        filtrepresentiel.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                filtrerEntretiensParType();
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de filtrer les entretiens : " + e.getMessage());
+            }
+        });
+
     }
+
+
+    private void filtrerEntretiensParType() throws SQLException {
+        System.out.println("Filtrage par type : En_ligne = " + filtreenligne.isSelected() + ", Presentiel = " + filtrepresentiel.isSelected()); // Log pour vérifier les filtres
+
+        List<Entretien> entretiens = serviceEntretien.afficher(); // Récupérer tous les entretiens
+
+        if (entretiens == null || entretiens.isEmpty()) {
+            showAlert(Alert.AlertType.INFORMATION, "Aucun entretien", "Aucun entretien trouvé !");
+            return;
+        }
+
+        // Filtrer les entretiens en fonction des CheckBox cochés
+        List<Entretien> entretiensFiltres = new ArrayList<>();
+        for (Entretien entretien : entretiens) {
+            System.out.println("Type de l'entretien : " + entretien.getType()); // Log pour vérifier le type de chaque entretien
+            if (filtreenligne.isSelected() && entretien.getType().toString().equalsIgnoreCase("En_ligne")) {
+                entretiensFiltres.add(entretien);
+            } else if (filtrepresentiel.isSelected() && entretien.getType().toString().equalsIgnoreCase("Presentiel")) {
+                entretiensFiltres.add(entretien);
+            }
+        }
+
+        // Si aucun CheckBox n'est coché, afficher tous les entretiens
+        if (!filtreenligne.isSelected() && !filtrepresentiel.isSelected()) {
+            entretiensFiltres = entretiens;
+        }
+
+        System.out.println("Nombre d'entretiens filtrés : " + entretiensFiltres.size()); // Log pour vérifier le nombre d'entretiens filtrés
+
+        // Afficher les entretiens filtrés
+        afficherEntretiensTries(entretiensFiltres);
+    }
+
+
+
+    private void rechercherEntretiensParStatut(String statutRecherche) throws SQLException {
+        System.out.println("Recherche par statut : " + statutRecherche); // Log pour vérifier la valeur de recherche
+
+        List<Entretien> entretiens = serviceEntretien.afficher(); // Récupérer tous les entretiens
+
+        if (entretiens == null || entretiens.isEmpty()) {
+            showAlert(Alert.AlertType.INFORMATION, "Aucun entretien", "Aucun entretien trouvé !");
+            return;
+        }
+
+        // Filtrer les entretiens par statut (Planifié, Terminé, Annulé, Reporté)
+        List<Entretien> entretiensFiltres = new ArrayList<>();
+        for (Entretien entretien : entretiens) {
+            System.out.println("Statut de l'entretien : " + entretien.getStatut()); // Log pour vérifier le statut de chaque entretien
+            if (entretien.getStatut().toString().toLowerCase().contains(statutRecherche.toLowerCase())) {
+                entretiensFiltres.add(entretien);
+            }
+        }
+
+        System.out.println("Nombre d'entretiens filtrés : " + entretiensFiltres.size()); // Log pour vérifier le nombre d'entretiens filtrés
+
+        // Afficher les entretiens filtrés
+        afficherEntretiensTries(entretiensFiltres);
+    }
+
+    private void trierEntretiensParDateEtHeure() throws SQLException {
+        List<Entretien> entretiens = serviceEntretien.afficher(); // Récupérer tous les entretiens
+
+        if (entretiens == null || entretiens.isEmpty()) {
+            showAlert(Alert.AlertType.INFORMATION, "Aucun entretien", "Aucun entretien trouvé !");
+            return;
+        }
+
+        // Trier les entretiens par date et heure (du plus récent au plus ancien)
+        entretiens.sort((e1, e2) -> {
+            // Comparer d'abord par date
+            int compareDate = e1.getDate().compareTo(e2.getDate());
+            if (compareDate != 0) {
+                return compareDate; // Si les dates sont différentes, retourner le résultat de la comparaison des dates
+            } else {
+                // Si les dates sont identiques, comparer par heure
+                return e1.getHeure().compareTo(e2.getHeure());
+            }
+        });
+
+        // Afficher les entretiens triés
+        afficherEntretiensTries(entretiens);
+
+                
+    }
+
+
 
     // Configuration du GridPane (espacements, couleurs, styles)
     private void configurerStyleGridPane() {
@@ -74,6 +227,63 @@ public class AfficheEntretien implements Initializable {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Barre de défilement horizontale visible si nécessaire
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Barre de défilement verticale visible si nécessaire
     }
+
+
+    private void afficherEntretiensTries(List<Entretien> entretiens) {
+        // Nettoyer le GridPane tout en gardant les en-têtes
+        gridPane.getChildren().clear();
+        gridPane.getRowConstraints().clear();
+
+        // Ajouter les en-têtes
+        String[] headers = {"Date", "Heure", "Type", "Statut", "Lien Meet", "Localisation"};
+        for (int col = 0; col < headers.length; col++) {
+            Label headerLabel = creerLabel(headers[col], true);
+            gridPane.add(headerLabel, col, 0); // Ajout des en-têtes à la première ligne
+        }
+
+        // Ajout des données à partir de la ligne 1
+        int row = 1;
+        for (Entretien entretien : entretiens) {
+            gridPane.add(creerLabel(safeToString(entretien.getDate()), false), 0, row);
+            gridPane.add(creerLabel(safeToString(entretien.getHeure()), false), 1, row);
+            gridPane.add(creerLabel(safeToString(entretien.getType()), false), 2, row);
+            gridPane.add(creerLabel(safeToString(entretien.getStatut()), false), 3, row);
+            gridPane.add(creerLabel(safeToString(entretien.getLien_meet()), false), 4, row);
+            gridPane.add(creerLabel(safeToString(entretien.getLocalisation()), false), 5, row);
+
+            // Bouton Delete
+            Button deleteButton = new Button("Delete");
+            deleteButton.getStyleClass().add("delete-button"); // Appliquer la classe CSS
+            deleteButton.setUserData(entretien);  // Associer l'objet entretien au bouton
+            deleteButton.setOnAction(e -> {
+                try {
+                    DeleteEntretien(e);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            // Bouton Update
+            Button updateButton = new Button("Update");
+            updateButton.getStyleClass().add("update-button"); // Appliquer la classe CSS
+            updateButton.setUserData(entretien);  // Associer l'objet entretien au bouton
+            updateButton.setOnAction(this::UpdateEntretien);
+
+            // Bouton Evaluation
+            Button evaluationButton = new Button("Evaluation");
+            evaluationButton.getStyleClass().add("evaluation-button");
+            evaluationButton.setUserData(entretien);
+            evaluationButton.setOnAction(this::EntretienEva);
+
+            // Ajouter les boutons dans la dernière colonne
+            gridPane.add(deleteButton, 6, row);
+            gridPane.add(updateButton, 7, row);
+            gridPane.add(evaluationButton, 8, row);
+
+            row++;
+        }
+    }
+
 
     // Méthode pour afficher les entretiens dynamiquement avec des en-têtes fixes
     private void afficherEntretiens() {
@@ -332,6 +542,7 @@ public class AfficheEntretien implements Initializable {
 
 
 
+    @FXML
     public void startScheduler() {
         System.out.println("Démarrage du planificateur...");
         scheduler.scheduleAtFixedRate(this::checkUpcomingEntretiens, 0, 3, TimeUnit.HOURS);
