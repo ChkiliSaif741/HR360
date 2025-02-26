@@ -226,9 +226,9 @@ public class GestionEmployesController implements Initializable {
             for (Utilisateur employe : employees) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/employee_item.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
-                Employee_itemController controller = fxmlLoader.getController();
+                EmployeesItemController controller = fxmlLoader.getController();
                 controller.setParentControler(this);
-                controller.setEmploye(employe);
+                controller.setUtilisateur(employe);
 
                 // Ajouter l'élément avant de modifier les colonnes et lignes
                 grid.add(anchorPane, column, row);
@@ -244,12 +244,6 @@ public class GestionEmployesController implements Initializable {
             e.printStackTrace();
         }
     }
-
-    public void setSelectedEmploye(Utilisateur employe) {
-        this.selectedEmploye = employe;
-    }
-
-
 
     @FXML
     void addEmployeeAdd(ActionEvent event) {
@@ -295,10 +289,9 @@ public class GestionEmployesController implements Initializable {
             // Réinitialiser les champs après l'ajout
             registerClearFields();
             refreshEmployees();
-
             // Fermer la fenêtre actuelle et ouvrir la fenêtre d'affichage
             Stage currentStage = (Stage) addEmployee_firstName.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Employe.fxml"));
+            /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/Employe.fxml"));
             Parent root = null;
             try {
                 root = loader.load();
@@ -318,7 +311,7 @@ public class GestionEmployesController implements Initializable {
             newStage.show();
 
             // Fermer la fenêtre actuelle
-            currentStage.close();
+            currentStage.close();*/
         } catch (SQLException e) {
             alert.errorMessage("Erreur lors de l'ajout de la formation : " + e.getMessage());
             e.printStackTrace();
@@ -333,27 +326,25 @@ public class GestionEmployesController implements Initializable {
 //    }
 
 
+    public void setSelectedEmploye(Utilisateur employe) {
+        this.selectedEmploye = employe; // Stocker l'employé sélectionné
+    }
+
+
 
     @FXML
     void addEmployeeDelete(ActionEvent event) {
-        if (selectedEmploye == null) {
-            alert.errorMessage("Aucun employé sélectionné !");
-            return;
-        }
 
+        Button clickedButton = (Button) event.getSource();
+        Utilisateur employe = (Utilisateur) clickedButton.getUserData();
         try {
-            // Supprimer l'employé sélectionné de la base de données
-            serviceEmploye.supprimer(selectedEmploye.getId());
-            alert.successMessage("Employé supprimé avec succès !");
-
-            // Rafraîchir la liste des employés
-            refreshEmployees();
-
-            // Réinitialiser l'employé sélectionné
-            selectedEmploye = null;
+            serviceEmploye.supprimer(employe.getId());
+            refreshEmployees();  // Rafraîchir l'affichage
+            //showAlert(Alert.AlertType.INFORMATION, "Succès", "Employes supprimé avec succès !");
+            alert.successMessage("Employes supprimé avec succès !");
         } catch (SQLException e) {
-            alert.errorMessage("Erreur lors de la suppression de l'employé : " + e.getMessage());
-            e.printStackTrace();
+            //showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de supprimer la formation : " + e.getMessage());
+            alert.errorMessage("Impossible de supprimer l'employe!");
         }
     }
 
@@ -437,9 +428,9 @@ public class GestionEmployesController implements Initializable {
             for (Utilisateur employe : employees) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/employee_item.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
-                Employee_itemController controller = fxmlLoader.getController();
+                EmployeesItemController controller = fxmlLoader.getController();
                 controller.setParentControler(this);
-                controller.setEmploye(employe);
+                controller.setUtilisateur(employe);
 
                 // Ajouter l'élément à la GridPane
                 grid.add(anchorPane, column, row);

@@ -8,12 +8,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="employeeItem" prefHeight="135.0" prefWidth="247.0" styleClass="employee-item" stylesheets="@employee.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Employee_itemController">
+<AnchorPane fx:id="itemContainer" prefHeight="135.0" prefWidth="247.0" styleClass="employee-item" stylesheets="@employee.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EmployeesItemController">
     <children>
         <HBox alignment="CENTER_LEFT" layoutX="54.0" layoutY="40.0" spacing="10">
-            <ImageView fx:id="profilePhoto" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="profilePhoto" />
+            <ImageView fx:id="image" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="profilePhoto" />
             <VBox alignment="CENTER_LEFT" spacing="5">
-                <Label fx:id="firstName" stylesheets="@employee.css" text="First Name: John">
+                <Label fx:id="name" stylesheets="@employee.css" text="First Name: John">
                     <font>
                         <Font name="Tahoma" size="14.0" />
                     </font>
@@ -22,7 +22,7 @@
                   <String fx:value="employee-label" />
                </styleClass>
                 </Label>
-                <Label fx:id="lastName" stylesheets="@employee.css" text="Last Name: Doe">
+                <Label fx:id="prenom" stylesheets="@employee.css" text="Last Name: Doe">
                     <font>
                         <Font name="Tahoma" size="14.0" />
                     </font>

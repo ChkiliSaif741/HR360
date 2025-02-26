@@ -7,19 +7,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import utils.alertMessage;
 
 public class EmployeesItemController {
 
-
-
-
     @FXML
     private Button supprimer;
 
     @FXML
-    private VBox itemContainer;
+    private AnchorPane itemContainer;
 
     @FXML
     private Label name;
@@ -30,13 +28,13 @@ public class EmployeesItemController {
     @FXML
     private ImageView image;
 
-    private DisplayController parentControler;
+
+
+    private GestionEmployesController parentControler; // Référence au contrôleur parent
 
     private Utilisateur utilisateur;
 
     private alertMessage alert = new alertMessage();
-
-
 
     public void setUtilisateur(Utilisateur utilisateur) {
         try {
@@ -67,19 +65,17 @@ public class EmployeesItemController {
             e.printStackTrace(); // Affichez la stack trace pour diagnostiquer l'erreur
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
         }
+
+        // Ajouter un événement de clic pour sélectionner l'employé
+        itemContainer.setOnMouseClicked(event -> {
+            if (parentControler != null) {
+                parentControler.setSelectedEmploye(utilisateur); // Sélectionner l'employé
+            }
+        });
     }
-    @FXML
-    private void handleDelete(ActionEvent event) {
-
-            parentControler.deleteUser(utilisateur);
-            alert.successMessage("Utilisateur supprimé avec succès!");
 
 
-    }
-    public void setParentControler(DisplayController parentControler) {
+    public void setParentControler(GestionEmployesController parentControler) {
         this.parentControler = parentControler;
     }
-
-
-
 }
