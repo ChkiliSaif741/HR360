@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-public class Employee_itemController {
+public class ParticipantItemController {
 
     @FXML
     private Label dateMember;

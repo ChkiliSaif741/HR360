@@ -101,7 +101,7 @@ public class AjoutFormationController implements Initializable {
 
             // Fermer la fenêtre actuelle et ouvrir la fenêtre d'affichage
             Stage currentStage = (Stage) titreField.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Formation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Formations.fxml"));
             Parent root = loader.load();
 
             // Créer une nouvelle scène

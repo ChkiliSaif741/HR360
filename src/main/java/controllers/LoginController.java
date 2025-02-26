@@ -115,7 +115,7 @@ public class LoginController {
     private String imagePath = null;
     private final ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
     private Utilisateur utilisateurVerifie;
-    private static final List<String> ROLE_LIST = Arrays.asList("Candidat", "Employé");
+    private static final List<String> ROLE_LIST = Arrays.asList("Candidat", "Employé","RH");
 
     @FXML
     private void initialize() {
@@ -241,7 +241,7 @@ public class LoginController {
                     FXMLLoader loader;
                     Parent root = null;
 
-                    if ("Farhani".equals(utilisateur.getNom()) && "zzzzz".equals(utilisateur.getPassword())) {
+                    if ("hamza.farhani@esprit.tn".equals(utilisateur.getEmail()) && "zzzzz".equals(utilisateur.getPassword())) {
                         loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                         root = loader.load();
                         Stage stage = (Stage) login_email.getScene().getWindow();

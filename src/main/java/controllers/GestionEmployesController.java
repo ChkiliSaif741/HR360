@@ -1,5 +1,7 @@
 package controllers;
 
+import entities.Formation;
+import entities.MyListener;
 import entities.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,9 +32,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-/*implements Initializable*/
-public class GestionEmployesController implements Initializable{
 
+/*implements Initializable*/
+public class GestionEmployesController implements Initializable {
 
 
     @FXML
@@ -158,13 +160,13 @@ public class GestionEmployesController implements Initializable{
     private Button salary_clearBtn;
 
 
-
     private String imagePath = null;
 
     private File selectedImageFile;
 
-    alertMessage alert = new alertMessage();
+    private Utilisateur selectedEmploye = null;
 
+    alertMessage alert = new alertMessage();
 
 
     private ServiceUtilisateur serviceEmploye = new ServiceUtilisateur();
@@ -181,7 +183,7 @@ public class GestionEmployesController implements Initializable{
     }
 
 
-    public void employeeList(){
+    public void employeeList() {
         ObservableList listData = FXCollections.observableArrayList("Developpeur", "Designer");
         addEmployee_position.setItems(listData);
     }
@@ -203,7 +205,6 @@ public class GestionEmployesController implements Initializable{
         addEmployee_salaire.clear();
         addEmployee_position.getSelectionModel().clearSelection();
     }
-
 
 
     @Override
@@ -244,6 +245,12 @@ public class GestionEmployesController implements Initializable{
         }
     }
 
+    public void setSelectedEmploye(Utilisateur employe) {
+        this.selectedEmploye = employe;
+    }
+
+
+
     @FXML
     void addEmployeeAdd(ActionEvent event) {
         alertMessage alert = new alertMessage();
@@ -261,9 +268,9 @@ public class GestionEmployesController implements Initializable{
         String password = addEmployee_password.getText();
         String poste = addEmployee_position.getSelectionModel().getSelectedItem().toString();
         float salaire;
-        if(addEmployee_salaire.getText().isEmpty()) {
+        if (addEmployee_salaire.getText().isEmpty()) {
             salaire = 0;
-        }else{
+        } else {
             salaire = Float.parseFloat(addEmployee_salaire.getText());
         }
         //float salaire = Float.parseFloat(addEmployee_salaire.getText());
@@ -285,9 +292,9 @@ public class GestionEmployesController implements Initializable{
         try {
             serviceEmploye.ajouter(employe);
             alert.successMessage("Employe ajoutée avec succès !");
-
             // Réinitialiser les champs après l'ajout
             registerClearFields();
+            refreshEmployees();
 
             // Fermer la fenêtre actuelle et ouvrir la fenêtre d'affichage
             Stage currentStage = (Stage) addEmployee_firstName.getScene().getWindow();
@@ -305,7 +312,7 @@ public class GestionEmployesController implements Initializable{
             // Créer une nouvelle fenêtre (Stage)
             Stage newStage = new Stage();
             newStage.setScene(scene);
-            newStage.setTitle("Affichage des formations");
+            newStage.setTitle("Affichage des employees");
 
             // Afficher la fenêtre
             newStage.show();
@@ -326,9 +333,28 @@ public class GestionEmployesController implements Initializable{
 //    }
 
 
+
     @FXML
     void addEmployeeDelete(ActionEvent event) {
+        if (selectedEmploye == null) {
+            alert.errorMessage("Aucun employé sélectionné !");
+            return;
+        }
 
+        try {
+            // Supprimer l'employé sélectionné de la base de données
+            serviceEmploye.supprimer(selectedEmploye.getId());
+            alert.successMessage("Employé supprimé avec succès !");
+
+            // Rafraîchir la liste des employés
+            refreshEmployees();
+
+            // Réinitialiser l'employé sélectionné
+            selectedEmploye = null;
+        } catch (SQLException e) {
+            alert.errorMessage("Erreur lors de la suppression de l'employé : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -396,6 +422,40 @@ public class GestionEmployesController implements Initializable{
 
     }
 
+    public void refreshEmployees() {
+        // Recharger la liste des employés depuis la base de données
+        List<Utilisateur> employees = getEmployees();
+
+        // Effacer le contenu actuel de la GridPane
+        grid.getChildren().clear();
+
+        // Réafficher les employés dans la GridPane
+        int column = 0;
+        int row = 0;
+
+        try {
+            for (Utilisateur employe : employees) {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/employee_item.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+                Employee_itemController controller = fxmlLoader.getController();
+                controller.setParentControler(this);
+                controller.setEmploye(employe);
+
+                // Ajouter l'élément à la GridPane
+                grid.add(anchorPane, column, row);
+                GridPane.setMargin(anchorPane, new Insets(20, 50, 50, 50));
+
+                column++;
+                if (column == 3) { // 3 colonnes par ligne
+                    column = 0;
+                    row++;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void switchForm(ActionEvent event) {
 
         if (event.getSource() == home_btn) {
@@ -439,6 +499,5 @@ public class GestionEmployesController implements Initializable{
         }
 
     }
-
 
 }

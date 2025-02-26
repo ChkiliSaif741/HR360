@@ -89,7 +89,6 @@ public class Formation {
                 ", description='" + description + '\'' +
                 ", duree=" + duree +
                 ", dateFormation='" + dateFormation + '\'' +
-                ", employees=" + employees.size() +
                 '}';
     }
 }

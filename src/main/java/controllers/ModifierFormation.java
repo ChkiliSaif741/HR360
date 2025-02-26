@@ -20,7 +20,13 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
-public class ModifierFormation {
+public class ModifierFormation{
+    public void loadFormationdata(){
+        titreFieldModif.setText(formation.getTitre());
+        descFieldModif.setText(formation.getDescription());
+        dureeFieldModif.setText(String.valueOf(formation.getDuree()));
+        dateFieldModif.setText(formation.getDateFormation().toString());
+    }
 
     @FXML
     private Button btnModif;
@@ -52,10 +58,10 @@ public class ModifierFormation {
     @FXML
     private Label labellocalisation;
 
+    private Formation formation;
+
     @FXML
     private TextField titreFieldModif;
-
-    private Formation formation;
 
     @FXML
     void ModifierFormation(ActionEvent event) {
@@ -85,11 +91,7 @@ public class ModifierFormation {
 
     public void setFormation(Formation formation) {
         this.formation = formation;
-        //datePickerMod.setValue(formation.getDate());
-        titreFieldModif.setText(formation.getTitre());
-        descFieldModif.setText(formation.getDescription());
-        dureeFieldModif.setText(String.valueOf(formation.getDuree()));
-        dateFieldModif.setText(formation.getDateFormation());
+        loadFormationdata();
     }
 
 
@@ -100,7 +102,7 @@ public class ModifierFormation {
 
     private void ouvrirAfficheFormation() throws IOException {
         // Charger le fichier FXML de la fenêtre afficheFormation.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Formation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Formations.fxml"));
         Parent root = loader.load();
 
         // Créer une nouvelle scène
@@ -114,6 +116,8 @@ public class ModifierFormation {
         // Afficher la fenêtre
         stage.show();
     }
+
+
 
 }
 

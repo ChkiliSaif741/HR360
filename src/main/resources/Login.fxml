@@ -16,7 +16,7 @@
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <AnchorPane fx:id="login_form" layoutX="11.0" layoutY="16.0" prefHeight="515.0" prefWidth="318.0">
+            <AnchorPane fx:id="login_form" layoutX="11.0" layoutY="16.0" prefHeight="515.0" prefWidth="318.0" visible="false">
                <children>
                   <Label layoutX="91.0" layoutY="103.0" text="Sign In Account" textFill="#d32f2f">
                      <font>
@@ -46,7 +46,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="signup_form" layoutX="11.0" layoutY="16.0" prefHeight="515.0" prefWidth="318.0" visible="false">
+            <AnchorPane fx:id="signup_form" layoutX="11.0" layoutY="16.0" prefHeight="515.0" prefWidth="318.0">
                <children>
                   <Label layoutX="90.0" layoutY="42.0" text="Sign Up Account" textFill="#d32f2f">
                      <font>
@@ -71,7 +71,7 @@
                      </image>
                   </ImageView>
                   <Button fx:id="btnChangerPhoto" layoutX="139.0" layoutY="346.0" onAction="#uploadImage" styleClass="Button" stylesheets="@StyleProfile.css" text="Upload Photo" />
-                  <ImageView fx:id="photoProfil" fitHeight="49.0" fitWidth="53.0" layoutX="58.0" layoutY="305.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="photoProfil" fitHeight="49.0" fitWidth="53.0" layoutX="57.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true" />
                   <TextField fx:id="signup_competence" layoutX="25.0" layoutY="305.0" prefHeight="26.0" prefWidth="268.0" promptText="Competence" styleClass="text-field" stylesheets="@styleUser.css" />
                </children>
             </AnchorPane>

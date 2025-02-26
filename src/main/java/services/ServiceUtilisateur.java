@@ -140,6 +140,28 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
         return null;
     }
 
+    public Utilisateur getUserById(int id) {
+        String req = "SELECT * FROM utilisateur WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(req)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Utilisateur(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("prenom"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("role")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'utilisateur : " + e.getMessage());
+        }
+        return null;
+    }
+
     public Utilisateur getUserForPasswordReset(String username, String email) throws SQLException {
         String query = "SELECT * FROM utilisateur WHERE nom = ? AND email = ?";
 

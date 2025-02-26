@@ -85,7 +85,7 @@ public class DisplayController implements Initializable {
             for (Utilisateur user : users) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Item.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
-                ItemController itemController = fxmlLoader.getController();
+                EmployeesItemController itemController = fxmlLoader.getController();
                 itemController.setParentControler(this);
                 itemController.setUtilisateur(user);
 
