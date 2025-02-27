@@ -95,9 +95,9 @@
             </AnchorPane>
          </top>
          <left>
-            <AnchorPane fx:id="slider" prefHeight="362.0" prefWidth="176.0" style="-fx-background-color:  #0A4969;" BorderPane.alignment="CENTER">
+            <AnchorPane fx:id="slider" prefHeight="362.0" prefWidth="176.0" style="-fx-background-color: #0A4969;" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="35.0" prefHeight="614.0" prefWidth="177.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="20.0">
+                  <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="35.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                      <children>
                         <ImageView fitHeight="129.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -107,7 +107,7 @@
                               <Insets bottom="-25.0" top="-30.0" />
                            </VBox.margin>
                         </ImageView>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Dashboard" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Info Personnelle" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -119,19 +119,19 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onAction="#AffichProjet" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Employes" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" onAction="#onFormationbtn" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="formations" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@Images/add.png" />
+                                    <Image url="@Images/add1.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Offres" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" onAction="#AffichProjet" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="taches" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -143,19 +143,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="ressources" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/data.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" layoutX="23.0" layoutY="200.0" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="formations" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="réssources" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
