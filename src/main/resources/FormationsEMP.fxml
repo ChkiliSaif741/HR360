@@ -11,6 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -18,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FormationsControllerRH">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FormationsControllerEMP">
     <children>
         <BorderPane layoutX="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
@@ -94,19 +95,14 @@
                                         <Insets bottom="20.0" top="30.0" />
                                     </VBox.margin>
                                     <children>
-                                        <Button mnemonicParsing="false" onAction="#modifierBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Modifier" textFill="#828282">
+                                        <Button mnemonicParsing="false" onAction="#participerFormation" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Participer" textFill="#828282">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
                                             </font>
                                         </Button>
-                                        <Button mnemonicParsing="false" onAction="#supprimerBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Supprimer" textFill="#828282">
+                                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Annuler" textFill="#828282">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
-                                            </font>
-                                        </Button>
-                                        <Button mnemonicParsing="false" onAction="#onParticipantsBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Participants" textFill="#828282">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
                                             </font>
                                         </Button>
                                     </children>
@@ -130,7 +126,7 @@
                             </VBox.margin>
                             <children>
                                 <Pane prefHeight="65.0" prefWidth="393.0" HBox.hgrow="ALWAYS" />
-                                <Button mnemonicParsing="false" onAction="#onajouterBtn">
+                                <Button mnemonicParsing="false">
                                     <graphic>
                                         <FontAwesomeIcon glyphName="PLUS" />
                                     </graphic>
@@ -155,6 +151,11 @@
                                             <rowConstraints>
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                             </rowConstraints>
+                                            <columnConstraints>
+                                                <ColumnConstraints prefWidth="200.0" />
+                                                <ColumnConstraints prefWidth="200.0" />
+                                                <ColumnConstraints prefWidth="200.0" />
+                                            </columnConstraints>
                                         </GridPane>
                                     </content>
                                     <HBox.margin>

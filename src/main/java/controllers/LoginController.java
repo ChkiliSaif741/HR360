@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Session;
 import entities.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -225,71 +226,55 @@ public class LoginController {
     public void loginBtnOnAction(ActionEvent actionEvent) {
         alertMessage alert = new alertMessage();
 
-        if (login_email.getText().trim().isEmpty() || login_password.getText().trim().isEmpty()) {
-            alert.errorMessage("Veuillez entrer votre Username et votre mot de passe !");
+        // Vérification des champs vides
+        String email = login_email.getText().trim();
+        String password = login_password.getText().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            alert.errorMessage("Veuillez entrer votre Email et votre mot de passe !");
             return;
         }
 
         ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-        Utilisateur utilisateur = serviceUtilisateur.getUserByEmail(login_email.getText().trim());
+        Utilisateur utilisateur = serviceUtilisateur.authentifier(email, password); // 🔥 Utilisation de `authentifier`
 
         if (utilisateur != null) {
-            if (utilisateur.getPassword().equals(login_password.getText().trim())) {
+            // Initialisation de la session utilisateur
+            Session.getInstance(utilisateur.getId());
 
-                try {
+            try {
+                FXMLLoader loader;
+                Parent root;
 
-                    FXMLLoader loader;
-                    Parent root = null;
+                if ("hamza.farhani@esprit.tn".equals(utilisateur.getEmail()) && "zzzzz".equals(password)) {
+                    // Redirection pour Responsable RH
+                    loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+                    root = loader.load();
+                } else {
+                    // Redirection pour Employé
+                    loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                    root = loader.load();
 
-                    if ("hamza.farhani@esprit.tn".equals(utilisateur.getEmail()) && "zzzzz".equals(utilisateur.getPassword())) {
-                        loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
-                        root = loader.load();
-                        Stage stage = (Stage) login_email.getScene().getWindow();
-                        stage.setScene(new Scene(root));
-                        stage.show();
-                        return;
-                    } else {
-                        // Charger la scène pour l'ajout d'une offre
-                        FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
-                        Parent root1=loader1.load();
-                        Controller controller = loader1.getController();
-                        FormationsController controller1=controller.loadPage("/FormationsRH.fxml").getController();
-
-                        //controller.container.getScene().setRoot(root1);
-                        Stage stage = (Stage) login_email.getScene().getWindow();
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-
-
-                        if (loader1.getLocation() == null) {
-                            System.out.println("Erreur : FormationsRH.fxml introuvable !");
-                            alert.errorMessage("Fichier FormationsRH.fxml introuvable !");
-                            return;
-                        }
-
-                        // Passer l'utilisateur au contrôleur
-                        //controller1.setUtilisateur(utilisateur);
-                    }
-
-//                    // Changer la scène
-//                    Stage stage = (Stage) login_email.getScene().getWindow();
-//                    stage.setScene(new Scene(root));
-//                    stage.setTitle("Employes");
-//                    stage.show();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    alert.errorMessage("Erreur lors du chargement de la page !");
+                    // Charger et afficher la page des formations
+                    Controller controller = loader.getController();
+                    FormationsControllerEMP formationsController = controller.loadPage("/FormationsEMP.fxml").getController();
                 }
 
+                // Changement de scène
+                Stage stage = (Stage) login_email.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
 
-            } else {
-                alert.errorMessage("Mot de passe incorrect !");
+            } catch (IOException e) {
+                e.printStackTrace();
+                alert.errorMessage("Erreur lors du chargement de la page !");
             }
+
         } else {
-            alert.errorMessage("Veuillez vérifier votre username !");
+            alert.errorMessage("Email ou mot de passe incorrect !");
         }
     }
+
 
     public void setImgSrc(String imgSrc) {
         if (imgSrc != null && !imgSrc.isEmpty()) {

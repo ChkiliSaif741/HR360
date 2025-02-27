@@ -48,6 +48,12 @@ public class Utilisateur {
     public Utilisateur() {
     }
 
+    public Utilisateur(int id ,String email) {
+        this.id = id;
+        this.email = email;
+        this.role = "Employe";
+    }
+
     public Utilisateur(int id, String nom, String prenom, String email, String password ,String role) {
         this.id = id;
         this.nom = nom;

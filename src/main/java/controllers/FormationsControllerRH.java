@@ -8,8 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -28,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class FormationsController implements Initializable {
+public class FormationsControllerRH implements Initializable {
     @FXML
     private VBox chosenFormationCard;
 
@@ -89,6 +87,7 @@ public class FormationsController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 
     @FXML
     void supprimerBtn(ActionEvent event) {
