@@ -44,6 +44,22 @@ public class ModifTacheController {
     void ModifTache(ActionEvent event) {
         LocalDate DateDebut = dateStart.getValue();
         LocalDate DateFin = dateEnd.getValue();
+        ServiceProjet serviceProjet = new ServiceProjet();
+        try {
+            Projet projet=serviceProjet.getById(idProjet);
+            LocalDate maxDate=projet.getDateFin().toLocalDate();
+            LocalDate minDate=projet.getDateDebut().toLocalDate();
+            if (nomTF.getText().isEmpty() || descriptionTF.getText().isEmpty() || DateDebut == null || DateFin == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setContentText("Veuillez remplir tous les champs !");
+                alert.show();
+            } else if (DateDebut.isAfter(DateFin)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setContentText("La date de début est avant la date fin !");
+                alert.show();
+            } else {
         ServiceTache serviceTache = new ServiceTache();
         Tache tache = new Tache(idTache,nomTF.getText(), descriptionTF.getText(), Date.valueOf(DateDebut), Date.valueOf(DateFin),TacheStatus.fromValue(StatutDD.getValue()),idProjet);
         try {
@@ -63,6 +79,10 @@ public class ModifTacheController {
             alert.setTitle("Information");
             alert.setContentText(e.getMessage());
             alert.show();
+        }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

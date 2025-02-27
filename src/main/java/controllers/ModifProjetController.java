@@ -44,24 +44,37 @@ public class ModifProjetController implements Initializable {
     void ModifProjet(ActionEvent event) {
         LocalDate DateDebut = dateStart.getValue();
         LocalDate DateFin = dateEnd.getValue();
-        ServiceProjet serviceProjet = new ServiceProjet();
-        Projet projet = new Projet(idProjet,nomTF.getText(), descriptionTF.getText(), Date.valueOf(DateDebut), Date.valueOf(DateFin));
-        try {
-            serviceProjet.modifier(projet);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setContentText("Projet a ete Mis a jour avec succes !");
-            alert.show();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
-            Parent parent=loader.load();
-            Controller controller = loader.getController();
-            controller.loadPage("/AffichageProjet.fxml");
-            nomTF.getScene().setRoot(parent);
-        } catch (SQLException | IOException e) {
+        if (nomTF.getText().isEmpty() || descriptionTF.getText().isEmpty() || DateDebut == null || DateFin == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Information");
-            alert.setContentText(e.getMessage());
+            alert.setTitle("Erreur");
+            alert.setContentText("Veuillez remplir tous les champs !");
             alert.show();
+        } else if (DateDebut.isAfter(DateFin)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText("La date de début est avant la date fin !");
+            alert.show();
+        }
+        else {
+            ServiceProjet serviceProjet = new ServiceProjet();
+            Projet projet = new Projet(idProjet, nomTF.getText(), descriptionTF.getText(), Date.valueOf(DateDebut), Date.valueOf(DateFin));
+            try {
+                serviceProjet.modifier(projet);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setContentText("Projet a ete Mis a jour avec succes !");
+                alert.show();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                Parent parent = loader.load();
+                Controller controller = loader.getController();
+                controller.loadPage("/AffichageProjet.fxml");
+                nomTF.getScene().setRoot(parent);
+            } catch (SQLException | IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Information");
+                alert.setContentText(e.getMessage());
+                alert.show();
+            }
         }
     }
     public void setDatesLimits()
