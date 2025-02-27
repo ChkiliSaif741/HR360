@@ -5,7 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -13,6 +15,7 @@ import services.ServiceProjet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ItemProjetController {
 
@@ -45,12 +48,19 @@ public class ItemProjetController {
 
     @FXML
     void DeleteProjet(ActionEvent event) {
-        ServiceProjet serviceProjet = new ServiceProjet();
-        try {
-            serviceProjet.supprimer(projet.getId());
-            parentController.refresh();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Confirmation");
+        alert.setContentText("Voulez vous vraiment supprimer "+projet.getNom()+" ?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ServiceProjet serviceProjet = new ServiceProjet();
+            try {
+                serviceProjet.supprimer(projet.getId());
+                parentController.refresh();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

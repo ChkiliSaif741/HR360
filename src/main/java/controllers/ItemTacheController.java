@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +18,7 @@ import services.ServiceTache;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ItemTacheController {
 
@@ -73,13 +76,20 @@ public class ItemTacheController {
     }
     @FXML
     void DeleteTache(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Confirmation");
+        alert.setContentText("Voulez vous vraiment supprimer "+tache.getNom()+" ?");
+        Optional<ButtonType> result = alert.showAndWait();
         ServiceTache serviceTache = new ServiceTache();
-        try {
-            serviceTache.supprimer(tache.getId());
-            parentController.setIndiceTacheSelected(0);
-            parentController.loadTasks();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                serviceTache.supprimer(tache.getId());
+                parentController.setIndiceTacheSelected(0);
+                parentController.loadTasks();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -121,7 +121,6 @@ public class AffichageTacheController implements Initializable {
     @FXML
     void Prioritize(ActionEvent event) {
         taches.sort(Comparator.comparing(Tache::getDateFin));
-        System.out.println(taches);
         loadTasks();
     }
 
@@ -176,7 +175,6 @@ public class AffichageTacheController implements Initializable {
         ItemTacheController ItemCon = (ItemTacheController) clickedButton.getUserData();
         itemTacheControllerSelected = ItemCon;
         Tache tacheSelected =itemTacheControllerSelected.getTache();
-        System.out.println(tacheSelected);
         indiceTacheSelected=taches.indexOf(tacheSelected);
         loadTasks();
     }
