@@ -5,22 +5,30 @@ import entities.Tache;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 import services.AIProjectGenerator;
 import services.ServiceProjet;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class AIProjectGeneratorController {
-
+public class AIProjectGeneratorController implements Initializable {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setDatesLimits();
+    }
     @FXML
     private TextField TasksNumber;
 
@@ -32,6 +40,27 @@ public class AIProjectGeneratorController {
 
     @FXML
     private TextField nomTF;
+
+    public void setDatesLimits()
+    {
+        Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item.isBefore(LocalDate.now())) {
+                            setDisable(true);
+                            setStyle("-fx-text-fill: #3a3a3a;");
+                        }
+                    }
+                };
+            }
+        };
+        dateStart.setDayCellFactory(dayCellFactory);
+        dateEnd.setDayCellFactory(dayCellFactory);
+    }
 
     @FXML
     void GenerateProject(ActionEvent event) {
