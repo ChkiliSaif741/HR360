@@ -182,4 +182,18 @@ public class AffichageTacheController implements Initializable {
     public void setIndiceTacheSelected(int indiceTacheSelected) {
         this.indiceTacheSelected = indiceTacheSelected;
     }
+
+    @FXML
+    void BackToProjetsDetails(ActionEvent event) {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        try {
+            Parent root = loader.load();
+            Controller controller = loader.getController();
+            DetailsProjetController detailsProjetController = controller.loadPage("/DetailsProjet.fxml").getController();
+            detailsProjetController.setIdProjet(idProjet);
+            contentBox.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.dlsc.gemsfx.daterange.DateRangeView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -16,14 +17,23 @@
    <children>
       <VBox layoutX="17.0" layoutY="13.0" prefHeight="318.0" prefWidth="420.0">
          <children>
-            <Label fx:id="nomProjetL" text="Nom Projet" textFill="#5eaeff">
-               <font>
-                  <Font name="System Bold" size="32.0" />
-               </font>
-            </Label>
+            <Button mnemonicParsing="false" onAction="#BackToListProjet" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="ARROW_LEFT" size="2em" />
+               </graphic>
+            </Button>
+            <TextFlow VBox.vgrow="SOMETIMES">
+               <children>
+                  <Label fx:id="nomProjetL" alignment="TOP_LEFT" prefHeight="47.0" prefWidth="350.0" text="Nom Projet" textFill="#5eaeff" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </TextFlow>
             <TextFlow maxWidth="354.0" minWidth="354.0" prefHeight="272.0" prefWidth="358.0">
                <children>
-                  <Label fx:id="DescriptionProjet" alignment="TOP_LEFT" disable="true" maxWidth="354.0" minWidth="354.0" prefHeight="271.0" prefWidth="354.0" styleClass="task-description" stylesheets="@stylesProjet.css" wrapText="true" />
+                  <Label fx:id="DescriptionProjet" alignment="TOP_LEFT" disable="true" maxWidth="354.0" minWidth="354.0" prefHeight="223.0" prefWidth="354.0" styleClass="task-description" stylesheets="@stylesProjet.css" wrapText="true" />
                </children>
             </TextFlow>
          </children>

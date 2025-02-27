@@ -127,5 +127,13 @@ public class DetailsProjetController {
         termineeBar.getNode().setStyle("-fx-bar-fill: green;");
     }
 
+    @FXML
+    void BackToListProjet(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        Parent parent=loader.load();
+        Controller con=loader.getController();
+        con.loadPage("/AffichageProjet.fxml");
+        nomProjetL.getScene().setRoot(parent);
+    }
 }
 
