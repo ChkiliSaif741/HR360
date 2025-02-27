@@ -27,14 +27,9 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="110.0" prefWidth="200.0">
                             <children>
-                                <Label prefHeight="49.0" prefWidth="128.0" text="Fruits" textFill="#878787">
+                                <Label prefHeight="50.0" prefWidth="234.0" text="Formations" textFill="#878787">
                                     <font>
                                         <Font name="Cambria Bold" size="40.0" />
-                                    </font>
-                                </Label>
-                                <Label text="Market" textFill="#878787">
-                                    <font>
-                                        <Font name="Cambria" size="40.0" />
                                     </font>
                                 </Label>
                             </children>
