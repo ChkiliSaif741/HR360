@@ -12,15 +12,13 @@ import services.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class ModifierEvaluation implements Initializable {
     @javafx.fxml.FXML
     private ComboBox<Integer> idMod;
-    @javafx.fxml.FXML
-    private DatePicker dateEvaluationMod;
     @javafx.fxml.FXML
     private TextField noteSoftSkillsMod;
     //@javafx.fxml.FXML
@@ -40,6 +38,12 @@ public class ModifierEvaluation implements Initializable {
 
     private ServiceEvaluation serviceEvaluation; // Service pour gérer les évaluations
     private Evaluation evaluation;
+    @FXML
+    private Label commentaireModC;
+    @FXML
+    private Label noteSoftSkillsModC;
+    @FXML
+    private Label noteTechniqueModC;
 
 
     @Override
@@ -78,20 +82,78 @@ public class ModifierEvaluation implements Initializable {
         }
     }
 
+
+    private boolean validerModification() {
+        boolean isValid = true;
+
+        // Vérification du champ noteTechnique
+        if (noteTechniqueMod.getText().trim().isEmpty()) {
+            noteTechniqueModC.setText("Ce champ est obligatoire !");
+            isValid = false;
+        } else {
+            try {
+                float noteTech = Float.parseFloat(noteTechniqueMod.getText());
+                if (noteTech < 0 || noteTech > 20) {
+                    noteTechniqueModC.setText("La note doit être entre 0 et 20 !");
+                    isValid = false;
+                } else {
+                    noteTechniqueModC.setText(""); // Effacer le message d'erreur
+                }
+            } catch (NumberFormatException e) {
+                noteTechniqueModC.setText("Veuillez entrer un nombre valide !");
+                isValid = false;
+            }
+        }
+
+        // Vérification du champ noteSoftSkills
+        if (noteSoftSkillsMod.getText().trim().isEmpty()) {
+            noteSoftSkillsModC.setText("Ce champ est obligatoire !");
+            isValid = false;
+        } else {
+            try {
+                float noteSS = Float.parseFloat(noteSoftSkillsMod.getText());
+                if (noteSS < 0 || noteSS > 20) {
+                    noteSoftSkillsModC.setText("La note doit être entre 0 et 20 !");
+                    isValid = false;
+                } else {
+                    noteSoftSkillsModC.setText("");
+                }
+            } catch (NumberFormatException e) {
+                noteSoftSkillsModC.setText("Veuillez entrer un nombre valide !");
+                isValid = false;
+            }
+        }
+
+        // Vérification du champ commentaire
+        if (commentaireMod.getText().trim().isEmpty()) {
+            commentaireModC.setText("Le commentaire est obligatoire !");
+            isValid = false;
+        } else {
+            commentaireModC.setText(""); // Effacer le message d'erreur
+        }
+
+        return isValid;
+    }
+
+
+
     // Méthode pour modifier l'évaluation
     @FXML
     public void ModifierEvaluation(ActionEvent actionEvent) {
+        if (!validerModification()) {
+            return;
+        }
         try {
             // Récupérer les valeurs des champs
             float noteTech = Float.parseFloat(noteTechniqueMod.getText());
             float noteSS = Float.parseFloat(noteSoftSkillsMod.getText());
-            LocalDate dateEva = dateEvaluationMod.getValue();
+            //LocalDate dateEva = dateEvaluationMod.getValue();
             String comment = commentaireMod.getText();
             int idEva = idEntretien; // Utiliser l'idEntretien déjà défini
             int idE = idMod.getValue(); // Récupérer l'ID de l'évaluateur sélectionné
 
             // Créer l'objet Evaluation avec l'ID de l'évaluation à modifier
-            Evaluation evaluation = new Evaluation(idEvaluation, noteTech, noteSS, comment, dateEva, idEva, idE);
+            Evaluation evaluation = new Evaluation(idEvaluation, noteTech, noteSS, comment, LocalDateTime.now(), idEva, idE);
 
             // Modifier l'évaluation dans la base de données
             serviceEvaluation.modifier(evaluation);
@@ -142,9 +204,9 @@ public class ModifierEvaluation implements Initializable {
         this.commentaireMod.setText(commentaire);
     }
 
-    public void setDateEvaluationMod(LocalDate dateEvaluation) {
-        this.dateEvaluationMod.setValue(dateEvaluation);
-    }
+    /*public void setDateEvaluationMod(LocalDateTime dateEvaluation) {
+        this.dateEvaluationMod.setValue(dateEvaluation.toLocalDate());
+    }*/
 
     /*public void setIdEntretienMod(int idEntretien) {
         this.idEntretienMod.setValue(idEntretien);
@@ -177,7 +239,7 @@ public class ModifierEvaluation implements Initializable {
         setNoteTechniqueMod(evaluation.getNoteTechnique());
         setNoteSoftSkillsMod(evaluation.getNoteSoftSkills());
         setCommentaireMod(evaluation.getCommentaire());
-        setDateEvaluationMod(evaluation.getDateEvaluation());
+        //setDateEvaluationMod(evaluation.getDateEvaluation());
         setIdEntretien(evaluation.getIdEntretien());
         setIdMod(evaluation.getId());
         this.idEntretien = evaluation.getIdEntretien();

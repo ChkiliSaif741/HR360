@@ -5,6 +5,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Evaluation {
@@ -12,13 +13,13 @@ public class Evaluation {
         private float noteTechnique;
     private float noteSoftSkills;
     private String commentaire;
-    private LocalDate dateEvaluation;
+    private LocalDateTime dateEvaluation;
     private int idEntretien;
     private int id;
 
     public Evaluation() {}
 
-    public Evaluation(float noteTechnique, float noteSoftSkills, String commentaire, LocalDate dateEvaluation, int idEntretien, int id ) {
+    public Evaluation(float noteTechnique, float noteSoftSkills, String commentaire, LocalDateTime dateEvaluation, int idEntretien, int id ) {
         this.noteTechnique = noteTechnique;
         this.noteSoftSkills = noteSoftSkills;
         this.commentaire = commentaire;
@@ -26,7 +27,7 @@ public class Evaluation {
         this.idEntretien = idEntretien;
         this.id = id;
     }
-    public Evaluation(int idEvaluation,float noteTechnique, float noteSoftSkills, String commentaire, LocalDate dateEvaluation, int idEntretien, int id ) {
+    public Evaluation(int idEvaluation,float noteTechnique, float noteSoftSkills, String commentaire, LocalDateTime dateEvaluation, int idEntretien, int id ) {
         this.idEvaluation = idEvaluation;
         this.noteTechnique = noteTechnique;
         this.noteSoftSkills = noteSoftSkills;
@@ -62,10 +63,10 @@ public class Evaluation {
     public void setCommentaire(String commentaire) {
         this.commentaire = commentaire;
     }
-    public LocalDate getDateEvaluation() {
+    public LocalDateTime getDateEvaluation() {
         return dateEvaluation;
     }
-    public void setDateEvaluation(LocalDate dateEvaluation) {
+    public void setDateEvaluation(LocalDateTime dateEvaluation) {
         this.dateEvaluation = dateEvaluation;
     }
     public int getIdEntretien() {

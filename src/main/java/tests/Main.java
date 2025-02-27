@@ -10,6 +10,7 @@ import utils.type;
 import utils.statut;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class Main {
         Entretien entretien = new Entretien(LocalDate.of(2000,9,4), LocalTime.of(5,40,27), type.En_ligne, statut.Planifié, "https://meet.google.com/test" ,null,1);
         Entretien entretien2 = new Entretien(LocalDate.of(2004,1,1), LocalTime.of(10,18,0), type.En_ligne, statut.Reporté, "https://meet.google.com/test" ,null,1);
 
-        Evaluation evaluation = new Evaluation(15.5f, 17.0f, "Bonne prestation", LocalDate.now(), 7, 1);
-        Evaluation evaluation2 = new Evaluation(17.5f, 10.0f, "bien", LocalDate.now(), 8, 1);
+        Evaluation evaluation = new Evaluation(15.5f, 17.0f, "Bonne prestation", LocalDateTime.now(), 7, 1);
+        Evaluation evaluation2 = new Evaluation(17.5f, 10.0f, "bien", LocalDateTime.now(), 8, 1);
 
         try {
             //serviceEntretien.ajouter(entretien2);

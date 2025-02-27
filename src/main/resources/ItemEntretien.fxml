@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="214.0" prefWidth="200.0" stylesheets="@styleEva.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ItemEntretien">
+   <children>
+      <VBox fx:id="anchorEnt" layoutY="8.0" onMouseClicked="#AffEntEva" prefHeight="176.0" prefWidth="200.0">
+         <children>
+            <HBox prefHeight="56.0" prefWidth="231.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="146.0" text="Date Entretien :">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="DateEntretien" prefHeight="40.0" prefWidth="121.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="58.0" prefWidth="231.0">
+               <children>
+                  <Label prefHeight="31.0" prefWidth="154.0" text="Heure Entretien :">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="HeureEntretien" prefHeight="42.0" prefWidth="127.0">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="55.0" prefWidth="231.0">
+               <children>
+                  <Label prefHeight="33.0" prefWidth="143.0" text="Type Entretien :">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="TypeEntretien" prefHeight="39.0" prefWidth="130.0">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="56.0" prefWidth="231.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="144.0" text="Statut Entretien :">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="StatutEntretien" prefHeight="54.0" prefWidth="121.0">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="56.0" prefWidth="231.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="144.0" text="Lien Meet :">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="LienMeet" prefHeight="30.0" prefWidth="200.0">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="145.0" prefHeight="56.0" prefWidth="231.0">
+               <children>
+                  <Label prefHeight="29.0" prefWidth="98.0" text="Localisation :">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="Localisation" prefHeight="54.0" prefWidth="121.0">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox layoutY="175.0" prefHeight="39.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="30.0" fitWidth="29.0" onMouseClicked="#modifierEnt" pickOnBounds="true" preserveRatio="true" translateX="120.0" translateY="10.0">
+               <image>
+                  <Image url="@image/modifier.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="21.0" fitWidth="23.0" onMouseClicked="#deleteEnt" pickOnBounds="true" preserveRatio="true" translateX="120.0" translateY="13.0">
+               <image>
+                  <Image url="@image/delete.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+   </children>
+   <styleClass>
+      <String fx:value="shadow" />
+      <String fx:value="fruit-item" />
+   </styleClass>
+</AnchorPane>

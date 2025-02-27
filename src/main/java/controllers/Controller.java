@@ -56,7 +56,7 @@ public class Controller implements Initializable {
     @FXML
     void AffichEntretien(ActionEvent event) {
         try {
-            loadPage("/afficheentretien.fxml");
+            loadPage("/affentretien.fxml");
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -68,7 +68,8 @@ public class Controller implements Initializable {
         Exit.setOnMouseClicked(event -> {
             System.exit(0);
         });
-        slider.setTranslateX(-176);
+        //slider.setTranslateX(-176);
+        slider.setTranslateX(0);
         Menu.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));

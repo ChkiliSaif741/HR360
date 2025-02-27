@@ -53,6 +53,12 @@ public class ServiceEntretien implements IService<Entretien> {
 
     @Override
     public void ajouter(Entretien entretien) throws SQLException, GeneralSecurityException, IOException {
+// Vérifier que la date et l'heure ne sont pas null
+        if (entretien.getDate() == null || entretien.getHeure() == null) {
+            throw new IllegalArgumentException("La date et l'heure de l'entretien ne peuvent pas être null.");
+        }
+        // Forcer le statut à "Planifié"
+        entretien.setStatut(statut.Planifié);
         String meetLink = null;
 
         if (entretien.getType() == type.En_ligne) {
@@ -70,9 +76,9 @@ public class ServiceEntretien implements IService<Entretien> {
             preparedStatement.setString(3, entretien.getType().name());
             preparedStatement.setString(4, entretien.getStatut().name());
             preparedStatement.setString(5, entretien.getLien_meet());
-            if (entretien.getType() == type.En_ligne) {
-                preparedStatement.setNull(6, Types.VARCHAR);
-            }
+            preparedStatement.setString(6, entretien.getLocalisation());
+
+
             preparedStatement.setInt(7, entretien.getIdCandidature());
             preparedStatement.executeUpdate();
             System.out.println("Entretien ajouté avec succès ! Lien Meet : " + meetLink);

@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -207,8 +208,8 @@ public class AfficheEntretien implements Initializable {
 
     // Configuration du GridPane (espacements, couleurs, styles)
     private void configurerStyleGridPane() {
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        gridPane.setHgap(0.5);
+        gridPane.setVgap(1);
         gridPane.setPadding(new Insets(5));
         gridPane.getStyleClass().add("grid-pane"); // Appliquer la classe CSS
 
@@ -251,34 +252,52 @@ public class AfficheEntretien implements Initializable {
             gridPane.add(creerLabel(safeToString(entretien.getLien_meet()), false), 4, row);
             gridPane.add(creerLabel(safeToString(entretien.getLocalisation()), false), 5, row);
 
-            // Bouton Delete
-            Button deleteButton = new Button("Delete");
-            deleteButton.getStyleClass().add("delete-button"); // Appliquer la classe CSS
-            deleteButton.setUserData(entretien);  // Associer l'objet entretien au bouton
-            deleteButton.setOnAction(e -> {
+            // Bouton Delete (remplacé par une ImageView)
+            ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/delete.png")));
+            deleteIcon.setFitWidth(20); // Ajuster la taille de l'icône
+            deleteIcon.setFitHeight(20);
+            deleteIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+            deleteIcon.setOnMouseClicked(e -> {
                 try {
-                    DeleteEntretien(e);
+                    DeleteEntretien(e); // Appeler la méthode de suppression
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
             });
 
-            // Bouton Update
-            Button updateButton = new Button("Update");
-            updateButton.getStyleClass().add("update-button"); // Appliquer la classe CSS
-            updateButton.setUserData(entretien);  // Associer l'objet entretien au bouton
-            updateButton.setOnAction(this::UpdateEntretien);
+// Bouton Update (remplacé par une ImageView)
+            ImageView updateIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/update.png")));
+            updateIcon.setFitWidth(20); // Ajuster la taille de l'icône
+            updateIcon.setFitHeight(20);
+            updateIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+            updateIcon.setOnMouseClicked(e -> UpdateEntretien(e)); // Appeler la méthode de mise à jour
 
-            // Bouton Evaluation
-            Button evaluationButton = new Button("Evaluation");
-            evaluationButton.getStyleClass().add("evaluation-button");
-            evaluationButton.setUserData(entretien);
-            evaluationButton.setOnAction(this::EntretienEva);
+// Bouton Evaluation (remplacé par une ImageView)
+            ImageView evaluationIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/evaluation.png")));
+            evaluationIcon.setFitWidth(20); // Ajuster la taille de l'icône
+            evaluationIcon.setFitHeight(20);
+            evaluationIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+            evaluationIcon.setOnMouseClicked(e -> EntretienEva(e)); // Appeler la méthode d'évaluation
 
-            // Ajouter les boutons dans la dernière colonne
-            gridPane.add(deleteButton, 6, row);
-            gridPane.add(updateButton, 7, row);
-            gridPane.add(evaluationButton, 8, row);
+// Ajouter les icônes dans la dernière colonne
+            gridPane.add(deleteIcon, 6, row);
+            gridPane.add(updateIcon, 7, row);
+            gridPane.add(evaluationIcon, 8, row);
+
+            //
+            deleteIcon.getStyleClass().add("image-view");
+            updateIcon.getStyleClass().add("image-view");
+            evaluationIcon.getStyleClass().add("image-view");
+
+            // Supprimer les marges entre les icônes
+            GridPane.setMargin(deleteIcon, Insets.EMPTY);
+            GridPane.setMargin(updateIcon, Insets.EMPTY);
+            GridPane.setMargin(evaluationIcon, Insets.EMPTY);
+
+// Appliquer la classe CSS aux cellules contenant les icônes
+            deleteIcon.getStyleClass().add("icon-cell");
+            updateIcon.getStyleClass().add("icon-cell");
+            evaluationIcon.getStyleClass().add("icon-cell");
 
             row++;
         }
@@ -317,35 +336,51 @@ public class AfficheEntretien implements Initializable {
                 gridPane.add(creerLabel(safeToString(entretien.getLien_meet()), false), 4, row);
                 gridPane.add(creerLabel(safeToString(entretien.getLocalisation()), false), 5, row);
 
-                // Bouton Delete
-                Button deleteButton = new Button("Delete");
-                deleteButton.getStyleClass().add("delete-button"); // Appliquer la classe CSS
-                deleteButton.setUserData(entretien);  // Associer l'objet entretien au bouton
-                deleteButton.setOnAction(e -> {
+                // Bouton Delete (remplacé par une ImageView)
+                ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/delete.png")));
+                deleteIcon.setFitWidth(30); // Ajuster la taille de l'icône
+                deleteIcon.setFitHeight(30);
+                deleteIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+                deleteIcon.setOnMouseClicked(e -> {
                     try {
-                        DeleteEntretien(e);
+                        DeleteEntretien(e); // Appeler la méthode de suppression
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
                 });
 
-                // Bouton Update
-                Button updateButton = new Button("Update");
-                updateButton.getStyleClass().add("update-button"); // Appliquer la classe CSS
-                updateButton.setUserData(entretien);  // Associer l'objet entretien au bouton
-                updateButton.setOnAction(this::UpdateEntretien);
+// Bouton Update (remplacé par une ImageView)
+                ImageView updateIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/update.png")));
+                updateIcon.setFitWidth(30); // Ajuster la taille de l'icône
+                updateIcon.setFitHeight(30);
+                updateIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+                updateIcon.setOnMouseClicked(e -> UpdateEntretien(e)); // Appeler la méthode de mise à jour
 
-                // Bouton Update
-                Button evaluationButton = new Button("Evaluation");
-                evaluationButton.getStyleClass().add("evaluation-button");
-                ActionEvent Event =new ActionEvent();
-                evaluationButton.setUserData(entretien);
-                evaluationButton.setOnAction(this::EntretienEva);
+// Bouton Evaluation (remplacé par une ImageView)
+                ImageView evaluationIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/evaluation.png")));
+                evaluationIcon.setFitWidth(30); // Ajuster la taille de l'icône
+                evaluationIcon.setFitHeight(30);
+                evaluationIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+                evaluationIcon.setOnMouseClicked(e -> EntretienEva(e)); // Appeler la méthode d'évaluation
 
-                // Ajouter les boutons dans la dernière colonne
-                gridPane.add(deleteButton, 6, row);
-                gridPane.add(updateButton, 7, row);
-                gridPane.add(evaluationButton, 8, row);
+// Ajouter les icônes dans la dernière colonne
+                gridPane.add(deleteIcon, 6, row);
+                gridPane.add(updateIcon, 7, row);
+                gridPane.add(evaluationIcon, 8, row);
+
+                deleteIcon.getStyleClass().add("image-view");
+                updateIcon.getStyleClass().add("image-view");
+                evaluationIcon.getStyleClass().add("image-view");
+
+                // Supprimer les marges entre les icônes
+                GridPane.setMargin(deleteIcon, Insets.EMPTY);
+                GridPane.setMargin(updateIcon, Insets.EMPTY);
+                GridPane.setMargin(evaluationIcon, Insets.EMPTY);
+
+// Appliquer la classe CSS aux cellules contenant les icônes
+                deleteIcon.getStyleClass().add("icon-cell");
+                updateIcon.getStyleClass().add("icon-cell");
+                evaluationIcon.getStyleClass().add("icon-cell");
 
                 row++;
             }
@@ -357,10 +392,10 @@ public class AfficheEntretien implements Initializable {
 
 
 
-    private void EntretienEva(ActionEvent actionEvent) {
+    private void EntretienEva(MouseEvent mouseEvent) {
         // Récupérer l'objet Entretien à partir du bouton
-        Button clickedButton = (Button) actionEvent.getSource();
-        Entretien entretien = (Entretien) clickedButton.getUserData();
+        ImageView clickedIcon = (ImageView) mouseEvent.getSource();
+        Entretien entretien = (Entretien) clickedIcon.getUserData(); // Récupérer l'Entretien associé à l'icône
         System.out.println(entretien);
 
         // Fermer la fenêtre actuelle
@@ -441,9 +476,9 @@ public class AfficheEntretien implements Initializable {
     }
 
     // Méthode de suppression
-    public void DeleteEntretien(ActionEvent actionEvent) throws SQLException {
-        Button clickedButton = (Button) actionEvent.getSource();
-        Entretien entretien = (Entretien) clickedButton.getUserData();  // Récupérer l'Entretien associé au bouton
+    public void DeleteEntretien(MouseEvent mouseEvent) throws SQLException {
+        ImageView clickedIcon = (ImageView) mouseEvent.getSource();
+        Entretien entretien = (Entretien) clickedIcon.getUserData(); // Récupérer l'Entretien associé à l'icône
 
         try {
             serviceEntretien.supprimer(entretien.getIdEntretien());
@@ -455,13 +490,13 @@ public class AfficheEntretien implements Initializable {
     }
 
     // Méthode pour ouvrir la fenêtre de modification
-    public void UpdateEntretien(ActionEvent actionEvent) {
+    public void UpdateEntretien(MouseEvent mouseEvent) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
 
         try {
             // Récupérer l'objet Entretien à partir du bouton
-            Button clickedButton = (Button) actionEvent.getSource();
-            Entretien entretien = (Entretien) clickedButton.getUserData();
+            ImageView clickedIcon = (ImageView) mouseEvent.getSource();
+            Entretien entretien = (Entretien) clickedIcon.getUserData(); // Récupérer l'Entretien associé à l'icône
             //System.out.println(entretien.getIdEntretien());
             // Fermer la fenêtre actuelle
             /*Stage currentStage = (Stage) gridPane.getScene().getWindow();

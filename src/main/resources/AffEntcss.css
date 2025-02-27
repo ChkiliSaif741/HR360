@@ -1,130 +1,84 @@
-/* Style pour les en-têtes */
-.header-label {
-    -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-border-color: black;
-    -fx-border-width: 1;
-    -fx-alignment: center;
-    -fx-padding: 10;
-    -fx-min-width: 100px;
-    -fx-min-height: 40px;
-}
-
-/* Style pour les labels normaux */
-.normal-label {
-    -fx-border-color: black;
-    -fx-border-width: 1;
-    -fx-background-color: #FFFFFF;
-    -fx-alignment: center;
-    -fx-padding: 10;
-    -fx-min-width: 100px;
-    -fx-min-height: 40px;
-}
-
-/* Style commun aux boutons */
-.delete-button, .update-button ,.evaluation-button{
-    -fx-text-fill: white;
-    -fx-border-color: black;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-padding: 10;
-    -fx-min-width: 100px;
-    -fx-min-height: 40px;
-    -fx-alignment: center;
-    -fx-font-weight: bold;
-    -fx-cursor: hand; /* 🖱️ Change le curseur au survol */
-}
-
-/* Style pour le bouton Delete */
-.delete-button {
-    -fx-background-color: red;
-}
-
-/* Effet au survol */
-.delete-button:hover {
-    -fx-background-color: darkred;
-    -fx-cursor: hand; /* 🖱️ Change le curseur */
-}
-
-/* Effet au clic */
-.delete-button:pressed {
-    -fx-background-color: #8B0000; /* Rouge plus foncé */
-}
-
-/* Style pour le bouton Update */
-.update-button {
-    -fx-background-color: blue;
-}
-
-/* Effet au survol */
-.update-button:hover {
-    -fx-background-color: darkblue;
-    -fx-cursor: hand; /* 🖱️ Change le curseur */
-}
-
-/* Effet au clic */
-.update-button:pressed {
-    -fx-background-color: #00008B; /* Bleu plus foncé */
-}
-
 /* Style pour le GridPane */
 .grid-pane {
-    -fx-hgap: 10;
-    -fx-vgap: 10;
-    -fx-padding: 10;
-    -fx-background-color: #F8F8F8;
+    -fx-hgap: 0.5; /* Espacement horizontal réduit entre les cellules */
+    -fx-vgap: 1; /* Espacement vertical entre les cellules */
+    -fx-padding: 10; /* Espacement intérieur */
+    -fx-background-color: #FFFFFF; /* Fond blanc */
+    -fx-border-color: #E0E0E0; /* Bordure grise */
+    -fx-border-width: 1; /* Épaisseur de la bordure */
+}
+
+/* Style pour les en-têtes de colonnes */
+.header-label {
+    -fx-background-color: #F5F5F5; /* Fond gris clair */
+    -fx-text-fill: #333333; /* Texte sombre */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-border-color: #E0E0E0; /* Bordure grise */
+    -fx-border-width: 1; /* Épaisseur de la bordure */
+    -fx-alignment: center; /* Centrer le texte */
+    -fx-padding: 10; /* Espacement intérieur */
+}
+
+/* Style pour les cellules normales */
+.normal-label {
+    -fx-background-color: #FFFFFF; /* Fond blanc */
+    -fx-text-fill: #333333; /* Texte sombre */
+    -fx-border-color: #E0E0E0; /* Bordure grise */
+    -fx-border-width: 1; /* Épaisseur de la bordure */
+    -fx-alignment: center-left; /* Alignement à gauche */
+    -fx-padding: 10; /* Espacement intérieur */
+}
+
+/* Style pour les cellules contenant les icônes */
+.icon-cell {
+    -fx-padding: 0; /* Supprimer le padding */
+    -fx-hgap: 0; /* Supprimer l'espace horizontal */
+}
+
+/* Style pour les icônes */
+.image-view {
+    -fx-cursor: hand; /* Curseur en forme de main */
+    -fx-fit-width: 30; /* Largeur des icônes */
+    -fx-fit-height: 30; /* Hauteur des icônes */
+    -fx-padding: 0; /* Supprimer le padding */
+}
+
+/* Effet de survol pour les icônes */
+.image-view:hover {
+    -fx-opacity: 0.8; /* Réduire légèrement l'opacité */
+}
+
+/* Effet au clic pour les icônes */
+.image-view:pressed {
+    -fx-opacity: 0.6; /* Réduire davantage l'opacité */
 }
 
 /* Style pour le ScrollPane */
 .scroll-pane {
-    -fx-fit-to-width: true;
-    -fx-fit-to-height: true;
-    -fx-hbar-policy: as-needed;
-    -fx-vbar-policy: as-needed;
+    -fx-fit-to-width: true; /* Ajuster à la largeur */
+    -fx-fit-to-height: true; /* Ajuster à la hauteur */
+    -fx-hbar-policy: as-needed; /* Barre de défilement horizontale si nécessaire */
+    -fx-vbar-policy: as-needed; /* Barre de défilement verticale si nécessaire */
+    -fx-background-color: #FFFFFF; /* Fond blanc */
 }
 
-/* Style pour le bouton AddE */
-.add-button {
+/* Style pour le bouton AJOUTER ENTRETIEN */
+#addButton {
     -fx-background-color: #4CAF50; /* Vert */
-    -fx-text-fill: white; /* Texte en blanc */
-    -fx-font-weight: bold;
-    -fx-border-color: black;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-padding: 10;
-    -fx-min-width: 100px;
-    -fx-min-height: 40px;
-    -fx-alignment: center;
-    -fx-cursor: hand; /* 🖱️ Change le curseur */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies */
+    -fx-padding: 10 20; /* Espacement intérieur */
+    -fx-cursor: hand; /* Curseur en forme de main */
 }
 
-/* Effet au survol */
-.add-button:hover {
+/* Effet au survol du bouton AJOUTER ENTRETIEN */
+#addButton:hover {
     -fx-background-color: #45a049; /* Vert un peu plus foncé */
-    -fx-cursor: hand;
 }
 
-/* Effet au clic */
-.add-button:pressed {
-    -fx-background-color: #388E3C;
-}
-
-
-/* Style pour le bouton Delete */
-.evaluation-button {
-    -fx-background-color: #FFD700;
-}
-
-/* Effet au survol */
-.evaluation-button:hover {
-    -fx-background-color: #FFC400;
-    -fx-cursor: hand; /* 🖱️ Change le curseur */
-}
-
-/* Effet au clic */
-.evaluation-button:pressed {
-    -fx-background-color: #8B0000; /* Rouge plus foncé */
+/* Effet au clic du bouton AJOUTER ENTRETIEN */
+#addButton:pressed {
+    -fx-background-color: #388E3C; /* Vert encore plus foncé */
 }

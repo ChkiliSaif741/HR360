@@ -87,6 +87,8 @@ public class ItemEvaluation {
 
             // Supprimer l'évaluation par son ID
             serviceEvaluation.supprimer(evaluation.getIdEvaluation());
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation modifiée avec succès !");
+
             afficheEvaluation.refresh();
 
 
@@ -96,5 +98,14 @@ public class ItemEvaluation {
             e.printStackTrace();
         }
 
+    }
+
+    // Méthode pour afficher une alerte
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
     }
 }

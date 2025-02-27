@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import services.ServiceEvaluation;
 import utils.statut;
 import utils.type;
@@ -18,15 +15,12 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class AjoutEvaluation {
 
 
-    //@javafx.fxml.FXML
-    //private ComboBox idEntretien;
-    @javafx.fxml.FXML
-    private DatePicker dateEvaluation;
     @javafx.fxml.FXML
     private TextField noteTechnique;
     @javafx.fxml.FXML
@@ -39,6 +33,12 @@ public class AjoutEvaluation {
     private ServiceEvaluation serviceEvaluation;
 
     private int idEntretien;
+    @FXML
+    private Label noteSoftSkillsC;
+    @FXML
+    private Label noteTechniqueC;
+    @FXML
+    private Label commentaireC;
 
 
     @FXML
@@ -69,45 +69,58 @@ public class AjoutEvaluation {
     }
 
     private boolean validerSaisie() {
-        // Vérification de la date
-        if (dateEvaluation.getValue() == null || dateEvaluation.getValue().isAfter(LocalDate.now())) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "La date de l'évaluation doit être aujourd'hui ou dans le passé !");
-            return false;
+        boolean isValid = true;
+
+        // Vérification du champ noteTechnique
+        if (noteTechnique.getText().trim().isEmpty()) {
+            noteTechniqueC.setText("Ce champ est obligatoire !");
+            isValid = false;
+        } else {
+            try {
+                float noteTech = Float.parseFloat(noteTechnique.getText());
+                if (noteTech < 0 || noteTech > 20) {
+                    noteTechniqueC.setText("La note doit être entre 0 et 20 !");
+                    isValid = false;
+                } else {
+                    noteTechniqueC.setText(""); // Effacer le message d'erreur
+                }
+            } catch (NumberFormatException e) {
+                noteTechniqueC.setText("Veuillez entrer un nombre valide !");
+                isValid = false;
+            }
         }
 
-        // Vérification des notes
-        try {
-            float noteTech = Float.parseFloat(noteTechnique.getText());
-            float noteSS = Float.parseFloat(noteSoftSkills.getText());
-
-            if (noteTech < 0 || noteTech > 20) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "La note technique doit être entre 0 et 20 !");
-                return false;
+        // Vérification du champ noteSoftSkills
+        if (noteSoftSkills.getText().trim().isEmpty()) {
+            noteSoftSkillsC.setText("Ce champ est obligatoire !");
+            isValid = false;
+        } else {
+            try {
+                float noteSS = Float.parseFloat(noteSoftSkills.getText());
+                if (noteSS < 0 || noteSS > 20) {
+                    noteSoftSkillsC.setText("La note doit être entre 0 et 20 !");
+                    isValid = false;
+                } else {
+                    noteSoftSkillsC.setText("");
+                }
+            } catch (NumberFormatException e) {
+                noteSoftSkillsC.setText("Veuillez entrer un nombre valide !");
+                isValid = false;
             }
-
-            if (noteSS < 0 || noteSS > 20) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "La note Soft Skills doit être entre 0 et 20 !");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Les notes doivent être des nombres valides !");
-            return false;
         }
 
-        // Vérification du commentaire
+        // Vérification du champ commentaire
         if (commentaire.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Le champ commentaire ne peut pas être vide !");
-            return false;
+            commentaireC.setText("Le commentaire est obligatoire !");
+            isValid = false;
+        } else {
+            commentaireC.setText(""); // Effacer le message d'erreur
         }
 
-        // Vérification de l'ID évaluateur
-        if (id.getValue() == null) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner un évaluateur !");
-            return false;
-        }
-
-        return true;
+        return isValid;
     }
+
+
 
 
 
@@ -122,15 +135,16 @@ public class AjoutEvaluation {
             // Récupérer les valeurs validées
             float noteTech = Float.parseFloat(noteTechnique.getText());
             float noteSS = Float.parseFloat(noteSoftSkills.getText());
-            LocalDate dateEva = dateEvaluation.getValue();
+            //LocalDate dateEva = dateEvaluation.getValue();
             String comment = commentaire.getText();
             int idEva = idEntretien;
             int idE = (int) id.getValue();
+            LocalDateTime dateEvaluation = LocalDateTime.now();
 
             // Créer et ajouter l'évaluation
-            Evaluation evaluation = new Evaluation(noteTech, noteSS, comment, dateEva, idEva, idE);
+            Evaluation evaluation = new Evaluation(noteTech, noteSS, comment, dateEvaluation, idEva, idE);
             serviceEvaluation.ajouter(evaluation);
-            //showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation ajoutée avec succès !");
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation ajoutée avec succès !");
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
             Parent root=loader.load();

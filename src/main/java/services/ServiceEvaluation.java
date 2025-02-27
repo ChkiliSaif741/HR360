@@ -5,6 +5,7 @@ import interfaces.IService;
 import utils.MyDatabase;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ServiceEvaluation implements IService<Evaluation> {
         preparedStatement.setFloat(1, evaluation.getNoteTechnique());
         preparedStatement.setFloat(2, evaluation.getNoteSoftSkills());
         preparedStatement.setString(3, evaluation.getCommentaire());
-        preparedStatement.setDate(4, Date.valueOf(evaluation.getDateEvaluation()));
+        preparedStatement.setTimestamp(4, Timestamp.valueOf(evaluation.getDateEvaluation()));
         preparedStatement.setInt(5, evaluation.getIdEntretien());
         preparedStatement.setInt(6, evaluation.getId());
         preparedStatement.executeUpdate();
@@ -37,7 +38,7 @@ public class ServiceEvaluation implements IService<Evaluation> {
         preparedStatement.setFloat(1, evaluation.getNoteTechnique());
         preparedStatement.setFloat(2, evaluation.getNoteSoftSkills());
         preparedStatement.setString(3, evaluation.getCommentaire());
-        preparedStatement.setDate(4, Date.valueOf(evaluation.getDateEvaluation()));
+        preparedStatement.setTimestamp(4, Timestamp.valueOf(evaluation.getDateEvaluation()));
         preparedStatement.setInt(5, evaluation.getIdEntretien()); // Correction ici
         preparedStatement.setInt(6, evaluation.getId()); // Correction ici
         preparedStatement.setInt(7, evaluation.getIdEvaluation()); // Correction ici
@@ -84,7 +85,7 @@ public class ServiceEvaluation implements IService<Evaluation> {
             evaluation.setNoteTechnique(resultSet.getFloat("noteTechnique"));
             evaluation.setNoteSoftSkills(resultSet.getFloat("noteSoftSkills"));
             evaluation.setCommentaire(resultSet.getString("commentaire"));
-            evaluation.setDateEvaluation(resultSet.getDate("dateEvaluation").toLocalDate());
+            evaluation.setDateEvaluation(resultSet.getTimestamp("dateEvaluation").toLocalDateTime());
             evaluation.setIdEntretien(resultSet.getInt("idEntretien"));
             evaluation.setId(resultSet.getInt("id"));
             evaluations.add(evaluation);
