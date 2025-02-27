@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FormationsControllerEMP">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ParticipationsController">
     <children>
         <BorderPane layoutX="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
@@ -95,7 +95,7 @@
                                         <Insets bottom="20.0" top="30.0" />
                                     </VBox.margin>
                                     <children>
-                                        <Button mnemonicParsing="false" onAction="#participerFormation" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Participer" textFill="#828282">
+                                        <Button fx:id="btnAnnuler" mnemonicParsing="false" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Annuler" textFill="#828282">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
                                             </font>

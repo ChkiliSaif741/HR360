@@ -71,6 +71,16 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    void onParticipationsBtn(ActionEvent event) {
+        try {
+            loadPage("/participations.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
 
     @FXML
     void AffichUser(ActionEvent event) {

@@ -11,23 +11,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceParticipation implements IService<Participation>{
+public class ServiceParticipation implements IService<Participation> {
 
     Connection connection;
+
     public ServiceParticipation() {
         connection = MyDatabase.getInstance().getConnection();
     }
 
     @Override
     public void ajouter(Participation participation) throws SQLException {
-        if (!verifParticipation(participation.getIdUser(), participation.getIdFormation())){
+        if (!verifParticipation(participation.getIdUser(), participation.getIdFormation())) {
             String req = "INSERT INTO participation (idFormation , idUser) VALUES (?, ?)";
             PreparedStatement stmt = connection.prepareStatement(req);
             stmt.setInt(1, participation.getIdFormation());
             stmt.setInt(2, participation.getIdUser());
             stmt.executeUpdate();
             System.out.println("Participation ajoutée !");
-        }else {
+        } else {
             System.out.println("Ajout de participation impossible!");
         }
 
@@ -66,13 +67,13 @@ public class ServiceParticipation implements IService<Participation>{
 
     public List<Utilisateur> afficherParticipants(int id) throws SQLException {
 
-        String req="select idUser from participation where idFormation = ?";
+        String req = "select idUser from participation where idFormation = ?";
         PreparedStatement stmt = connection.prepareStatement(req);
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
         List<Utilisateur> utilisateurs = new ArrayList<>();
         ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-        while(rs.next()){
+        while (rs.next()) {
             utilisateurs.add(serviceUtilisateur.getUserById(rs.getInt("idUser")));
         }
         return utilisateurs;
@@ -81,14 +82,52 @@ public class ServiceParticipation implements IService<Participation>{
     public boolean verifParticipation(int idUser, int idFormation) throws SQLException {
 
 
-        String req="select idUser,idFormation from participation";
+        String req = "select idUser,idFormation from participation";
         PreparedStatement stmt = connection.prepareStatement(req);
         ResultSet rs = stmt.executeQuery();
-        while(rs.next()){
-            if(rs.getInt("idUser")==idUser && rs.getInt("idFormation")==idFormation){
+        while (rs.next()) {
+            if (rs.getInt("idUser") == idUser && rs.getInt("idFormation") == idFormation) {
                 return true;
             }
         }
         return false;
     }
+
+    public List<Participation> getParticipationsByEmploye(int employeId) {
+        List<Participation> participations = new ArrayList<>();
+        String query = "SELECT p.idFormation, p.idUser, f.titre FROM participation p JOIN formation f ON p.idFormation = f.id WHERE p.idUser = ?";
+
+        try {
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setInt(1, employeId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int idFormation = rs.getInt("idFormation");
+                String formationTitre = rs.getString("titre");
+                participations.add(new Participation(idFormation, employeId, formationTitre));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return participations;
+    }
+
+
+    public void annulerParticipation(int idUser, int idFormation) {
+        String query = "DELETE FROM participation WHERE idUser = ? AND idFormation = ?";
+
+        try {
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setInt(1, idUser);
+            pst.setInt(2, idFormation);
+            pst.executeUpdate();
+            System.out.println("Participation annulée !");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

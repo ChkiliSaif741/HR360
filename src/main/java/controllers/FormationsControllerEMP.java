@@ -101,16 +101,6 @@ public class FormationsControllerEMP implements Initializable {
         return formations;
     }
 
-    /*private void setChosenFormation(Formation formation) {
-        formationNameLable.setText(formation.getTitre());
-        //formationPriceLabel.setText(Main.CURRENCY + formation.getPrice());
-        //image = new Image(getClass().getResourceAsStream(formation.getImgSrc()));
-        //formationImg.setImage(image);
-        chosenFormationCard.setStyle("-fx-background-color: #" + "F16C31" + ";\n" +
-                "    -fx-background-radius: 30;");
-        selectedFormation = formation;
-    }*/
-
     private void setChosenFormation(Formation formation) {
         formationNameLable.setText(formation.getTitre());
         chosenFormationCard.setStyle("-fx-background-color: #" + "F16C31" + ";\n" +
