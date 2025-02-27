@@ -20,12 +20,12 @@ public class ServiceReservation implements IService<Reservation> {
             System.out.println("Erreur : La ressource est déjà réservée pour cette période !");
             return;
         }
-        String query = "INSERT INTO reservation (id_ressource, date_debut, date_fin, utilisateur) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO reservation (id_ressource, date_debut, date_fin, iduser) VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, reservation.getIdRessource());
         stmt.setDate(2, reservation.getDateDebut());
         stmt.setDate(3, reservation.getDateFin());
-        stmt.setString(4, reservation.getUtilisateur());
+        stmt.setInt(4, reservation.getIduser());
         stmt.executeUpdate();
     }
 
@@ -38,11 +38,11 @@ public class ServiceReservation implements IService<Reservation> {
         ResultSet rs = checkStmt.executeQuery();
 
         if (rs.next() && rs.getInt(1) > 0) {
-            String query = "UPDATE reservation SET date_debut = ?, date_fin = ?, utilisateur = ? WHERE id = ?";
+            String query = "UPDATE reservation SET date_debut = ?, date_fin = ?, iduser = ? WHERE id = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setDate(1, reservation.getDateDebut());
             stmt.setDate(2, reservation.getDateFin());
-            stmt.setString(3, reservation.getUtilisateur());
+            stmt.setInt(3, reservation.getIduser());
             stmt.setInt(4,reservation.getId());
             stmt.executeUpdate();
         } else {
@@ -74,10 +74,7 @@ public class ServiceReservation implements IService<Reservation> {
     @Override
     public List<Reservation> afficher() throws SQLException {
         List<Reservation> reservations = new ArrayList<>();
-        String query = "SELECT re.id AS resv_id, re.date_debut, re.date_fin, re.utilisateur AS resv_utilisateur, " +
-                "r.id AS res_id, r.nom, r.type, r.etat, r.utilisateur AS res_utilisateur " +
-                "FROM reservation re " +
-                "JOIN ressource r ON re.id_ressource = r.id";
+        String query = "SELECT * FROM reservation ";
 
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(query);
@@ -88,15 +85,44 @@ public class ServiceReservation implements IService<Reservation> {
                     rs.getInt("res_id"),
                     rs.getDate("date_debut"),
                     rs.getDate("date_fin"),
-                    rs.getString("resv_utilisateur")
+                    rs.getInt("resv_utilisateur")
             );
 
             Ressource ressource = new Ressource(
                     rs.getInt("res_id"),
                     rs.getString("nom"),
                     rs.getString("type"),
-                    rs.getString("etat"),
-                    rs.getString("res_utilisateur")
+                    rs.getString("etat")
+            );
+
+            reservation.setRessource(ressource);
+            reservations.add(reservation);
+        }
+        return reservations;
+    }
+
+
+    public List<Reservation> afficherEMP() throws SQLException {
+        List<Reservation> reservations = new ArrayList<>();
+        String query = " SELECT * from reservation ";
+
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+
+        while (rs.next()) {
+            Reservation reservation = new Reservation(
+                    rs.getInt("id"),
+                    rs.getInt("id_ressource"),
+                    rs.getDate("date_debut"),
+                    rs.getDate("date_fin"),
+                    rs.getInt("iduser")
+            );
+
+            Ressource ressource = new Ressource(
+                    137,
+                    "azer",
+                    "bien",
+                    "azer"
             );
 
             reservation.setRessource(ressource);

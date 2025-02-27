@@ -1,14 +1,18 @@
 package controllers;
 
 import entities.Reservation;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import services.ServiceReservation;
 import services.ServiceRessource;
-import javafx.event.ActionEvent;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -17,13 +21,14 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-public class FormulaireAjoutReservationController implements Initializable {
+public class FormulaireAjoutReservationEMPController implements Initializable {
 
     @FXML
     private DatePicker dateDebutPicker;
 
     @FXML
     private DatePicker dateFinPicker;
+
 
 
     @FXML
@@ -42,7 +47,7 @@ public class FormulaireAjoutReservationController implements Initializable {
     @FXML
     private void ajouterReservation(ActionEvent event) {
         try {
-            if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null ) {
+            if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null) {
                 afficherAlerte(Alert.AlertType.WARNING, "Champs vides", "Veuillez remplir tous les champs.");
                 return;
             }
@@ -64,7 +69,6 @@ public class FormulaireAjoutReservationController implements Initializable {
                 afficherAlerte(Alert.AlertType.ERROR, "Erreur de date", "La date de début doit être antérieure à la date de fin.");
                 return;
             }
-
 
             Reservation reservation = new Reservation(idRessource, dateDebut, dateFin, 1);
 
@@ -91,10 +95,10 @@ public class FormulaireAjoutReservationController implements Initializable {
     @FXML
     private void retour() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
             Parent parent=loader.load();
             Controller controller = loader.getController();
-            controller.loadPage("/AfficherRessource.fxml");
+            controller.loadPage("/AfficherRessourceEMP.fxml");
             dateDebutPicker.getScene().setRoot(parent);
 
         } catch (IOException e) {

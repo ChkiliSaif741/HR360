@@ -26,9 +26,6 @@ public class RessourceController {
     private Label nameL;
 
     @FXML
-    private Label propL;
-
-    @FXML
     private Label typeL;
 
     @FXML private Label resourceIdLabel;
@@ -54,7 +51,6 @@ public class RessourceController {
         nameL.setText(ressource.getNom());
         typeL.setText("Type: " + ressource.getType());
         etatL.setText("Etat: " + ressource.getEtat());
-        propL.setText(ressource.getUtilisateur());
         resourceIdLabel.setText(String.valueOf(ressource.getId()));
 
     }
@@ -66,7 +62,6 @@ public class RessourceController {
         nameL.setText(ressource.getNom());
         typeL.setText(ressource.getType());
         etatL.setText(ressource.getEtat());
-        propL.setText(ressource.getUtilisateur());
         resourceIdLabel.setText(String.valueOf(ressource.getId()));
     }
 

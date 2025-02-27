@@ -35,10 +35,10 @@ public class FormulaireAjoutRessourceController {
         String nom = nomField.getText().trim();
         String type = typeField.getText().trim();
         String etat = etatComboBox.getValue();
-        String utilisateur = utilisateurField.getText().trim();
+        //String utilisateur = utilisateurField.getText().trim();
 
 
-        if (nom.isEmpty() || type.isEmpty() || etat == null || utilisateur.isEmpty()) {
+        if (nom.isEmpty() || type.isEmpty() || etat == null ) {
             showErrorAlert("Erreur", "Veuillez remplir tous les champs !");
             return;
         }
@@ -56,12 +56,9 @@ public class FormulaireAjoutRessourceController {
         }
 
 
-        if (!isValidUser(utilisateur)) {
-            showErrorAlert("Erreur de saisie", "L'utilisateur ne doit pas contenir de caractères spéciaux !");
-            return;
-        }
 
-        Ressource ressource = new Ressource(nom, type, etat, utilisateur);
+
+        Ressource ressource = new Ressource(nom, type, etat);
         try {
             serviceRessource.ajouter(ressource);
             showConfirmationAlert("Succès", "La ressource a été ajoutée avec succès !");

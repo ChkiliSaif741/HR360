@@ -18,7 +18,7 @@
             <top>
                 <AnchorPane maxHeight="1100.0" prefHeight="65.0" prefWidth="200.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
                     <children>
-                        <Pane layoutX="102.0" layoutY="20.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #ce3234;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Pane layoutX="102.0" layoutY="20.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #032d4d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <ImageView fx:id="Exit" fitHeight="22.0" fitWidth="22.0" layoutX="1076.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -29,7 +29,7 @@
                         </Pane>
                         <HBox layoutX="239.0" layoutY="1.0" prefHeight="43.0" prefWidth="525.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                             <children>
-                        <JFXButton onAction="#ajouterRessource" prefHeight="38.0" prefWidth="171.0" styleClass="menuItem" text="ADD Ressource">
+                        <JFXButton onAction="#ajouterRessource" prefHeight="38.0" prefWidth="171.0" styleClass="menuItem" text="Ressource">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -104,7 +104,7 @@
                 </AnchorPane>
             </top>
             <left>
-                <AnchorPane fx:id="slider" prefHeight="362.0" prefWidth="176.0" style="-fx-background-color: #db545a;" BorderPane.alignment="CENTER">
+                <AnchorPane fx:id="slider" prefHeight="362.0" prefWidth="176.0" style="-fx-background-color: #0A4969;" BorderPane.alignment="CENTER">
                     <children>
                         <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="35.0" prefHeight="614.0" prefWidth="177.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="20.0">
                             <children>
@@ -152,7 +152,7 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" onAction="#afficherRessource" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="ressources" textFill="WHITE">
+                                <JFXButton alignment="BASELINE_LEFT" onAction="#afficherRessource" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Ressources" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>

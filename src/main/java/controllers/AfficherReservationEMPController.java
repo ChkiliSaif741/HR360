@@ -1,4 +1,5 @@
 package controllers;
+
 import entities.Reservation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,13 +12,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import services.ServiceReservation;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AfficherReservationController implements Initializable {
+public class AfficherReservationEMPController implements Initializable {
 
     @FXML
     private GridPane grid;
@@ -30,33 +32,29 @@ public class AfficherReservationController implements Initializable {
 
     @FXML
     private BorderPane borderpaneheader;
-
     private int idRessource;
     private ServiceReservation serviceReservation = new ServiceReservation();
 
     private List<Reservation> getData() {
         try {
-            List<Reservation> reservations = serviceReservation.afficherEMP();
-            System.out.println("Nombre de réservations trouvées: " + reservations.size());
-            return reservations;
+            return serviceReservation.afficherEMP();
         } catch (SQLException e) {
             e.printStackTrace();
             return List.of();
         }
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        afficherRessource();
     }
 
     public void afficherRessource() {
         grid.getChildren().clear();
-        System.out.println(idRessource);
-
+        System.out.println(getData());
         List<Reservation> reservations = getData().stream()
                 .peek(t -> System.out.println(t.getIdRessource()))
-                .filter(t -> t.getIdRessource() == idRessource)
+                .filter(t -> t.getIduser() == 1).peek(t-> System.out.println(t.getIduser()))
                 .toList();
 
         int column = 0;
@@ -65,10 +63,10 @@ public class AfficherReservationController implements Initializable {
         try {
             for (Reservation reservation : reservations) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/reservation.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("/reservationEMP.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
-                ReservationController reservationController = fxmlLoader.getController();
+                ReservationEMPController reservationController = fxmlLoader.getController();
                 reservationController.setParentController(this);
                 reservationController.setData(reservation);
 

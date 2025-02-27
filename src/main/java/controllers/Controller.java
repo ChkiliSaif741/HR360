@@ -56,24 +56,14 @@ public class Controller implements Initializable {
         Exit.setOnMouseClicked(event -> {
             System.exit(0);
         });
-        slider.setTranslateX(-176);
+
+        // Initialiser le slider visible
+        slider.setTranslateX(0);
+        Menu.setVisible(true);
+        MenuClose.setVisible(false);
+
+        // Cacher le slider quand on clique sur Menu
         Menu.setOnMouseClicked(event -> {
-            TranslateTransition slide = new TranslateTransition();
-            slide.setDuration(Duration.seconds(0.4));
-            slide.setNode(slider);
-
-            slide.setToX(0);
-            slide.play();
-
-            slider.setTranslateX(-176);
-
-            slide.setOnFinished((ActionEvent e)-> {
-                Menu.setVisible(false);
-                MenuClose.setVisible(true);
-            });
-        });
-
-        MenuClose.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
@@ -83,7 +73,24 @@ public class Controller implements Initializable {
 
             slider.setTranslateX(0);
 
-            slide.setOnFinished((ActionEvent e)-> {
+            slide.setOnFinished((ActionEvent e) -> {
+                Menu.setVisible(false);
+                MenuClose.setVisible(true);
+            });
+        });
+
+        // Réafficher le slider quand on clique sur MenuClose
+        MenuClose.setOnMouseClicked(event -> {
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.4));
+            slide.setNode(slider);
+
+            slide.setToX(0);
+            slide.play();
+
+            slider.setTranslateX(-176);
+
+            slide.setOnFinished((ActionEvent e) -> {
                 Menu.setVisible(true);
                 MenuClose.setVisible(false);
             });
@@ -102,6 +109,22 @@ public class Controller implements Initializable {
     public void ajouterRessource(ActionEvent actionEvent) {
         try {
             loadPage("/FormulaireAjoutRessource.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void afficherRessourceEMP(ActionEvent actionEvent) {
+        try {
+            loadPage("/AfficherRessourceEMP.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void afficherReservationEMP(ActionEvent actionEvent) {
+        try {
+            loadPage("/AfficherReservationEMP.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

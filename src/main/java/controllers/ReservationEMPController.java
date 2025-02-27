@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Reservation;
+import entities.Ressource;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +14,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import services.ServiceReservation;
+import services.ServiceRessource;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class ReservationController {
+public class ReservationEMPController {
 
     @FXML
     private Label labelId;
@@ -37,31 +40,46 @@ public class ReservationController {
     @FXML
     private Button deleteBtn;
 
-    private AfficherReservationController parentController;
+    private AfficherReservationEMPController parentController;
 
 
     private ServiceReservation serviceReservation = new ServiceReservation();
 
     public void setData(Reservation reservation) {
+        this.reservation = reservation;
 
-        this.reservation=reservation;
-        //labelRessource.setText(String.valueOf(reservation.getIduser())); affichage de l'utilisateur qui a reserver
-        labelRessource.setText("Employée: Oussema");
+        // Récupérer la ressource associée
+        ServiceRessource serviceRessource = new ServiceRessource();
+        Ressource ressource = null;
+        try {
+            ressource = serviceRessource.getRessourceById(reservation.getIdRessource());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Afficher le nom de la ressource si elle existe
+        if (ressource != null) {
+            labelRessource.setText(ressource.getNom());
+        } else {
+            labelRessource.setText("Ressource: Introuvable");
+        }
+
         labelDateDebut.setText("Début: " + reservation.getDateDebut().toString());
         labelDateFin.setText("Fin: " + reservation.getDateFin().toString());
         resourceIdLabel.setText(String.valueOf(reservation.getId()));
     }
 
+
     public void modifierReservation(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
         Parent parent=loader.load();
         Controller controller0 = loader.getController();
-        ModifierReservationController controller =controller0.loadPage("/ModifierReservation.fxml").getController();
+        ModifierReservationEMPController controller =controller0.loadPage("/ModifierReservationEMP.fxml").getController();
         controller.setReservation(reservation);
         labelRessource.getScene().setRoot(parent);
     }
 
-    public void setParentController(AfficherReservationController parentController) {
+    public void setParentController(AfficherReservationEMPController parentController) {
         this.parentController = parentController;
     }
 

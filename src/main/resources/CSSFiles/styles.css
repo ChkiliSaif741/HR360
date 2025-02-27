@@ -46,7 +46,11 @@
 }
 
 .fruit-item{
-    -fx-background-color: #FFFFFF;
+
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-opacity: 0.8;
+    -fx-background-color: #b6c5de;
     -fx-background-radius: 30;
 
 }
@@ -137,7 +141,5 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
-
-
 
 

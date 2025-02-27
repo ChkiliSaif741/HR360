@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane onMouseClicked="#ClikedRessource" prefHeight="215.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RessourceController">
+<AnchorPane prefHeight="215.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RessourceControllerEMP">
    <children>
       <VBox alignment="CENTER" layoutX="14.0" layoutY="8.0" prefHeight="200.0" prefWidth="100.0" stylesheets="@CSSFiles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -19,7 +19,7 @@
                <children>
                   <Label fx:id="nameL" alignment="CENTER" contentDisplay="CENTER" prefHeight="39.0" prefWidth="194.0" text="Name">
                      <HBox.margin>
-                        <Insets />
+                        <Insets top="18.0" />
                      </HBox.margin>
                      <font>
                         <Font name="Comic Sans MS Bold" size="18.0" />
@@ -44,32 +44,37 @@
                      <font>
                         <Font name="Comic Sans MS Bold" size="10.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </Label>
                </children>
                <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
+                  <Insets left="20.0" right="20.0" top="17.0" />
                </VBox.margin>
             </HBox>
-            <ImageView fitHeight="57.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/ressources-humaines.png" />
-               </image>
-            </ImageView>
             <Label fx:id="resourceIdLabel" visible="false" />
-            <HBox prefHeight="83.0" prefWidth="226.0" spacing="15.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#modifierRessource" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="add-button" stylesheets="@CSSFiles/styles.css" text="Update">
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="deleteBtn" mnemonicParsing="false" onAction="#deleteBtn" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="cancel-button" stylesheets="@CSSFiles/styles.css" text="Delete">
-                     <HBox.margin>
-                        <Insets right="15.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
+            <ImageView fitHeight="60.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/reserv.png" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="4.0" />
+               </VBox.margin>
+            </ImageView>
+            <Button maxWidth="114.0" mnemonicParsing="false" onAction="#ajouterRessource" prefHeight="40.0" prefWidth="96.0" style="-fx-background-radius: 15; -fx-background-color: #0A4969; -fx-border-radius: 15; -fx-border-color: #0A4969;" styleClass="add-button" stylesheets="@CSSFiles/styles.css">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/reservation.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <HBox prefHeight="83.0" prefWidth="226.0" spacing="15.0" />
          </children>
          <styleClass>
             <String fx:value="fruit-item" />

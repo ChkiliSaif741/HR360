@@ -15,12 +15,11 @@ public class ServiceRessource implements IService<Ressource> {
 
     @Override
     public void ajouter(Ressource ressource) throws SQLException {
-        String query = "INSERT INTO ressource (nom, type, etat, utilisateur) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO ressource (nom, type, etat) VALUES (?, ?, ?)";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, ressource.getNom());
         stmt.setString(2, ressource.getType());
         stmt.setString(3, ressource.getEtat());
-        stmt.setString(4, ressource.getUtilisateur());
         stmt.executeUpdate();
     }
 
@@ -33,13 +32,13 @@ public class ServiceRessource implements IService<Ressource> {
         ResultSet rs = checkStmt.executeQuery();
 
         if (rs.next() && rs.getInt(1) > 0) {
-            String query = "UPDATE ressource SET nom = ?, type = ?, etat = ?, utilisateur = ? WHERE id = ?";
+            String query = "UPDATE ressource SET nom = ?, type = ?, etat = ? WHERE id = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, ressource.getNom());
             stmt.setString(2, ressource.getType());
             stmt.setString(3, ressource.getEtat());
-            stmt.setString(4, ressource.getUtilisateur());
-            stmt.setInt(5, ressource.getId());
+
+            stmt.setInt(4, ressource.getId());
             stmt.executeUpdate();
         } else {
             System.out.println("Erreur : La ressource avec l'ID " + ressource.getId() + " n'existe pas !");
@@ -78,12 +77,29 @@ public class ServiceRessource implements IService<Ressource> {
                     rs.getInt("id"),
                     rs.getString("nom"),
                     rs.getString("type"),
-                    rs.getString("etat"),
-                    rs.getString("utilisateur")
+                    rs.getString("etat")
             );
             ressources.add(ressource);
         }
         return ressources;
+    }
+
+
+    public Ressource getRessourceById(int id) throws SQLException {
+        String query = "SELECT * FROM ressource WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return new Ressource(
+                    rs.getInt("id"),
+                    rs.getString("nom"),
+                    rs.getString("type"),
+                    rs.getString("etat")
+            );
+        }
+        return null; // Si aucune ressource trouvée
     }
 
 

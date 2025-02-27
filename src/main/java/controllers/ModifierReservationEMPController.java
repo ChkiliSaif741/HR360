@@ -9,13 +9,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import services.ServiceReservation;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
-public class ModifierReservationController {
-
+public class ModifierReservationEMPController {
 
 
     @FXML
@@ -31,20 +31,21 @@ public class ModifierReservationController {
 
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+        //utilisateurField.setText(String.valueOf(reservation.getIduser()));
         dateDebutPicker.setValue(reservation.getDateDebut().toLocalDate());
         dateFinPicker.setValue(reservation.getDateFin().toLocalDate());
     }
 
     public void updateReservation() {
         // Vérifier si les champs sont vides
-        if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null ) {
+        if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null) {
             showErrorAlert("Erreur", "Veuillez remplir tous les champs !");
             return;
         }
 
         Date nouveauDebut = Date.valueOf(dateDebutPicker.getValue());
         Date nouveauFin = Date.valueOf(dateFinPicker.getValue());
-        int nouvelIduser=1;
+        int nouvelIduser = 1;
 
 
         if (nouveauDebut.after(nouveauFin) || nouveauDebut.equals(nouveauFin)) {
@@ -55,14 +56,14 @@ public class ModifierReservationController {
 
 
         try {
-            Reservation rs = new Reservation(reservation.getId(), reservation.getIdRessource(), nouveauDebut, nouveauFin, nouvelIduser);
+            Reservation rs = new Reservation(reservation.getId(), reservation.getIdRessource(), nouveauDebut, nouveauFin,nouvelIduser);
             serviceReservation.modifier(rs);
             showConfirmationAlert("Succès", "Réservation mise à jour avec succès !");
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
             Parent parent = loader.load();
             Controller controller = loader.getController();
-            AfficherReservationController controller1 = controller.loadPage("/AfficherReservation.fxml").getController();
+            AfficherReservationEMPController controller1 = controller.loadPage("/AfficherReservationEMP.fxml").getController();
             controller1.setIdRessource(reservation.getIdRessource());
             dateDebutPicker.getScene().setRoot(parent);
 
@@ -74,11 +75,12 @@ public class ModifierReservationController {
     public void annulerModification(ActionEvent actionEvent) {
         dateDebutPicker.setValue(null);
         dateFinPicker.setValue(null);
+
     }
 
     public void retour(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
             Parent parent = loader.load();
             Controller controller = loader.getController();
             AfficherReservationEMPController controller1=controller.loadPage("/AfficherReservationEMP.fxml").getController();

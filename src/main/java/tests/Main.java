@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        /*
         MyDatabase.getInstance();
 
         ServiceRessource serviceRessource = new ServiceRessource();
@@ -164,5 +165,8 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+         */
     }
 }

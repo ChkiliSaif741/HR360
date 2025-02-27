@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -37,9 +36,6 @@
                                         <!-- Sélection des dates -->
                                         <DatePicker fx:id="dateDebutPicker" promptText="Date de début" styleClass="input-field" />
                                         <DatePicker fx:id="dateFinPicker" promptText="Date de fin" styleClass="input-field" />
-
-                                        <!-- Champ Utilisateur -->
-                                        <TextField fx:id="utilisateurField" promptText="Utilisateur" styleClass="input-field" />
 
                                         <!-- Boutons d'action -->
                                         <HBox alignment="CENTER" spacing="15">
