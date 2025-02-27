@@ -24,8 +24,6 @@ public class AjoutEvaluation {
     @javafx.fxml.FXML
     private TextField noteTechnique;
     @javafx.fxml.FXML
-    private ComboBox id;
-    @javafx.fxml.FXML
     private TextField noteSoftSkills;
     @javafx.fxml.FXML
     private TextField commentaire;
@@ -45,7 +43,7 @@ public class AjoutEvaluation {
     public void initialize() {
         serviceEvaluation = new ServiceEvaluation();
         //chargerIdEntretien(); // Charger les idEntretien dans la ComboBox
-        chargerIdEvaluateur(); // Charger les id dans la ComboBox
+        //chargerIdEvaluateur(); // Charger les id dans la ComboBox
     }
 
 
@@ -59,14 +57,14 @@ public class AjoutEvaluation {
         }
     }*/
 
-    private void chargerIdEvaluateur() {
+    /*private void chargerIdEvaluateur() {
         try {
             List<Integer> idEvaluateurs = serviceEvaluation.getIdsEvaluateur();
             id.setItems(FXCollections.observableArrayList(idEvaluateurs));
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de charger les id : " + e.getMessage());
         }
-    }
+    }*/
 
     private boolean validerSaisie() {
         boolean isValid = true;
@@ -132,17 +130,24 @@ public class AjoutEvaluation {
         }
 
         try {
+
+            // Vérifier si une évaluation existe déjà pour cet entretien
+            if (serviceEvaluation.evaluationExistsForEntretien(idEntretien)) {
+                showAlert(Alert.AlertType.WARNING, "Attention", "Une évaluation existe déjà pour cet entretien !");
+                return; // Ne pas ajouter une nouvelle évaluation
+            }
+
             // Récupérer les valeurs validées
             float noteTech = Float.parseFloat(noteTechnique.getText());
             float noteSS = Float.parseFloat(noteSoftSkills.getText());
             //LocalDate dateEva = dateEvaluation.getValue();
             String comment = commentaire.getText();
             int idEva = idEntretien;
-            int idE = (int) id.getValue();
+            //int idE = (int) id.getValue();
             LocalDateTime dateEvaluation = LocalDateTime.now();
 
             // Créer et ajouter l'évaluation
-            Evaluation evaluation = new Evaluation(noteTech, noteSS, comment, dateEvaluation, idEva, idE);
+            Evaluation evaluation = new Evaluation(noteTech, noteSS, comment, dateEvaluation, idEva);
             serviceEvaluation.ajouter(evaluation);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation ajoutée avec succès !");
 

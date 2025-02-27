@@ -19,29 +19,29 @@ public class ServiceEvaluation implements IService<Evaluation> {
 
     @Override
     public void ajouter(Evaluation evaluation) throws SQLException {
-        String req = "INSERT INTO evaluation (noteTechnique, noteSoftSkills, commentaire, dateEvaluation, idEntretien, id) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO evaluation (noteTechnique, noteSoftSkills, commentaire, dateEvaluation, idEntretien) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(req);
         preparedStatement.setFloat(1, evaluation.getNoteTechnique());
         preparedStatement.setFloat(2, evaluation.getNoteSoftSkills());
         preparedStatement.setString(3, evaluation.getCommentaire());
         preparedStatement.setTimestamp(4, Timestamp.valueOf(evaluation.getDateEvaluation()));
         preparedStatement.setInt(5, evaluation.getIdEntretien());
-        preparedStatement.setInt(6, evaluation.getId());
+        //preparedStatement.setInt(6, evaluation.getId());
         preparedStatement.executeUpdate();
         System.out.println("Évaluation ajoutée avec succès !");
     }
 
     @Override
     public void modifier(Evaluation evaluation) throws SQLException {
-        String req = "UPDATE evaluation SET noteTechnique=?, noteSoftSkills=?, commentaire=?, dateEvaluation=?, idEntretien=?, id=? WHERE idEvaluation=?";
+        String req = "UPDATE evaluation SET noteTechnique=?, noteSoftSkills=?, commentaire=?, dateEvaluation=?, idEntretien=? WHERE idEvaluation=?";
         PreparedStatement preparedStatement = connection.prepareStatement(req);
         preparedStatement.setFloat(1, evaluation.getNoteTechnique());
         preparedStatement.setFloat(2, evaluation.getNoteSoftSkills());
         preparedStatement.setString(3, evaluation.getCommentaire());
         preparedStatement.setTimestamp(4, Timestamp.valueOf(evaluation.getDateEvaluation()));
         preparedStatement.setInt(5, evaluation.getIdEntretien()); // Correction ici
-        preparedStatement.setInt(6, evaluation.getId()); // Correction ici
-        preparedStatement.setInt(7, evaluation.getIdEvaluation()); // Correction ici
+        //preparedStatement.setInt(6, evaluation.getId()); // Correction ici
+        preparedStatement.setInt(6, evaluation.getIdEvaluation()); // Correction ici
         preparedStatement.executeUpdate();
         System.out.println("Évaluation modifiée avec succès !");
     }
@@ -87,7 +87,7 @@ public class ServiceEvaluation implements IService<Evaluation> {
             evaluation.setCommentaire(resultSet.getString("commentaire"));
             evaluation.setDateEvaluation(resultSet.getTimestamp("dateEvaluation").toLocalDateTime());
             evaluation.setIdEntretien(resultSet.getInt("idEntretien"));
-            evaluation.setId(resultSet.getInt("id"));
+            //evaluation.setId(resultSet.getInt("id"));
             evaluations.add(evaluation);
         }
         return evaluations;
@@ -105,7 +105,7 @@ public class ServiceEvaluation implements IService<Evaluation> {
         return ids;
     }
 
-    public List<Integer> getIdsEvaluateur() throws SQLException {
+    /*public List<Integer> getIdsEvaluateur() throws SQLException {
         List<Integer> ids = new ArrayList<>();
         String req = "SELECT id FROM utilisateur"; // Remplacez "candidature" par le nom de votre table
         Statement statement = connection.createStatement();
@@ -115,6 +115,18 @@ public class ServiceEvaluation implements IService<Evaluation> {
             ids.add(resultSet.getInt("id"));
         }
         return ids;
+    }*/
+
+    public boolean evaluationExistsForEntretien(int idEntretien) throws SQLException {
+        String query = "SELECT COUNT(*) FROM evaluation WHERE idEntretien = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, idEntretien);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Retourne true si une évaluation existe déjà
+            }
+        }
+        return false;
     }
 }
 

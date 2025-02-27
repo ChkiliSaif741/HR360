@@ -15,26 +15,26 @@ public class Evaluation {
     private String commentaire;
     private LocalDateTime dateEvaluation;
     private int idEntretien;
-    private int id;
+    //private int id;
 
     public Evaluation() {}
 
-    public Evaluation(float noteTechnique, float noteSoftSkills, String commentaire, LocalDateTime dateEvaluation, int idEntretien, int id ) {
+    public Evaluation(float noteTechnique, float noteSoftSkills, String commentaire, LocalDateTime dateEvaluation, int idEntretien) {
         this.noteTechnique = noteTechnique;
         this.noteSoftSkills = noteSoftSkills;
         this.commentaire = commentaire;
         this.dateEvaluation = dateEvaluation;
         this.idEntretien = idEntretien;
-        this.id = id;
+        //this.id = id;
     }
-    public Evaluation(int idEvaluation,float noteTechnique, float noteSoftSkills, String commentaire, LocalDateTime dateEvaluation, int idEntretien, int id ) {
+    public Evaluation(int idEvaluation,float noteTechnique, float noteSoftSkills, String commentaire, LocalDateTime dateEvaluation, int idEntretien) {
         this.idEvaluation = idEvaluation;
         this.noteTechnique = noteTechnique;
         this.noteSoftSkills = noteSoftSkills;
         this.commentaire = commentaire;
         this.dateEvaluation = dateEvaluation;
         this.idEntretien = idEntretien;
-        this.id = id;
+        //this.id = id;
     }
 
 
@@ -75,12 +75,8 @@ public class Evaluation {
     public void setIdEntretien(int idEntretien) {
         this.idEntretien = idEntretien;
     }
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
+    //public int getId() {return id;}
+    //public void setId(int id) {this.id = id;}
 
     @Override
     public String toString() {
@@ -91,7 +87,7 @@ public class Evaluation {
                 ", commentaire='" + commentaire + '\'' +
                 ", dateEvaluation=" + dateEvaluation +
                 ", identretien=" + idEntretien +
-                ", id=" + id +
+                //", id=" + id +
                 '}';
     }
 

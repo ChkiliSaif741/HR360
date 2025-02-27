@@ -18,8 +18,6 @@ import java.util.ResourceBundle;
 
 public class ModifierEvaluation implements Initializable {
     @javafx.fxml.FXML
-    private ComboBox<Integer> idMod;
-    @javafx.fxml.FXML
     private TextField noteSoftSkillsMod;
     //@javafx.fxml.FXML
     //private ComboBox<Integer> idEntretienMod;
@@ -50,15 +48,15 @@ public class ModifierEvaluation implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         serviceEvaluation = new ServiceEvaluation();
         //chargerIdEntretien(); // Charger les ID des entretiens dans la ComboBox
-        chargerIdEvaluateur(); // Charger les ID des évaluateurs dans la ComboBox
+        //chargerIdEvaluateur(); // Charger les ID des évaluateurs dans la ComboBox
 
-        try {
+        /*try {
             //idEntretienMod.getItems().addAll(new ServiceEvaluation().getIdsEntretien());
             idMod.getItems().addAll(new ServiceEvaluation().getIdsEvaluateur());
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -73,14 +71,14 @@ public class ModifierEvaluation implements Initializable {
     }*/
 
     // Méthode pour charger les ID des évaluateurs dans la ComboBox
-    private void chargerIdEvaluateur() {
+    /*private void chargerIdEvaluateur() {
         try {
             List<Integer> idEvaluateurs = serviceEvaluation.getIdsEvaluateur();
             idMod.setItems(FXCollections.observableArrayList(idEvaluateurs));
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de charger les ID des évaluateurs : " + e.getMessage());
         }
-    }
+    }*/
 
 
     private boolean validerModification() {
@@ -150,10 +148,10 @@ public class ModifierEvaluation implements Initializable {
             //LocalDate dateEva = dateEvaluationMod.getValue();
             String comment = commentaireMod.getText();
             int idEva = idEntretien; // Utiliser l'idEntretien déjà défini
-            int idE = idMod.getValue(); // Récupérer l'ID de l'évaluateur sélectionné
+            //int idE = idMod.getValue(); // Récupérer l'ID de l'évaluateur sélectionné
 
             // Créer l'objet Evaluation avec l'ID de l'évaluation à modifier
-            Evaluation evaluation = new Evaluation(idEvaluation, noteTech, noteSS, comment, LocalDateTime.now(), idEva, idE);
+            Evaluation evaluation = new Evaluation(idEvaluation, noteTech, noteSS, comment, LocalDateTime.now(), idEva);
 
             // Modifier l'évaluation dans la base de données
             serviceEvaluation.modifier(evaluation);
@@ -212,9 +210,9 @@ public class ModifierEvaluation implements Initializable {
         this.idEntretienMod.setValue(idEntretien);
     }*/
 
-    public void setIdMod(int id) {
+    /*public void setIdMod(int id) {
         this.idMod.setValue(id);
-    }
+    }*/
 
     public void setIdEvaluation(int idEvaluation) {
         this.idEvaluation = idEvaluation;
@@ -241,7 +239,7 @@ public class ModifierEvaluation implements Initializable {
         setCommentaireMod(evaluation.getCommentaire());
         //setDateEvaluationMod(evaluation.getDateEvaluation());
         setIdEntretien(evaluation.getIdEntretien());
-        setIdMod(evaluation.getId());
+        //setIdMod(evaluation.getId());
         this.idEntretien = evaluation.getIdEntretien();
 
     }

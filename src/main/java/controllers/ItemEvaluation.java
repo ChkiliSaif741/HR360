@@ -87,7 +87,7 @@ public class ItemEvaluation {
 
             // Supprimer l'évaluation par son ID
             serviceEvaluation.supprimer(evaluation.getIdEvaluation());
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation modifiée avec succès !");
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation supprimé avec succès !");
 
             afficheEvaluation.refresh();
 

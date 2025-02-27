@@ -44,7 +44,7 @@
                   </ScrollPane>
                </children>
             </HBox>
-            <ImageView fitHeight="32.0" fitWidth="29.0" layoutX="269.0" layoutY="51.0" onMouseClicked="#addEvaluation" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btnAddEvaluation" fitHeight="32.0" fitWidth="29.0" layoutX="269.0" layoutY="51.0" onMouseClicked="#addEvaluation" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@image/add.png" />
                </image>
