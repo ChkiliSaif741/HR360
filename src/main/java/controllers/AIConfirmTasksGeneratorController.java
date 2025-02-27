@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -178,7 +177,7 @@ public class AIConfirmTasksGeneratorController {
                     tache.setIdProjet(idP);
                     serviceTache.ajouter(tache);
                 }
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                 Parent parent = loader.load();
                 Controller con = loader.getController();
                 con.loadPage("/AffichageProjet.fxml");

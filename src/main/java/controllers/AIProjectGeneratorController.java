@@ -13,13 +13,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import services.AIProjectGenerator;
-import services.ServiceProjet;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -93,7 +91,7 @@ public class AIProjectGeneratorController implements Initializable {
                         Projet projet = new Projet(nomTF.getText(), projetDescript, Date.valueOf(DateDebut), Date.valueOf(DateFin));
 
                         try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                             Parent parent = loader.load();
                             Controller con = loader.getController();
                             AIConfirmTasksGeneratorController controller = con.loadPage("/AIConfirmTasksGenerator.fxml").getController();

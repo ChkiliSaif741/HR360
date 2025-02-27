@@ -96,7 +96,7 @@ public class AffichageProjetController implements Initializable {
 
     @FXML
     void AjoutProjet(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         try {
             Parent parent = loader.load();
             Controller con=loader.getController();
@@ -136,7 +136,7 @@ public class AffichageProjetController implements Initializable {
 
     @FXML
     void GenerateProject(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         try {
             Parent parent = loader.load();
             Controller con=loader.getController();

@@ -66,7 +66,7 @@ public class ItemProjetController {
 
     @FXML
     void ModifProjet(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         try {
             Parent parent = loader.load();
             Controller controller = loader.getController();
@@ -94,7 +94,7 @@ public class ItemProjetController {
 
     @FXML
     private void handleCardClick(MouseEvent event) {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         try {
             Parent root = loader.load();
             Controller controller = loader.getController();

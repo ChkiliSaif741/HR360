@@ -1,6 +1,5 @@
 package controllers;
 
-import com.dlsc.gemsfx.CalendarView;
 import com.dlsc.gemsfx.daterange.DateRange;
 import com.dlsc.gemsfx.daterange.DateRangeView;
 import entities.Projet;
@@ -9,22 +8,17 @@ import entities.TacheStatus;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
 import services.ServiceProjet;
 import services.ServiceTache;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class DetailsProjetController {
 
@@ -64,7 +58,7 @@ public class DetailsProjetController {
 
     @FXML
     void ViewTasks(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         try {
             Parent root = loader.load();
             Controller controller = loader.getController();
@@ -129,7 +123,7 @@ public class DetailsProjetController {
 
     @FXML
     void BackToListProjet(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         Parent parent=loader.load();
         Controller con=loader.getController();
         con.loadPage("/AffichageProjet.fxml");

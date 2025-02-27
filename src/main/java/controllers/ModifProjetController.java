@@ -64,7 +64,7 @@ public class ModifProjetController implements Initializable {
                 alert.setTitle("Information");
                 alert.setContentText("Projet a ete Mis a jour avec succes !");
                 alert.show();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                 Parent parent = loader.load();
                 Controller controller = loader.getController();
                 controller.loadPage("/AffichageProjet.fxml");

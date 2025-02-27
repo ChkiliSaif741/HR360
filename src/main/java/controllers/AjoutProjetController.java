@@ -87,7 +87,7 @@ public class AjoutProjetController implements Initializable {
                     alert.setTitle("Information");
                     alert.setContentText("Projet a ete ajouté avec succes !");
                     alert.show();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                     Parent parent=loader.load();
                     Controller con=loader.getController();
                     con.loadPage("/AffichageProjet.fxml");

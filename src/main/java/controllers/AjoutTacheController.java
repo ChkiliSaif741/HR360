@@ -70,7 +70,7 @@ public class AjoutTacheController {
                     alert.setTitle("Information");
                     alert.setContentText("Tache a ete ajouté avec succes !");
                     alert.show();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                     Parent parent=loader.load();
                     Controller controller0 = loader.getController();
                     AffichageTacheController controller = controller0.loadPage("/AffichageTache.fxml").getController();
