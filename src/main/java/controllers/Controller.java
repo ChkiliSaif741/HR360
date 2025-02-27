@@ -55,7 +55,17 @@ public class Controller implements Initializable {
     @FXML
     void onFormationbtn(ActionEvent event) {
         try {
-            loadPage("/Formations.fxml");
+            loadPage("/FormationsRH.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void onFormationsBtn(ActionEvent event) {
+        try {
+            loadPage("/FormationsRH.fxml");
         }catch (IOException e){
             e.printStackTrace();
         }

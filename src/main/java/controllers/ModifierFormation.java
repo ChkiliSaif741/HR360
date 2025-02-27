@@ -4,7 +4,6 @@ import entities.Formation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,10 +14,7 @@ import javafx.stage.Stage;
 import services.ServiceFormation;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalTime;
-import java.util.ResourceBundle;
 
 public class ModifierFormation{
     public void loadFormationdata(){
@@ -102,7 +98,7 @@ public class ModifierFormation{
 
     private void ouvrirAfficheFormation() throws IOException {
         // Charger le fichier FXML de la fenêtre afficheFormation.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Formations.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FormationsRH.fxml"));
         Parent root = loader.load();
 
         // Créer une nouvelle scène

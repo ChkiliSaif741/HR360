@@ -29,7 +29,6 @@ public class EmployeesItemController {
     private ImageView image;
 
 
-
     private GestionEmployesController parentControler; // Référence au contrôleur parent
 
     private Utilisateur utilisateur;
@@ -70,8 +69,10 @@ public class EmployeesItemController {
         itemContainer.setOnMouseClicked(event -> {
             if (parentControler != null) {
                 parentControler.setSelectedEmploye(utilisateur); // Sélectionner l'employé
+                System.out.println("Employé sélectionné : " + utilisateur.getNom() + " " + utilisateur.getPrenom());
             }
         });
+
     }
 
 

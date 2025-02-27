@@ -13,7 +13,11 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
 
     public ServiceUtilisateur() {
         connection = MyDatabase.getInstance().getConnection();
+        if (connection == null) {
+            System.err.println("Erreur : la connexion est null !");
+        }
     }
+
     @Override
     public void ajouter(Utilisateur utilisateur) throws SQLException {
         if(utilisateur.getRole() == "Employe"){
@@ -60,6 +64,31 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
         }
     }*/
 
+
+
+    public void modifier1(Utilisateur utilisateur) throws SQLException {
+        // Requête SQL sans la colonne 'password'
+        String req = "UPDATE utilisateur SET nom=?, prenom=?, email=?, poste=?, salaire=?, image=? WHERE id=?";
+        PreparedStatement statement = connection.prepareStatement(req);
+
+        // Définir les valeurs des colonnes
+        statement.setString(1, utilisateur.getNom());
+        statement.setString(2, utilisateur.getPrenom());
+        statement.setString(3, utilisateur.getEmail());
+        statement.setString(4, utilisateur.getPoste()); // Ajouter le poste
+        statement.setFloat(5, utilisateur.getSalaire()); // Ajouter le salaire
+        statement.setString(6, utilisateur.getImgSrc()); // Ajouter l'image
+        statement.setInt(7, utilisateur.getId()); // L'ID pour localiser l'utilisateur à modifier
+
+        // Exécution de la mise à jour
+        int rowsUpdated = statement.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            System.out.println("Utilisateur modifié avec succès !");
+        } else {
+            System.out.println("Aucune modification effectuée !");
+        }
+    }
 
     @Override
     public void modifier(Utilisateur utilisateur) throws SQLException {

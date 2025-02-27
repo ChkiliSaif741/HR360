@@ -250,10 +250,10 @@ public class LoginController {
                         return;
                     } else {
                         // Charger la scène pour l'ajout d'une offre
-                        FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
+                        FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
                         Parent root1=loader1.load();
                         Controller controller = loader1.getController();
-                        ProfileController controller1=controller.loadPage("/Profile.fxml").getController();
+                        FormationsController controller1=controller.loadPage("/FormationsRH.fxml").getController();
 
                         //controller.container.getScene().setRoot(root1);
                         Stage stage = (Stage) login_email.getScene().getWindow();
@@ -262,20 +262,20 @@ public class LoginController {
 
 
                         if (loader1.getLocation() == null) {
-                            System.out.println("Erreur : Profile.fxml introuvable !");
-                            alert.errorMessage("Fichier Profile.fxml introuvable !");
+                            System.out.println("Erreur : FormationsRH.fxml introuvable !");
+                            alert.errorMessage("Fichier FormationsRH.fxml introuvable !");
                             return;
                         }
 
                         // Passer l'utilisateur au contrôleur
-                        controller1.setUtilisateur(utilisateur);
+                        //controller1.setUtilisateur(utilisateur);
                     }
 
-                    // Changer la scène
-                    Stage stage = (Stage) login_email.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("Profil");
-                    stage.show();
+//                    // Changer la scène
+//                    Stage stage = (Stage) login_email.getScene().getWindow();
+//                    stage.setScene(new Scene(root));
+//                    stage.setTitle("Employes");
+//                    stage.show();
 
                 } catch (IOException e) {
                     e.printStackTrace();

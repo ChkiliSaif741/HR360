@@ -58,6 +58,12 @@
             <version>9.0.10</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.1.2</version> <!-- Vérifiez la dernière version sur Maven Central -->
+        </dependency>
+
 
 
     </dependencies>

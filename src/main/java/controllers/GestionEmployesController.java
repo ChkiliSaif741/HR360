@@ -160,6 +160,8 @@ public class GestionEmployesController implements Initializable {
     private Button salary_clearBtn;
 
 
+    private Utilisateur currentDisplayedEmploye;
+
     private String imagePath = null;
 
     private File selectedImageFile;
@@ -211,6 +213,10 @@ public class GestionEmployesController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList listData = FXCollections.observableArrayList("Developpeur", "Designer");
         addEmployee_position.setItems(listData);
+
+        // Charger les employés dans le GridPane
+        refreshEmployees();
+
         List<Utilisateur> employees = getEmployees();
         int column = 0;
         int row = 0;
@@ -281,6 +287,7 @@ public class GestionEmployesController implements Initializable {
         employe.setPoste(poste);
         employe.setSalaire(salaire);
         employe.setImgSrc(imgSrc);
+        employe.setRole("Employe");
 
         // Ajouter la formation dans la base de données
         try {
@@ -331,22 +338,23 @@ public class GestionEmployesController implements Initializable {
     }
 
 
-
     @FXML
     void addEmployeeDelete(ActionEvent event) {
+        if (selectedEmploye == null) {
+            alert.errorMessage("Veuillez sélectionner un employé à supprimer !");
+            return;
+        }
 
-        Button clickedButton = (Button) event.getSource();
-        Utilisateur employe = (Utilisateur) clickedButton.getUserData();
         try {
-            serviceEmploye.supprimer(employe.getId());
-            refreshEmployees();  // Rafraîchir l'affichage
-            //showAlert(Alert.AlertType.INFORMATION, "Succès", "Employes supprimé avec succès !");
-            alert.successMessage("Employes supprimé avec succès !");
+            serviceEmploye.supprimer(selectedEmploye.getId());
+            alert.successMessage("Employé supprimé avec succès !");
+            selectedEmploye = null; // Réinitialiser l'employé sélectionné
+            refreshEmployees(); // Rafraîchir la liste des employés
         } catch (SQLException e) {
-            //showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de supprimer la formation : " + e.getMessage());
-            alert.errorMessage("Impossible de supprimer l'employe!");
+            alert.errorMessage("Erreur lors de la suppression : " + e.getMessage());
         }
     }
+
 
     @FXML
     void addEmployeeGendernList(ActionEvent event) {
@@ -378,10 +386,95 @@ public class GestionEmployesController implements Initializable {
 
     }
 
+
+    /*@FXML
+    void addEmployeeUpdate(ActionEvent event) {
+        if (selectedEmploye == null) {
+            alert.errorMessage("Veuillez sélectionner un employé à modifier !");
+            return;
+        }
+
+        try {
+            // Sauvegarder l'ID de l'employé sélectionné
+            int selectedEmployeId = selectedEmploye.getId();
+
+            // Créer l'objet mis à jour
+            Utilisateur updatedEmploye = new Utilisateur();
+            updatedEmploye=selectedEmploye;
+            updatedEmploye.setId(selectedEmploye.getId());
+            updatedEmploye.setNom(addEmployee_firstName.getText());
+            updatedEmploye.setPrenom(addEmployee_lastName.getText());
+            updatedEmploye.setEmail(addEmployee_email.getText());
+            updatedEmploye.setPassword(selectedEmploye.getPassword()); // Conserver le mot de passe actuel
+            ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
+            positionComboBox.getSelectionModel().select(selectedEmploye.getPoste());
+            updatedEmploye.setSalaire(Float.parseFloat(addEmployee_salaire.getText()));
+            updatedEmploye.setImgSrc(selectedEmploye.getImgSrc()); // Conserver l'image actuelle
+
+            // Log pour debug
+            System.out.println("Données avant mise à jour : " + updatedEmploye);
+
+            // Mettre à jour l'employé
+            serviceEmploye.modifier1(updatedEmploye);
+            alert.successMessage("Employé mis à jour avec succès !");
+
+            // Rafraîchir l'affichage
+            refreshEmployees();
+
+            // Rechercher l'employé mis à jour dans la nouvelle liste et le resélectionner
+            List<Utilisateur> employees = getEmployees();
+            for (Utilisateur emp : employees) {
+                if (emp.getId() == selectedEmployeId) {
+                    handleEmployeeSelection(emp);
+                    break;
+                }
+            }
+
+        } catch (SQLException e) {
+            alert.errorMessage("Erreur lors de la mise à jour : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }*/
+
+
     @FXML
     void addEmployeeUpdate(ActionEvent event) {
+        if (selectedEmploye == null) {
+            alert.errorMessage("Veuillez sélectionner un employé à modifier !");
+            return;
+        }
 
+        // Mettre à jour l'employé dans la base de données
+        try {
+            Utilisateur updatedEmploye = new Utilisateur();
+            updatedEmploye.setId(selectedEmploye.getId());
+            updatedEmploye.setNom(addEmployee_firstName.getText());
+            updatedEmploye.setPrenom(addEmployee_lastName.getText());
+            updatedEmploye.setEmail(addEmployee_email.getText());
+            updatedEmploye.setPassword(selectedEmploye.getPassword()); // Conserver le mot de passe actuel
+            ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
+            updatedEmploye.setPoste(positionComboBox.getSelectionModel().getSelectedItem());
+            updatedEmploye.setSalaire(Float.parseFloat(addEmployee_salaire.getText()));
+            updatedEmploye.setImgSrc(selectedEmploye.getImgSrc()); // Conserver l'image actuelle
+
+            // Log des données avant mise à jour
+            System.out.println("Données avant mise à jour : " + updatedEmploye);
+
+            // Mettre à jour l'employé
+            serviceEmploye.modifier1(updatedEmploye);
+            alert.successMessage("Employé mis à jour avec succès !");
+
+            // Rafraîchir l'affichage
+            refreshEmployees();
+
+            // Réinitialiser les champs de texte après la mise à jour
+            registerClearFields();
+        } catch (SQLException e) {
+            alert.errorMessage("Erreur lors de la mise à jour : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     void close(ActionEvent event) {
@@ -413,6 +506,123 @@ public class GestionEmployesController implements Initializable {
 
     }
 
+
+    /*void handleEmployeeSelection(Utilisateur employe) {
+        // Mettre à jour l'employé sélectionné
+        selectedEmploye = employe;
+
+        if (selectedEmploye != null) {
+            // Remplir les champs du formulaire avec les données de l'employé sélectionné
+            addEmployee_firstName.setText(selectedEmploye.getNom());
+            addEmployee_lastName.setText(selectedEmploye.getPrenom());
+            addEmployee_email.setText(selectedEmploye.getEmail());
+
+            // Désactiver le champ de mot de passe pour empêcher la modification
+            addEmployee_password.setDisable(true);
+            addEmployee_password.setText(selectedEmploye.getPassword());
+
+            // Sélectionner la position dans le ComboBox
+            ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
+            positionComboBox.getSelectionModel().select(selectedEmploye.getPoste());
+
+            // Remplir le champ de salaire
+            addEmployee_salaire.setText(String.valueOf(selectedEmploye.getSalaire()));
+
+            // Charger l'image de profil
+            if (selectedEmploye.getImgSrc() != null) {
+                String imagePath = selectedEmploye.getImgSrc();
+                imagePath = imagePath.replace("%20", " "); // Décodage des espaces
+
+                if (imagePath.startsWith("file:")) {
+                    // Chemin absolu
+                    addEmployee_image.setImage(new Image(imagePath));
+                } else {
+                    // Chemin relatif
+                    addEmployee_image.setImage(new Image(getClass().getResource(imagePath).toString()));
+                }
+            } else {
+                // Image par défaut
+                addEmployee_image.setImage(new Image(getClass().getResourceAsStream("/img/user.png")));
+            }
+        }
+    }*/
+
+    void handleEmployeeSelection(Utilisateur employe) {
+        // Mettre à jour l'employé sélectionné
+        selectedEmploye = employe;
+
+        if (selectedEmploye != null) {
+            // Remplir les champs du formulaire avec les données de l'employé sélectionné
+            addEmployee_firstName.setText(selectedEmploye.getNom());
+            addEmployee_lastName.setText(selectedEmploye.getPrenom());
+            addEmployee_email.setText(selectedEmploye.getEmail());
+
+            // Désactiver le champ de mot de passe pour empêcher la modification
+            addEmployee_password.setDisable(true);
+            addEmployee_password.setText(selectedEmploye.getPassword());
+
+            // Sélectionner la position dans le ComboBox
+            ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
+            positionComboBox.getSelectionModel().select(selectedEmploye.getPoste());
+
+            // Remplir le champ de salaire
+            addEmployee_salaire.setText(String.valueOf(selectedEmploye.getSalaire()));
+
+            // Charger l'image de profil
+            if (selectedEmploye.getImgSrc() != null) {
+                String imagePath = selectedEmploye.getImgSrc();
+                imagePath = imagePath.replace("%20", " "); // Décodage des espaces
+
+                if (imagePath.startsWith("file:")) {
+                    // Chemin absolu
+                    addEmployee_image.setImage(new Image(imagePath));
+                } else {
+                    // Chemin relatif
+                    addEmployee_image.setImage(new Image(getClass().getResource(imagePath).toString()));
+                }
+            } else {
+                // Image par défaut
+                addEmployee_image.setImage(new Image(getClass().getResourceAsStream("/img/user.png")));
+            }
+        }
+    }
+    /*public void refreshEmployees() {
+        // Recharger la liste des employés depuis la base de données
+        List<Utilisateur> employees = getEmployees();
+
+        // Effacer le contenu actuel de la GridPane
+        grid.getChildren().clear();
+
+        // Réafficher les employés dans la GridPane
+        int column = 0;
+        int row = 0;
+
+        try {
+            for (Utilisateur employe : employees) {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/employee_item.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+                EmployeesItemController controller = fxmlLoader.getController();
+                controller.setParentControler(this);
+                controller.setUtilisateur(employe);
+
+                // Ajouter un gestionnaire d'événements pour la sélection
+                anchorPane.setOnMouseClicked(event -> handleEmployeeSelection(employe));
+
+                // Ajouter l'élément à la GridPane
+                grid.add(anchorPane, column, row);
+                GridPane.setMargin(anchorPane, new Insets(20, 50, 50, 50));
+
+                column++;
+                if (column == 3) { // 3 colonnes par ligne
+                    column = 0;
+                    row++;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
     public void refreshEmployees() {
         // Recharger la liste des employés depuis la base de données
         List<Utilisateur> employees = getEmployees();
@@ -432,9 +642,24 @@ public class GestionEmployesController implements Initializable {
                 controller.setParentControler(this);
                 controller.setUtilisateur(employe);
 
+                // Ajouter un gestionnaire d'événements pour la sélection/désélection
+                anchorPane.setOnMouseClicked(event -> {
+                    if (selectedEmploye != null && selectedEmploye.equals(employe)) {
+                        // Désélectionner l'employé
+                        selectedEmploye = null;
+                        currentDisplayedEmploye = null;
+                        registerClearFields(); // Vider les champs de texte
+                        alert.successMessage("Employé désélectionné avec succès !");
+                    } else {
+                        // Sélectionner l'employé
+                        selectedEmploye = employe;
+                        System.out.println("Employé sélectionné : " + selectedEmploye.getNom());
+                    }
+                });
+
                 // Ajouter l'élément à la GridPane
                 grid.add(anchorPane, column, row);
-                GridPane.setMargin(anchorPane, new Insets(20, 50, 50, 50));
+                GridPane.setMargin(anchorPane, new Insets(20));
 
                 column++;
                 if (column == 3) { // 3 colonnes par ligne
@@ -444,6 +669,47 @@ public class GestionEmployesController implements Initializable {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void addEmployeeSelect(ActionEvent event) {
+        if (selectedEmploye == null) {
+            alert.errorMessage("Veuillez sélectionner un employé dans la liste !");
+            return;
+        }
+
+        // Remplir les champs du formulaire avec les données de l'employé sélectionné
+        addEmployee_firstName.setText(selectedEmploye.getNom());
+        addEmployee_lastName.setText(selectedEmploye.getPrenom());
+        addEmployee_email.setText(selectedEmploye.getEmail());
+
+        // Désactiver le champ de mot de passe pour empêcher la modification
+        addEmployee_password.setDisable(true);
+        addEmployee_password.setText(selectedEmploye.getPassword());
+
+        // Sélectionner la position dans le ComboBox
+        ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
+        positionComboBox.getSelectionModel().select(selectedEmploye.getPoste());
+
+        // Remplir le champ de salaire
+        addEmployee_salaire.setText(String.valueOf(selectedEmploye.getSalaire()));
+
+        // Charger l'image de profil
+        if (selectedEmploye.getImgSrc() != null) {
+            String imagePath = selectedEmploye.getImgSrc();
+            imagePath = imagePath.replace("%20", " "); // Décodage des espaces
+
+            if (imagePath.startsWith("file:")) {
+                // Chemin absolu
+                addEmployee_image.setImage(new Image(imagePath));
+            } else {
+                // Chemin relatif
+                addEmployee_image.setImage(new Image(getClass().getResource(imagePath).toString()));
+            }
+        } else {
+            // Image par défaut
+            addEmployee_image.setImage(new Image(getClass().getResourceAsStream("/img/user.png")));
         }
     }
 
@@ -491,4 +757,29 @@ public class GestionEmployesController implements Initializable {
 
     }
 
+    @FXML
+    void addEmployeeUnselect(ActionEvent event) {
+        // Réinitialiser l'employé sélectionné
+        selectedEmploye = null;
+
+        // Vider les champs de texte
+        addEmployee_firstName.clear();
+        addEmployee_lastName.clear();
+        addEmployee_email.clear();
+        addEmployee_password.clear();
+        addEmployee_salaire.clear();
+
+        // Réactiver le champ de mot de passe
+        addEmployee_password.setDisable(false);
+
+        // Réinitialiser la sélection dans le ComboBox
+        ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
+        positionComboBox.getSelectionModel().clearSelection();
+
+        // Réinitialiser l'image de profil
+        addEmployee_image.setImage(new Image(getClass().getResourceAsStream("/img/user.png")));
+
+        // Afficher un message de succès
+        alert.successMessage("Employé désélectionné avec succès !");
+    }
 }
