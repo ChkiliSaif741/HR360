@@ -52,6 +52,15 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void AffichEquip(ActionEvent event) {
+        try {
+            loadPage("/AffichageEquipe.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
