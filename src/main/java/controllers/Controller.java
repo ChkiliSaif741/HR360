@@ -6,10 +6,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.layout.BorderPane;
 
@@ -89,6 +95,33 @@ public class Controller implements Initializable {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+
+    @FXML
+    void onLogoutbtn(ActionEvent event) {
+        // Créer une boîte de dialogue de confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de Déconnexion");
+        alert.setHeaderText("Vous allez vous déconnecter !");
+        alert.setContentText("Êtes-vous sûr de vouloir quitter votre session ?");
+
+        // Attendre la réponse de l'utilisateur
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) { // Si l'utilisateur confirme
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+                    Parent root = loader.load();
+
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Login");
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @FXML

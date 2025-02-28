@@ -76,17 +76,19 @@ public class FormationsControllerRH implements Initializable {
 
     @FXML
     void onParticipantsBtn(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         try {
-            Parent parent=loader.load();
-            Controller controller = loader.getController();
-            ParticipantsController con=controller.loadPage("/participants.fxml").getController();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/participants.fxml"));
+            Parent parent = loader.load();
+
+            ParticipantsController con = loader.getController();
             con.setIdFormation(selectedFormation.getId());
+
             grid.getScene().setRoot(parent);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
+
 
 
     @FXML
@@ -152,6 +154,7 @@ public class FormationsControllerRH implements Initializable {
         chosenFormationCard.setStyle("-fx-background-color: #" + "F16C31" + ";\n" +
                 "    -fx-background-radius: 30;");
         selectedFormation = formation;
+        System.out.println("ID formation sélectionnée : " + selectedFormation.getId());
     }
 
     @Override

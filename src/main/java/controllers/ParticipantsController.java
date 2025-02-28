@@ -30,6 +30,7 @@ public class ParticipantsController implements Initializable {
 
     public void setIdFormation(int idFormation) {
         this.idFormation = idFormation;
+        System.out.println("ID Formation : " + idFormation); // 🛠️ Vérification
         List<Utilisateur> participants = getParticipants();
         int column = 0;
         int row = 0;
@@ -42,7 +43,7 @@ public class ParticipantsController implements Initializable {
         grid.setMinWidth(Region.USE_PREF_SIZE);
 
         try {
-            for (Utilisateur user : ParticipantsController.this.participants) {
+            for (Utilisateur user : participants) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Item.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
                 EmployeesItemController itemController = fxmlLoader.getController();
@@ -70,13 +71,15 @@ public class ParticipantsController implements Initializable {
 
     private List<Utilisateur> getParticipants() {
         try {
-            participants= serviceParticipation.afficherParticipants(idFormation);
+            participants = serviceParticipation.afficherParticipants(idFormation);
+            System.out.println("Nombre de participants : " + participants.size()); // 🛠️ Vérification
             return participants;
         } catch (SQLException e) {
             e.printStackTrace();
             return List.of();
         }
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="215.0" prefWidth="225.0" styleClass="user-item" stylesheets="@Item.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EmployeesItemController">
+<AnchorPane fx:id="itemContainer" prefHeight="215.0" prefWidth="225.0" styleClass="user-item" stylesheets="@Item.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EmployeesItemController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="63.0" layoutY="8.0" prefHeight="200.0" prefWidth="100.0" styleClass="vbox" stylesheets="@Item.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -42,7 +42,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </ImageView>
-            <Button fx:id="supprimer" mnemonicParsing="false" onAction="#handleDelete" stylesheets="@Item.css" text="Delete">
+            <Button fx:id="supprimer" mnemonicParsing="false" stylesheets="@Item.css" text="Delete">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
