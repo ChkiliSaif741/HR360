@@ -61,4 +61,16 @@ public class EquipeService {
         }
         return equipes;
     }
+
+    public Equipe getEquipe(int idEquipe) throws SQLException {
+        Equipe equipe = null;
+        String query = "SELECT * FROM Equipe WHERE id = ?";
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setInt(1, idEquipe);
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            equipe = new Equipe(rs.getInt("id"), rs.getString("nom"));
+        }
+        return equipe;
+    }
 }
