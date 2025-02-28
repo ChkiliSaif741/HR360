@@ -67,21 +67,34 @@ public class ListCandidatureBack implements Initializable {
                     } else {
                         // Créer un HBox pour afficher les titres et les attributs horizontalement
                         HBox hbox = new HBox(20); // Espacement entre les éléments
+
                         // Récupérer l'offre en fonction de l'id_offre de la candidature
                         Offre offre = getOffreById(candidature.getId_offre());
                         String titreOffre = (offre != null) ? offre.getTitre() : "Offre non trouvée";
 
-
-                        // Ajouter chaque attribut avec son titre et sa valeur dans un cadre
-                        hbox.getChildren().addAll(
-                                createLabeledItem("Titre Offre", titreOffre),
-                                createLabeledItem("Date Candidature", candidature.getDateCandidature().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
-                                createLabeledItem("Statut", candidature.getStatut()),
-                                createLabeledItem("CV", extractFileName(candidature.getCv())), // Afficher uniquement le nom du fichier
-                                createLabeledItem("Lettre Motivation", extractFileName(candidature.getLettreMotivation())), // Afficher uniquement le nom du fichier
-                                createLabeledItem("Description", candidature.getDescription()),
-                                createLabeledItem("Date Modification", candidature.getDateModification() != null ? candidature.getDateModification().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "Non modifié")
-                        );
+                        // Si c'est la première ligne, afficher uniquement les titres
+                        if (getIndex() == 0) {
+                            hbox.getChildren().addAll(
+                                    createLabeledItem("Titre Offre", ""),
+                                    createLabeledItem("Date Candidature", ""),
+                                    createLabeledItem("Statut", ""),
+                                    createLabeledItem("CV", ""),
+                                    createLabeledItem("Lettre Motivation", ""),
+                                    createLabeledItem("Description", ""),
+                                    createLabeledItem("Date Modification", "")
+                            );
+                        } else {
+                            // Ajouter chaque attribut avec son titre et sa valeur dans un cadre
+                            hbox.getChildren().addAll(
+                                    createLabeledItem("", titreOffre),
+                                    createLabeledItem("", candidature.getDateCandidature().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
+                                    createLabeledItem("", candidature.getStatut()),
+                                    createLabeledItem("", extractFileName(candidature.getCv())), // Afficher uniquement le nom du fichier
+                                    createLabeledItem("", extractFileName(candidature.getLettreMotivation())), // Afficher uniquement le nom du fichier
+                                    createLabeledItem("", candidature.getDescription()),
+                                    createLabeledItem("", candidature.getDateModification() != null ? candidature.getDateModification().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "Non modifié")
+                            );
+                        }
 
                         setGraphic(hbox); // Appliquer le HBox à la cellule
                     }
@@ -92,6 +105,28 @@ public class ListCandidatureBack implements Initializable {
             e.printStackTrace();
             showAlert("Erreur", "Erreur lors du chargement des candidatures : " + e.getMessage());
         }
+    }
+
+    private VBox createLabeledItem(String title, String value) {
+        // Création des Labels pour le titre et la valeur
+        Label titleLabel = new Label(title);
+        Label valueLabel = new Label(value);
+
+        // Appliquer la classe CSS pour rendre le titre en gras
+        titleLabel.getStyleClass().add("title-label");
+
+        // Appliquer la classe CSS pour le retour à la ligne dans les Labels
+        valueLabel.getStyleClass().add("value-label");
+
+        // Création d'un cadre (Rectangle) autour de chaque paire de titre/valeur
+        Rectangle rectangle = new Rectangle(150, 40); // Largeur et hauteur du cadre
+        rectangle.getStyleClass().add("rectangle-frame"); // Appliquer le style CSS du rectangle
+
+        // Création du VBox pour aligner les labels et le cadre
+        VBox vbox = new VBox(5, titleLabel, valueLabel);
+        vbox.getStyleClass().add("vbox-item"); // Appliquer le style CSS du VBox
+
+        return vbox;
     }
 
     // Méthode pour extraire le nom du fichier à partir du chemin complet
@@ -121,27 +156,7 @@ public class ListCandidatureBack implements Initializable {
         return null; // Return null if the offer is not found
     }
     // Méthode pour créer des éléments Label avec titre et valeur dans un cadre
-    private VBox createLabeledItem(String title, String value) {
-        // Création des Labels pour le titre et la valeur
-        Label titleLabel = new Label(title);
-        Label valueLabel = new Label(value);
 
-        // Appliquer la classe CSS pour rendre le titre en gras
-        titleLabel.getStyleClass().add("title-label");
-
-        // Appliquer la classe CSS pour le retour à la ligne dans les Labels
-        valueLabel.getStyleClass().add("value-label");
-
-        // Création d'un cadre (Rectangle) autour de chaque paire de titre/valeur
-        Rectangle rectangle = new Rectangle(150, 40); // Largeur et hauteur du cadre
-        rectangle.getStyleClass().add("rectangle-frame"); // Appliquer le style CSS du rectangle
-
-        // Création du VBox pour aligner les labels et le cadre
-        VBox vbox = new VBox(5, titleLabel, valueLabel);
-        vbox.getStyleClass().add("vbox-item"); // Appliquer le style CSS du VBox
-
-        return vbox;
-    }
     private boolean peutEtreModifiee(Candidature candidature) {
         return "En attente".equalsIgnoreCase(candidature.getStatut());
     }

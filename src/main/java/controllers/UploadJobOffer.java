@@ -64,7 +64,7 @@ public class UploadJobOffer {
 
     private void analyseCvWithJobOffer(File cvFile, File jobOfferFile) throws IOException, InterruptedException {
         String url = "https://cv-resume-to-job-match-analysis-api.p.rapidapi.com/api:QQ6fvSXH/good_fit_external_API";
-        String apiKey = "6255c8b044msh28badce0bfe5958p1b9f2ejsn8cacbdcfe517"; // Clé API
+        String apiKey = "3adc0af0d6msh43f660216ea4668p1e247djsn42fce2b3f563"; // Clé API
 
         HttpClient client = HttpClient.newHttpClient();
         String boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
