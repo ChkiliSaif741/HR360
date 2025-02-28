@@ -1,11 +1,13 @@
 package controllers;
 
 import entities.Formation;
+import entities.Participation;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import entities.MyListener;
+import services.ServiceParticipation;
 
 public class FormationItemsController {
     @FXML
@@ -23,6 +25,7 @@ public class FormationItemsController {
     }
 
     private Formation formation;
+    private Participation participation;
     private MyListener myListener;
 
     public void setData(Formation formation, MyListener myListener) {
@@ -33,4 +36,11 @@ public class FormationItemsController {
         //Image image = new Image(getClass().getResourceAsStream(fruit.getImgSrc()));
         //img.setImage(image);
     }
+
+    public void setParticipationData(Participation participation,  MyListener myListener) {
+        this.participation = participation;
+        this.myListener = myListener;
+        nameLabel.setText(participation.getFormationNom());
+    }
+
 }

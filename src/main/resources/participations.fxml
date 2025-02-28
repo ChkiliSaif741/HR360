@@ -55,7 +55,7 @@
                             </styleClass>
                         </HBox>
                         <Pane prefHeight="57.0" prefWidth="435.0" VBox.vgrow="ALWAYS" />
-                        <VBox fx:id="chosenFormationCard" alignment="CENTER" maxHeight="450.0" minHeight="450.0" prefHeight="451.0" prefWidth="213.0" stylesheets="@newStyle.css">
+                        <VBox fx:id="chosenParticipationCard" alignment="CENTER" maxHeight="450.0" minHeight="450.0" prefHeight="451.0" prefWidth="213.0" stylesheets="@newStyle.css">
                             <VBox.margin>
                                 <Insets left="50.0" right="50.0" />
                             </VBox.margin>
@@ -90,7 +90,7 @@
                                         <Insets bottom="20.0" top="30.0" />
                                     </VBox.margin>
                                     <children>
-                                        <Button fx:id="btnAnnuler" mnemonicParsing="false" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Annuler" textFill="#828282">
+                                        <Button fx:id="btnAnnuler" mnemonicParsing="false" onAction="#annulerParticipation" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Annuler" textFill="#828282">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
                                             </font>
@@ -135,7 +135,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <ScrollPane fx:id="scroll" prefHeight="570.0" prefWidth="785.0" styleClass="transparent" stylesheets="@newStyle.css">
+                                <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" prefHeight="570.0" prefWidth="785.0" styleClass="transparent" stylesheets="@newStyle.css">
                                     <content>
                                         <GridPane fx:id="grid" prefHeight="0.0" prefWidth="0.0">
                                             <rowConstraints>

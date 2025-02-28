@@ -18,6 +18,19 @@ public class Participation {
         this.idUser = idUser;
     }
 
+    public Participation(int id , int idFormation, int idUser) {
+        this.id = id;
+        this.idFormation = idFormation;
+        this.idUser = idUser;
+    }
+
+    public Participation(int id, int idFormation, int idUser, String formationNom) {
+        this.id = id;
+        this.idFormation = idFormation;
+        this.idUser = idUser;
+        this.formationNom = formationNom;
+    }
+
 
     public String getFormationNom() {
         return formationNom;

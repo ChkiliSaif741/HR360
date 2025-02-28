@@ -95,7 +95,7 @@ public class ServiceParticipation implements IService<Participation> {
 
     public List<Participation> getParticipationsByEmploye(int employeId) {
         List<Participation> participations = new ArrayList<>();
-        String query = "SELECT p.idFormation, p.idUser, f.titre FROM participation p JOIN formation f ON p.idFormation = f.id WHERE p.idUser = ?";
+        String query = "SELECT p.id, p.idFormation, p.idUser, f.titre FROM participation p JOIN formation f ON p.idFormation = f.id WHERE p.idUser = ?";
 
         try {
             PreparedStatement pst = connection.prepareStatement(query);
@@ -103,9 +103,10 @@ public class ServiceParticipation implements IService<Participation> {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
+                int id = rs.getInt("id"); // Récupérer l'ID de la participation
                 int idFormation = rs.getInt("idFormation");
                 String formationTitre = rs.getString("titre");
-                participations.add(new Participation(idFormation, employeId, formationTitre));
+                participations.add(new Participation(id, idFormation, employeId, formationTitre));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -117,13 +118,15 @@ public class ServiceParticipation implements IService<Participation> {
 
     public void annulerParticipation(int idUser, int idFormation) {
         String query = "DELETE FROM participation WHERE idUser = ? AND idFormation = ?";
-
-        try {
-            PreparedStatement pst = connection.prepareStatement(query);
-            pst.setInt(1, idUser);
-            pst.setInt(2, idFormation);
-            pst.executeUpdate();
-            System.out.println("Participation annulée !");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, idUser);
+            pstmt.setInt(2, idFormation);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Suppression réussie : " + rowsAffected + " ligne(s) supprimée(s)");
+            } else {
+                System.out.println("Aucune ligne supprimée. Vérifiez les IDs fournis.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
