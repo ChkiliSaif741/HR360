@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -14,9 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import services.ExcelExporterProjet;
-import services.ServiceProjet;
-import services.ServiceTache;
+import services.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -49,6 +48,9 @@ public class AffichageTacheController implements Initializable {
 
     @FXML
     private Label nomTacheL;
+
+    @FXML
+    private Button EnableTrelloBtn;
 
     private ItemTacheController itemTacheControllerSelected;
 
@@ -194,4 +196,43 @@ public class AffichageTacheController implements Initializable {
             e.printStackTrace();
         }
     }
+/*
+    @FXML
+    void EnableTrello(ActionEvent event) {
+        try {
+            EquipeService equipeService = new EquipeService();
+            ProjetEquipeService projetEquipeService = new ProjetEquipeService();
+            ServiceTache tacheService = new ServiceTache();
+
+            // Get team assigned to the project
+            int idProjet = taches.get(indiceTacheSelected).getIdProjet();
+            int idEquipe = projetEquipeService.getEquipeByProjet(idProjet);
+            List<Employe> teamMembers = equipeService.getEmployeesByEquipe(idEquipe);
+
+            // Enable Trello for the task
+            tacheService.enableTrelloForTask(taches.get(indiceTacheSelected), teamMembers);
+
+            System.out.println("Trello enabled for task: " + taches.get(indiceTacheSelected).getNom());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }*/
+@FXML
+void EnableTrello(ActionEvent event) {
+    try {
+        EquipeService equipeService = new EquipeService();
+        ProjetEquipeService projetEquipeService = new ProjetEquipeService();
+        ServiceTache tacheService = new ServiceTache();
+
+        // Get team assigned to the project
+        int idProjet = taches.get(indiceTacheSelected).getIdProjet();
+        int idEquipe = projetEquipeService.getEquipeByProjet(idProjet);
+        // Enable Trello for the task
+        tacheService.enableTrelloForTask(taches.get(indiceTacheSelected));
+
+        System.out.println("Trello enabled for task: " + taches.get(indiceTacheSelected).getNom());
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
 }

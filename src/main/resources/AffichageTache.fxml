@@ -90,5 +90,13 @@
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_LEFT" size="2em" />
          </graphic>
       </Button>
+      <Button fx:id="EnableTrelloBtn" layoutX="625.0" layoutY="573.0" onAction="#EnableTrello" prefHeight="46.0" prefWidth="172.0" styleClass="button-action-add" stylesheets="@stylesProjet.css" text="Enable Trello">
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" glyphName="TRELLO" size="2em" />
+         </graphic>
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -6,6 +6,7 @@ import utils.MyDatabase;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServiceTache implements IService<Tache> {
@@ -67,4 +68,41 @@ public class ServiceTache implements IService<Tache> {
         }
         return taches;
     }
+/*
+    public void enableTrelloForTask(Tache task, List<Employe> teamMembers) throws SQLException {
+        // Step 1: Create Trello board
+        String boardId = TrelloAPI.createBoard(task.getNom());
+
+        if (boardId != null) {
+            // Step 2: Store Trello board ID in database
+            String query = "UPDATE Tache SET trello_board_id = ? WHERE id = ?";
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setString(1, boardId);
+            pst.setInt(2, task.getId());
+            pst.executeUpdate();
+
+            // Step 3: Add team members to Trello board
+            List<String> memberEmails = teamMembers.stream()
+                    .map(Employe::getEmail) // Assuming Employe has an getEmail() method
+                    .toList();
+            TrelloAPI.addMembersToBoard(boardId, memberEmails);
+        }
+    }*/
+public void enableTrelloForTask(Tache task) throws SQLException {
+    // Step 1: Create Trello board
+    String boardId = TrelloAPI.createBoard(task.getNom());
+
+    if (boardId != null) {
+        // Step 2: Store Trello board ID in database
+        String query = "UPDATE Tache SET trello_board_id = ? WHERE id = ?";
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, boardId);
+        pst.setInt(2, task.getId());
+        pst.executeUpdate();
+
+        // Step 3: Add team members to Trello board
+        List<String> memberEmails =new ArrayList<>(Arrays.asList("chkilisaif776@gmail.com","saifchkili205@gmail.com","chekili.saih@esprit.tn"));
+        TrelloAPI.addMembersToBoard(boardId, memberEmails);
+    }
+}
 }
