@@ -92,7 +92,7 @@ public class ServiceTache implements IService<Tache> {
     }*/
 public void enableTrelloForTask(Tache task) throws SQLException {
     // Step 1: Create Trello board
-    String boardId = TrelloAPI.createBoard(task.getNom());
+    String boardId = TrelloAPI.createBoardWithLists(task.getNom(),task.getDateDebut().toLocalDate(),task.getDateFin().toLocalDate());
 
     if (boardId != null) {
         // Step 2: Store Trello board ID in database

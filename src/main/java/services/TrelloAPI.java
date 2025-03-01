@@ -4,7 +4,10 @@ import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
 public class TrelloAPI {
@@ -12,14 +15,33 @@ public class TrelloAPI {
     private static final String API_TOKEN = "ATTAd882eb46ac7c80931df7f18f18b551431470e527c82fce94673498351e59116b1A7DD9EE";
     private static final String TRELLO_URL = "https://api.trello.com/1";
 
-    public static String createBoard(String boardName) {
+    public static String createBoardWithLists(String boardName, LocalDate dateDebut, LocalDate dateFin) {
+        // Step 1: Create the Trello Board
+        String boardId = createBoard(boardName);
+        if (boardId == null) {
+            System.out.println("Board creation failed!");
+            return null;
+        }
+
+        // Step 2: Generate lists for each day in the range
+        LocalDate currentDate = dateDebut;
+        while (!currentDate.isAfter(dateFin)) {
+            String formattedDate = formatDate(currentDate);
+            createList(boardId, formattedDate);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return boardId; // Return the board ID if everything is successful
+    }
+
+    private static String createBoard(String boardName) {
         String url = TRELLO_URL + "/boards/";
         HttpResponse<JsonNode> response = Unirest.post(url)
                 .queryString("name", boardName)
                 .queryString("key", API_KEY)
                 .queryString("token", API_TOKEN)
                 .queryString("defaultLists", "false") // No default lists
-                .queryString("prefs_permissionLevel", "public") // 🔹 Make board public
+                .queryString("prefs_permissionLevel", "public") // Make board public
                 .asJson();
 
         if (response.getStatus() == 200) {
@@ -28,6 +50,25 @@ public class TrelloAPI {
             System.out.println("Error creating Trello board: " + response.getBody());
             return null;
         }
+    }
+
+    private static void createList(String boardId, String listName) {
+        String url = TRELLO_URL + "/lists";
+        HttpResponse<JsonNode> response = Unirest.post(url)
+                .queryString("name", listName)
+                .queryString("idBoard", boardId)
+                .queryString("key", API_KEY)
+                .queryString("token", API_TOKEN)
+                .asJson();
+
+        if (response.getStatus() != 200) {
+            System.out.println("Error creating list: " + response.getBody());
+        }
+    }
+
+    private static String formatDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE – dd/MM/yyyy", Locale.FRENCH);
+        return "🗓️ " + date.format(formatter);
     }
 
     public static void getUserInfo() {
