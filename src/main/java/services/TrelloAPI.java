@@ -25,10 +25,10 @@ public class TrelloAPI {
 
         // Step 2: Generate lists for each day in the range
         LocalDate currentDate = dateDebut;
-        while (!currentDate.isAfter(dateFin)) {
+        while (currentDate.isAfter(dateFin)) {
             String formattedDate = formatDate(currentDate);
             createList(boardId, formattedDate);
-            currentDate = currentDate.plusDays(1);
+            currentDate = currentDate.minusDays(1);
         }
 
         return boardId; // Return the board ID if everything is successful
