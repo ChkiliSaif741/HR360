@@ -92,6 +92,13 @@ public class Utilisateur {
         this.salaire = salaire;
     }
 
+    public Utilisateur(int id, String nom, String email, String role) {
+        this.id = id;
+        this.nom = nom;
+        this.email = email;
+        this.role = role;
+    }
+
     public Utilisateur(String nom, String prenom, String email, String password, String role, String imgSrc, String poste, float salaire) {
         this.nom = nom;
         this.prenom = prenom;

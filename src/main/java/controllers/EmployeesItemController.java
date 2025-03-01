@@ -11,6 +11,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import utils.alertMessage;
 
+import java.net.URL;
+
 public class EmployeesItemController {
 
     @FXML
@@ -43,17 +45,24 @@ public class EmployeesItemController {
 
             if (utilisateur.getImgSrc() != null) {
                 String imagePath = utilisateur.getImgSrc();
-                imagePath = imagePath.replace("%20", " "); // Décodage des espaces
+                imagePath = imagePath.replace("%20", ""); // Décodage des espaces
 
                 if (imagePath.startsWith("file:")) {
                     // Chemin absolu
                     this.image.setImage(new Image(imagePath));
                 } else {
                     // Chemin relatif
-                    this.image.setImage(new Image(getClass().getResource(imagePath).toString()));
+                    URL imageUrl = getClass().getResource(imagePath);
+                    if (imageUrl != null) {
+                        this.image.setImage(new Image(imageUrl.toString()));
+                    } else {
+                        // Image par défaut si le chemin est incorrect
+                        this.image.setImage(new Image(getClass().getResourceAsStream("/img/user.png")));
+                        System.err.println("Chemin de l'image introuvable : " + imagePath);
+                    }
                 }
             } else {
-                // Image par défaut
+                // Image par défaut si aucune image n'est spécifiée
                 this.image.setImage(new Image(getClass().getResourceAsStream("/img/user.png")));
             }
 
@@ -72,7 +81,6 @@ public class EmployeesItemController {
                 System.out.println("Employé sélectionné : " + utilisateur.getNom() + " " + utilisateur.getPrenom());
             }
         });
-
     }
 
 

@@ -109,8 +109,13 @@ public class ParticipationsController implements Initializable {
 
     private void setChosenParticipation(Participation participation) {
         formationNameLable.setText(participation.getFormationNom());
-        chosenParticipationCard.setStyle("-fx-background-color: #" + "F16C31" + ";\n" +
-                "    -fx-background-radius: 30;");
+        chosenParticipationCard.setStyle(
+                "-fx-background-color: #146886;\n" + // Couleur de fond
+                        "    -fx-background-radius: 30;\n" + // Bord arrondi
+                        "    -fx-border-color: WHITE;\n" + // Couleur de la bordure
+                        "    -fx-border-width: 0px 0px 0px 3px;\n" + // Largeur de la bordure (gauche uniquement)
+                        "    -fx-border-radius: 30;" // Bord arrondi pour la bordure
+        );
         selectedParticipation = participation;
         idParticipationSelectionnee = participation.getId(); // Mets à jour l'ID de la formation sélectionnée
     }

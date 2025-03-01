@@ -236,9 +236,12 @@ public class LoginController {
         }
 
         ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-        Utilisateur utilisateur = serviceUtilisateur.authentifier(email, password); // 🔥 Utilisation de `authentifier`
+        Utilisateur utilisateur = serviceUtilisateur.authentifier(email, password);
 
         if (utilisateur != null) {
+            System.out.println("Utilisateur authentifié : " + utilisateur.getEmail());
+            System.out.println("Rôle utilisateur connecté : " + utilisateur.getRole());
+
             // Initialisation de la session utilisateur
             Session.getInstance(utilisateur.getId());
 
@@ -246,18 +249,26 @@ public class LoginController {
                 FXMLLoader loader;
                 Parent root;
 
-                if ("hamza.farhani@esprit.tn".equals(utilisateur.getEmail()) && "zzzzz".equals(password)) {
-                    // Redirection pour Responsable RH
+                String role = utilisateur.getRole().trim(); // Suppression des espaces parasites
+
+                if (role.equals("RH") || role.equals("ResponsableRH")) {  // Vérification multiple
                     loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                     root = loader.load();
-                } else {
-                    // Redirection pour Employé
+                } else if (role.equals("Employe")) {
                     loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
                     root = loader.load();
 
-                    // Charger et afficher la page des formations
                     Controller controller = loader.getController();
                     FormationsControllerEMP formationsController = controller.loadPage("/FormationsEMP.fxml").getController();
+                } else if (role.equals("Candidat")) {
+                    loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
+                    root = loader.load();
+
+                    Controller controller = loader.getController();
+                    ProfileController profileController = controller.loadPage("/Profile.fxml").getController();
+                } else {
+                    alert.errorMessage("Rôle utilisateur inconnu !");
+                    return;
                 }
 
                 // Changement de scène
@@ -274,6 +285,7 @@ public class LoginController {
             alert.errorMessage("Email ou mot de passe incorrect !");
         }
     }
+
 
 
     public void setImgSrc(String imgSrc) {

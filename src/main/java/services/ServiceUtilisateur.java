@@ -20,22 +20,21 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
     }
 
     public Utilisateur authentifier(String email, String password) {
-        String query = "SELECT * FROM utilisateur WHERE email = ? AND password = ?";
+        String query = "SELECT * FROM utilisateur WHERE email = ? AND password = ?"; // 🔥 Vérifie si le hashage est nécessaire
 
         try {
             PreparedStatement pst = connection.prepareStatement(query);
             pst.setString(1, email);
-            pst.setString(2, password); // ⚠️ Hashage recommandé
+            pst.setString(2, password);
 
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
                 int id = rs.getInt("id");
-                Utilisateur utilisateur = new Utilisateur(id, email);
+                String nom = rs.getString("nom");  // ✅ Récupération correcte du nom
+                String role = rs.getString("role"); // ✅ Récupération correcte du rôle
 
-                // ✅ Initialiser la session avec l'ID utilisateur
-                Session.getInstance(id);
-                return utilisateur;
+                return new Utilisateur(id, email, nom, role); // ✅ Assure-toi que ce constructeur existe
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,6 +42,7 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
 
         return null; // Retourne `null` si l'authentification échoue
     }
+
 
     @Override
     public void ajouter(Utilisateur utilisateur) throws SQLException {

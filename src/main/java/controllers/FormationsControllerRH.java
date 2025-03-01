@@ -77,12 +77,12 @@ public class FormationsControllerRH implements Initializable {
     @FXML
     void onParticipantsBtn(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/participants.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
             Parent parent = loader.load();
+            Controller controller = loader.getController();
 
-            ParticipantsController con = loader.getController();
+            ParticipantsController con =controller.loadPage("/participants.fxml").getController();
             con.setIdFormation(selectedFormation.getId());
-
             grid.getScene().setRoot(parent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -148,15 +148,16 @@ public class FormationsControllerRH implements Initializable {
 
     private void setChosenFormation(Formation formation) {
         formationNameLable.setText(formation.getTitre());
-        //formationPriceLabel.setText(Main.CURRENCY + formation.getPrice());
-        //image = new Image(getClass().getResourceAsStream(formation.getImgSrc()));
-        //formationImg.setImage(image);
-        chosenFormationCard.setStyle("-fx-background-color: #" + "F16C31" + ";\n" +
-                "    -fx-background-radius: 30;");
+        chosenFormationCard.setStyle(
+                "-fx-background-color: #146886;\n" + // Couleur de fond
+                        "    -fx-background-radius: 30;\n" + // Bord arrondi
+                        "    -fx-border-color: WHITE;\n" + // Couleur de la bordure
+                        "    -fx-border-width: 0px 0px 0px 3px;\n" + // Largeur de la bordure (gauche uniquement)
+                        "    -fx-border-radius: 30;" // Bord arrondi pour la bordure
+        );
         selectedFormation = formation;
         System.out.println("ID formation sélectionnée : " + selectedFormation.getId());
     }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         formations.addAll(getData());
