@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Utilisateur;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,7 +12,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import utils.alertMessage;
 
+import java.io.File;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 public class EmployeesItemController {
 
@@ -45,26 +50,29 @@ public class EmployeesItemController {
 
             if (utilisateur.getImgSrc() != null) {
                 String imagePath = utilisateur.getImgSrc();
-                imagePath = imagePath.replace("%20", ""); // Décodage des espaces
+                imagePath = imagePath.replace("%20", " "); // Décodage des espaces
 
-                if (imagePath.startsWith("file:")) {
-                    // Chemin absolu
-                    this.image.setImage(new Image(imagePath));
-                } else {
-                    // Chemin relatif
-                    URL imageUrl = getClass().getResource(imagePath);
-                    if (imageUrl != null) {
-                        this.image.setImage(new Image(imageUrl.toString()));
+                try {
+                    if (imagePath.startsWith("file:")) {
+                        // Charger l’image depuis un chemin absolu
+                        this.image.setImage(new Image(imagePath));
                     } else {
-                        // Image par défaut si le chemin est incorrect
-                        this.image.setImage(new Image(getClass().getResourceAsStream("/img/user.png")));
-                        System.err.println("Chemin de l'image introuvable : " + imagePath);
+                        // Charger l’image depuis les ressources du projet
+                        URL imageUrl = getClass().getResource(imagePath);
+                        if (imageUrl != null) {
+                            this.image.setImage(new Image(imageUrl.toString()));
+                        } else {
+                            throw new Exception("Image introuvable : " + imagePath);
+                        }
                     }
+                } catch (Exception e) {
+                    this.image.setImage(new Image(getClass().getResourceAsStream("/img/user.png"))); // Image par défaut
+                    System.err.println("Erreur lors du chargement de l’image : " + e.getMessage());
                 }
             } else {
-                // Image par défaut si aucune image n'est spécifiée
-                this.image.setImage(new Image(getClass().getResourceAsStream("/img/user.png")));
+                this.image.setImage(new Image(getClass().getResourceAsStream("/img/user.png"))); // Image par défaut
             }
+
 
             // Logs pour débogage
             System.out.println("Chemin de l'image : " + utilisateur.getImgSrc());
