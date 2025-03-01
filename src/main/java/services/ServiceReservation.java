@@ -5,14 +5,19 @@ import entities.Ressource;
 import utils.MyDatabase;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ServiceReservation implements IService<Reservation> {
 
     private Connection connection;
-    public ServiceReservation() {connection = MyDatabase.getInstance().getConnection();}
 
+    public ServiceReservation() {
+        connection = MyDatabase.getInstance().getConnection();
+    }
 
     @Override
     public void ajouter(Reservation reservation) throws SQLException {
@@ -29,8 +34,6 @@ public class ServiceReservation implements IService<Reservation> {
         stmt.executeUpdate();
     }
 
-
-
     public void modifier(Reservation reservation) throws SQLException {
         String checkQuery = "SELECT COUNT(*) FROM reservation WHERE id = ?";
         PreparedStatement checkStmt = connection.prepareStatement(checkQuery);
@@ -43,14 +46,12 @@ public class ServiceReservation implements IService<Reservation> {
             stmt.setDate(1, reservation.getDateDebut());
             stmt.setDate(2, reservation.getDateFin());
             stmt.setInt(3, reservation.getIduser());
-            stmt.setInt(4,reservation.getId());
+            stmt.setInt(4, reservation.getId());
             stmt.executeUpdate();
         } else {
             System.out.println("Erreur : La reservation avec l'ID " + reservation.getId() + " n'existe pas !");
         }
     }
-
-
 
     @Override
     public void supprimer(int id) throws SQLException {
@@ -69,7 +70,6 @@ public class ServiceReservation implements IService<Reservation> {
             System.out.println("Erreur : La réservation avec ID " + id + " n'existe pas !");
         }
     }
-
 
     @Override
     public List<Reservation> afficher() throws SQLException {
@@ -101,7 +101,6 @@ public class ServiceReservation implements IService<Reservation> {
         return reservations;
     }
 
-
     public List<Reservation> afficherEMP() throws SQLException {
         List<Reservation> reservations = new ArrayList<>();
         String query = " SELECT * from reservation ";
@@ -131,7 +130,6 @@ public class ServiceReservation implements IService<Reservation> {
         return reservations;
     }
 
-
     public boolean estDisponible(Reservation reservation) throws SQLException {
         String query = "SELECT COUNT(*) FROM reservation WHERE id_ressource = ? AND " +
                 "(date_debut BETWEEN ? AND ? OR date_fin BETWEEN ? AND ?)";
@@ -148,7 +146,32 @@ public class ServiceReservation implements IService<Reservation> {
         }
         return true;
     }
+
+    public List<Date> getDatesReservees(int idRessource) throws SQLException {
+        List<Date> datesReservees = new ArrayList<>();
+        String query = "SELECT date_debut, date_fin FROM reservation WHERE id_ressource = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, idRessource);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Date dateDebut = rs.getDate("date_debut");
+                    Date dateFin = rs.getDate("date_fin");
+
+                    // Ajouter toutes les dates entre dateDebut et dateFin
+                    java.util.Date start = new java.util.Date(dateDebut.getTime());
+                    java.util.Date end = new java.util.Date(dateFin.getTime());
+
+                    long startTime = start.getTime();
+                    long endTime = end.getTime();
+
+                    for (long time = startTime; time <= endTime; time += 86400000) { // 86400000 ms = 1 jour
+                        datesReservees.add(new Date(time));
+                    }
+                }
+            }
+        }
+
+        return datesReservees;
+    }
 }
-
-
-

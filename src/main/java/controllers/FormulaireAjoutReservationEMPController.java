@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
@@ -25,8 +26,10 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FormulaireAjoutReservationEMPController implements Initializable {
 
@@ -41,12 +44,19 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
 
     private int idRessource;
 
-    private final ServiceReservation serviceReservation = new ServiceReservation();
     private final ServiceRessource serviceRessource = new ServiceRessource();
+    private ServiceReservation serviceReservation;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Stripe.apiKey = "sk_test_51QxdufRgQdrgt057uQn1WmyphpNcg0zjIjUg1UyImEndumS9brmFWHgRfojujeQesMd0Kj0VSyzihyH7wcPXPVT8009tY48RwV";
+
+        serviceReservation = new ServiceReservation();
+
+        // Configurer les DatePicker pour afficher les jours réservés en rouge
+        if (idRessource != 0) {
+            configurerDatePickers();
+        }
     }
 
     @FXML
@@ -85,6 +95,8 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
             // Créer une session de paiement Stripe
             double montantReservation = 100.00; // Montant fictif, remplacez avec le vrai montant
             String paymentUrl = creerSessionDePaiement(montantReservation);
+
+            serviceReservation.ajouter(reservation);
 
             if (paymentUrl == null) {
                 afficherAlerte(Alert.AlertType.ERROR, "Erreur de paiement", "Impossible de générer l'URL de paiement.");
@@ -128,6 +140,9 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
 
     public void setIdRessource(int idRessource) {
         this.idRessource = idRessource;
+        if (serviceReservation != null) {
+            configurerDatePickers();
+        }
     }
 
     /**
@@ -180,5 +195,48 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
         Scene scene = new Scene(webView, 800, 600);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void configurerDatePickers() {
+        try {
+            // Récupérer les dates réservées pour la ressource spécifique
+            List<Date> datesReservees = serviceReservation.getDatesReservees(idRessource);
+
+            // Convertir les dates réservées en un ensemble de LocalDate
+            Set<LocalDate> datesOccupees = datesReservees.stream()
+                    .map(Date::toLocalDate)
+                    .collect(Collectors.toSet());
+
+            // Configurer le DatePicker pour la date de début
+            dateDebutPicker.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+
+                    // Désactiver et colorer les jours réservés
+                    if (datesOccupees.contains(date)) {
+                        setStyle("-fx-background-color: #ffcccc;"); // Rouge clair
+                        setDisable(true); // Désactiver la sélection
+                    }
+                }
+            });
+
+            // Configurer le DatePicker pour la date de fin
+            dateFinPicker.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+
+                    // Désactiver et colorer les jours réservés
+                    if (datesOccupees.contains(date)) {
+                        setStyle("-fx-background-color: #ffcccc;"); // Rouge clair
+                        setDisable(true); // Désactiver la sélection
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
