@@ -116,7 +116,7 @@ public class LoginController {
     private String imagePath = null;
     private final ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
     private Utilisateur utilisateurVerifie;
-    private static final List<String> ROLE_LIST = Arrays.asList("Candidat", "Employé","RH");
+    private static final List<String> ROLE_LIST = Arrays.asList("Candidat", "Employé", "RH");
 
     @FXML
     private void initialize() {
@@ -140,7 +140,6 @@ public class LoginController {
             login_password.setVisible(true);
         }
     }
-
 
 
     public void forgotPassword() {
@@ -287,15 +286,12 @@ public class LoginController {
     }
 
 
-
     public void setImgSrc(String imgSrc) {
         if (imgSrc != null && !imgSrc.isEmpty()) {
             Image image = new Image(imgSrc); // Utilisez directement l'URI ou le chemin
             photoProfil.setImage(image);
         }
     }
-
-
 
 
     @FXML
@@ -306,6 +302,31 @@ public class LoginController {
         if (signup_nom.getText().isEmpty() || signup_prenom.getText().isEmpty() || signup_email.getText().isEmpty()
                 || signup_password.getText().isEmpty() || signup_cPassword.getText().isEmpty()) {
             alert.errorMessage("Tous les champs doivent être remplis !");
+            return;
+        }
+
+        // Validation de l'email
+        if (!isValidEmail(signup_email.getText())) {
+            alert.errorMessage("Veuillez entrer une adresse email valide !");
+            return;
+        }
+
+        // Vérification de l'unicité de l'email
+        try {
+            ServiceUtilisateur serviceCandidat = new ServiceUtilisateur();
+            if (serviceCandidat.emailExists(signup_email.getText())) {
+                alert.errorMessage("Cet email est déjà utilisé. Veuillez en choisir un autre !");
+                return;
+            }
+        } catch (SQLException e) {
+            alert.errorMessage("Erreur lors de la vérification de l'email : " + e.getMessage());
+            return;
+        }
+
+        // Validation du mot de passe
+        if (!isStrongPassword(signup_password.getText())) {
+            alert.errorMessage("Le mot de passe doit contenir au moins 8 caractères, " +
+                    "une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial !");
             return;
         }
 
@@ -322,24 +343,24 @@ public class LoginController {
 
         // Création de l'utilisateur, de l'employé ou du candidat
         // Créer un Candidat si le rôle est "Candidat"
-            Utilisateur candidat = new Utilisateur();
-            candidat.setNom(signup_nom.getText());
-            candidat.setPrenom(signup_prenom.getText());
-            candidat.setEmail(signup_email.getText());
-            candidat.setPassword(signup_password.getText());
-            candidat.setRole("Candidat");
-            candidat.setImgSrc(imagePath);
-            candidat.setCompetence(signup_competence.getText());
+        Utilisateur candidat = new Utilisateur();
+        candidat.setNom(signup_nom.getText());
+        candidat.setPrenom(signup_prenom.getText());
+        candidat.setEmail(signup_email.getText());
+        candidat.setPassword(signup_password.getText());
+        candidat.setRole("Candidat");
+        candidat.setImgSrc(imagePath);
+        candidat.setCompetence(signup_competence.getText());
 
-            try {
-                // Ajouter le candidat à la table Candidat
-                ServiceUtilisateur serviceCandidat = new ServiceUtilisateur();
-                serviceCandidat.ajouter(candidat);
-                alert.successMessage("Candidat ajouté avec succès !");
-            } catch (SQLException e) {
-                alert.errorMessage("Erreur lors de l'ajout du candidat : " + e.getMessage());
-                return;
-            }
+        try {
+            // Ajouter le candidat à la table Candidat
+            ServiceUtilisateur serviceCandidat = new ServiceUtilisateur();
+            serviceCandidat.ajouter(candidat);
+            alert.successMessage("Candidat ajouté avec succès !");
+        } catch (SQLException e) {
+            alert.errorMessage("Erreur lors de l'ajout du candidat : " + e.getMessage());
+            return;
+        }
 
         // Chargement du contrôleur de connexion
         try {
@@ -362,6 +383,19 @@ public class LoginController {
         } catch (IOException e) {
             alert.errorMessage("Erreur de chargement de la page de connexion.");
         }
+    }
+
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
+    }
+
+
+    private boolean isStrongPassword(String password) {
+        // Au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+        return password.matches(passwordRegex);
     }
 
     public void registerClearFields() {

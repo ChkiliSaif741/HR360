@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceUtilisateur implements IService<Utilisateur>{
+public class ServiceUtilisateur implements IService<Utilisateur> {
 
     Connection connection;
 
@@ -46,19 +46,19 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
 
     @Override
     public void ajouter(Utilisateur utilisateur) throws SQLException {
-        if(utilisateur.getRole() == "Employe"){
-            String req = "insert into utilisateur   (nom, prenom, email,password, role , image,salaire,poste)"+
-                    "values('"+utilisateur.getNom()+"','"+utilisateur.getPrenom()+"','"
-                    +utilisateur.getEmail()+"','"+utilisateur.getPassword()+"','"+utilisateur.getRole()+"'" +
-                    " , '"+utilisateur.getImgSrc()+"','"+utilisateur.getSalaire()+"','"+utilisateur.getPoste()+"')";
+        if (utilisateur.getRole() == "Employe") {
+            String req = "insert into utilisateur   (nom, prenom, email,password, role , image,salaire,poste)" +
+                    "values('" + utilisateur.getNom() + "','" + utilisateur.getPrenom() + "','"
+                    + utilisateur.getEmail() + "','" + utilisateur.getPassword() + "','" + utilisateur.getRole() + "'" +
+                    " , '" + utilisateur.getImgSrc() + "','" + utilisateur.getSalaire() + "','" + utilisateur.getPoste() + "')";
             Statement statement = connection.createStatement();
             statement.executeUpdate(req);
             System.out.println("Utilisateur ajouté!");
-        }else{
-            String req = "insert into utilisateur   (nom, prenom, email,password, role , image , competence)"+
-                    "values('"+utilisateur.getNom()+"','"+utilisateur.getPrenom()+"','"
-                    +utilisateur.getEmail()+"','"+utilisateur.getPassword()+"','"+utilisateur.getRole()+"'" +
-                    " , '"+utilisateur.getImgSrc()+"','"+utilisateur.getCompetence()+"')";
+        } else {
+            String req = "insert into utilisateur   (nom, prenom, email,password, role , image , competence)" +
+                    "values('" + utilisateur.getNom() + "','" + utilisateur.getPrenom() + "','"
+                    + utilisateur.getEmail() + "','" + utilisateur.getPassword() + "','" + utilisateur.getRole() + "'" +
+                    " , '" + utilisateur.getImgSrc() + "','" + utilisateur.getCompetence() + "')";
             Statement statement = connection.createStatement();
             statement.executeUpdate(req);
             System.out.println("Utilisateur ajouté!");
@@ -66,30 +66,16 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
 
     }
 
-
-
-    /*@Override
-    public void modifier(Utilisateur utilisateur) throws SQLException {
-        String req = "UPDATE utilisateur SET nom=?, prenom=?, email=?, password=?, role=?, imgSrc=? WHERE id=?";
-        PreparedStatement statement = connection.prepareStatement(req);
-
-        statement.setString(1, utilisateur.getNom());
-        statement.setString(2, utilisateur.getPrenom());
-        statement.setString(3, utilisateur.getEmail());
-        statement.setString(4, utilisateur.getPassword()); // Ajout du password
-        statement.setString(5, utilisateur.getRole());
-        statement.setString(6, utilisateur.getImgSrc()); // Ajout de l'image
-        statement.setInt(7, utilisateur.getId()); // Correction de l'ID
-
-        int rowsUpdated = statement.executeUpdate();
-
-        if (rowsUpdated > 0) {
-            System.out.println("Utilisateur modifié avec succès !");
-        } else {
-            System.out.println("Aucune modification effectuée !");
+    public boolean emailExists(String email) throws SQLException {
+        String query = "SELECT COUNT(*) FROM utilisateur WHERE email = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, email);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getInt(1) > 0;
         }
-    }*/
-
+        return false;
+    }
 
 
     public void modifier1(Utilisateur utilisateur) throws SQLException {
@@ -139,7 +125,6 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
             System.out.println("Aucune modification effectuée !");
         }
     }
-
 
 
     @Override
@@ -248,7 +233,6 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
             ps.executeUpdate();
         }
     }
-
 
 
 }
