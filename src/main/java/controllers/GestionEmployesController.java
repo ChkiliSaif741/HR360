@@ -33,6 +33,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /*implements Initializable*/
 public class GestionEmployesController implements Initializable {
@@ -179,11 +180,18 @@ public class GestionEmployesController implements Initializable {
 
     private List<Utilisateur> getEmployees() {
         try {
-            employees = serviceEmploye.afficher();
+            // Récupérer tous les utilisateurs
+            List<Utilisateur> allUsers = serviceEmploye.afficher();
+
+            // Filtrer pour ne garder que les employés
+            List<Utilisateur> employees = allUsers.stream()
+                    .filter(user -> "Employe".equals(user.getRole())) // Filtrer par rôle
+                    .collect(Collectors.toList());
+
             return employees;
         } catch (SQLException e) {
             e.printStackTrace();
-            return List.of();
+            return List.of(); // Retourner une liste vide en cas d'erreur
         }
     }
 
@@ -463,35 +471,38 @@ public class GestionEmployesController implements Initializable {
 
         try {
             for (Utilisateur employe : employees) {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/employee_item.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-                EmployeesItemController controller = fxmlLoader.getController();
-                controller.setParentControler(this);
-                controller.setUtilisateur(employe);
+                // Vérifier que l'utilisateur est bien un employé
+                if ("Employe".equals(employe.getRole())) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/employee_item.fxml"));
+                    AnchorPane anchorPane = fxmlLoader.load();
+                    EmployeesItemController controller = fxmlLoader.getController();
+                    controller.setParentControler(this);
+                    controller.setUtilisateur(employe);
 
-                // Ajouter un gestionnaire d'événements pour la sélection/désélection
-                anchorPane.setOnMouseClicked(event -> {
-                    if (selectedEmploye != null && selectedEmploye.equals(employe)) {
-                        // Désélectionner l'employé
-                        selectedEmploye = null;
-                        currentDisplayedEmploye = null;
-                        registerClearFields(); // Vider les champs de texte
-                        alert.successMessage("Employé désélectionné avec succès !");
-                    } else {
-                        // Sélectionner l'employé
-                        selectedEmploye = employe;
-                        System.out.println("Employé sélectionné : " + selectedEmploye.getNom());
+                    // Ajouter un gestionnaire d'événements pour la sélection/désélection
+                    anchorPane.setOnMouseClicked(event -> {
+                        if (selectedEmploye != null && selectedEmploye.equals(employe)) {
+                            // Désélectionner l'employé
+                            selectedEmploye = null;
+                            currentDisplayedEmploye = null;
+                            registerClearFields(); // Vider les champs de texte
+                            alert.successMessage("Employé désélectionné avec succès !");
+                        } else {
+                            // Sélectionner l'employé
+                            selectedEmploye = employe;
+                            System.out.println("Employé sélectionné : " + selectedEmploye.getNom());
+                        }
+                    });
+
+                    // Ajouter l'élément à la GridPane
+                    grid.add(anchorPane, column, row);
+                    GridPane.setMargin(anchorPane, new Insets(20));
+
+                    column++;
+                    if (column == 3) { // 3 colonnes par ligne
+                        column = 0;
+                        row++;
                     }
-                });
-
-                // Ajouter l'élément à la GridPane
-                grid.add(anchorPane, column, row);
-                GridPane.setMargin(anchorPane, new Insets(20));
-
-                column++;
-                if (column == 3) { // 3 colonnes par ligne
-                    column = 0;
-                    row++;
                 }
             }
         } catch (IOException e) {

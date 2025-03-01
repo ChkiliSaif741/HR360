@@ -44,6 +44,10 @@ public class Controller implements Initializable {
     @FXML
     private JFXButton formationBtn;
 
+    @FXML
+    private JFXButton formationbtn;
+
+
 
 
     FXMLLoader loadPage(String page) throws IOException {
@@ -59,9 +63,9 @@ public class Controller implements Initializable {
 
 
     @FXML
-    void onFormationbtn(ActionEvent event) {
+    void onFormationsEMPBtn(ActionEvent event) {
         try {
-            loadPage("/FormationsRH.fxml");
+            loadPage("/FormationsEMP.fxml");
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -69,7 +73,7 @@ public class Controller implements Initializable {
 
 
     @FXML
-    void onFormationsBtn(ActionEvent event) {
+    void onFormationsRHBtn(ActionEvent event) {
         try {
             loadPage("/FormationsRH.fxml");
         }catch (IOException e){
