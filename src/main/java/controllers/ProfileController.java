@@ -124,7 +124,7 @@ public class ProfileController {
         }
 
         try {
-            serviceUtilisateur.modifier2(utilisateurActuel);
+            serviceUtilisateur.modifier_candidat(utilisateurActuel);
             alert.successMessage("Profil mis à jour avec succès !");
         } catch (SQLException e) {
             alert.errorMessage("Erreur lors de la mise à jour du profil : " + e.getMessage());

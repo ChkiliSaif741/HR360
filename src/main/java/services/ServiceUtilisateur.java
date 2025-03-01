@@ -1,6 +1,5 @@
 package services;
 
-import entities.Session;
 import entities.Utilisateur;
 import utils.MyDatabase;
 
@@ -126,7 +125,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         }
     }
 
-    public void modifier2(Utilisateur utilisateur) throws SQLException {
+    public void modifier_candidat(Utilisateur utilisateur) throws SQLException {
         // Requête SQL sans la colonne 'role'
         String req = "UPDATE utilisateur SET nom=?, prenom=?, email=?, image=? WHERE id=?";
         PreparedStatement statement = connection.prepareStatement(req);

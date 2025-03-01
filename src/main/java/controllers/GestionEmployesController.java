@@ -436,6 +436,31 @@ public class GestionEmployesController implements Initializable {
             return;
         }
 
+        // Vérifier que tous les champs sont remplis
+        if (addEmployee_firstName.getText().isEmpty() || addEmployee_lastName.getText().isEmpty()
+                || addEmployee_email.getText().isEmpty() || addEmployee_position.getSelectionModel().getSelectedItem() == null
+                || addEmployee_salaire.getText().isEmpty()) {
+            alert.errorMessage("Veuillez remplir tous les champs !");
+            return;
+        }
+
+        // Validation de l'email
+        if (!isValidEmail(addEmployee_email.getText())) {
+            alert.errorMessage("Veuillez entrer une adresse email valide !");
+            return;
+        }
+
+        // Vérification de l'unicité de l'email
+        try {
+            if (serviceEmploye.emailExists(addEmployee_email.getText())) {
+                alert.errorMessage("Cet email est déjà utilisé. Veuillez en choisir un autre !");
+                return;
+            }
+        } catch (SQLException e) {
+            alert.errorMessage("Erreur lors de la vérification de l'email : " + e.getMessage());
+            return;
+        }
+
         // Mettre à jour l'employé dans la base de données
         try {
             Utilisateur updatedEmploye = new Utilisateur();
