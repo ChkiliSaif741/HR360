@@ -170,6 +170,8 @@ public class GestionEmployesController implements Initializable {
 
     private File selectedImageFile;
 
+    private boolean isEmployeeConfirmed = false; // Indique si l'employé a été confirmé
+
     private Utilisateur selectedEmploye = null;
 
     alertMessage alert = new alertMessage();
@@ -339,8 +341,8 @@ public class GestionEmployesController implements Initializable {
 
     @FXML
     void addEmployeeDelete(ActionEvent event) {
-        if (selectedEmploye == null) {
-            alert.errorMessage("Veuillez sélectionner un employé à supprimer !");
+        if (selectedEmploye == null || !isEmployeeConfirmed) {
+            alert.errorMessage("Veuillez sélectionner un employé et confirmer la sélection !");
             return;
         }
 
@@ -349,6 +351,9 @@ public class GestionEmployesController implements Initializable {
             alert.successMessage("Employé supprimé avec succès !");
             selectedEmploye = null; // Réinitialiser l'employé sélectionné
             refreshEmployees(); // Rafraîchir la liste des employés
+
+            // Réinitialiser la confirmation
+            isEmployeeConfirmed = false;
         } catch (SQLException e) {
             alert.errorMessage("Erreur lors de la suppression : " + e.getMessage());
         }
@@ -389,8 +394,8 @@ public class GestionEmployesController implements Initializable {
 
     @FXML
     void addEmployeeUpdate(ActionEvent event) {
-        if (selectedEmploye == null) {
-            alert.errorMessage("Veuillez sélectionner un employé à modifier !");
+        if (selectedEmploye == null || !isEmployeeConfirmed) {
+            alert.errorMessage("Veuillez sélectionner un employé et confirmer la sélection !");
             return;
         }
 
@@ -405,7 +410,13 @@ public class GestionEmployesController implements Initializable {
             ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
             updatedEmploye.setPoste(positionComboBox.getSelectionModel().getSelectedItem());
             updatedEmploye.setSalaire(Float.parseFloat(addEmployee_salaire.getText()));
-            updatedEmploye.setImgSrc(selectedEmploye.getImgSrc()); // Conserver l'image actuelle
+
+            // Mettre à jour l'image si une nouvelle image a été importée
+            if (selectedImageFile != null) {
+                updatedEmploye.setImgSrc(selectedImageFile.toURI().toString()); // Nouvelle image
+            } else {
+                updatedEmploye.setImgSrc(selectedEmploye.getImgSrc()); // Conserver l'image actuelle
+            }
 
             // Log des données avant mise à jour
             System.out.println("Données avant mise à jour : " + updatedEmploye);
@@ -419,6 +430,12 @@ public class GestionEmployesController implements Initializable {
 
             // Réinitialiser les champs de texte après la mise à jour
             registerClearFields();
+
+            // Réinitialiser l'image importée
+            selectedImageFile = null;
+
+            // Réinitialiser la confirmation
+            isEmployeeConfirmed = false;
         } catch (SQLException e) {
             alert.errorMessage("Erreur lors de la mise à jour : " + e.getMessage());
             e.printStackTrace();
@@ -479,19 +496,10 @@ public class GestionEmployesController implements Initializable {
                     controller.setParentControler(this);
                     controller.setUtilisateur(employe);
 
-                    // Ajouter un gestionnaire d'événements pour la sélection/désélection
+                    // Ajouter un gestionnaire d'événements pour la sélection
                     anchorPane.setOnMouseClicked(event -> {
-                        if (selectedEmploye != null && selectedEmploye.equals(employe)) {
-                            // Désélectionner l'employé
-                            selectedEmploye = null;
-                            currentDisplayedEmploye = null;
-                            registerClearFields(); // Vider les champs de texte
-                            alert.successMessage("Employé désélectionné avec succès !");
-                        } else {
-                            // Sélectionner l'employé
-                            selectedEmploye = employe;
-                            System.out.println("Employé sélectionné : " + selectedEmploye.getNom());
-                        }
+                        selectedEmploye = employe; // Sélectionner l'employé
+                        System.out.println("Employé sélectionné : " + selectedEmploye.getNom());
                     });
 
                     // Ajouter l'élément à la GridPane
@@ -510,53 +518,7 @@ public class GestionEmployesController implements Initializable {
         }
     }
 
-    @FXML
-    void addEmployeeSelect(ActionEvent event) {
-        if (selectedEmploye == null) {
-            alert.errorMessage("Veuillez sélectionner un employé dans la liste !");
-            return;
-        }
 
-        // Remplir les champs du formulaire avec les données de l'employé sélectionné
-        addEmployee_firstName.setText(selectedEmploye.getNom());
-        addEmployee_lastName.setText(selectedEmploye.getPrenom());
-        addEmployee_email.setText(selectedEmploye.getEmail());
-
-        // Désactiver le champ de mot de passe pour empêcher la modification
-        addEmployee_password.setDisable(true);
-        addEmployee_password.setText(selectedEmploye.getPassword());
-
-        // Sélectionner la position dans le ComboBox
-        ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
-        positionComboBox.getSelectionModel().select(selectedEmploye.getPoste());
-
-        // Remplir le champ de salaire
-        addEmployee_salaire.setText(String.valueOf(selectedEmploye.getSalaire()));
-
-        // Charger l'image de profil
-        if (selectedEmploye.getImgSrc() != null) {
-            String imagePath = selectedEmploye.getImgSrc();
-            imagePath = imagePath.replace("%20", " "); // Décodage des espaces (remplacement de %20 par un espace)
-
-            if (imagePath.startsWith("file:")) {
-                // Chemin absolu (si c'est un chemin complet sur le système)
-                addEmployee_image.setImage(new Image(imagePath));
-            } else {
-                // Chemin relatif (relatif au répertoire des ressources)
-                URL imageUrl = getClass().getResource(imagePath);
-                if (imageUrl != null) {
-                    // Vérifier si l'URL est valide
-                    addEmployee_image.setImage(new Image(imageUrl.toString()));
-                } else {
-                    // Si l'image n'est pas trouvée, utiliser une image par défaut
-                    addEmployee_image.setImage(new Image(getClass().getResource("/img/user.png").toString()));
-                }
-            }
-        } else {
-            // Image par défaut si l'employé n'a pas d'image
-            addEmployee_image.setImage(new Image(getClass().getResource("/img/user.png").toString()));
-        }
-    }
 
 
     public void switchForm(ActionEvent event) {
@@ -603,6 +565,61 @@ public class GestionEmployesController implements Initializable {
 
     }
 
+
+    @FXML
+    void addEmployeeSelect(ActionEvent event) {
+        if (selectedEmploye == null) {
+            alert.errorMessage("Veuillez sélectionner un employé dans la liste !");
+            return;
+        }
+
+        // Confirmer la sélection
+        isEmployeeConfirmed = true;
+
+        // Remplir les champs du formulaire avec les données de l'employé sélectionné
+        addEmployee_firstName.setText(selectedEmploye.getNom());
+        addEmployee_lastName.setText(selectedEmploye.getPrenom());
+        addEmployee_email.setText(selectedEmploye.getEmail());
+
+        // Désactiver le champ de mot de passe pour empêcher la modification
+        addEmployee_password.setDisable(true);
+        addEmployee_password.setText(selectedEmploye.getPassword());
+
+        // Sélectionner la position dans le ComboBox
+        ComboBox<String> positionComboBox = (ComboBox<String>) addEmployee_position;
+        positionComboBox.getSelectionModel().select(selectedEmploye.getPoste());
+
+        // Remplir le champ de salaire
+        addEmployee_salaire.setText(String.valueOf(selectedEmploye.getSalaire()));
+
+        // Charger l'image de profil
+        if (selectedEmploye.getImgSrc() != null) {
+            String imagePath = selectedEmploye.getImgSrc();
+            imagePath = imagePath.replace("%20", " "); // Décodage des espaces
+
+            if (imagePath.startsWith("file:")) {
+                // Chemin absolu
+                addEmployee_image.setImage(new Image(imagePath));
+            } else {
+                // Chemin relatif
+                URL imageUrl = getClass().getResource(imagePath);
+                if (imageUrl != null) {
+                    addEmployee_image.setImage(new Image(imageUrl.toString()));
+                } else {
+                    // Image par défaut si l'image n'est pas trouvée
+                    addEmployee_image.setImage(new Image(getClass().getResource("/img/user.png").toString()));
+                }
+            }
+        } else {
+            // Image par défaut si l'employé n'a pas d'image
+            addEmployee_image.setImage(new Image(getClass().getResource("/img/user.png").toString()));
+        }
+
+        // Afficher un message de succès
+        alert.successMessage("Employé sélectionné avec succès !");
+    }
+
+
     @FXML
     void addEmployeeUnselect(ActionEvent event) {
         // Réinitialiser les champs du formulaire
@@ -617,10 +634,15 @@ public class GestionEmployesController implements Initializable {
         // Réactiver le champ de mot de passe (si désactivé précédemment)
         addEmployee_password.setDisable(false);
 
+        // Réinitialiser la confirmation
+        isEmployeeConfirmed = false;
+
         // Afficher un message de succès
         alert.successMessage("Employé désélectionné avec succès !");
-
-        // Rafraîchir l'affichage (si nécessaire)
-        refreshEmployees();
     }
+
+
+
+
+
 }
