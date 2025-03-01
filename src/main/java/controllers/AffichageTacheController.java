@@ -169,6 +169,15 @@ public class AffichageTacheController implements Initializable {
         DescriptionTache.setText(tache.getDescription());
         DateEnd.setText(tache.getDateFin().toString());
         DateStart.setText(tache.getDateDebut().toString());
+        if (tache.getBoardId()==null)
+        {
+            EnableTrelloBtn.setText("Enable Trello");
+            EnableTrelloBtn.setDisable(false);
+        }
+        else {
+            EnableTrelloBtn.setText("Trello Enabled");
+            EnableTrelloBtn.setDisable(true);
+        }
     }
     public void setTacheSelected(MouseEvent event) {
         HBox clickedButton = (HBox) event.getSource();

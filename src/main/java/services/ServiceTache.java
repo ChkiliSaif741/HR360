@@ -64,6 +64,8 @@ public class ServiceTache implements IService<Tache> {
             tache.setDateFin(rs.getDate("dateFin"));
             tache.setStatut(TacheStatus.fromValue(rs.getString("statut")));
             tache.setIdProjet(rs.getInt("idProjet"));
+            if (rs.getString("trello_board_id")!=null)
+                tache.setBoardId(rs.getString("trello_board_id"));
             taches.add(tache);
         }
         return taches;
@@ -105,4 +107,5 @@ public void enableTrelloForTask(Tache task) throws SQLException {
         TrelloAPI.addMembersToBoard(boardId, memberEmails);
     }
 }
+
 }
