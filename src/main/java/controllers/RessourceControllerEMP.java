@@ -19,6 +19,26 @@ import services.ServiceRessource;
 import java.io.IOException;
 import java.sql.SQLException;
 
+
+import com.google.zxing.WriterException;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import services.QRCodeService;
+
+import java.io.File;
+import java.io.IOException;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import services.QRCodeService;
+
+import java.io.File;
+
+
+
 public class RessourceControllerEMP {
 
     @FXML
@@ -35,6 +55,7 @@ public class RessourceControllerEMP {
 
     private Ressource ressource;
 
+
     private AfficherRessourceEMPController parentController;
 
     public void setParentController(AfficherRessourceEMPController parentController) {
@@ -43,6 +64,10 @@ public class RessourceControllerEMP {
 
     @FXML
     private BorderPane borderpane;
+
+    @FXML private ImageView qrCodeImageView;
+    private boolean isQrCodeLarge = false;
+
 
 
     private ServiceRessource serviceRessource = new ServiceRessource();
@@ -82,6 +107,39 @@ public class RessourceControllerEMP {
             e.printStackTrace();
         }
     }
+
+
+    public void agrandirQRCode(ActionEvent actionEvent) {
+        if (ressource == null) return;
+
+        // Générer le QR Code si ce n'est pas déjà fait
+        String qrPath = QRCodeService.generateQRCodeForRessource(ressource);
+        File file = new File(qrPath);
+        if (!file.exists()) {
+            System.out.println("Erreur : Fichier QR Code introuvable !");
+            return;
+        }
+
+        // Créer une nouvelle fenêtre pour afficher le QR Code
+        Stage qrStage = new Stage();
+        qrStage.initModality(Modality.APPLICATION_MODAL);
+        qrStage.setTitle("QR Code - " + ressource.getNom());
+
+        // Image du QR Code
+        ImageView qrImageView = new ImageView(new Image(file.toURI().toString()));
+        qrImageView.setFitWidth(300); // Grande taille
+        qrImageView.setFitHeight(300);
+
+        // Ajouter l'image dans un conteneur
+        StackPane root = new StackPane(qrImageView);
+        root.setStyle("-fx-background-color: white; -fx-padding: 20px;");
+
+        // Créer la scène et l'afficher
+        Scene scene = new Scene(root);
+        qrStage.setScene(scene);
+        qrStage.show();
+    }
+
 
 
 }

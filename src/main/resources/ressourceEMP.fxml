@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="215.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RessourceControllerEMP">
    <children>
-      <VBox alignment="CENTER" layoutX="14.0" layoutY="8.0" prefHeight="200.0" prefWidth="100.0" stylesheets="@CSSFiles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" layoutX="14.0" layoutY="8.0" prefHeight="283.0" prefWidth="225.0" stylesheets="@CSSFiles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="58.0" prefWidth="122.0">
                <children>
@@ -59,21 +59,42 @@
                   <Image url="@Images/reserv.png" />
                </image>
                <VBox.margin>
-                  <Insets bottom="4.0" />
+                  <Insets bottom="6.0" />
                </VBox.margin>
             </ImageView>
-            <Button maxWidth="114.0" mnemonicParsing="false" onAction="#ajouterRessource" prefHeight="40.0" prefWidth="96.0" style="-fx-background-radius: 15; -fx-background-color: #0A4969; -fx-border-radius: 15; -fx-border-color: #0A4969;" styleClass="add-button" stylesheets="@CSSFiles/styles.css">
+            <HBox spacing="8.0">
+               <children>
+                  <Button onAction="#agrandirQRCode" style="-fx-background-color: #0A4969; -fx-text-fill: white; -fx-background-radius: 15; -fx-border-radius: 15;">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/numerisation-de-code-qr.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button maxWidth="114.0" mnemonicParsing="false" onAction="#ajouterRessource" prefHeight="40.0" prefWidth="99.0" style="-fx-background-radius: 15; -fx-background-color: #0A4969; -fx-border-radius: 15; -fx-border-color: #0A4969;" styleClass="add-button" stylesheets="@CSSFiles/styles.css">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/reservation.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+
+
+               </children>
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="11.0" />
                </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="31.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/reservation.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            </HBox>
             <HBox prefHeight="83.0" prefWidth="226.0" spacing="15.0" />
          </children>
          <styleClass>
