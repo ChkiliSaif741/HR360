@@ -1,23 +1,25 @@
 package controllers;
 
-import com.stripe.param.PaymentIntentConfirmParams;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.checkout.SessionCreateParams;
 import entities.Reservation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.web.WebView;
+import javafx.scene.web.WebEngine;
+import javafx.stage.Stage;
 import services.ServiceReservation;
 import services.ServiceRessource;
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
-import com.stripe.model.PaymentIntentCollection;
-import com.stripe.param.PaymentIntentCreateParams;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -34,8 +36,6 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
     @FXML
     private DatePicker dateFinPicker;
 
-
-
     @FXML
     private Button btnRetour;
 
@@ -46,7 +46,7 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        Stripe.apiKey = "sk_test_51QxdufRgQdrgt057uQn1WmyphpNcg0zjIjUg1UyImEndumS9brmFWHgRfojujeQesMd0Kj0VSyzihyH7wcPXPVT8009tY48RwV";
     }
 
     @FXML
@@ -82,24 +82,23 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
                 return;
             }
 
-            // Effectuer le paiement avant d'ajouter la réservation
-            double montantReservation = 100.00;  // Remplacez par le montant réel de la réservation
-            boolean paiementReussi = effectuerPaiement(montantReservation);
+            // Créer une session de paiement Stripe
+            double montantReservation = 100.00; // Montant fictif, remplacez avec le vrai montant
+            String paymentUrl = creerSessionDePaiement(montantReservation);
 
-            if (!paiementReussi) {
-                return; // Arrêter le processus si le paiement échoue
+            if (paymentUrl == null) {
+                afficherAlerte(Alert.AlertType.ERROR, "Erreur de paiement", "Impossible de générer l'URL de paiement.");
+                return;
             }
 
-            // Ajouter la réservation après un paiement réussi
-            serviceReservation.ajouter(reservation);
-            afficherAlerte(Alert.AlertType.INFORMATION, "Succès", "Réservation ajoutée avec succès !");
+            // Rediriger vers Stripe Checkout
+            redirigerVersPaiement(paymentUrl);
+
         } catch (SQLException e) {
             afficherAlerte(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter la réservation.");
             e.printStackTrace();
         }
     }
-
-
 
     @FXML
     private void annulerAjout() {
@@ -111,18 +110,13 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
     private void retour() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
-            Parent parent=loader.load();
+            Parent parent = loader.load();
             Controller controller = loader.getController();
             controller.loadPage("/AfficherRessourceEMP.fxml");
             dateDebutPicker.getScene().setRoot(parent);
-
         } catch (IOException e) {
-            //showErrorAlert("Erreur", "Une erreur est survenue lors du chargement de la page.");
+            afficherAlerte(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors du chargement de la page.");
         }
-    }
-
-    private boolean isValidUser(String input) {
-        return Pattern.matches("^[A-Za-z0-9\\s]+$", input);
     }
 
     private void afficherAlerte(Alert.AlertType type, String titre, String message) {
@@ -136,57 +130,55 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
         this.idRessource = idRessource;
     }
 
-
-    private boolean effectuerPaiement(double montant) {
+    /**
+     * Crée une session de paiement Stripe et retourne l'URL pour rediriger l'utilisateur.
+     */
+    private String creerSessionDePaiement(double montant) {
         try {
-            // Créez une intention de paiement
-            PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                    .setAmount((long) (montant * 100))  // Le montant en centimes
-                    .setCurrency("eur")  // Utilisez la devise appropriée
-                    .setDescription("Paiement pour la réservation")
+            SessionCreateParams params = SessionCreateParams.builder()
+                    .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                    .setSuccessUrl("https://votre-site.com/success") // Remplacez par votre vraie URL de succès
+                    .setCancelUrl("https://votre-site.com/cancel")   // Remplacez par votre vraie URL d'annulation
+                    .addLineItem(
+                            SessionCreateParams.LineItem.builder()
+                                    .setQuantity(1L)
+                                    .setPriceData(
+                                            SessionCreateParams.LineItem.PriceData.builder()
+                                                    .setCurrency("eur")
+                                                    .setUnitAmount((long) (montant * 100))
+                                                    .setProductData(
+                                                            SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                                    .setName("Réservation")
+                                                                    .build()
+                                                    )
+                                                    .build()
+                                    )
+                                    .build()
+                    )
                     .build();
 
-            // Log du montant et des paramètres pour vérification
-            System.out.println("Montant: " + montant * 100);  // Afficher le montant en centimes
-            System.out.println("Currency: eur");
+            Session session = Session.create(params);
+            System.out.println("Stripe Payment URL: " + session.getUrl()); // Log pour le debug
+            return session.getUrl();
 
-            PaymentIntent intent = PaymentIntent.create(params);
-
-            // Vérifiez que le paiement a été effectué avec succès
-            System.out.println("Status du paiement: " + intent.getStatus());
-            return intent.getStatus().equals("succeeded");
-
-        } catch (StripeException e) {
-            e.printStackTrace();  // Affichez l'exception complète
-            afficherAlerte(Alert.AlertType.ERROR, "Erreur de paiement", "Une erreur est survenue lors du paiement.");
-            return false;
-        }
-    }
-
-
-    // Recevez l'ID du PaymentMethod et finalisez le paiement
-    public static void confirmerPaiement(String paymentMethodId, String paymentIntentId) {
-        try {
-            PaymentIntent intent = PaymentIntent.retrieve(paymentIntentId);
-            PaymentIntentConfirmParams confirmParams = PaymentIntentConfirmParams.builder()
-                    .setPaymentMethod(paymentMethodId)
-                    .build();
-
-            PaymentIntent confirmedIntent = intent.confirm(confirmParams);
-
-            if ("succeeded".equals(confirmedIntent.getStatus())) {
-                // Le paiement a été réussi
-                System.out.println("Le paiement a été effectué avec succès !");
-                // Faites tout ce qui est nécessaire après le succès du paiement (ajouter la réservation, etc.)
-            } else {
-                // Le paiement a échoué ou nécessite des actions supplémentaires
-                System.out.println("Le paiement a échoué ou nécessite des actions supplémentaires.");
-            }
         } catch (StripeException e) {
             e.printStackTrace();
+            afficherAlerte(Alert.AlertType.ERROR, "Erreur de paiement", "Une erreur est survenue lors de la création de la session de paiement.");
+            return null;
         }
     }
 
-
-
+    /**
+     * Ouvre un WebView pour rediriger vers Stripe Checkout.
+     */
+    private void redirigerVersPaiement(String paymentUrl) {
+        Stage stage = new Stage();
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+        webEngine.load(paymentUrl);
+        Scene scene = new Scene(webView, 800, 600);
+        stage.setScene(scene);
+        stage.show();
+    }
 }
