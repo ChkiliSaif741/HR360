@@ -109,7 +109,7 @@
             </font>
          </Label>
          <TextField fx:id="addEmployee_salaire" layoutX="430.0" layoutY="328.0" prefHeight="26.0" prefWidth="180.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
-         <Button fx:id="addEmployee_selectBtn" layoutX="169.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmployeeSelect" prefHeight="41.0" prefWidth="94.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Select" />
+         <Button fx:id="addEmployee_selectBtn" layoutX="169.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmploySelect" prefHeight="41.0" prefWidth="94.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Select" />
          <Button fx:id="addEmployee_unselectBtn" layoutX="60.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmployeeUnselect" prefHeight="41.0" prefWidth="94.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Unselect" />
           </children>
           <styleClass>

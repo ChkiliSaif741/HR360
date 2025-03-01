@@ -286,8 +286,34 @@ public class GestionEmployesController implements Initializable {
         alertMessage alert = new alertMessage();
 
         // Vérifier que tous les champs sont remplis
-        if (addEmployee_firstName.getText().isEmpty() || addEmployee_firstName.getText().isEmpty()) {
+        if (addEmployee_firstName.getText().isEmpty() || addEmployee_lastName.getText().isEmpty()
+                || addEmployee_email.getText().isEmpty() || addEmployee_password.getText().isEmpty()
+                || addEmployee_position.getSelectionModel().getSelectedItem() == null) {
             alert.errorMessage("Veuillez remplir tous les champs !");
+            return;
+        }
+
+        // Validation de l'email
+        if (!isValidEmail(addEmployee_email.getText())) {
+            alert.errorMessage("Veuillez entrer une adresse email valide !");
+            return;
+        }
+
+        // Vérification de l'unicité de l'email
+        try {
+            if (serviceEmploye.emailExists(addEmployee_email.getText())) {
+                alert.errorMessage("Cet email est déjà utilisé. Veuillez en choisir un autre !");
+                return;
+            }
+        } catch (SQLException e) {
+            alert.errorMessage("Erreur lors de la vérification de l'email : " + e.getMessage());
+            return;
+        }
+
+        // Validation du mot de passe
+        if (!isStrongPassword(addEmployee_password.getText())) {
+            alert.errorMessage("Le mot de passe doit contenir au moins 8 caractères, " +
+                    "une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial !");
             return;
         }
 
@@ -329,6 +355,17 @@ public class GestionEmployesController implements Initializable {
             alert.errorMessage("Erreur lors de l'ajout de l'employé : " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
+    }
+
+    private boolean isStrongPassword(String password) {
+        // Au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+        return password.matches(passwordRegex);
     }
 
 
@@ -567,7 +604,7 @@ public class GestionEmployesController implements Initializable {
 
 
     @FXML
-    void addEmployeeSelect(ActionEvent event) {
+    void addEmploySelect(ActionEvent event) {
         if (selectedEmploye == null) {
             alert.errorMessage("Veuillez sélectionner un employé dans la liste !");
             return;
@@ -640,9 +677,6 @@ public class GestionEmployesController implements Initializable {
         // Afficher un message de succès
         alert.successMessage("Employé désélectionné avec succès !");
     }
-
-
-
 
 
 }
