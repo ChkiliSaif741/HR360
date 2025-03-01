@@ -57,6 +57,9 @@ public class AffichageTacheController implements Initializable {
     @FXML
     private Button EnableTrelloBtn;
 
+    @FXML
+    private Button ViewTrelloBtn;
+
     private ItemTacheController itemTacheControllerSelected;
 
     private int indiceTacheSelected;
@@ -91,6 +94,7 @@ public class AffichageTacheController implements Initializable {
                 contentBox.setAlignment(javafx.geometry.Pos.CENTER);
                 TaskDetails.setVisible(false);
                 EnableTrelloBtn.setVisible(false);
+                ViewTrelloBtn.setVisible(false);
             }
             else {
                 for (int i = 0; i < taches.size(); i++) {
@@ -196,10 +200,12 @@ public class AffichageTacheController implements Initializable {
         {
             EnableTrelloBtn.setText("Enable Trello");
             EnableTrelloBtn.setDisable(false);
+            ViewTrelloBtn.setVisible(false);
         }
         else {
             EnableTrelloBtn.setText("Trello Enabled");
             EnableTrelloBtn.setDisable(true);
+            ViewTrelloBtn.setVisible(true);
         }
     }
     public void setTacheSelected(MouseEvent event) {
@@ -267,4 +273,19 @@ void EnableTrello(ActionEvent event) {
         e.printStackTrace();
     }
 }
+    @FXML
+    void ViewTrello(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root = loader.load();
+            Controller controller0 = loader.getController();
+            FXMLLoader loader1=controller0.loadPage("/TrelloBoard.fxml");
+            TrelloBoardController controller = loader1.getController();
+            System.out.println(taches.get(indiceTacheSelected).getBoardId());
+            controller.setBoardId(taches.get(indiceTacheSelected).getBoardId());
+            contentBox.getScene().setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
