@@ -19,29 +19,29 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         }
     }
 
-    public Utilisateur authentifier(String email, String password) {
-        String query = "SELECT * FROM utilisateur WHERE email = ? AND password = ?"; // 🔥 Vérifie si le hashage est nécessaire
-
-        try {
-            PreparedStatement pst = connection.prepareStatement(query);
-            pst.setString(1, email);
-            pst.setString(2, password);
-
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String nom = rs.getString("nom");  // ✅ Récupération correcte du nom
-                String role = rs.getString("role"); // ✅ Récupération correcte du rôle
-
-                return new Utilisateur(id, email, nom, role); // ✅ Assure-toi que ce constructeur existe
+    public Utilisateur authentifier(String email, String password) throws SQLException {
+        String query = "SELECT id, nom, prenom, email, role, image FROM utilisateur WHERE email = ? AND password = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            statement.setString(2, password);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Utilisateur utilisateur = new Utilisateur();
+                    utilisateur.setId(resultSet.getInt("id"));
+                    utilisateur.setNom(resultSet.getString("nom"));
+                    utilisateur.setPrenom(resultSet.getString("prenom")); // Assurez-vous que cette ligne est présente
+                    utilisateur.setEmail(resultSet.getString("email"));
+                    utilisateur.setRole(resultSet.getString("role"));
+                    utilisateur.setImgSrc(resultSet.getString("image"));
+                    return utilisateur;
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return null; // Retourne `null` si l'authentification échoue
+        return null;
     }
+
+
+
 
 
     @Override
@@ -125,6 +125,29 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             System.out.println("Aucune modification effectuée !");
         }
     }
+
+    public void modifier2(Utilisateur utilisateur) throws SQLException {
+        // Requête SQL sans la colonne 'role'
+        String req = "UPDATE utilisateur SET nom=?, prenom=?, email=?, image=? WHERE id=?";
+        PreparedStatement statement = connection.prepareStatement(req);
+
+        // Définir les valeurs des colonnes
+        statement.setString(1, utilisateur.getNom());
+        statement.setString(2, utilisateur.getPrenom());
+        statement.setString(3, utilisateur.getEmail());
+        statement.setString(4, utilisateur.getImgSrc()); // Ajouter l'image
+        statement.setInt(5, utilisateur.getId()); // L'ID pour localiser l'utilisateur à modifier
+
+        // Exécution de la mise à jour
+        int rowsUpdated = statement.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            System.out.println("Utilisateur modifié avec succès !");
+        } else {
+            System.out.println("Aucune modification effectuée !");
+        }
+    }
+
 
 
     @Override

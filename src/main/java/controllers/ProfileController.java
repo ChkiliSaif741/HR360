@@ -3,7 +3,6 @@ package controllers;
 import entities.Utilisateur;
 import javafx.scene.layout.VBox;
 import services.ServiceUtilisateur;
-import services.ServiceUtilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import utils.alertMessage;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -38,10 +38,10 @@ public class ProfileController {
     @FXML
     private VBox container;
 
-
     private Utilisateur utilisateurActuel;
     private ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
     private String imagePath = null; // Stocke le chemin de la nouvelle image
+    private alertMessage alert = new alertMessage();
 
     /**
      * Initialise le profil de l'utilisateur (à appeler après le chargement du FXML).
@@ -56,15 +56,29 @@ public class ProfileController {
      */
     private void remplirChamps() {
         if (utilisateurActuel != null) {
+            System.out.println("Nom de l'utilisateur : " + utilisateurActuel.getNom());
+            System.out.println("Prénom de l'utilisateur : " + utilisateurActuel.getPrenom());
+            System.out.println("Email de l'utilisateur : " + utilisateurActuel.getEmail());
+
             nomField.setText(utilisateurActuel.getNom());
             prenomField.setText(utilisateurActuel.getPrenom());
             emailField.setText(utilisateurActuel.getEmail());
 
             // Chargement de l'image si elle existe
             if (utilisateurActuel.getImgSrc() != null && !utilisateurActuel.getImgSrc().isEmpty()) {
-                Image image = new Image("file:" + utilisateurActuel.getImgSrc());
-                photoProfil.setImage(image);
+                try {
+                    Image image = new Image(utilisateurActuel.getImgSrc());
+                    photoProfil.setImage(image);
+                } catch (Exception e) {
+                    System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+                    photoProfil.setImage(new Image(getClass().getResource("/img/user.png").toString())); // Image par défaut
+                }
+            } else {
+                // Image par défaut si aucune image n'est définie
+                photoProfil.setImage(new Image(getClass().getResource("/img/user.png").toString()));
             }
+        } else {
+            alert.errorMessage("Aucun utilisateur n'est connecté !");
         }
     }
 
@@ -78,7 +92,7 @@ public class ProfileController {
         File file = fileChooser.showOpenDialog(null);
 
         if (file != null) {
-            imagePath = file.getAbsolutePath();
+            imagePath = file.toURI().toString(); // Utiliser l'URI pour le chemin de l'image
             Image image = new Image(file.toURI().toString());
             photoProfil.setImage(image);
         }
@@ -90,7 +104,13 @@ public class ProfileController {
     @FXML
     private void enregistrerModifications(ActionEvent event) {
         if (utilisateurActuel == null) {
-            System.out.println("Aucun utilisateur sélectionné !");
+            alert.errorMessage("Aucun utilisateur n'est connecté !");
+            return;
+        }
+
+        // Vérification des champs vides
+        if (nomField.getText().isEmpty() || prenomField.getText().isEmpty() || emailField.getText().isEmpty()) {
+            alert.errorMessage("Tous les champs doivent être remplis !");
             return;
         }
 
@@ -104,10 +124,10 @@ public class ProfileController {
         }
 
         try {
-            serviceUtilisateur.modifier(utilisateurActuel);
-            System.out.println("Profil mis à jour avec succès !");
+            serviceUtilisateur.modifier2(utilisateurActuel);
+            alert.successMessage("Profil mis à jour avec succès !");
         } catch (SQLException e) {
-            System.out.println("Erreur SQL lors de la mise à jour du profil : " + e.getMessage());
+            alert.errorMessage("Erreur lors de la mise à jour du profil : " + e.getMessage());
             e.printStackTrace();
         }
     }

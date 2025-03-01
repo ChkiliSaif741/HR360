@@ -222,7 +222,7 @@ public class LoginController {
     }
 
 
-    public void loginBtnOnAction(ActionEvent actionEvent) {
+    public void loginBtnOnAction(ActionEvent actionEvent) throws SQLException {
         alertMessage alert = new alertMessage();
 
         // Vérification des champs vides
@@ -265,6 +265,7 @@ public class LoginController {
 
                     Controller controller = loader.getController();
                     ProfileController profileController = controller.loadPage("/Profile.fxml").getController();
+                    profileController.setUtilisateur(utilisateur);
                 } else {
                     alert.errorMessage("Rôle utilisateur inconnu !");
                     return;
@@ -284,6 +285,8 @@ public class LoginController {
             alert.errorMessage("Email ou mot de passe incorrect !");
         }
     }
+
+
 
 
     public void setImgSrc(String imgSrc) {
