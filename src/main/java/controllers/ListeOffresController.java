@@ -48,6 +48,8 @@ public class ListeOffresController {
     private ServiceOffre serviceOffre;
     private Map<Offre, Boolean> expandedItems = new HashMap<>();
 
+
+
     public void initialize() {
         // Appliquer l'effet pour rendre l'image blanche
         ColorAdjust colorAdjust = new ColorAdjust();
@@ -80,15 +82,6 @@ public class ListeOffresController {
             listViewOffres.setCellFactory(param -> new ListCell<Offre>() {
                 @Override
                 protected void updateItem(Offre offre, boolean empty) {
-                    listViewOffres.setOnMouseClicked(event -> {
-                        Offre selectedOffre = listViewOffres.getSelectionModel().getSelectedItem();
-                        if (selectedOffre != null) {
-                            boolean currentState = expandedItems.getOrDefault(selectedOffre, false);
-                            expandedItems.put(selectedOffre, !currentState); // Inverser l'état actuel
-                            listViewOffres.refresh(); // Rafraîchir la vue pour appliquer le changement
-                        }
-                    });
-
                     super.updateItem(offre, empty);
                     if (empty || offre == null) {
                         setText(null);
@@ -97,43 +90,39 @@ public class ListeOffresController {
                         // Créer un HBox pour afficher les éléments horizontalement
                         HBox hbox = new HBox(20); // Espacement entre les éléments
 
-                        // Créer un Label pour la description
-                        Label descriptionLabel = new Label();
-                        String fullDescription = offre.getDescription();
-                        String shortDescription = (fullDescription.length() > 50) ? fullDescription.substring(0, 50) + "..." : fullDescription;
-
-                        // Vérifier si l'élément est déjà étendu ou non
-                        Boolean isExpanded = expandedItems.getOrDefault(offre, false);
-                        if (isExpanded) {
-                            descriptionLabel.setText(fullDescription); // Afficher la description complète
+                        // Si c'est la première ligne, afficher uniquement les titres
+                        if (getIndex() == 0) {
+                            hbox.getChildren().addAll(
+                                    createLabeledItem("Titre", ""),
+                                    createLabeledItem("Description", ""),
+                                    createLabeledItem("Date de Publication", ""),
+                                    createLabeledItem("Date d'Expiration", ""),
+                                    createLabeledItem("Statut", "")
+                            );
                         } else {
-                            descriptionLabel.setText(shortDescription); // Afficher la description tronquée
-                        }
-                        descriptionLabel.setWrapText(true); // Activer le retour à la ligne
+                            // Créer un Label pour la description
+                            Label descriptionLabel = new Label();
+                            String fullDescription = offre.getDescription();
+                            String shortDescription = (fullDescription.length() > 50) ? fullDescription.substring(0, 50) + "..." : fullDescription;
 
-                        // Gérer le clic sur la description pour basculer entre tronqué et complet
-                        descriptionLabel.setOnMouseClicked(event -> {
-                            // Basculer l'état de l'élément (étendu ou non)
-                            boolean newState = !expandedItems.getOrDefault(offre, false);
-                            expandedItems.put(offre, newState);
-                            // Actualiser l'affichage en fonction du nouvel état
-                            if (newState) {
-                                descriptionLabel.setText(fullDescription);  // Set full description
+                            // Vérifier si l'élément est déjà étendu ou non
+                            Boolean isExpanded = expandedItems.getOrDefault(offre, false);
+                            if (isExpanded) {
+                                descriptionLabel.setText(fullDescription); // Afficher la description complète
                             } else {
-                                descriptionLabel.setText(shortDescription);  // Set truncated description
+                                descriptionLabel.setText(shortDescription); // Afficher la description tronquée
                             }
-                            // Re-render the cell to reflect the change in the description
-                            updateItem(offre, false);  // Force the update of the ListCell
-                        });
+                            descriptionLabel.setWrapText(true); // Activer le retour à la ligne
 
-                        // Ajouter les éléments au HBox
-                        hbox.getChildren().addAll(
-                                createLabeledItem("Titre", offre.getTitre()),
-                                createLabeledItem("Description", descriptionLabel.getText()), // Utiliser le texte du label
-                                createLabeledItem("Date de Publication", offre.getDatePublication().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
-                                createLabeledItem("Date d'Expiration", offre.getDateExpiration().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
-                                createLabeledItem("Statut", offre.getStatut())
-                        );
+                            // Ajouter les éléments au HBox
+                            hbox.getChildren().addAll(
+                                    createLabeledItem("", offre.getTitre()),
+                                    createLabeledItem("", descriptionLabel.getText()), // Utiliser le texte du label
+                                    createLabeledItem("", offre.getDatePublication().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
+                                    createLabeledItem("", offre.getDateExpiration().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
+                                    createLabeledItem("", offre.getStatut())
+                            );
+                        }
 
                         // Appliquer le HBox à la cellule
                         setGraphic(hbox);
@@ -158,8 +147,6 @@ public class ListeOffresController {
         }
     }
 
-    // Méthode pour créer des éléments Label avec titre et valeur dans un cadre
-    // Méthode pour créer des éléments Label avec titre et valeur dans un cadre
     private VBox createLabeledItem(String title, String value) {
         // Création des Labels pour le titre et la valeur
         Label titleLabel = new Label(title);

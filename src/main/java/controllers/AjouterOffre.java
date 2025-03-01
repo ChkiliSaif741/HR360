@@ -1,5 +1,7 @@
 package controllers;
 
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.layout.properties.TextAlignment;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -237,11 +239,23 @@ public class AjouterOffre implements Initializable {
                 PdfDocument pdfDoc = new PdfDocument(writer);
                 Document document = new Document(pdfDoc);
 
-                // Ajouter le contenu du fichier PDF
+                // Ajouter le logo et le nom de l'entreprise
+                String logoPath = "C:\\Users\\Dell\\Desktop\\piDevJava\\HR360\\src\\main\\resources\\Images\\logoRH360.png"; // Chemin du logo
+                com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(ImageDataFactory.create(logoPath));
+                logo.scaleToFit(100, 100); // Redimensionner le logo
+
+                document.add(logo); // Ajouter le logo au document
+
+                // Ajouter le nom de l'entreprise
+                document.add(new Paragraph("RH Entreprise 360").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER));
+                document.add(new Paragraph("\n")); // Espacement entre le logo et le titre
+
+                // Ajouter le titre et la description de l'offre d'emploi
                 document.add(new Paragraph("Offre d'emploi\n").setBold().setFontSize(18));
                 document.add(new Paragraph("Titre : " + titreOffre + "\n\n"));
                 document.add(new Paragraph("Description :\n" + description));
 
+                // Fermer le document
                 document.close();
 
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Le fichier PDF a été généré avec succès !");
@@ -250,6 +264,7 @@ public class AjouterOffre implements Initializable {
             }
         }
     }
+
     @FXML
     private void traduireDescription() {
         String description = descriptionField.getText().trim();

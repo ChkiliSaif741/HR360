@@ -1,4 +1,6 @@
 package controllers;
+import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.element.Cell;
 import entities.Offre;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +18,13 @@ import javafx.scene.shape.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
+import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
+import com.itextpdf.layout.element.LineSeparator;
+
 
 import javafx.stage.FileChooser;
 
@@ -208,6 +216,8 @@ public class ListCandidatureBack implements Initializable {
             showAlert("Erreur", "Impossible d'afficher les statistiques.");
         }
     }
+
+
     @FXML
     private void enregistrerListeCandidaturesEnPdf() {
         try {
@@ -220,33 +230,56 @@ public class ListCandidatureBack implements Initializable {
                 String dest = file.getAbsolutePath();
                 PdfWriter writer = new PdfWriter(dest);
                 PdfDocument pdf = new PdfDocument(writer);
-                Document document = new Document(pdf);
+                Document document = new Document(pdf, PageSize.A4); // Utiliser une page A4 en orientation portrait
 
-                // Ajouter un titre
-                document.add(new Paragraph("Liste des Candidatures").setBold().setFontSize(16));
+                // Ajouter une marge à gauche du document pour rapprocher le contenu du bord gauche
+                document.setMargins(30, 30, 30, 30); // top, right, bottom, left margin
+
+                // Chemin du logo
+                String logoPath = "C:\\Users\\Dell\\Desktop\\piDevJava\\HR360\\src\\main\\resources\\Images\\logoRH360.png";
+
+                // Ajouter le logo et le titre de l'entreprise
+                com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(ImageDataFactory.create(logoPath));
+                logo.scaleToFit(100, 100); // Redimensionner le logo
+                document.add(logo);
+
+                document.add(new Paragraph("RH Entreprise 360").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER));
+                document.add(new Paragraph("Liste des Candidatures").setBold().setFontSize(16).setTextAlignment(TextAlignment.CENTER));
                 document.add(new Paragraph("\n"));
 
-                // Récupérer la liste des candidatures
+                // Ajouter chaque candidature
                 List<Candidature> candidatures = listViewCandidatures.getItems();
 
-                // Parcourir la liste des candidatures et les ajouter au PDF
                 for (Candidature candidature : candidatures) {
                     // Récupérer l'offre associée
                     Offre offre = getOffreById(candidature.getId_offre());
                     String titreOffre = (offre != null) ? offre.getTitre() : "Offre non trouvée";
 
-                    // Ajouter les détails de la candidature
-                    Paragraph details = new Paragraph()
-                            .add("Titre Offre: " + titreOffre + "\n")
-                            .add("Date Candidature: " + candidature.getDateCandidature().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n")
-                            .add("Statut: " + candidature.getStatut() + "\n")
-                            .add("CV: " + extractFileName(candidature.getCv()) + "\n")
-                            .add("Lettre de Motivation: " + extractFileName(candidature.getLettreMotivation()) + "\n")
-                            .add("Description: " + candidature.getDescription() + "\n")
-                            .add("Date Modification: " + (candidature.getDateModification() != null ? candidature.getDateModification().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "Non modifié") + "\n");
+                    // Titre de la candidature
+                    document.add(new Paragraph("Candidature ID : " + candidature.getId_candidature())
+                            .setBold().setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+                    document.add(new Paragraph("Titre de l'offre : " + titreOffre).setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+                    document.add(new Paragraph("Date de la candidature : " + candidature.getDateCandidature().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
+                            .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+                    document.add(new Paragraph("Statut : " + candidature.getStatut()).setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+                    document.add(new Paragraph("CV : " + extractFileName(candidature.getCv())).setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+                    document.add(new Paragraph("Lettre de Motivation : " + extractFileName(candidature.getLettreMotivation()))
+                            .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+                    document.add(new Paragraph("Description : " + candidature.getDescription()).setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+                    document.add(new Paragraph("Date Modification : "
+                            + (candidature.getDateModification() != null
+                            ? candidature.getDateModification().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                            : "Non modifié")).setFontSize(12).setTextAlignment(TextAlignment.LEFT));
 
-                    document.add(details);
                     document.add(new Paragraph("\n")); // Ajouter un espace entre les candidatures
+
+                    // Ajouter une ligne de séparation après chaque candidature pour la clarté
+                    SolidLine line = new SolidLine(); // Crée une ligne solide
+                    LineSeparator separator = new LineSeparator(line); // Crée un séparateur avec la ligne
+                    document.add(separator); // Ajoute le séparateur au document
+
+                    // Ajouter un espace avant la prochaine candidature
+                    document.add(new Paragraph("\n"));
                 }
 
                 // Fermer le document
@@ -289,80 +322,7 @@ public class ListCandidatureBack implements Initializable {
         } else {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature à analyser.");
         }
-           /* Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
-            if (selectedCandidature != null && selectedCandidature.getCv() != null) {
-                File cvFile = new File(selectedCandidature.getCv());
-
-                if (!cvFile.exists()) {
-                    showAlert("Erreur", "Le fichier CV est introuvable.");
-                    return;
-                }
-
-                try {
-                    // Envoi du CV à l'API de parsing et récupération des résultats
-                    String apiKey = "zTZ1nHeQ8KrCEQYawS4OCBe0Ldz5IsIa";  // Remplacez par votre clé API
-                    String apiUrl = "https://api.apilayer.com/resume_parser/upload";
-                    String jsonResponse = sendResumeToApi(apiUrl, apiKey, cvFile);
-
-                    // Afficher les résultats
-                    showParsingResults(jsonResponse);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    showAlert("Erreur", "Impossible d'analyser le CV : " + e.getMessage());
-                }
-            } else {
-                showAlert("Aucune sélection", "Veuillez sélectionner une candidature avec un CV valide.");
-            }*/
-
     }
-     /*private String sendResumeToApi(String apiUrl, String apiKey, File cvFile) throws IOException {
-       HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/octet-stream");
-        connection.setRequestProperty("apikey", apiKey);
-        connection.setDoOutput(true);
-
-        try (OutputStream outputStream = connection.getOutputStream();
-             FileInputStream fileInputStream = new FileInputStream(cvFile)) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-        }
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                return response.toString();
-            }
-        } else {
-            return "Erreur API : " + responseCode;
-        }
-    }*/
-    private void showParsingResults(String jsonResponse) {
-        // Affichage des résultats dans le terminal
-        System.out.println("Résultats de l'analyse du CV :\n" + jsonResponse);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Résultats de l'analyse du CV");
-        alert.setHeaderText("Détails extraits du CV");
-        alert.setContentText(jsonResponse);
-        alert.showAndWait();
-    }
-
-
-
-
-
-
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);

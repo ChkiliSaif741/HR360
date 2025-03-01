@@ -31,6 +31,7 @@ public class UploadJobOffer {
     private Label fileNameLabel;
 
     private File cvFile;
+    private File jobOfferFile; // Fichier d'offre d'emploi
     private File analysisPdfFile; // Variable pour stocker le fichier PDF
 
     public void setCvFile(File cvFile) {
@@ -42,11 +43,14 @@ public class UploadJobOffer {
     private void handleUploadButtonClick() {
         // Ouvrir une boîte de dialogue pour sélectionner le fichier de l'offre d'emploi
         FileChooser fileChooser = new FileChooser();
-        // Modifier l'extension pour accepter les fichiers .txt
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers TXT", "*.txt"));
-        File jobOfferFile = fileChooser.showOpenDialog(null);
+        // Accepter les fichiers .pdf et .txt pour l'offre d'emploi
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF et Texte", "*.pdf", "*.txt"));
+        jobOfferFile = fileChooser.showOpenDialog(null);
 
         if (jobOfferFile != null) {
+            // Afficher le nom du fichier sélectionné
+            fileNameLabel.setText("Offre d'emploi sélectionnée: " + jobOfferFile.getName());
+
             // Utiliser l'API pour analyser le CV et l'offre d'emploi
             try {
                 analyseCvWithJobOffer(cvFile, jobOfferFile);
