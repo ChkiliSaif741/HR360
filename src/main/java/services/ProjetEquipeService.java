@@ -3,6 +3,8 @@ package services;
 import utils.MyDatabase;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjetEquipeService {
     private Connection con;
@@ -41,4 +43,20 @@ public class ProjetEquipeService {
         }
         return null;
     }
+
+    public List<Integer> getProjetsByEquipe(int idEquipe) throws SQLException {
+        List<Integer> projetIds = new ArrayList<>();
+        String query = "SELECT id_projet FROM projet_equipe WHERE id_equipe = ?";
+
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setInt(1, idEquipe);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            projetIds.add(rs.getInt("id_projet"));
+        }
+        return projetIds;
+    }
+
+
 }

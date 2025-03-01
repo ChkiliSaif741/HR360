@@ -119,7 +119,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onAction="#onFormationbtn" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="formations" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="formations" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -131,7 +131,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onAction="#AffichProjet" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="taches" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" onAction="#AffichProjetEMP" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Projets" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>

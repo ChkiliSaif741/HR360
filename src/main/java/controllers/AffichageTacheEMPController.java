@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class AffichageTacheController implements Initializable {
+public class AffichageTacheEMPController implements Initializable {
 
     private int idProjet;
 
@@ -49,15 +49,15 @@ public class AffichageTacheController implements Initializable {
     private VBox contentBox;
 
     @FXML
-    private Label nomTacheL;
-
-    @FXML
     private VBox TaskDetails;
 
     @FXML
-    private Button EnableTrelloBtn;
+    private Label nomTacheL;
 
-    private ItemTacheController itemTacheControllerSelected;
+    @FXML
+    private Button ViewTrelloBtn;
+
+    private ItemTacheEMPController itemTacheControllerSelected;
 
     private int indiceTacheSelected;
 
@@ -69,6 +69,7 @@ public class AffichageTacheController implements Initializable {
     public void setTaches() throws SQLException {
 
         ServiceTache serviceTache = new ServiceTache();
+        System.out.println(idProjet);
         taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).collect(Collectors.toList());
     }
     public void loadTasks(){
@@ -90,14 +91,14 @@ public class AffichageTacheController implements Initializable {
                 contentBox.setSpacing(10);
                 contentBox.setAlignment(javafx.geometry.Pos.CENTER);
                 TaskDetails.setVisible(false);
-                EnableTrelloBtn.setVisible(false);
+                ViewTrelloBtn.setVisible(false);
             }
             else {
                 for (int i = 0; i < taches.size(); i++) {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ItemTache.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ItemTacheEMP.fxml"));
                         HBox taskItem = loader.load();
-                        ItemTacheController controller = loader.getController();
+                        ItemTacheEMPController controller = loader.getController();
                         controller.setTaskData(taches.get(i));
                         controller.setParentController(this);
                         taskItem.setUserData(controller);
@@ -124,19 +125,6 @@ public class AffichageTacheController implements Initializable {
             setTaches();
             loadTasks();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @FXML
-    void AjouterTache(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
-        try {
-            Parent parent = loader.load();
-            Controller controller = loader.getController();
-            AjoutTacheController controller1 = controller.loadPage("/AjoutTache.fxml").getController();
-            controller1.setIdProjet(idProjet);
-            contentBox.getScene().setRoot(parent);
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -194,17 +182,15 @@ public class AffichageTacheController implements Initializable {
         DateStart.setText(tache.getDateDebut().toString());
         if (tache.getBoardId()==null)
         {
-            EnableTrelloBtn.setText("Enable Trello");
-            EnableTrelloBtn.setDisable(false);
+            ViewTrelloBtn.setVisible(false);
         }
         else {
-            EnableTrelloBtn.setText("Trello Enabled");
-            EnableTrelloBtn.setDisable(true);
+            ViewTrelloBtn.setVisible(true);
         }
     }
     public void setTacheSelected(MouseEvent event) {
         HBox clickedButton = (HBox) event.getSource();
-        ItemTacheController ItemCon = (ItemTacheController) clickedButton.getUserData();
+        ItemTacheEMPController ItemCon = (ItemTacheEMPController) clickedButton.getUserData();
         itemTacheControllerSelected = ItemCon;
         Tache tacheSelected =itemTacheControllerSelected.getTache();
         indiceTacheSelected=taches.indexOf(tacheSelected);
@@ -217,54 +203,20 @@ public class AffichageTacheController implements Initializable {
 
     @FXML
     void BackToProjetsDetails(ActionEvent event) {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
         try {
             Parent root = loader.load();
             Controller controller = loader.getController();
-            DetailsProjetController detailsProjetController = controller.loadPage("/DetailsProjet.fxml").getController();
+            DetailsProjetEMPController detailsProjetController = controller.loadPage("/DetailsProjetEMP.fxml").getController();
             detailsProjetController.setIdProjet(idProjet);
             contentBox.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-/*
-    @FXML
-    void EnableTrello(ActionEvent event) {
-        try {
-            EquipeService equipeService = new EquipeService();
-            ProjetEquipeService projetEquipeService = new ProjetEquipeService();
-            ServiceTache tacheService = new ServiceTache();
 
-            // Get team assigned to the project
-            int idProjet = taches.get(indiceTacheSelected).getIdProjet();
-            int idEquipe = projetEquipeService.getEquipeByProjet(idProjet);
-            List<Employe> teamMembers = equipeService.getEmployeesByEquipe(idEquipe);
-
-            // Enable Trello for the task
-            tacheService.enableTrelloForTask(taches.get(indiceTacheSelected), teamMembers);
-
-            System.out.println("Trello enabled for task: " + taches.get(indiceTacheSelected).getNom());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
 @FXML
-void EnableTrello(ActionEvent event) {
-    try {
-        EquipeService equipeService = new EquipeService();
-        ProjetEquipeService projetEquipeService = new ProjetEquipeService();
-        ServiceTache tacheService = new ServiceTache();
+void ViewTrello(ActionEvent event) {
 
-        // Get team assigned to the project
-        int idProjet = taches.get(indiceTacheSelected).getIdProjet();
-        int idEquipe = projetEquipeService.getEquipeByProjet(idProjet);
-        // Enable Trello for the task
-        tacheService.enableTrelloForTask(taches.get(indiceTacheSelected));
-
-        System.out.println("Trello enabled for task: " + taches.get(indiceTacheSelected).getNom());
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
 }
 }

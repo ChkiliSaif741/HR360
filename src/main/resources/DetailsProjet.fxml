@@ -48,7 +48,7 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-       <DateRangeView fx:id="DureeProjet" disable="true" layoutX="563.0" layoutY="75.0" maxHeight="222.0" maxWidth="150.0" minHeight="46.0" minWidth="150.0" prefHeight="174.0" prefWidth="150.0" showCancelAndApplyButton="false" showPresets="false" styleClass="date-picker" />
+       <DateRangeView fx:id="DureeProjet" focusTraversable="false" layoutX="563.0" layoutY="75.0" maxHeight="222.0" maxWidth="150.0" minHeight="46.0" minWidth="150.0" mouseTransparent="true" prefHeight="174.0" prefWidth="150.0" showCancelAndApplyButton="false" showPresets="false" styleClass="date-picker" />
       <VBox alignment="TOP_CENTER" layoutX="79.0" layoutY="360.0" prefHeight="251.0" prefWidth="340.0" spacing="20.0">
          <children>
             <Label fx:id="PourcentProgress" alignment="CENTER" contentDisplay="CENTER" prefHeight="99.0" prefWidth="266.0" text="78%" textAlignment="CENTER" textFill="#5eff8f">

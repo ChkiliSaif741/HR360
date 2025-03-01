@@ -107,5 +107,12 @@ public void enableTrelloForTask(Tache task) throws SQLException {
         TrelloAPI.addMembersToBoard(boardId, memberEmails);
     }
 }
+    public void updateTaskStatus(Tache tache) throws SQLException {
+        String query = "UPDATE Tache SET statut = ? WHERE id = ?";
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, tache.getStatut().getValue());
+        pst.setInt(2, tache.getId());
+        pst.executeUpdate();
+    }
 
 }

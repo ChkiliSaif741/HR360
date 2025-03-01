@@ -61,6 +61,14 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+    @FXML
+    void AffichProjetEMP(ActionEvent event) {
+        try{
+            loadPage("/AffichageProjetEMP.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

@@ -1,7 +1,6 @@
 package services;
 
 import utils.MyDatabase;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,21 +12,33 @@ public class EquipeEmployeService {
         con = MyDatabase.getInstance().getConnection();
     }
 
-    // ✅ Assign an employee to a team (update if they already exist)
+    // ✅ Assign an employee to a team (now supports multiple teams)
     public void assignEmployeToEquipe(int idEmploye, int idEquipe) throws SQLException {
-        String query = "INSERT INTO Equipe_Employe (id_employe, id_equipe) VALUES (?, ?) " +
-                "ON DUPLICATE KEY UPDATE id_equipe = VALUES(id_equipe)";
+        String query = "INSERT IGNORE INTO Equipe_Employe (id_employe, id_equipe) VALUES (?, ?)";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setInt(1, idEmploye);
         pst.setInt(2, idEquipe);
         pst.executeUpdate();
     }
 
-    // ✅ Remove an employee from a team
-    public void removeEmployeFromEquipe(int idEmploye) throws SQLException {
-        String query = "DELETE FROM Equipe_Employe WHERE id_employe = ?";
-        PreparedStatement pst = con.prepareStatement(query);
-        pst.setInt(1, idEmploye);
+    // ✅ Remove an employee from a specific team (or all teams)
+    public void removeEmployeFromEquipe(int idEmploye, Integer idEquipe) throws SQLException {
+        String query;
+        PreparedStatement pst;
+
+        if (idEquipe == null) {
+            // Remove employee from all teams
+            query = "DELETE FROM Equipe_Employe WHERE id_employe = ?";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, idEmploye);
+        } else {
+            // Remove employee from a specific team
+            query = "DELETE FROM Equipe_Employe WHERE id_employe = ? AND id_equipe = ?";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, idEmploye);
+            pst.setInt(2, idEquipe);
+        }
+
         pst.executeUpdate();
     }
 
@@ -45,16 +56,17 @@ public class EquipeEmployeService {
         return employes;
     }
 
-    // ✅ Get the team of a specific employee
-    public Integer getEquipeByEmploye(int idEmploye) throws SQLException {
+    // ✅ Get all teams of a specific employee (returns a list)
+    public List<Integer> getEquipesByEmploye(int idEmploye) throws SQLException {
+        List<Integer> equipes = new ArrayList<>();
         String query = "SELECT id_equipe FROM Equipe_Employe WHERE id_employe = ?";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setInt(1, idEmploye);
         ResultSet rs = pst.executeQuery();
 
-        if (rs.next()) {
-            return rs.getInt("id_equipe");
+        while (rs.next()) {
+            equipes.add(rs.getInt("id_equipe"));
         }
-        return null; // Employee is not assigned to any team
+        return equipes; // Returns empty list if employee is not assigned to any team
     }
 }
