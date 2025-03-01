@@ -1,6 +1,7 @@
 package services;
 
 import entities.Utilisateur;
+import utils.CryptageUtil;
 import utils.MyDatabase;
 
 import java.sql.*;
@@ -19,24 +20,52 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
     }
 
     public Utilisateur authentifier(String email, String password) throws SQLException {
-        String query = "SELECT id, nom, prenom, email, role, image FROM utilisateur WHERE email = ? AND password = ?";
+        String query = "SELECT id, nom, prenom, email, password, role, image FROM utilisateur WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
-            statement.setString(2, password);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    Utilisateur utilisateur = new Utilisateur();
-                    utilisateur.setId(resultSet.getInt("id"));
-                    utilisateur.setNom(resultSet.getString("nom"));
-                    utilisateur.setPrenom(resultSet.getString("prenom")); // Assurez-vous que cette ligne est présente
-                    utilisateur.setEmail(resultSet.getString("email"));
-                    utilisateur.setRole(resultSet.getString("role"));
-                    utilisateur.setImgSrc(resultSet.getString("image"));
-                    return utilisateur;
+                    String motDePasseStocke = resultSet.getString("password");
+
+                    // Vérifier si le mot de passe stocké est crypté (commence par "$2a$")
+                    if (motDePasseStocke.startsWith("$2a$")) {
+                        // Le mot de passe est crypté, utiliser BCrypt pour vérifier
+                        if (CryptageUtil.verifierMotDePasse(password, motDePasseStocke)) {
+                            return creerUtilisateurDepuisResultSet(resultSet);
+                        }
+                    } else {
+                        // Le mot de passe est en clair, vérifier directement
+                        if (password.equals(motDePasseStocke)) {
+                            // Crypter le mot de passe et mettre à jour la base de données
+                            String motDePasseCrypte = CryptageUtil.crypterMotDePasse(password);
+                            mettreAJourMotDePasse(resultSet.getInt("id"), motDePasseCrypte);
+                            return creerUtilisateurDepuisResultSet(resultSet);
+                        }
+                    }
                 }
             }
         }
         return null;
+    }
+
+    private Utilisateur creerUtilisateurDepuisResultSet(ResultSet resultSet) throws SQLException {
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setId(resultSet.getInt("id"));
+        utilisateur.setNom(resultSet.getString("nom"));
+        utilisateur.setPrenom(resultSet.getString("prenom"));
+        utilisateur.setEmail(resultSet.getString("email"));
+        utilisateur.setRole(resultSet.getString("role"));
+        utilisateur.setImgSrc(resultSet.getString("image"));
+        return utilisateur;
+    }
+
+    private void mettreAJourMotDePasse(int id, String motDePasseCrypte) throws SQLException {
+        String updateQuery = "UPDATE utilisateur SET password = ? WHERE id = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setString(1, motDePasseCrypte);
+            updateStatement.setInt(2, id);
+            updateStatement.executeUpdate();
+        }
     }
 
 
@@ -45,25 +74,41 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
 
     @Override
     public void ajouter(Utilisateur utilisateur) throws SQLException {
-        if (utilisateur.getRole() == "Employe") {
-            String req = "insert into utilisateur   (nom, prenom, email,password, role , image,salaire,poste)" +
-                    "values('" + utilisateur.getNom() + "','" + utilisateur.getPrenom() + "','"
-                    + utilisateur.getEmail() + "','" + utilisateur.getPassword() + "','" + utilisateur.getRole() + "'" +
-                    " , '" + utilisateur.getImgSrc() + "','" + utilisateur.getSalaire() + "','" + utilisateur.getPoste() + "')";
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(req);
-            System.out.println("Utilisateur ajouté!");
-        } else {
-            String req = "insert into utilisateur   (nom, prenom, email,password, role , image , competence)" +
-                    "values('" + utilisateur.getNom() + "','" + utilisateur.getPrenom() + "','"
-                    + utilisateur.getEmail() + "','" + utilisateur.getPassword() + "','" + utilisateur.getRole() + "'" +
-                    " , '" + utilisateur.getImgSrc() + "','" + utilisateur.getCompetence() + "')";
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(req);
-            System.out.println("Utilisateur ajouté!");
-        }
+        // Crypter le mot de passe avant de l'insérer dans la base de données
+        String motDePasseCrypte = CryptageUtil.crypterMotDePasse(utilisateur.getPassword());
 
+        if (utilisateur.getRole().equals("Employe")) {
+            String req = "insert into utilisateur (nom, prenom, email, password, role, image, salaire, poste) " +
+                    "values (?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(req)) {
+                statement.setString(1, utilisateur.getNom());
+                statement.setString(2, utilisateur.getPrenom());
+                statement.setString(3, utilisateur.getEmail());
+                statement.setString(4, motDePasseCrypte); // Utiliser le mot de passe crypté
+                statement.setString(5, utilisateur.getRole());
+                statement.setString(6, utilisateur.getImgSrc());
+                statement.setFloat(7, utilisateur.getSalaire());
+                statement.setString(8, utilisateur.getPoste());
+                statement.executeUpdate();
+                System.out.println("Utilisateur ajouté !");
+            }
+        } else {
+            String req = "insert into utilisateur (nom, prenom, email, password, role, image, competence) " +
+                    "values (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(req)) {
+                statement.setString(1, utilisateur.getNom());
+                statement.setString(2, utilisateur.getPrenom());
+                statement.setString(3, utilisateur.getEmail());
+                statement.setString(4, motDePasseCrypte); // Utiliser le mot de passe crypté
+                statement.setString(5, utilisateur.getRole());
+                statement.setString(6, utilisateur.getImgSrc());
+                statement.setString(7, utilisateur.getCompetence());
+                statement.executeUpdate();
+                System.out.println("Utilisateur ajouté !");
+            }
+        }
     }
+
 
     public boolean emailExists(String email) throws SQLException {
         String query = "SELECT COUNT(*) FROM utilisateur WHERE email = ?";

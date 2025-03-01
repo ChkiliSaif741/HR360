@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceUtilisateur;
+import utils.CryptageUtil;
 import utils.alertMessage;
 
 import java.io.File;
@@ -344,13 +345,16 @@ public class LoginController {
 
         System.out.println("Chemin de l'image : " + imagePath);
 
+        // Cryptage du mot de passe
+        String motDePasseCrypte = CryptageUtil.crypterMotDePasse(signup_password.getText());
+
         // Création de l'utilisateur, de l'employé ou du candidat
         // Créer un Candidat si le rôle est "Candidat"
         Utilisateur candidat = new Utilisateur();
         candidat.setNom(signup_nom.getText());
         candidat.setPrenom(signup_prenom.getText());
         candidat.setEmail(signup_email.getText());
-        candidat.setPassword(signup_password.getText());
+        candidat.setPassword(motDePasseCrypte); // Utiliser le mot de passe crypté
         candidat.setRole("Candidat");
         candidat.setImgSrc(imagePath);
         candidat.setCompetence(signup_competence.getText());
