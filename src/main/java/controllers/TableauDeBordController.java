@@ -1,20 +1,19 @@
 package controllers;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.itextpdf.text.DocumentException;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import services.ServiceAnalyse;
+import utils.ExportExcel;
+import utils.ExportPDF;
 
-import java.net.URL;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.ResourceBundle;
 
-public class TableauDeBordController implements Initializable {
+public class TableauDeBordController {
 
     @FXML
     private Label labelTotalReservations;
@@ -23,36 +22,91 @@ public class TableauDeBordController implements Initializable {
     private Label labelRessourcesPopulaires;
 
     @FXML
-    private BarChart<String, Number> barChart;
+    private PieChart pieChart; // Remplacement de BarChart par PieChart
 
     private ServiceAnalyse serviceAnalyse;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    public void initialize() {
         serviceAnalyse = new ServiceAnalyse();
 
         try {
-            // Afficher le nombre total de réservations
+            // Récupérer les données
             int totalReservations = serviceAnalyse.getNombreTotalReservations();
-            labelTotalReservations.setText("Total des Réservations : " + totalReservations);
+            Map<String, Double> tauxOccupation = serviceAnalyse.getTauxOccupation();
 
-            // Afficher les ressources les plus populaires
+            // Afficher les données
+            labelTotalReservations.setText("Total des Réservations : " + totalReservations);
             StringBuilder ressourcesPopulaires = new StringBuilder("Ressources les Plus Populaires : ");
             for (String ressource : serviceAnalyse.getRessourcesPopulaires()) {
                 ressourcesPopulaires.append(ressource).append(", ");
             }
             labelRessourcesPopulaires.setText(ressourcesPopulaires.toString());
 
-            // Afficher le taux d'occupation dans le BarChart
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            series.setName("Taux d'Occupation");
-            for (Map.Entry<String, Double> entry : serviceAnalyse.getTauxOccupation().entrySet()) {
-                series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+            // Afficher le taux d'occupation dans le PieChart
+            for (Map.Entry<String, Double> entry : tauxOccupation.entrySet()) {
+                PieChart.Data slice = new PieChart.Data(entry.getKey(), entry.getValue());
+                pieChart.getData().add(slice);
             }
-            barChart.getData().add(series);
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void exporterEnExcel() {
+        try {
+            // Récupérer les données
+            Map<String, Double> tauxOccupation = serviceAnalyse.getTauxOccupation();
+
+            // Exporter en Excel
+            ExportExcel.exporterTauxOccupation(tauxOccupation, "TableauDeBord.xlsx");
+
+            // Afficher un message de succès
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exportation réussie");
+            alert.setHeaderText(null);
+            alert.setContentText("Le tableau de bord a été exporté en Excel avec succès !");
+            alert.showAndWait();
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+
+            // Afficher un message d'erreur
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText(null);
+            alert.setContentText("Une erreur est survenue lors de l'exportation en Excel.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    public void exporterEnPDF() {
+        try {
+            // Récupérer les données
+            Map<String, Double> tauxOccupation = serviceAnalyse.getTauxOccupation();
+
+            // Exporter en PDF
+            ExportPDF.exporterTauxOccupation(tauxOccupation, "TableauDeBord.pdf");
+
+            // Afficher un message de succès
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exportation réussie");
+            alert.setHeaderText(null);
+            alert.setContentText("Le tableau de bord a été exporté en PDF avec succès !");
+            alert.showAndWait();
+
+        } catch (SQLException | IOException | DocumentException e) {
+            e.printStackTrace();
+
+            // Afficher un message d'erreur
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText(null);
+            alert.setContentText("Une erreur est survenue lors de l'exportation en PDF.");
+            alert.showAndWait();
         }
     }
 }
