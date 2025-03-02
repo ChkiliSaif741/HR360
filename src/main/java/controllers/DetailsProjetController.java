@@ -181,15 +181,6 @@ public class DetailsProjetController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             ProjetEquipeService serviceProjetEquipe = new ProjetEquipeService();
             serviceProjetEquipe.unassignProjetFromEquipe(idProjet);
-            ServiceTache serviceTache = new ServiceTache();
-            List<Tache> taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).toList();
-            for (Tache tache : taches) {
-                if(tache.getBoardId()!=null)
-                {
-                    serviceTache.clearBoardId(tache.getId());
-                    TrelloAPI.deleteBoard(tache.getBoardId());
-                }
-            }
             loadInfo();
         }
     }

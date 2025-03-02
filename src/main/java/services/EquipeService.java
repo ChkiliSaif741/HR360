@@ -40,7 +40,11 @@ public class EquipeService {
         rs.next();
 
         if (rs.getInt(1) > 0) {
-            throw new SQLException("Cannot delete: This team is assigned to a project!");
+            ProjetEquipeService projetEquipeService = new ProjetEquipeService();
+            List<Integer> projetsID=projetEquipeService.getProjetsByEquipe(idEquipe);
+            for (Integer projetID : projetsID) {
+                projetEquipeService.unassignProjetFromEquipe(projetID);
+            }
         }
 
         String query = "DELETE FROM Equipe WHERE id = ?";

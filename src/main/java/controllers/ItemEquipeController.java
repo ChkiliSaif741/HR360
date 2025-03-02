@@ -45,7 +45,7 @@ public class ItemEquipeController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Confirmation");
-        alert.setContentText("Voulez vous vraiment supprimer "+equipe.getNom()+" ?");
+        alert.setContentText("Voulez vous vraiment supprimer "+equipe.getNom()+"? tous les trello board de cette equipe seront supprimers...");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             EquipeService equipeService = new EquipeService();

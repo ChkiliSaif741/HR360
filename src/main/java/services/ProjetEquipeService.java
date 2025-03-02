@@ -1,5 +1,6 @@
 package services;
 
+import entities.Tache;
 import utils.MyDatabase;
 
 import java.sql.*;
@@ -29,6 +30,15 @@ public class ProjetEquipeService {
         PreparedStatement pst = con.prepareStatement(query);
         pst.setInt(1, idProjet);
         pst.executeUpdate();
+        ServiceTache serviceTache = new ServiceTache();
+        List<Tache> taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).toList();
+        for (Tache tache : taches) {
+            if(tache.getBoardId()!=null)
+            {
+                serviceTache.clearBoardId(tache.getId());
+                TrelloAPI.deleteBoard(tache.getBoardId());
+            }
+        }
     }
 
     // ✅ Get the team assigned to a project
