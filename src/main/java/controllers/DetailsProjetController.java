@@ -12,18 +12,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import services.EquipeService;
-import services.ProjetEquipeService;
-import services.ServiceProjet;
-import services.ServiceTache;
+import services.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DetailsProjetController {
 
@@ -176,9 +173,25 @@ public class DetailsProjetController {
     }
     @FXML
     void DisaocierEquipe(ActionEvent event) throws SQLException {
-        ProjetEquipeService serviceProjetEquipe = new ProjetEquipeService();
-        serviceProjetEquipe.unassignProjetFromEquipe(idProjet);
-        loadInfo();
+        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Quand vous disassocier cette equipe de cette projet, vous allez supprimer les Trello associes, avez vous sur ?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ProjetEquipeService serviceProjetEquipe = new ProjetEquipeService();
+            serviceProjetEquipe.unassignProjetFromEquipe(idProjet);
+            ServiceTache serviceTache = new ServiceTache();
+            List<Tache> taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).toList();
+            for (Tache tache : taches) {
+                if(tache.getBoardId()!=null)
+                {
+                    serviceTache.clearBoardId(tache.getId());
+                    TrelloAPI.deleteBoard(tache.getBoardId());
+                }
+            }
+            loadInfo();
+        }
     }
 }
 
