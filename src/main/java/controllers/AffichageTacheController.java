@@ -60,9 +60,16 @@ public class AffichageTacheController implements Initializable {
 
     private int indiceTacheSelected;
 
+    private boolean ProjectHasTeam;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+    public void CheckProjectHasTeam() throws SQLException {
+        ProjetEquipeService projetEquipeService = new ProjetEquipeService();
+        ProjectHasTeam=(projetEquipeService.getEquipeByProjet(idProjet)!=null&&projetEquipeService.getEquipeByProjet(idProjet)!=0);
+        System.out.println(ProjectHasTeam);
     }
 
     public void setTaches() throws SQLException {
@@ -77,7 +84,7 @@ public class AffichageTacheController implements Initializable {
             setTaches();
             if (taches.isEmpty()) {
                 // Load image
-                ImageView imageView = new ImageView(new Image("/Images/NoData.jpg")); // Adjust path if needed
+                ImageView imageView = new ImageView(new Image("/Images/NoData.jpg"));
                 imageView.setFitWidth(200); // Set width
                 imageView.setPreserveRatio(true); // Keep aspect ratio
 
@@ -123,6 +130,7 @@ public class AffichageTacheController implements Initializable {
         this.idProjet = idProjet;
         try {
             setTaches();
+            CheckProjectHasTeam();
             loadTasks();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -149,7 +157,7 @@ public class AffichageTacheController implements Initializable {
     }
 
     @FXML
-    void Refresh(ActionEvent event) {
+    void Refresh(ActionEvent event) throws SQLException {
         taches.clear();
         try {
             setTaches();
@@ -158,6 +166,7 @@ public class AffichageTacheController implements Initializable {
             throw new RuntimeException(e);
         }
         SearchBar.clear();
+        CheckProjectHasTeam();
     }
 
     @FXML
@@ -193,17 +202,25 @@ public class AffichageTacheController implements Initializable {
         DescriptionTache.setText(tache.getDescription());
         DateEnd.setText(tache.getDateFin().toString());
         DateStart.setText(tache.getDateDebut().toString());
-        if (tache.getBoardId()==null)
-        {
-            EnableTrelloBtn.setText("Enable Trello");
-            EnableTrelloBtn.setOnAction(this::EnableTrello);
+        if (ProjectHasTeam){
+            if (tache.getBoardId()==null)
+            {
+                EnableTrelloBtn.setText("Enable Trello");
+                EnableTrelloBtn.setOnAction(this::EnableTrello);
+                EnableTrelloBtn.setVisible(true);
+                ViewTrelloBtn.setVisible(false);
+            }
+            else {
+                EnableTrelloBtn.setText("Disable Trello");
+                EnableTrelloBtn.setOnAction(this::disableTrello);
+                EnableTrelloBtn.setVisible(true);
+                ViewTrelloBtn.setVisible(true);
+            }
+        }else {
+            EnableTrelloBtn.setVisible(false);
             ViewTrelloBtn.setVisible(false);
         }
-        else {
-            EnableTrelloBtn.setText("Disable Trello");
-            EnableTrelloBtn.setOnAction(this::disableTrello);
-            ViewTrelloBtn.setVisible(true);
-        }
+
     }
 
     private void disableTrello(ActionEvent actionEvent) {
