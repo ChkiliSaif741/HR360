@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -16,6 +17,8 @@ import services.ServiceReservation;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -31,11 +34,15 @@ public class AfficherReservationEMPController implements Initializable {
     private BorderPane borderpane;
 
     @FXML
+    private Button btnSort;
+
+
+    @FXML
     private BorderPane borderpaneheader;
     private int idRessource;
     private ServiceReservation serviceReservation = new ServiceReservation();
 
-    private List<Reservation> getData() {
+    public List<Reservation> getData() {
         try {
             return serviceReservation.afficherEMP();
         } catch (SQLException e) {
@@ -44,28 +51,27 @@ public class AfficherReservationEMPController implements Initializable {
         }
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        afficherRessource();
+        afficherRessource(getData().stream()
+                .filter(t -> t.getIduser() == 1)
+                .toList());
     }
 
-    public void afficherRessource() {
+
+    public void afficherRessource(List<Reservation> reservations) {
         grid.getChildren().clear();
-        System.out.println(getData());
-        List<Reservation> reservations = getData().stream()
-                .peek(t -> System.out.println(t.getIdRessource()))
-                .filter(t -> t.getIduser() == 1).peek(t-> System.out.println(t.getIduser()))
-                .toList();
+
+
 
         int column = 0;
         int row = 1;
 
         try {
             for (Reservation reservation : reservations) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/reservationEMP.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reservationEMP.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
-
                 ReservationEMPController reservationController = fxmlLoader.getController();
                 reservationController.setParentController(this);
                 reservationController.setData(reservation);
@@ -92,8 +98,20 @@ public class AfficherReservationEMPController implements Initializable {
         }
     }
 
+
     public void setIdRessource(int idRessource) {
         this.idRessource = idRessource;
-        afficherRessource();
+        afficherRessource(getData());
     }
+
+    @FXML
+    private void sortReservations() {
+        List<Reservation> sortedReservations = getData().stream()
+                .filter(t -> t.getIduser() == 1) // Filtrage si nécessaire
+                .sorted(Comparator.comparing(Reservation::getDateDebut)) // Change selon ton critère
+                .toList();
+
+        afficherRessource(sortedReservations);
+    }
+
 }

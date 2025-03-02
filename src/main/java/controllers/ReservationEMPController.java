@@ -18,6 +18,7 @@ import services.ServiceRessource;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ReservationEMPController {
 
@@ -113,7 +114,7 @@ public class ReservationEMPController {
                 }
             }
         });
-        parentController.afficherRessource();
+        parentController.afficherRessource(parentController.getData());
     }
 
 

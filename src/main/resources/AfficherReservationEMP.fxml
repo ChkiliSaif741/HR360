@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -9,6 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherReservationEMPController">
     <children>
@@ -42,6 +44,15 @@
                   <Insets top="1.0" />
                </padding>
                 </BorderPane>
+            <HBox alignment="CENTER" prefHeight="26.0" prefWidth="778.0">
+               <children>
+                      <Button fx:id="btnSort" onAction="#sortReservations" prefHeight="31.0" prefWidth="198.0" style="-fx-background-color: #0A4969; -fx-background-radius: 15;" text="Réservation Récente" textFill="WHITE">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
             </children>
         </AnchorPane>
     </children>
