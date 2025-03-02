@@ -11,6 +11,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import services.ProjetEquipeService;
 import services.ServiceProjet;
 
 import java.io.IOException;
@@ -51,11 +52,13 @@ public class ItemProjetController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Confirmation");
-        alert.setContentText("Voulez vous vraiment supprimer "+projet.getNom()+" ?");
+        alert.setContentText("Voulez vous vraiment supprimer "+projet.getNom()+" ?,Trello Boards associes seront supprimees!");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             ServiceProjet serviceProjet = new ServiceProjet();
             try {
+                ProjetEquipeService projetEquipeService=new ProjetEquipeService();
+                projetEquipeService.deleteTrelloBoardsOfThisProject(projet.getId());
                 serviceProjet.supprimer(projet.getId());
                 parentController.refresh();
             } catch (SQLException e) {

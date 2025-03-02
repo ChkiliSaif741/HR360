@@ -24,6 +24,17 @@ public class ProjetEquipeService {
         pst.executeUpdate();
     }
 
+    public void deleteTrelloBoardsOfThisProject(int idProjet) throws SQLException {
+        ServiceTache serviceTache = new ServiceTache();
+        List<Tache> taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).toList();
+        for (Tache tache : taches) {
+            if(tache.getBoardId()!=null)
+            {
+                TrelloAPI.deleteBoard(tache.getBoardId());
+            }
+        }
+    }
+
     // ✅ Unassign a project from a team
     public void unassignProjetFromEquipe(int idProjet) throws SQLException {
         String query = "DELETE FROM Projet_Equipe WHERE id_projet = ?";
