@@ -1,5 +1,7 @@
 package services;
 
+import tests.TempUser;
+import tests.UserService;
 import utils.MyDatabase;
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,15 +45,17 @@ public class EquipeEmployeService {
     }
 
     // ✅ Get all employees in a specific team
-    public List<Integer> getEmployesByEquipe(int idEquipe) throws SQLException {
-        List<Integer> employes = new ArrayList<>();
+    public List<TempUser> getEmployesByEquipe(int idEquipe) throws SQLException {
+        List<TempUser> employes = new ArrayList<>();
         String query = "SELECT id_employe FROM Equipe_Employe WHERE id_equipe = ?";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setInt(1, idEquipe);
         ResultSet rs = pst.executeQuery();
 
         while (rs.next()) {
-            employes.add(rs.getInt("id_employe"));
+            System.out.println(rs.getInt("id_employe"));
+            System.out.println(UserService.getUserById(rs.getInt("id_employe")));
+            employes.add(UserService.getUserById(rs.getInt("id_employe")));
         }
         return employes;
     }

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.dlsc.gemsfx.AutoscrollListView?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="327.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AssocierEquipeController">
    <children>
-      <ScrollPane layoutX="62.0" layoutY="47.0">
-         <content>
-            <ListView fx:id="equipeListView" prefHeight="198.0" prefWidth="203.0" />
-         </content>
-      </ScrollPane>
+       <AutoscrollListView fx:id="equipeListView" layoutX="56.0" layoutY="43.0" prefHeight="198.0" prefWidth="203.0" />
        <Button fx:id="associerButton" layoutX="73.0" layoutY="261.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="181.0" styleClass="button-44" stylesheets="@stylesProjet.css" text="Associer">
            <font>
                <Font size="19.0" />

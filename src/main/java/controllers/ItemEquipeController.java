@@ -6,12 +6,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import services.EquipeService;
 
 import java.io.IOException;
@@ -80,6 +82,17 @@ public class ItemEquipeController {
 
     @FXML
     void handleCardClick(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root = loader.load();
+            Controller controller1 = loader.getController();
+            DetailsTeamController controller = controller1.loadPage("/DetailsTeam.fxml").getController();
+            controller.setIdEquipe(equipe.getId());
+
+            nomProjet.getScene().setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

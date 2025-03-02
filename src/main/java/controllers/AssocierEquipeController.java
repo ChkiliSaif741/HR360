@@ -1,5 +1,6 @@
 package controllers;
 
+import com.dlsc.gemsfx.AutoscrollListView;
 import entities.Equipe;
 import entities.ProjetEquipe;
 import javafx.fxml.Initializable;
@@ -21,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class AssocierEquipeController {
     @FXML
-    private ListView<String> equipeListView;
+    private AutoscrollListView<String> equipeListView;
     @FXML
     private Button associerButton;
 

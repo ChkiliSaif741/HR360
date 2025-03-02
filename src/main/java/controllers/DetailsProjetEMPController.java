@@ -22,9 +22,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 import services.*;
+import tests.TempUser;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsProjetEMPController {
@@ -44,7 +46,7 @@ public class DetailsProjetEMPController {
     private int idProjet;
 
     @FXML
-    private AutoscrollListView<Integer> listTeamMembers; //intergation bdlha
+    private AutoscrollListView<String> listTeamMembers;
 
     public void setIdProjet(int idProjet) {
         this.idProjet = idProjet;
@@ -78,22 +80,21 @@ public class DetailsProjetEMPController {
             DescriptionProjet.setText(projet.getDescription());
             DateRange dateRange = new DateRange(projet.getNom(), projet.getDateDebut().toLocalDate(), projet.getDateFin().toLocalDate());
             DureeProjet.setValue(dateRange);
-            List<Integer> employeesID=equipeEmployeService.getEmployesByEquipe(equipe.getId());
+            List<TempUser> employees=equipeEmployeService.getEmployesByEquipe(equipe.getId());
+            System.out.println(employees);
             //getemploye by id fil integration w t3ml List<Utilisateur>
-            /*
+
             List<String> teamMembers =new ArrayList<>();
+            /*
             ServiceUtilisateur serviceuser= new ServiceUtilisateur();
-            Utilisateur u=new Utilisateur();
-            for (Integer employeid : employeesID)
+            Utilisateur u=new Utilisateur();*/
+            for (TempUser employe : employees)
             {
-                u=serviceuser.getuserByid(employeid)
-                teamMembers.add(u.getNom()+" "+u.getPrenom());
+                teamMembers.add(employe.getName());
             }
             ObservableList<String> membersObservable= FXCollections.observableArrayList(teamMembers);
             listTeamMembers.setItems(membersObservable);
-             */
-            ObservableList<Integer> membersObservable= FXCollections.observableArrayList(employeesID);
-            listTeamMembers.setItems(membersObservable);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
