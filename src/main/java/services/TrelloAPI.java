@@ -87,14 +87,17 @@ public class TrelloAPI {
         }
     }
 
-    public static void addMembersToBoard(String boardId, List<String> memberEmails) {
-        for (String email : memberEmails) {
+    public static void addMemberToBoard(String boardId, String email) {
             String url = TRELLO_URL + "/boards/" + boardId + "/members";
             Unirest.put(url)
                     .queryString("email", email)
                     .queryString("key", API_KEY)
                     .queryString("token", API_TOKEN)
                     .asJson();
+    }
+    public static void addMembersToBoard(String boardId, List<String> memberEmails) {
+        for (String email : memberEmails) {
+            addMemberToBoard(boardId, email);
         }
     }
 

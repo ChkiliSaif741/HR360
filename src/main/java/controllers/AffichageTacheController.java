@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.*;
+import tests.TempUser;
 
 import java.io.IOException;
 import java.net.URL;
@@ -263,27 +264,28 @@ public class AffichageTacheController implements Initializable {
             e.printStackTrace();
         }
     }
-/*
+
     @FXML
     void EnableTrello(ActionEvent event) {
         try {
-            EquipeService equipeService = new EquipeService();
             ProjetEquipeService projetEquipeService = new ProjetEquipeService();
+            EquipeEmployeService equipeEmployeService = new EquipeEmployeService();
             ServiceTache tacheService = new ServiceTache();
 
             // Get team assigned to the project
             int idProjet = taches.get(indiceTacheSelected).getIdProjet();
             int idEquipe = projetEquipeService.getEquipeByProjet(idProjet);
-            List<Employe> teamMembers = equipeService.getEmployeesByEquipe(idEquipe);
+            List<TempUser> teamMembers = equipeEmployeService.getEmployesByEquipe(idEquipe);
 
             // Enable Trello for the task
             tacheService.enableTrelloForTask(taches.get(indiceTacheSelected), teamMembers);
 
             System.out.println("Trello enabled for task: " + taches.get(indiceTacheSelected).getNom());
+            loadTasks();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }*/
+    }/*
 @FXML
 void EnableTrello(ActionEvent event) {
     try {
@@ -302,7 +304,7 @@ void EnableTrello(ActionEvent event) {
     } catch (SQLException e) {
         e.printStackTrace();
     }
-}
+}*/
     @FXML
     void ViewTrello(ActionEvent event) {
         try {

@@ -68,5 +68,20 @@ public class ProjetEquipeService {
         return projetIds;
     }
 
+    public List<String> getBoardsByEquipe(int idEquipe) throws SQLException {
+        List<String> boardIds = new ArrayList<>();
+        List<Integer> projetsID= getProjetsByEquipe(idEquipe);
+        List<Tache> taches=new ArrayList<>();
+        ServiceTache serviceTache = new ServiceTache();
+        for (Integer id : projetsID) {
+            taches.addAll(serviceTache.getTachesByProjetId(id));
+        }
+        for (Tache tache : taches) {
+            if (tache.getBoardId()!=null)
+                boardIds.add(tache.getBoardId());
+        }
+        return boardIds;
+    }
+
 
 }

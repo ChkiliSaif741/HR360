@@ -3,6 +3,7 @@ package services;
 import entities.Projet;
 import entities.Tache;
 import entities.TacheStatus;
+import tests.TempUser;
 import utils.MyDatabase;
 
 import java.sql.*;
@@ -71,10 +72,12 @@ public class ServiceTache implements IService<Tache> {
         }
         return taches;
     }
-/*
-    public void enableTrelloForTask(Tache task, List<Employe> teamMembers) throws SQLException {
-        // Step 1: Create Trello board
-        String boardId = TrelloAPI.createBoard(task.getNom());
+
+    public void enableTrelloForTask(Tache task, List<TempUser> teamMembers) throws SQLException {
+        ServiceProjet serviceProjet=new ServiceProjet();
+    Projet projet=serviceProjet.getById(task.getIdProjet());
+    // Step 1: Create Trello board
+    String boardId = TrelloAPI.createBoardWithLists(projet.getNom()+" - "+task.getNom(),task.getDateFin().toLocalDate(),task.getDateDebut().toLocalDate());
 
         if (boardId != null) {
             // Step 2: Store Trello board ID in database
@@ -86,30 +89,12 @@ public class ServiceTache implements IService<Tache> {
 
             // Step 3: Add team members to Trello board
             List<String> memberEmails = teamMembers.stream()
-                    .map(Employe::getEmail) // Assuming Employe has an getEmail() method
+                    .map(TempUser::getEmail) // Assuming Employe has an getEmail() method
                     .toList();
             TrelloAPI.addMembersToBoard(boardId, memberEmails);
         }
-    }*/
-public void enableTrelloForTask(Tache task) throws SQLException {
-    ServiceProjet serviceProjet=new ServiceProjet();
-    Projet projet=serviceProjet.getById(task.getIdProjet());
-    // Step 1: Create Trello board
-    String boardId = TrelloAPI.createBoardWithLists(projet.getNom()+" - "+task.getNom(),task.getDateFin().toLocalDate(),task.getDateDebut().toLocalDate());
-
-    if (boardId != null) {
-        // Step 2: Store Trello board ID in database
-        String query = "UPDATE Tache SET trello_board_id = ? WHERE id = ?";
-        PreparedStatement pst = connection.prepareStatement(query);
-        pst.setString(1, boardId);
-        pst.setInt(2, task.getId());
-        pst.executeUpdate();
-
-        // Step 3: Add team members to Trello board
-        List<String> memberEmails =new ArrayList<>(Arrays.asList("chkilisaif776@gmail.com","saifchkili205@gmail.com","chekili.saih@esprit.tn"));
-        TrelloAPI.addMembersToBoard(boardId, memberEmails);
     }
-}
+
     public void updateTaskStatus(Tache tache) throws SQLException {
         String query = "UPDATE Tache SET statut = ? WHERE id = ?";
         PreparedStatement pst = connection.prepareStatement(query);
@@ -147,6 +132,27 @@ public void enableTrelloForTask(Tache task) throws SQLException {
                 }
             }
         }
+    }
+    public List<Tache> getTachesByProjetId(int projetId) throws SQLException {
+        List<Tache> taches=new ArrayList<>();
+        String query = "SELECT * FROM tache WHERE idProjet = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, projetId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Tache tache=new Tache();
+                tache.setId(rs.getInt("id"));
+                tache.setNom(rs.getString("nom"));
+                tache.setDescription(rs.getString("description"));
+                tache.setDateDebut(rs.getDate("dateDebut"));
+                tache.setDateFin(rs.getDate("dateFin"));
+                tache.setStatut(TacheStatus.fromValue(rs.getString("statut")));
+                if (rs.getString("trello_board_id")!=null)
+                    tache.setBoardId(rs.getString("trello_board_id"));
+                taches.add(tache);
+            }
+        }
+        return taches;
     }
 
     }
