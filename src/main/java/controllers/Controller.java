@@ -1,4 +1,5 @@
 package controllers;
+
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,8 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Duration;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,10 +33,11 @@ public class Controller implements Initializable {
     @FXML
     private BorderPane mainPane;
 
+    // Méthode pour charger une page dans le BorderPane
     FXMLLoader loadPage(String page) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(page));
         try {
-            Pane view=loader.load();
+            Pane view = loader.load();
             mainPane.setCenter(view);
             return loader;
         } catch (IOException e) {
@@ -42,20 +45,9 @@ public class Controller implements Initializable {
         }
     }
 
-    @FXML
-    void AffichProjet(ActionEvent event) {
-        try {
-            loadPage("/AffichageProjet.fxml");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        Exit.setOnMouseClicked(event -> {
-            System.exit(0);
-        });
+        Exit.setOnMouseClicked(event -> System.exit(0));
 
         // Initialiser le slider visible
         slider.setTranslateX(0);
@@ -97,6 +89,17 @@ public class Controller implements Initializable {
         });
     }
 
+    // Méthode pour afficher le tableau de bord
+    @FXML
+    void afficherTableauDeBord(ActionEvent event) {
+        try {
+            loadPage("/TableauDeBord.fxml"); // Assurez-vous que le fichier TableauDeBord.fxml existe
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Autres méthodes existantes...
     @FXML
     void afficherRessource(ActionEvent event) {
         try {

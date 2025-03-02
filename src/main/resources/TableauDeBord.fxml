@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TableauDeBordController">
+    <Label text="Tableau de Bord" styleClass="title" />
+    <Label fx:id="labelTotalReservations" text="Total des Réservations : " />
+    <Label fx:id="labelRessourcesPopulaires" text="Ressources les Plus Populaires : " />
+    <BarChart fx:id="barChart" title="Taux d'Occupation des Ressources">
+        <xAxis>
+            <CategoryAxis label="Ressources" />
+        </xAxis>
+        <yAxis>
+            <NumberAxis label="Taux d'Occupation (%)" />
+        </yAxis>
+    </BarChart>
+</VBox>

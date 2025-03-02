@@ -47,7 +47,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Report">
+                        <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Report" onAction="#afficherTableauDeBord">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

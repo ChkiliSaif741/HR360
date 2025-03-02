@@ -81,6 +81,25 @@
             <version>28.4.0</version>
         </dependency>
 
+        <!-- Apache POI pour Excel (XSSF) -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version> <!-- Utilisez la dernière version stable -->
+        </dependency>
+        <!-- Apache POI pour Excel (formules) -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <!-- Bibliothèque pour gérer les fichiers XML -->
+        <dependency>
+            <groupId>org.apache.xmlbeans</groupId>
+            <artifactId>xmlbeans</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+
 
 
 
