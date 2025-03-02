@@ -67,6 +67,7 @@ public class AffichageTacheController implements Initializable {
     public void setTaches() throws SQLException {
 
         ServiceTache serviceTache = new ServiceTache();
+        serviceTache.synchronizeDeletedBoards();
         taches=serviceTache.afficher().stream().filter(t->t.getIdProjet()==idProjet).collect(Collectors.toList());
     }
     public void loadTasks(){

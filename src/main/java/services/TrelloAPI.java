@@ -114,4 +114,33 @@ public class TrelloAPI {
         }
     }
 
+    public static boolean isBoardStillOnTrello(String boardId) {
+        String url = TRELLO_URL + "/boards/" + boardId;
+        HttpResponse<JsonNode> response = Unirest.get(url)
+                .queryString("key", API_KEY)
+                .queryString("token", API_TOKEN)
+                .asJson();
+
+        int statusCode = response.getStatus();
+        System.out.println("🔍 Checking board: " + boardId + " | Status: " + statusCode);
+        System.out.println("📢 API Raw Response: " + response.getBody());
+
+        // ✅ If API returns 404, the board is deleted
+        if (statusCode == 404) {
+            System.out.println("✅ Board " + boardId + " was deleted!");
+            return false;
+        }
+
+        // ❌ Fix: Do NOT assume 'null' = deleted, only delete if 404!
+        if (statusCode == 200) {
+            System.out.println("✅ Board " + boardId + " still exists.");
+            return true;
+        }
+
+        // 🟡 Handle unexpected errors (e.g., Trello server issues)
+        System.out.println("⚠️ Unexpected response from Trello API: " + statusCode);
+        return true; // Assume board still exists if Trello is unclear
+    }
+
+
 }

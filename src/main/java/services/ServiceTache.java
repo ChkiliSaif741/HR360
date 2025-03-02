@@ -122,15 +122,31 @@ public void enableTrelloForTask(Tache task) throws SQLException {
         String query = "UPDATE Tache SET trello_board_id = NULL WHERE id = ?";
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setInt(1, tacheId);
-            int rowsUpdated = pst.executeUpdate();
-
-            if (rowsUpdated > 0) {
-                System.out.println("Board ID cleared for Task ID: " + tacheId);
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("🗑️ Successfully cleared board_id for Task ID: " + tacheId);
             } else {
-                System.out.println("No task found with ID: " + tacheId);
+                System.out.println("⚠️ No update performed for Task ID: " + tacheId);
+            }
+        }
+    }
+    public void synchronizeDeletedBoards() throws SQLException {
+        String query = "SELECT id, trello_board_id FROM Tache WHERE trello_board_id IS NOT NULL";
+        try (PreparedStatement pst = connection.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                int taskId = rs.getInt("id");
+                String boardId = rs.getString("trello_board_id");
+
+                if (!TrelloAPI.isBoardStillOnTrello(boardId)) {
+                    clearBoardId(taskId);
+                    System.out.println("✅ Board " + boardId + " was deleted. Cleared from Task ID: " + taskId);
+                } else {
+                    System.out.println("ℹ️ Board " + boardId + " still exists on Trello.");
+                }
             }
         }
     }
 
-
-}
+    }
