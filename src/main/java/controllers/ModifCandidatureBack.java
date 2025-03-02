@@ -6,8 +6,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import entities.Candidature;
-import javafx.stage.Stage;
 import services.ServiceCandidature;
 
 import java.sql.SQLException;

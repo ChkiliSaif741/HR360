@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextArea?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.AjouterCondidature"
-      alignment="CENTER" spacing="15" styleClass="root" stylesheets="@/Styles/style1.css">
+      alignment="CENTER" spacing="15" styleClass="root" stylesheets="@/Styles/style6.css">
 
     <Label text="Ajouter une Candidature" styleClass="header"/>
 
