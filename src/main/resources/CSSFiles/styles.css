@@ -142,4 +142,12 @@
     -fx-scale-y: 1.05;
 }
 
+.recommended {
+    -fx-border-color: #FFD700; /* Bordure dorée */
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: #FFFACD; /* Fond jaune clair */
+}
+
 
