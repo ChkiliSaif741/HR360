@@ -103,5 +103,18 @@ public class ServiceRessource implements IService<Ressource> {
     }
 
 
+    public double getPrixRessource(int idRessource) throws SQLException {
+        String query = "SELECT prix FROM ressource WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, idRessource);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getDouble("prix");
+        }
+        return 0.0;
+    }
+
+
 
 }

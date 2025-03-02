@@ -92,8 +92,12 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
                 return;
             }
 
+
+            double montantReservation = serviceRessource.getPrixRessource(idRessource);
+            reservation = new Reservation(idRessource, dateDebut, dateFin, 1);
+
+
             // Créer une session de paiement Stripe
-            double montantReservation = 100.00; // Montant fictif, remplacez avec le vrai montant
             String paymentUrl = creerSessionDePaiement(montantReservation);
 
             serviceReservation.ajouter(reservation);
@@ -110,6 +114,10 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
             afficherAlerte(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter la réservation.");
             e.printStackTrace();
         }
+    }
+
+    private double getPrixRessource(int idRessource) throws SQLException {
+        return serviceRessource.getPrixRessource(idRessource);
     }
 
     @FXML
