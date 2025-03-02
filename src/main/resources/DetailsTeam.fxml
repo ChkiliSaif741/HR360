@@ -40,6 +40,11 @@
                         <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" size="2em" />
                      </graphic>
                   </Button>
+                  <Button layoutX="535.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteMember" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="2em" />
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
          </children>

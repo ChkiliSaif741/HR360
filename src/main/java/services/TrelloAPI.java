@@ -144,6 +144,44 @@ public class TrelloAPI {
         System.out.println("⚠️ Unexpected response from Trello API: " + statusCode);
         return true; // Assume board still exists if Trello is unclear
     }
+    public static boolean removeMemberFromBoard(String boardId, String memberId) {
+        String url = TRELLO_URL + "/boards/" + boardId + "/members/" + memberId;
 
+        HttpResponse<JsonNode> response = Unirest.delete(url)
+                .queryString("key", API_KEY)
+                .queryString("token", API_TOKEN)
+                .asJson();
+
+        if (response.getStatus() == 200) {
+            System.out.println("✅ Member " + memberId + " successfully removed from board " + boardId);
+            return true;
+        } else {
+            System.out.println("❌ Failed to remove member " + memberId + " from board. Response: " + response.getBody());
+            return false;
+        }
+    }
+    public static String getMemberIdByEmail(String email) {
+        String url = TRELLO_URL + "/members/" + email;
+
+        HttpResponse<JsonNode> response = Unirest.get(url)
+                .queryString("key", API_KEY)
+                .queryString("token", API_TOKEN)
+                .asJson();
+
+        if (response.getStatus() == 200) {
+            return response.getBody().getObject().getString("id");
+        } else {
+            System.out.println("❌ Failed to find member ID for email: " + email + " | Response: " + response.getBody());
+            return null;
+        }
+    }
+    public static boolean removeMemberFromBoardByEmail(String boardId, String email) {
+        String memberId = getMemberIdByEmail(email);
+        if (memberId == null) {
+            System.out.println("❌ Member with email " + email + " not found.");
+            return false;
+        }
+        return removeMemberFromBoard(boardId, memberId);
+    }
 
 }

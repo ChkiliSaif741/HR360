@@ -33,6 +33,7 @@ public class DetailsTeamController {
     @FXML
     private Label nomEquipe;
 
+    List<TempUser> employees;
     private int idEquipe;
 
     @FXML
@@ -75,7 +76,7 @@ public class DetailsTeamController {
         try {
             Equipe equipe=equipeService.getEquipe(idEquipe);
             nomEquipe.setText(equipe.getNom());
-            List<TempUser> employees=equipeEmployeService.getEmployesByEquipe(equipe.getId());
+            employees=equipeEmployeService.getEmployesByEquipe(equipe.getId());
             System.out.println(employees);
             List<String> teamMembers =new ArrayList<>();
             /*
@@ -95,6 +96,14 @@ public class DetailsTeamController {
 
     public void setIdEquipe(int idEquipe) {
         this.idEquipe = idEquipe;
+        loadInfo();
+    }
+    @FXML
+    void DeleteMember(ActionEvent event) throws SQLException {
+        int selectedUser = listTeamMembers.getSelectionModel().getSelectedIndex();
+        int idUser=employees.get(selectedUser).getId();
+        EquipeEmployeService equipeEmployeService = new EquipeEmployeService();
+        equipeEmployeService.removeEmployeFromEquipe(idUser,idEquipe);
         loadInfo();
     }
 }

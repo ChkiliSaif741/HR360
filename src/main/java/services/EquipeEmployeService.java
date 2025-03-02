@@ -48,8 +48,15 @@ public class EquipeEmployeService {
             pst.setInt(1, idEmploye);
             pst.setInt(2, idEquipe);
         }
-
         pst.executeUpdate();
+        ProjetEquipeService projetEquipeService = new ProjetEquipeService();
+        List<String> boardIds=projetEquipeService.getBoardsByEquipe(idEquipe);
+        TempUser employe=UserService.getUserById(idEmploye);
+        if (boardIds.size()>0) {
+            for (String boardId : boardIds) {
+                TrelloAPI.removeMemberFromBoardByEmail(boardId,employe.getEmail());
+            }
+        }
     }
 
     // ✅ Get all employees in a specific team
