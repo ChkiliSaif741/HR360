@@ -7,9 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -22,10 +20,7 @@ import services.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AffichageTacheController implements Initializable {
@@ -199,15 +194,48 @@ public class AffichageTacheController implements Initializable {
         if (tache.getBoardId()==null)
         {
             EnableTrelloBtn.setText("Enable Trello");
-            EnableTrelloBtn.setDisable(false);
+            EnableTrelloBtn.setOnAction(this::EnableTrello);
             ViewTrelloBtn.setVisible(false);
         }
         else {
-            EnableTrelloBtn.setText("Trello Enabled");
-            EnableTrelloBtn.setDisable(true);
+            EnableTrelloBtn.setText("Disable Trello");
+            EnableTrelloBtn.setOnAction(this::disableTrello);
             ViewTrelloBtn.setVisible(true);
         }
     }
+
+    private void disableTrello(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Voulez vous supprimer board Trello? ");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String boardid = taches.get(indiceTacheSelected).getBoardId();
+            boolean sucesss = TrelloAPI.deleteBoard(boardid);
+            if (sucesss) {
+                ServiceTache serviceTache=new ServiceTache();
+                try {
+                    serviceTache.clearBoardId(taches.get(indiceTacheSelected).getId());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                alert1.setTitle("Sucesss");
+                alert1.setHeaderText(null);
+                alert1.setContentText("Le trello board a été supprimee avec succees");
+                alert1.show();
+                loadTasks();
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setTitle("Erreur");
+                alert2.setHeaderText(null);
+                alert2.setContentText("Erreur lors de supression du trello board");
+                alert2.show();
+            }
+        }
+    }
+
     public void setTacheSelected(MouseEvent event) {
         HBox clickedButton = (HBox) event.getSource();
         ItemTacheController ItemCon = (ItemTacheController) clickedButton.getUserData();
@@ -269,6 +297,7 @@ void EnableTrello(ActionEvent event) {
         tacheService.enableTrelloForTask(taches.get(indiceTacheSelected));
 
         System.out.println("Trello enabled for task: " + taches.get(indiceTacheSelected).getNom());
+        loadTasks();
     } catch (SQLException e) {
         e.printStackTrace();
     }

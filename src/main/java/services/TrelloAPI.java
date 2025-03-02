@@ -97,4 +97,21 @@ public class TrelloAPI {
                     .asJson();
         }
     }
+
+    public static boolean deleteBoard(String boardId) {
+        String url = TRELLO_URL + "/boards/" + boardId;
+        HttpResponse<JsonNode> response = Unirest.delete(url)
+                .queryString("key", API_KEY)
+                .queryString("token", API_TOKEN)
+                .asJson();
+
+        if (response.getStatus() == 200) {
+            System.out.println("Board deleted successfully: " + boardId);
+            return true;
+        } else {
+            System.out.println("Error deleting Trello board: " + response.getBody());
+            return false;
+        }
+    }
+
 }

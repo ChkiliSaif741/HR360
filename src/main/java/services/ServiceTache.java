@@ -1,5 +1,6 @@
 package services;
 
+import entities.Projet;
 import entities.Tache;
 import entities.TacheStatus;
 import utils.MyDatabase;
@@ -91,8 +92,10 @@ public class ServiceTache implements IService<Tache> {
         }
     }*/
 public void enableTrelloForTask(Tache task) throws SQLException {
+    ServiceProjet serviceProjet=new ServiceProjet();
+    Projet projet=serviceProjet.getById(task.getIdProjet());
     // Step 1: Create Trello board
-    String boardId = TrelloAPI.createBoardWithLists(task.getNom(),task.getDateFin().toLocalDate(),task.getDateDebut().toLocalDate());
+    String boardId = TrelloAPI.createBoardWithLists(projet.getNom()+" - "+task.getNom(),task.getDateFin().toLocalDate(),task.getDateDebut().toLocalDate());
 
     if (boardId != null) {
         // Step 2: Store Trello board ID in database
@@ -114,5 +117,20 @@ public void enableTrelloForTask(Tache task) throws SQLException {
         pst.setInt(2, tache.getId());
         pst.executeUpdate();
     }
+
+    public void clearBoardId(int tacheId) throws SQLException {
+        String query = "UPDATE Tache SET trello_board_id = NULL WHERE id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, tacheId);
+            int rowsUpdated = pst.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Board ID cleared for Task ID: " + tacheId);
+            } else {
+                System.out.println("No task found with ID: " + tacheId);
+            }
+        }
+    }
+
 
 }
