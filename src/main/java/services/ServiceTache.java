@@ -45,6 +45,8 @@ public class ServiceTache implements IService<Tache> {
 
     @Override
     public void supprimer(int id) throws SQLException {
+        Tache tache=getTacheById(id);
+        TrelloAPI.deleteBoard(tache.getBoardId());
         String req="DELETE FROM tache WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(req);
         ps.setInt(1,id);
@@ -153,6 +155,26 @@ public class ServiceTache implements IService<Tache> {
             }
         }
         return taches;
+    }
+    public Tache getTacheById(int id) throws SQLException {
+        String query = "SELECT * FROM tache WHERE id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                Tache tache=new Tache();
+                tache.setId(rs.getInt("id"));
+                tache.setNom(rs.getString("nom"));
+                tache.setDescription(rs.getString("description"));
+                tache.setDateDebut(rs.getDate("dateDebut"));
+                tache.setDateFin(rs.getDate("dateFin"));
+                tache.setStatut(TacheStatus.fromValue(rs.getString("statut")));
+                if (rs.getString("trello_board_id")!=null)
+                    tache.setBoardId(rs.getString("trello_board_id"));
+                return tache;
+            }
+        }
+        return null;
     }
 
     }
