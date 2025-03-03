@@ -55,7 +55,6 @@ public class AjoutFormationController implements Initializable {
     ServiceFormation serviceFormation;
 
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         serviceFormation = new ServiceFormation();
@@ -102,7 +101,7 @@ public class AjoutFormationController implements Initializable {
 
             // Fermer la fenêtre actuelle et ouvrir la fenêtre d'affichage
             Stage currentStage = (Stage) titreField.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Formation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FormationsRH.fxml"));
             Parent root = loader.load();
 
             // Créer une nouvelle scène
@@ -125,4 +124,4 @@ public class AjoutFormationController implements Initializable {
         }
     }
 
-    }
+}

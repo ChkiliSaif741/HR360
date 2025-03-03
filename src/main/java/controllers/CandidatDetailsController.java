@@ -1,12 +1,12 @@
 package controllers;
 
-import entities.Candidat;
+import entities.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import services.ServiceCandidat;
+import services.ServiceUtilisateur;
 
 public class CandidatDetailsController {
 
@@ -16,14 +16,14 @@ public class CandidatDetailsController {
     @FXML
     private Button saveBtn;
 
-    private Candidat candidat;
-    private final ServiceCandidat serviceCandidat = new ServiceCandidat();
+    private Utilisateur candidat;
+    private final ServiceUtilisateur serviceCandidat = new ServiceUtilisateur();
 
-    public void setCandidat(Candidat candidat) {
+    public void setCandidat(Utilisateur candidat) {
         this.candidat = candidat;
         // Remplir les champs avec les informations du candidat (si elles existent)
         if (candidat != null) {
-            cvField.setText(candidat.getCv());
+            cvField.setText(candidat.getCompetence());
         }
     }
 
@@ -38,7 +38,7 @@ public class CandidatDetailsController {
         }
 
         // Mettre à jour le candidat avec les nouvelles informations
-        candidat.setCv(cv);
+        candidat.setCompetence(cv);
 
         try {
             // Vérifier si le candidat existe déjà dans la base de données

@@ -9,7 +9,7 @@ public class Formation {
     private String description;
     private int duree;
     private String dateFormation;
-    List<Employe> employees;
+    List<Utilisateur> employees;
 
     public Formation() {
         employees = new ArrayList<>();
@@ -73,11 +73,11 @@ public class Formation {
         this.dateFormation = dateFormation;
     }
 
-    public List<Employe> getEmployees() {
+    public List<Utilisateur> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employe> employees) {
+    public void setEmployees(List<Utilisateur> employees) {
         this.employees = employees;
     }
 
@@ -89,7 +89,6 @@ public class Formation {
                 ", description='" + description + '\'' +
                 ", duree=" + duree +
                 ", dateFormation='" + dateFormation + '\'' +
-                ", employees=" + employees.size() +
                 '}';
     }
 }

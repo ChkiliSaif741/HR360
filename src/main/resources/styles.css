@@ -1,0 +1,39 @@
+.root {
+    -fx-padding: 20;
+    -fx-background-color: #f4f4f4;
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.text-field {
+    -fx-pref-width: 150;
+    -fx-pref-height: 30;
+    -fx-font-size: 14px;
+}
+
+.grid-pane {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+}
+
+.header-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555;
+}
