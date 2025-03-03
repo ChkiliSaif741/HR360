@@ -1,7 +1,9 @@
 package controllers;
 
-import entities.Session;
-import entities.Utilisateur;
+import entities.*;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +13,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import netscape.javascript.JSException;
+import netscape.javascript.JSObject;
 import services.ServiceUtilisateur;
 import utils.CryptageUtil;
 import utils.alertMessage;
@@ -95,6 +101,9 @@ public class LoginController {
     @FXML
     private Button signup_btn, signup_loginAccount;
 
+    @FXML
+    private WebView recaptchaWebView;
+
     private File selectedImageFile;
 
     public void setNom(String nom) {
@@ -118,6 +127,7 @@ public class LoginController {
     private final ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
     private Utilisateur utilisateurVerifie;
     private static final List<String> ROLE_LIST = Arrays.asList("Candidat", "Employé", "RH");
+    public static String hCaptchaToken;
 
     @FXML
     private void initialize() {
@@ -126,6 +136,22 @@ public class LoginController {
         login_form.setVisible(true);
         signup_form.setVisible(false);
         changepass_form.setVisible(false);
+
+        String siteKey = "6LdIE-cqAAAAADO53d6zqk7I5To8W4CyHfi3-UOV"; // Remplacez par votre clé de site
+        String htmlContent = "<html>" +
+                "<head>" +
+                "<script src='https://www.google.com/recaptcha/api.js'></script>" +
+                "</head>" +
+                "<body>" +
+                "<form action='?' method='POST'>" +
+                "<div class='g-recaptcha' data-sitekey='" + siteKey + "'></div>" +
+                "<br/>" +
+                "<input type='submit' value='Submit'>" +
+                "</form>" +
+                "</body>" +
+                "</html>";
+        recaptchaWebView.getEngine().loadContent(htmlContent);
+
 
     }
 
@@ -288,8 +314,6 @@ public class LoginController {
     }
 
 
-
-
     public void setImgSrc(String imgSrc) {
         if (imgSrc != null && !imgSrc.isEmpty()) {
             Image image = new Image(imgSrc); // Utilisez directement l'URI ou le chemin
@@ -301,6 +325,21 @@ public class LoginController {
     @FXML
     public void registerBtnOnAction(ActionEvent event) {
         alertMessage alert = new alertMessage();
+
+        // Récupérer le jeton reCAPTCHA
+        String gRecaptchaResponse = (String) recaptchaWebView.getEngine().executeScript("grecaptcha.getResponse()");
+
+        // Vérifier si le CAPTCHA est rempli
+        if (gRecaptchaResponse == null || gRecaptchaResponse.isEmpty()) {
+            alert.errorMessage("Veuillez compléter le CAPTCHA !");
+            return;
+        }
+
+        // Valider le jeton reCAPTCHA côté serveur
+        if (!RecaptchaValidator.verifyCaptcha(gRecaptchaResponse)) {
+            alert.errorMessage("CAPTCHA invalide !");
+            return;
+        }
 
         // Vérification des champs vides
         if (signup_nom.getText().isEmpty() || signup_prenom.getText().isEmpty() || signup_email.getText().isEmpty()
@@ -391,6 +430,7 @@ public class LoginController {
             alert.errorMessage("Erreur de chargement de la page de connexion.");
         }
     }
+
 
 
     private boolean isValidEmail(String email) {
