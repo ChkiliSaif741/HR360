@@ -70,6 +70,15 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Button text="Entretien" onAction="#AfficherEntretien" styleClass="modernButton">
+            <graphic>
+                <ImageView>
+                    <Image url="@icons/pdf-file-format.png"/>
+                    <fitWidth>30</fitWidth>
+                    <fitHeight>30</fitHeight>
+                </ImageView>
+            </graphic>
+        </Button>
     </HBox>
 
 </VBox>

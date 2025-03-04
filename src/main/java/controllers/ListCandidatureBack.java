@@ -323,6 +323,16 @@ public class ListCandidatureBack implements Initializable {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature à analyser.");
         }
     }
+    public void AfficherEntretien()
+    {
+        Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
+        if (selectedCandidature != null) {
+
+        }else {
+            showAlert("Aucune sélection", "Veuillez sélectionner une candidature Pour voir entretien.");
+        }
+
+    }
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
