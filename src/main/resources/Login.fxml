@@ -69,7 +69,8 @@
                   <Button fx:id="btnChangerPhoto" layoutX="146.0" layoutY="364.0" onAction="#uploadImage" styleClass="Button" stylesheets="@StyleProfile.css" text="Upload Photo" />
                   <ImageView fx:id="photoProfil" fitHeight="49.0" fitWidth="53.0" layoutX="64.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true" />
                   <TextField fx:id="signup_competence" layoutX="25.0" layoutY="266.0" prefHeight="26.0" prefWidth="268.0" promptText="Competence" styleClass="text-field" stylesheets="@styleUser.css" />
-                  <Button fx:id="btnCaptcha" layoutX="104.0" layoutY="309.0" onAction="#captchaValidate" prefHeight="41.0" prefWidth="106.0" styleClass="Button" stylesheets="@StyleProfile.css" text="Submit" />
+                  <Button fx:id="btnCaptcha" layoutX="25.0" layoutY="309.0" onAction="#showRecaptcha" prefHeight="41.0" prefWidth="106.0" styleClass="Button" stylesheets="@StyleProfile.css" text="recaptcha" />
+                  <Button fx:id="btnCaptcha1" layoutX="178.0" layoutY="309.0" onAction="#captchaValidate" prefHeight="41.0" prefWidth="106.0" styleClass="Button" stylesheets="@StyleProfile.css" text="valider" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="forgot_form" layoutX="11.0" layoutY="16.0" prefHeight="515.0" prefWidth="318.0" visible="false">
