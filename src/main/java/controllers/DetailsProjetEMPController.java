@@ -76,7 +76,7 @@ public class DetailsProjetEMPController {
             List<String> teamMembers =new ArrayList<>();
             for (Utilisateur employe : employees)
             {
-                teamMembers.add(employe.getNom()+" "+employe.getPrenom()+" "+employe.getEmail());
+                teamMembers.add(employe.getNom()+" "+employe.getPrenom()+" "+employe.getEmail()) ;
             }
             ObservableList<String> membersObservable= FXCollections.observableArrayList(teamMembers);
             listTeamMembers.setItems(membersObservable);
