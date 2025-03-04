@@ -6,14 +6,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
 import services.ServiceReservation;
-
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.regex.Pattern;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ModifierReservationEMPController {
 
@@ -34,6 +37,8 @@ public class ModifierReservationEMPController {
         //utilisateurField.setText(String.valueOf(reservation.getIduser()));
         dateDebutPicker.setValue(reservation.getDateDebut().toLocalDate());
         dateFinPicker.setValue(reservation.getDateFin().toLocalDate());
+
+        configurerDatePickers();
     }
 
     public void updateReservation() {
@@ -110,4 +115,56 @@ public class ModifierReservationEMPController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
+
+    private void configurerDatePickers() {
+        try {
+            // Récupérer les dates réservées pour la ressource spécifique
+            List<Date> datesReservees = serviceReservation.getDatesReservees(reservation.getIdRessource());
+
+            // Convertir en LocalDate
+            Set<LocalDate> datesOccupees = datesReservees.stream()
+                    .map(Date::toLocalDate)
+                    .filter(date -> !(date.isEqual(reservation.getDateDebut().toLocalDate())
+                            || date.isEqual(reservation.getDateFin().toLocalDate())
+                            || (date.isAfter(reservation.getDateDebut().toLocalDate()) && date.isBefore(reservation.getDateFin().toLocalDate()))))
+                    .collect(Collectors.toSet());
+
+            // Désactiver uniquement les autres réservations
+            dateDebutPicker.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+
+                    if (datesOccupees.contains(date)) {
+                        setStyle("-fx-background-color: #ffcccc;");
+                        setDisable(true);
+                    }
+                }
+            });
+
+            dateFinPicker.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+
+                    if (datesOccupees.contains(date)) {
+                        setStyle("-fx-background-color: #ffcccc;");
+                        setDisable(true);
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
 }

@@ -12,7 +12,8 @@ public class QRCodeService {
         String data = "ID: " + ressource.getId() + "\n" +
                 "Nom: " + ressource.getNom() + "\n" +
                 "Type: " + ressource.getType() + "\n" +
-                "État: " + ressource.getEtat();
+                "État: " + ressource.getEtat() + "\n" +
+                "Prix: " + ressource.getPrix();
 
         try {
             return QRCodeGenerator.generateQRCode(data, "ressource_" + ressource.getId());

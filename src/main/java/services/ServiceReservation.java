@@ -92,7 +92,8 @@ public class ServiceReservation implements IService<Reservation> {
                     rs.getInt("res_id"),
                     rs.getString("nom"),
                     rs.getString("type"),
-                    rs.getString("etat")
+                    rs.getString("etat"),
+                    rs.getDouble("prix")
             );
 
             reservation.setRessource(ressource);
@@ -118,10 +119,10 @@ public class ServiceReservation implements IService<Reservation> {
             );
 
             Ressource ressource = new Ressource(
-                    137,
+                    "azer",
                     "azer",
                     "bien",
-                    "azer"
+                    123
             );
 
             reservation.setRessource(ressource);
@@ -198,7 +199,8 @@ public class ServiceReservation implements IService<Reservation> {
                                         rsSimilaires.getInt("id"),
                                         rsSimilaires.getString("nom"),
                                         rsSimilaires.getString("type"),
-                                        rsSimilaires.getString("etat")
+                                        rsSimilaires.getString("etat"),
+                                        rsSimilaires.getDouble("prix")
                                 );
                                 recommandations.add(ressource);
                             }

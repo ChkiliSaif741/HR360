@@ -37,7 +37,8 @@
                               </HBox>
                               <TextField fx:id="nomField" promptText="Nom de la ressource" styleClass="input-field" />
                               <TextField fx:id="typeField" promptText="Type de ressource" styleClass="input-field" />
-                              <ComboBox fx:id="etatComboBox" prefHeight="52.0" prefWidth="733.0" styleClass="combo-box">
+                              <TextField fx:id="prixField" promptText="Prix de ressource" styleClass="input-field" />
+                              <ComboBox fx:id="etatComboBox" prefHeight="52.0" prefWidth="733.0" promptText="Etat de ressource" styleClass="combo-box">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="Neuf" />

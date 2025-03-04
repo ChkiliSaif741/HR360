@@ -21,6 +21,9 @@ public class FormulaireAjoutRessourceController {
     @FXML
     private TextField typeField;
     @FXML
+    private TextField prixField;
+
+    @FXML
     private ComboBox<String> etatComboBox;
     @FXML
     private Button btnAjouter;
@@ -39,18 +42,37 @@ public class FormulaireAjoutRessourceController {
         String nom = nomField.getText().trim();
         String type = typeField.getText().trim();
         String etat = etatComboBox.getValue();
+        System.out.println("Nom saisi : " + nom);  // DEBUG
 
-        if (nom.isEmpty() || type.isEmpty() || etat == null) {
+
+
+
+        if (nom.isEmpty() || type.isEmpty() || etat == null || etat.trim().isEmpty()) {
             showErrorAlert("Erreur", "Veuillez remplir tous les champs !");
             return;
         }
+
 
         if (!isValidName(nom) || !isValidName(type)) {
             showErrorAlert("Erreur de saisie", "Le nom et le type ne doivent contenir que des lettres !");
             return;
         }
 
-        Ressource ressource = new Ressource(nom, type, etat);
+        double prix;
+        try {
+            prix = Double.parseDouble(prixField.getText().trim());
+        } catch (NumberFormatException e) {
+            showErrorAlert("Erreur", "Veuillez entrer un prix valide !");
+            return;
+        }
+
+        if (prix <= 0) {
+            showErrorAlert("Erreur", "Le prix doit être un nombre positif !");
+            return;
+        }
+
+
+        Ressource ressource = new Ressource(nom, type, etat, prix);
         try {
             serviceRessource.ajouter(ressource);
             lastAddedRessource = ressource; // Stocke la dernière ressource ajoutée
@@ -92,6 +114,7 @@ public class FormulaireAjoutRessourceController {
         nomField.clear();
         typeField.clear();
         etatComboBox.getSelectionModel().clearSelection();
+        prixField.clear();
     }
 
     private boolean isValidName(String input) {

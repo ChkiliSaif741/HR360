@@ -5,14 +5,22 @@ public class Ressource {
     private String nom;
     private String type;
     private String etat;
+    private double prix;
 
 
-    public Ressource(){};
-    public Ressource(int id, String nom, String type, String etat) {
+    public Ressource(String nom, String type, String etat, double prix) {
+        System.out.println("Création Ressource : " + nom + ", " + type + ", " + etat + ", " + prix);
+        this.nom = nom;
+        this.type = type;
+        this.etat = etat;
+        this.prix = prix;
+    }
+    public Ressource(int id, String nom, String type, String etat, double prix) {
         this.id = id;
         this.nom = nom;
         this.type = type;
         this.etat = etat;
+        this.prix = prix;
 
     }
 
@@ -20,7 +28,7 @@ public class Ressource {
         this.nom = nom;
         this.type = type;
         this.etat = etat;
-
+        this.prix = prix;
     }
 
     public int getId() { return id; }
@@ -32,6 +40,13 @@ public class Ressource {
     public String getEtat() { return etat; }
     public void setEtat(String etat) { this.etat = etat; }
 
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
 
     @Override
     public String toString() {
@@ -40,6 +55,7 @@ public class Ressource {
                 ", nom='" + nom + '\'' +
                 ", type='" + type + '\'' +
                 ", etat='" + etat + '\'' +
+                ", prix='" + prix + '\'' +
                 '}';
     }
 }

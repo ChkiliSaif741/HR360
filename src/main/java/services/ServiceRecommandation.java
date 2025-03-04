@@ -47,7 +47,8 @@ public class ServiceRecommandation {
                                         rsSimilaires.getInt("id"),
                                         rsSimilaires.getString("nom"),
                                         rsSimilaires.getString("type"),
-                                        rsSimilaires.getString("etat")
+                                        rsSimilaires.getString("etat"),
+                                        rsSimilaires.getDouble("prix")
                                 );
                                 recommandations.add(ressource);
                             }

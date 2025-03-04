@@ -15,11 +15,17 @@ public class ServiceRessource implements IService<Ressource> {
 
     @Override
     public void ajouter(Ressource ressource) throws SQLException {
-        String query = "INSERT INTO ressource (nom, type, etat) VALUES (?, ?, ?)";
+        String query = "INSERT INTO ressource (nom, type, etat, prix) VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, ressource.getNom());
         stmt.setString(2, ressource.getType());
         stmt.setString(3, ressource.getEtat());
+        stmt.setDouble(4, ressource.getPrix());
+
+        // DEBUG : Afficher les valeurs avant l'insertion
+        System.out.println("Insertion en base : " + ressource.getNom() + ", " + ressource.getType() + ", " + ressource.getEtat() + ", " + ressource.getPrix());
+
+
         stmt.executeUpdate();
     }
 
@@ -32,13 +38,15 @@ public class ServiceRessource implements IService<Ressource> {
         ResultSet rs = checkStmt.executeQuery();
 
         if (rs.next() && rs.getInt(1) > 0) {
-            String query = "UPDATE ressource SET nom = ?, type = ?, etat = ? WHERE id = ?";
+            String query = "UPDATE ressource SET nom = ?, type = ?, etat = ?, prix = ? WHERE id = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, ressource.getNom());
             stmt.setString(2, ressource.getType());
             stmt.setString(3, ressource.getEtat());
+            stmt.setDouble(4, ressource.getPrix());
 
-            stmt.setInt(4, ressource.getId());
+
+            stmt.setInt(5, ressource.getId());
             stmt.executeUpdate();
         } else {
             System.out.println("Erreur : La ressource avec l'ID " + ressource.getId() + " n'existe pas !");
@@ -77,7 +85,8 @@ public class ServiceRessource implements IService<Ressource> {
                     rs.getInt("id"),
                     rs.getString("nom"),
                     rs.getString("type"),
-                    rs.getString("etat")
+                    rs.getString("etat"),
+                    rs.getDouble("prix")
             );
             ressources.add(ressource);
         }
@@ -96,7 +105,8 @@ public class ServiceRessource implements IService<Ressource> {
                     rs.getInt("id"),
                     rs.getString("nom"),
                     rs.getString("type"),
-                    rs.getString("etat")
+                    rs.getString("etat"),
+                    rs.getDouble("prix")
             );
         }
         return null; // Si aucune ressource trouvée

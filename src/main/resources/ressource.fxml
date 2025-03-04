@@ -50,6 +50,11 @@
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </HBox>
+            <Label fx:id="prixL" prefHeight="14.0" prefWidth="90.0" text="Prix">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="10.0" />
+               </font>
+            </Label>
             <ImageView fitHeight="57.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/ressources-humaines.png" />
