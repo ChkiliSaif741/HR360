@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.dlsc.gemsfx.AutoscrollListView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsTeamController">
+   <children>
+      <VBox layoutX="17.0" layoutY="13.0" prefHeight="147.0" prefWidth="870.0">
+         <children>
+            <HBox spacing="400.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#BackToListEquipes" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="ARROW_LEFT" size="2em" />
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#VoirChargeEquipe" prefHeight="46.0" prefWidth="144.0" styleClass="button-action-add" stylesheets="@stylesProjet.css" text="Voir charge">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="SUITCASE" size="2em" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Label fx:id="nomEquipe" alignment="TOP_LEFT" prefHeight="47.0" prefWidth="874.0" text="Nom Equipe" textFill="#5eaeff" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <HBox spacing="60.0">
+               <children>
+                  <Label alignment="TOP_LEFT" prefHeight="47.0" prefWidth="350.0" text="Membres Equipes:" textFill="#5eff6c" wrapText="true">
+                     <font>
+                        <Font name="System Italic" size="31.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#AddMember" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="2em" />
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#Refresh" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" size="2em" />
+                     </graphic>
+                  </Button>
+                  <Button layoutX="535.0" layoutY="10.0" mnemonicParsing="false" onAction="#DeleteMember" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="2em" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <AutoscrollListView fx:id="listTeamMembers" layoutX="25.0" layoutY="163.0" prefHeight="367.0" prefWidth="682.0" />
+   </children>
+</AnchorPane>

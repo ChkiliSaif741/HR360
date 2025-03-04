@@ -85,17 +85,35 @@ public class Controller implements Initializable {
 
     @FXML
     void onFormationsRHBtn(ActionEvent event) {
+            try {
+                loadPage("/FormationsRH.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+    }
+    @FXML
+    void AffichEquip(ActionEvent event) {
         try {
-            loadPage("/FormationsRH.fxml");
-        }catch (IOException e){
+            loadPage("/AffichageEquipe.fxml");
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
-    }
+        }
+
 
     @FXML
     void onParticipationsBtn(ActionEvent event) {
         try {
             loadPage("/participations.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    void AffichProjetEMP(ActionEvent event) {
+        try{
+            loadPage("/AffichageProjetEMP.fxml");
         }catch (IOException e){
             e.printStackTrace();
         }

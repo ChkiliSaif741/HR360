@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -16,8 +18,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+
 
 public class AffichageProjetController implements Initializable {
 
@@ -27,16 +31,30 @@ public class AffichageProjetController implements Initializable {
     @FXML
     private ScrollPane scrollProjet;
 
+    @FXML
+    private TextField SearchBar;
+
+    private List<Projet> projets=new ArrayList<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadProjects();
+        try {
+            getProjects();
+            loadProjects();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void getProjects() throws SQLException
+    {
+        ServiceProjet service = new ServiceProjet();
+        projets.addAll(service.afficher());
     }
 
     private void loadProjects() {
         gridProjet.getChildren().clear(); // Vider le GridPane avant de recharger les projets
-        ServiceProjet serviceProjet = new ServiceProjet();
         try {
-            projets.addAll(serviceProjet.afficher());
             int column = 0;
             int row = 0;
             for (int i = 0; i < projets.size(); i++) {
@@ -60,20 +78,25 @@ public class AffichageProjetController implements Initializable {
 
 
             }
-        } catch (SQLException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     // Méthode pour rafraîchir la vue
     public void refresh() {
-        projets.clear(); // Vider la liste des projets
-        loadProjects(); // Recharger les projets
+        projets.clear();
+        try {
+            getProjects();
+            loadProjects();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void AjoutProjet(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         try {
             Parent parent = loader.load();
             Controller con=loader.getController();
@@ -84,6 +107,44 @@ public class AffichageProjetController implements Initializable {
         }
     }
 
-    private List<Projet> projets=new ArrayList<>();
+    @FXML
+    void SearchProject(KeyEvent event) {
+        try {
+            projets.clear();
+            getProjects();
+            List<Projet> projetSearched = new ArrayList<>();
+            projetSearched.addAll(projets.stream().filter(p->p.getNom().startsWith(SearchBar.getText())).toList());
+            projets.clear();
+            projets.addAll(projetSearched);
+            loadProjects();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void Prioritize(ActionEvent event) {
+        projets.sort(Comparator.comparing(Projet::getDateFin));
+        loadProjects();
+    }
+
+    @FXML
+    void RefreshPage(ActionEvent event) {
+        refresh();
+        SearchBar.clear();
+    }
+
+    @FXML
+    void GenerateProject(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+        try {
+            Parent parent = loader.load();
+            Controller con=loader.getController();
+            con.loadPage("/AIProjectGenerator.fxml");
+            scrollProjet.getScene().setRoot(parent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

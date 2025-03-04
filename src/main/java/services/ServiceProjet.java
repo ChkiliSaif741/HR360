@@ -60,4 +60,42 @@ public class ServiceProjet implements IService<Projet> {
         }
         return projets;
     }
+
+    public Projet getById(int id) throws SQLException {
+        String req="SELECT * FROM projet WHERE id="+id;
+        Statement statement= connection.createStatement();
+        ResultSet rs= statement.executeQuery(req);
+        Projet projet= new Projet();
+        while (rs.next()) {
+            projet.setId(rs.getInt("id"));
+            projet.setNom(rs.getString("nom"));
+            projet.setDescription(rs.getString("description"));
+            projet.setDateDebut(rs.getDate("dateDebut"));
+            projet.setDateFin(rs.getDate("dateFin"));
+        }
+        return projet;
+    }
+
+    public int ajouterGenrated(Projet projet) throws SQLException {
+        String req = "INSERT INTO projet (nom, description, dateDebut, dateFin) VALUES (?, ?, ? ,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
+
+        preparedStatement.setString(1, projet.getNom());
+        preparedStatement.setString(2, projet.getDescription());
+        preparedStatement.setDate(3, projet.getDateDebut());
+        preparedStatement.setDate(4, projet.getDateFin());
+
+        int affectedRows = preparedStatement.executeUpdate(); // Execute update
+
+        if (affectedRows > 0) {
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1); // Get the generated ID
+            }
+        }
+
+        return -1; // Return -1 if insertion failed
+    }
+
+
 }

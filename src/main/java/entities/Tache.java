@@ -9,6 +9,7 @@ public class Tache {
     private Date dateDebut, dateFin;
     private TacheStatus statut;
     private int idProjet;
+    private String boardId;
 
     public Tache() {}
     public Tache(int id, String nom, String description, Date dateDebut, Date dateFin, TacheStatus statut, int idProjet) {
@@ -86,6 +87,8 @@ public class Tache {
         this.idProjet = idProjet;
     }
 
+
+
     @Override
     public String toString() {
         return "Tache{" +
@@ -96,6 +99,15 @@ public class Tache {
                 ", dateFin=" + dateFin +
                 ", statut=" + statut.getValue() +
                 ", idProjet=" + idProjet +
+                ", boardId=" + boardId +
                 '}';
+    }
+
+    public String getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(String boardId) {
+        this.boardId = boardId;
     }
 }

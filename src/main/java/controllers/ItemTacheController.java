@@ -6,15 +6,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import services.ServiceTache;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ItemTacheController {
 
@@ -25,19 +26,7 @@ public class ItemTacheController {
     }
 
     @FXML
-    private VBox contentBox;
-
-    @FXML
     private HBox IconContainerStatus;
-
-    @FXML
-    private Label dateDebut;
-
-    @FXML
-    private Label dateFin;
-
-    @FXML
-    private Text descriptionTache;
 
     @FXML
     private Label nomTache;
@@ -51,15 +40,15 @@ public class ItemTacheController {
     @FXML
     private AnchorPane taskCard;
 
+    @FXML
+    private HBox listItemConatianer;
+
 
     private Tache tache;
 
     public void setTaskData(Tache tache) {
         this.tache = tache;
         nomTache.setText(tache.getNom());
-        descriptionTache.setText(tache.getDescription());
-        this.dateDebut.setText("Début: " + tache.getDateDebut());
-        this.dateFin.setText("Fin: " + tache.getDateFin());
         statutTache.setText(tache.getStatut().getValue());
 
         switch (tache.getStatut().getValue()) {
@@ -84,25 +73,33 @@ public class ItemTacheController {
     }
     @FXML
     void DeleteTache(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Confirmation");
+        alert.setContentText("Voulez vous vraiment supprimer "+tache.getNom()+" ?");
+        Optional<ButtonType> result = alert.showAndWait();
         ServiceTache serviceTache = new ServiceTache();
-        try {
-            serviceTache.supprimer(tache.getId());
-            parentController.loadTasks();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                serviceTache.supprimer(tache.getId());
+                parentController.setIndiceTacheSelected(0);
+                parentController.loadTasks();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @FXML
     void ModifTache(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         try {
             Parent parent = loader.load();
             Controller controller = loader.getController();
             ModifTacheController ModifController = controller.loadPage("/ModifTache.fxml").getController();
             ModifController.setDateStart(tache.getDateDebut());
             ModifController.setDateEnd(tache.getDateFin());
-            ModifController.setDescriptionTF(descriptionTache.getText());
+            ModifController.setDescriptionTF(tache.getDescription());
             ModifController.setNomTF(nomTache.getText());
             ModifController.setStatutDD(tache.getStatut());
             ModifController.setIdProjet(tache.getIdProjet());
@@ -111,5 +108,19 @@ public class ItemTacheController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    void ResetTacheColor()
+    {
+        listItemConatianer.getStyleClass().add("list-item");
+    }
+
+    void SetSelectedTacheColor()
+    {
+        listItemConatianer.getStyleClass().add("list-item-selected");
+    }
+
+
+    public Tache getTache() {
+        return tache;
     }
 }
