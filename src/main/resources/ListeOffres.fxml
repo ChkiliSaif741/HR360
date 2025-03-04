@@ -26,27 +26,30 @@
     <!-- Bande colorée en haut -->
     <Region fx:id="topBand" styleClass="top-band" />
 
-    <!-- HBox pour le tri par date d'expiration -->
-    <HBox spacing="10">
-        <Label text="Trier par date d'expiration:" />
-        <ComboBox fx:id="comboTrieDateExpiration" onAction="#trierParDateExpiration" />
+    <HBox alignment="CENTER" spacing="20">
+        <!-- Trie par date -->
+        <VBox>
+            <Label text="Trier par date d'expiration:" styleClass="modern-label" />
+            <ComboBox fx:id="comboTrieDateExpiration" onAction="#trierParDateExpiration" styleClass="modern-combobox"/>
+        </VBox>
+
+        <!-- Trie par statut -->
+        <VBox>
+            <Label text="Trier par statut:" styleClass="modern-label" />
+            <ComboBox fx:id="comboTrieStatut" onAction="#trierParStatut" styleClass="modern-combobox"/>
+        </VBox>
+
+        <!-- Filtrer par statut -->
+        <VBox>
+            <Label text="Filtrer par statut:" styleClass="modern-label" />
+            <ComboBox fx:id="comboFiltreStatut" onAction="#filtrerParStatut" styleClass="modern-combobox"/>
+        </VBox>
     </HBox>
 
-    <!-- HBox pour le tri par statut -->
-    <HBox spacing="10">
-        <Label text="Trier par statut:" />
-        <ComboBox fx:id="comboTrieStatut" onAction="#trierParStatut" />
-    </HBox>
-    <HBox spacing="10">
-        <Label text="Filtrer par statut:" />
-        <ComboBox fx:id="comboFiltreStatut" onAction="#filtrerParStatut" />
-    </HBox>
-
-
-    <!-- HBox pour la recherche -->
-    <HBox alignment="TOP_RIGHT" spacing="10">
-        <Label text="Rechercher:" />
-        <TextField fx:id="textFieldRecherche" onAction="#rechercherOffre" />
+    <!-- HBox pour la recherche avec un meilleur alignement -->
+    <HBox alignment="CENTER" spacing="10">
+        <Label text="Rechercher:" styleClass="modern-label"/>
+        <TextField fx:id="textFieldRecherche" onAction="#rechercherOffre" styleClass="modern-textfield"/>
     </HBox>
 
 

@@ -382,8 +382,20 @@ public class AjouterOffre implements Initializable {
 
     @FXML
     private void annuler() {
-        Stage stage = (Stage) titreField.getScene().getWindow();
-        stage.close();
+        try {
+            // Charger la scène pour l'ajout d'une offre
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root=loader.load();
+            Controller controller = loader.getController();
+            controller.loadPage("/ListeOffres.fxml");
+
+            descriptionField.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de fermiture de fenetre .");
+        }
+
+
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

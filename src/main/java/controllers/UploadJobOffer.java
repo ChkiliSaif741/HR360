@@ -1,5 +1,12 @@
 package controllers;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -159,9 +166,73 @@ public class UploadJobOffer {
                 PdfDocument pdfDoc = new PdfDocument(writer);
                 Document document = new Document(pdfDoc);
 
-                document.add(new Paragraph("Résultat d'Analyse de l'Offre et du CV\n\n").setBold().setFontSize(18));
-                document.add(new Paragraph(analysisContent));
+                // Chemin du logo
+                String logoPath = "C:\\Users\\Dell\\Desktop\\piDevJava\\HR360\\src\\main\\resources\\Images\\logoRH360.png";
+                com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(ImageDataFactory.create(logoPath));
+                logo.scaleToFit(100, 100); // Redimensionner le logo
 
+                // Ajouter une table pour aligner le logo et le nom de l'entreprise
+                Table headerTable = new Table(2);
+                headerTable.setWidth(UnitValue.createPercentValue(100));
+
+                // Ajouter le logo à gauche
+                Cell logoCell = new Cell().add(logo);
+                logoCell.setBorder(Border.NO_BORDER);
+                logoCell.setPadding(10);
+                headerTable.addCell(logoCell);
+
+                // Ajouter le nom de l'entreprise à droite
+                Cell titleCell = new Cell().add(new Paragraph("RH Entreprise 360")
+                        .setBold()
+                        .setFontSize(20)
+                        .setTextAlignment(TextAlignment.RIGHT));
+                titleCell.setBorder(Border.NO_BORDER);
+                titleCell.setPadding(15);
+                headerTable.addCell(titleCell);
+
+                // Ajouter la table au document
+                document.add(headerTable);
+                document.add(new Paragraph("\n"));
+
+                // Ajouter le titre du rapport
+                document.add(new Paragraph("Résultat d'Analyse de l'Offre et du CV")
+                        .setBold()
+                        .setFontSize(18)
+                        .setTextAlignment(TextAlignment.CENTER)
+                        .setUnderline());
+
+                document.add(new Paragraph("\n"));
+
+                // Nettoyer le contenu pour supprimer les caractères spéciaux
+                analysisContent = analysisContent.replace("\\n", "\n").replace("\\u0027", "'").replace("\\u0022", "\"");
+
+                // Séparer les sections dynamiquement
+                String[] sections = analysisContent.split("\n\n");
+                for (String section : sections) {
+                    // Détecter si la section est un titre (commence par "•" ou contient "**")
+                    if (section.startsWith("•") || section.contains("**")) {
+                        // Extraire le titre et le formater
+                        String title = section.replace("•", "").replace("**", "").trim();
+                        document.add(new Paragraph(title)
+                                .setBold()
+                                .setFontSize(16)
+                                .setPaddingBottom(5));
+                    } else {
+                        // Ajouter le contenu normal
+                        document.add(new Paragraph(section.trim())
+                                .setFontSize(12)
+                                .setPaddingBottom(10));
+                    }
+                    document.add(new Paragraph("\n")); // Ajouter un espace entre les sections
+                }
+
+                // Ajout d'un message de fin de rapport
+                document.add(new Paragraph("--- Fin du rapport ---")
+                        .setItalic()
+                        .setFontSize(12)
+                        .setTextAlignment(TextAlignment.CENTER));
+
+                // Fermer le document
                 document.close();
 
                 // Stocker le fichier PDF généré dans la variable analysisPdfFile
@@ -173,6 +244,8 @@ public class UploadJobOffer {
             }
         }
     }
+
+
 
 
     private String extractSuitabilityScore(String responseBody) {
