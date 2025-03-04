@@ -9,7 +9,6 @@ public class Ressource {
 
 
     public Ressource(String nom, String type, String etat, double prix) {
-        System.out.println("Création Ressource : " + nom + ", " + type + ", " + etat + ", " + prix);
         this.nom = nom;
         this.type = type;
         this.etat = etat;

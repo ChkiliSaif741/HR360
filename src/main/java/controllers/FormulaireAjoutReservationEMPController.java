@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class FormulaireAjoutReservationEMPController implements Initializable {
@@ -100,7 +101,7 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
             // Créer une session de paiement Stripe
             String paymentUrl = creerSessionDePaiement(montantReservation);
 
-            serviceReservation.ajouter(reservation);
+
 
             if (paymentUrl == null) {
                 afficherAlerte(Alert.AlertType.ERROR, "Erreur de paiement", "Impossible de générer l'URL de paiement.");
@@ -108,7 +109,11 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
             }
 
             // Rediriger vers Stripe Checkout
-            redirigerVersPaiement(paymentUrl);
+            if(redirigerVersPaiement(paymentUrl, reservation)==true){
+                serviceReservation.ajouter(reservation);
+            }
+
+
 
         } catch (SQLException e) {
             afficherAlerte(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter la réservation.");
@@ -195,15 +200,37 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
     /**
      * Ouvre un WebView pour rediriger vers Stripe Checkout.
      */
-    private void redirigerVersPaiement(String paymentUrl) {
+    private boolean redirigerVersPaiement(String paymentUrl, Reservation reservation) {
+        AtomicBoolean succes= new AtomicBoolean(false);
         Stage stage = new Stage();
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
+
         webEngine.load(paymentUrl);
+
+        webEngine.locationProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.contains("success")) { // Vérifie si l'URL de succès est atteinte
+                try {
+                    serviceReservation.ajouter(reservation); // Ajouter la réservation après paiement réussi
+                    afficherAlerte(Alert.AlertType.INFORMATION, "Succès", "Paiement réussi, réservation confirmée !");
+                    succes.set(true);
+                } catch (SQLException e) {
+                    afficherAlerte(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter la réservation après paiement.");
+                    e.printStackTrace();
+                }
+                stage.close(); // Fermer la fenêtre de paiement après succès
+            } else if (newValue.contains("cancel")) {
+                afficherAlerte(Alert.AlertType.WARNING, "Paiement annulé", "Le paiement a été annulé.");
+                stage.close();
+            }
+        });
+
         Scene scene = new Scene(webView, 800, 600);
         stage.setScene(scene);
         stage.show();
+        return succes.get();
     }
+
 
     private void configurerDatePickers() {
         try {
@@ -247,4 +274,15 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    private boolean verifierPaiement(String sessionId) {
+        try {
+            Session session = Session.retrieve(sessionId);
+            return "paid".equals(session.getPaymentStatus());
+        } catch (StripeException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

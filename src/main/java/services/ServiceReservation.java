@@ -22,7 +22,7 @@ public class ServiceReservation implements IService<Reservation> {
     @Override
     public void ajouter(Reservation reservation) throws SQLException {
         if (!estDisponible(reservation)) {
-            System.out.println("Erreur : La ressource est déjà réservée pour cette période !");
+            //System.out.println("Erreur : La ressource est déjà réservée pour cette période !");
             return;
         }
         String query = "INSERT INTO reservation (id_ressource, date_debut, date_fin, iduser) VALUES (?, ?, ?, ?)";
@@ -211,6 +211,34 @@ public class ServiceReservation implements IService<Reservation> {
         }
 
         return recommandations;
+    }
+
+
+    public List<String> getUnavailableDatesForRessource(int idRessource) {
+        List<String> unavailableDates = new ArrayList<>();
+        String query = "SELECT date_debut, date_fin FROM reservation WHERE id_ressource = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, idRessource);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String dateDebut = rs.getDate("date_debut").toString();
+                String dateFin = rs.getDate("date_fin").toString();
+                unavailableDates.add(dateDebut + " → " + dateFin);
+            }
+
+            // Debug : Vérifier si des dates sont bien récupérées
+            if (unavailableDates.isEmpty()) {
+                System.out.println("Aucune réservation trouvée pour la ressource ID: " + idRessource);
+            } else {
+                System.out.println("Dates réservées pour la ressource ID " + idRessource + " : " + unavailableDates);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return unavailableDates;
     }
 
 }
