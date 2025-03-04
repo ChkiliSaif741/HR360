@@ -10,7 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ModifierOffre"
-      alignment="CENTER" spacing="15" styleClass="root" stylesheets="@/Styles/style1.css">
+      alignment="CENTER" spacing="3" styleClass="root" stylesheets="@/Styles/style1.css" prefHeight="50">
 
     <!-- Image pour le titre -->
     <ImageView fx:id="imageView" fitWidth="100" fitHeight="100" preserveRatio="true">
@@ -29,6 +29,7 @@
     </VBox>
 
     <VBox spacing="10">
+        <Label fx:id="labelDatePublicationModif" text="Date de publication : Non sélectionnée" styleClass="info-label"/>
         <Button text="Sélectionner la date et l'heure de publication"
                 onAction="#choisirDatePublication"
                 onMouseClicked="#animateButton"
@@ -37,6 +38,7 @@
     </VBox>
 
     <VBox spacing="10">
+        <Label fx:id="labelDateExpirationModif" text="Date d'expiration : Non sélectionnée" styleClass="info-label"/>
         <Button text="Sélectionner la date et l'heure d'expiration"
                 onAction="#choisirDateExpiration"
                 onMouseClicked="#animateButton"

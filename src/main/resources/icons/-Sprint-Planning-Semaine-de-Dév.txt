@@ -1,0 +1,68 @@
+📅 Sprint Planning – Semaine de Développement
+🗓️ Lundi – Démarrage & Interfaces
+🔹 Objectif : Mettre en place les interfaces et structurer le projet.
+
+✅ T-01 : Concevoir l’interface de connexion et d’inscription en JavaFX.
+✅ T-08 : Concevoir l’interface de gestion des employés (GridPane).
+✅ T-25 : Concevoir l’interface de réservation des ressources.
+✅ T-31 : Concevoir l’interface de gestion des projets et tâches.
+✅ T-37 : Concevoir l’interface de gestion des entretiens.
+✅ T-43 : Concevoir l’interface de gestion des offres d’emploi.
+
+🗓️ Mardi – Fonctionnalités de base & Connexion DB
+🔹 Objectif : Développer les fonctionnalités principales et relier la base de données.
+
+🚀 T-02 : Ajouter les champs pour l'inscription (Nom, Prénom, Email, Mot de passe).
+🚀 T-09 : Ajouter la fonctionnalité d’ajout d’un employé.
+🚀 T-26 : Ajouter la fonctionnalité de réservation des ressources.
+🚀 T-32 : Ajouter la création de nouveaux projets.
+🚀 T-38 : Ajouter la planification d’un entretien.
+🚀 T-44 : Ajouter la création/modification des offres.
+
+🗓️ Mercredi – Gestion des Données & Interactions
+🔹 Objectif : Finaliser l’intégration des données et ajouter les actions dynamiques.
+
+🔹 T-03 : Implémenter la logique d'inscription et de validation des entrées.
+🔹 T-10 : Ajouter la suppression d’un employé avec confirmation.
+🔹 T-27 : Ajouter la suppression/modification des réservations.
+🔹 T-33 : Ajouter la gestion des tâches associées à un projet.
+🔹 T-39 : Envoyer des notifications aux candidats/employés.
+🔹 T-45 : Permettre aux candidats de postuler à une offre.
+
+🗓️ Jeudi – Connexions Avancées & Tests
+🔹 Objectif : Connecter l’application avec la base de données et tester les flux.
+
+🔸 T-04 : Implémenter la connexion avec vérification des identifiants.
+🔸 T-11 : Afficher la liste des formations suivies par chaque employé.
+🔸 T-28 : Connecter l’interface à la base de données pour gérer les ressources.
+🔸 T-34 : Assigner des employés aux tâches.
+🔸 T-40 : Ajouter la gestion des résultats et feedbacks des entretiens.
+🔸 T-46 : Afficher les candidatures reçues pour chaque offre.
+
+🗓️ Vendredi – Optimisation & Revue
+🔹 Objectif : Optimiser le code, ajouter des filtres et tester les modules.
+
+✅ T-05 : Gérer les erreurs de connexion et d'inscription (email déjà utilisé, mot de passe faible…).
+✅ T-13 : Ajouter un filtre de recherche pour les employés.
+✅ T-29 : Ajouter un filtre de recherche pour les ressources disponibles.
+✅ T-35 : Suivre l’avancement des tâches et statuts.
+✅ T-41 : Connecter les entretiens et évaluations à la base de données.
+✅ T-47 : Ajouter un système de tri et de filtrage des candidatures.
+
+🗓️ Samedi – Finalisation & Tests
+🔹 Objectif : Tester l’application et corriger les bugs.
+
+🛠️ T-07 : Tester les fonctionnalités de connexion et d’inscription.
+🛠️ T-14 : Tester l’ajout/suppression et affichage des formations employé.
+🛠️ T-19 : Tester la mise à jour des informations personnelles.
+🛠️ T-30 : Tester la gestion des réservations.
+🛠️ T-36 : Tester la gestion des projets et tâches.
+🛠️ T-42 : Tester le module d’entretiens et évaluations.
+🛠️ T-48 : Tester la gestion des offres et candidatures.
+
+🗓️ Dimanche – Démo & Retours
+🔹 Objectif : Présenter le travail réalisé et collecter les retours.
+
+🎯 Démo des fonctionnalités terminées.
+🎯 Collecte de feedback et ajustements.
+🎯 Planification du sprint suivant en fonction des corrections nécessaires.

@@ -20,6 +20,7 @@ import services.ServiceOffre;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ModifierOffre {
 
@@ -40,6 +41,10 @@ public class ModifierOffre {
 
     @FXML
     private Label dateExpirationError;
+    @FXML
+    private Label labelDatePublicationModif;
+    @FXML
+    private Label labelDateExpirationModif;
 
     private Offre offreSelectionnee;
 
@@ -100,6 +105,9 @@ public class ModifierOffre {
                 controller.setDatePublication(offreSelectionnee.getDatePublication());
             }
             stage.showAndWait();
+            if (datePublication != null) {
+                labelDatePublicationModif.setText("Date de publication : " + datePublication.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            }
 
             // Récupérer la date et l'heure sélectionnées
             datePublication = controller.getSelectedDateTime();
@@ -124,6 +132,9 @@ public class ModifierOffre {
                 controller.setDateExpiration(offreSelectionnee.getDateExpiration());
             }
             stage.showAndWait();
+            if (dateExpiration != null) {
+                labelDateExpirationModif.setText("Date d'expiration : " + dateExpiration.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            }
 
             // Récupérer la date et l'heure sélectionnées
             dateExpiration = controller.getSelectedDateTime();

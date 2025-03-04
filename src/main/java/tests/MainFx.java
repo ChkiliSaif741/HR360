@@ -13,7 +13,7 @@ public class MainFx extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+//SideBarCAN
     @Override
     public void start(Stage primaryStage) {
         FXMLLoader loader = new FXMLLoader(getClass().

@@ -9,12 +9,18 @@ import javafx.scene.control.Alert;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import entities.Candidature;
 import services.ServiceCandidature;
+import services.GrammarCheckService;
+import entities.GrammarCheckResponse;
+import com.google.gson.Gson;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,17 +47,37 @@ public class AjouterCondidature implements Initializable {
     private Label cvError;
     @FXML
     private Label lettreError;
+    @FXML
+    private ImageView cvIcon;
+    @FXML
+    private ImageView lettreIcon;
 
     private File cvFile;
     private File lettreFile;
     private int idOffre;
 
+    private final Image pdfIconImage = new Image(getClass().getResourceAsStream("/icons/pdf-file-format.png"));
 
     private final ServiceCandidature serviceCandidature = new ServiceCandidature();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Plus besoin de gérer le statut ici
+        cvIcon.setVisible(false);
+        lettreIcon.setVisible(false);
+        // Ajout d'un événement de clic sur l'icône du CV
+        cvIcon.setOnMouseClicked(event -> {
+            if (cvFile != null) {
+                ouvrirFichier(cvFile);
+            }
+        });
+
+        // Ajout d'un événement de clic sur l'icône de la lettre de motivation
+        lettreIcon.setOnMouseClicked(event -> {
+            if (lettreFile != null) {
+                ouvrirFichier(lettreFile);
+            }
+        });
     }
     public void initData(int idOffre) {
         this.idOffre = idOffre;
@@ -64,26 +90,90 @@ public class AjouterCondidature implements Initializable {
         cvFile = fileChooser.showOpenDialog(new Stage());
 
         if (cvFile != null) {
-            cvLabel.setText(cvFile.getName());
+            cvIcon.setImage(pdfIconImage);
+            cvIcon.setVisible(true);
             cvError.setText("");
         }
     }
 
-    @FXML
     public void uploadLettreMotivation() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
         lettreFile = fileChooser.showOpenDialog(new Stage());
 
         if (lettreFile != null) {
-            lettreLabel.setText(lettreFile.getName());
+            lettreIcon.setImage(pdfIconImage);
+            lettreIcon.setVisible(true);
             lettreError.setText("");
+        }
+    }
+    @FXML
+    private void ouvrirFichierCv() {
+        if (cvFile != null) {
+            ouvrirFichier(cvFile);
         }
     }
 
     @FXML
+    private void ouvrirFichierLettre() {
+        if (lettreFile != null) {
+            ouvrirFichier(lettreFile);
+        }
+    }
+
+
+    private void ouvrirFichier(File fichier) {
+        try {
+            Desktop.getDesktop().open(fichier);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir le fichier.");
+        }
+    }
+    private String checkGrammarAndDisplayErrors(String description) {
+        System.out.println("Vérification de la grammaire pour la description : " + description);
+
+        // Appeler le service pour vérifier la grammaire
+        String grammarCheckResult = GrammarCheckService.checkGrammar(description);
+        System.out.println("Réponse brute de l'API : " + grammarCheckResult);
+
+        // Parser la réponse JSON
+        Gson gson = new Gson();
+        GrammarCheckResponse response = gson.fromJson(grammarCheckResult, GrammarCheckResponse.class);
+
+        if (response != null && response.getErrors() != null) {
+            System.out.println("Correction proposée : " + response.getErrors().getCorrection());
+
+            // Afficher les erreurs dans le label DESCRITIONERROR
+            descriptionError.setText(response.getErrors().getError());
+            System.out.println("Erreurs affichées dans le label DESCRITIONERROR.");
+
+            // Afficher les suggestions dans une boîte de dialogue
+            showGrammarSuggestions(response.getErrors().getError());
+            System.out.println("Boîte de dialogue affichée avec les suggestions.");
+
+            // Retourner la description corrigée
+            return response.getErrors().getCorrection();
+        } else {
+            descriptionError.setText(""); // Effacer les erreurs si tout est correct
+            System.out.println("Aucune erreur grammaticale détectée.");
+            return description; // Retourner la description originale si aucune correction n'est nécessaire
+        }
+    }
+    public void showGrammarSuggestions(String suggestions) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Suggestions de correction");
+        alert.setHeaderText("Erreurs grammaticales détectées");
+        alert.setContentText(suggestions);
+        alert.showAndWait();
+    }
+    private String applyCorrections(String description, GrammarCheckResponse.Errors errors) {
+        // Retourner directement la correction fournie par l'API
+        return errors.getCorrection();
+    }
+    @FXML
     public void enregistrerCandidature() {
         boolean isValid = true;
+
         // Validation de la description
         String description = descriptionField.getText().trim();
         if (description.isEmpty() || description.length() < 10 || description.length() > 500) {
@@ -91,7 +181,10 @@ public class AjouterCondidature implements Initializable {
             isValid = false;
             showAlert(AlertType.ERROR, "Erreur de description", "Attention!!!!");
         } else {
-            descriptionError.setText("");
+            // Vérifier la grammaire de la description et obtenir la description corrigée
+            description = checkGrammarAndDisplayErrors(description); // Récupérer la description corrigée
+            System.out.println("Description après vérification grammaticale : " + description);
+            descriptionError.setText(""); // Effacer les erreurs si tout est correct
         }
 
         // Validation du CV
@@ -131,36 +224,35 @@ public class AjouterCondidature implements Initializable {
                 // Initialiser le statut à "En attente"
                 String statut = "En attente";
 
-                // Création de l'objet Candidature
+                // Création de l'objet Candidature avec la description corrigée
                 Candidature candidature = new Candidature(
                         LocalDateTime.now(),          // Date de candidature
                         statut,                       // Statut
                         cvDest.getAbsolutePath(),     // Chemin du CV
                         lettreDest.getAbsolutePath(), // Chemin de la lettre
-                        idOffre,                            // ID de l'offre
-                        descriptionField.getText(),   // Description (depuis le champ TextArea)
-                        LocalDateTime.now() ,// Date de modification (initialisée à maintenant)
-                        1
+                        idOffre,                      // ID de l'offre
+                        description,                  // Description corrigée
+                        LocalDateTime.now(),         // Date de modification (initialisée à maintenant)
+                        1                            // ID utilisateur (à adapter selon votre logique)
                 );
 
                 // Enregistrement dans la base de données
                 try {
                     serviceCandidature.ajouter(candidature);
+                    showAlert(AlertType.INFORMATION, "Succès", "Candidature enregistrée avec succès.");
+
+                    // Fermer l'interface actuelle (fenêtre de l'ajout)
+                    Stage currentStage = (Stage) descriptionField.getScene().getWindow();
+                    currentStage.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                showAlert(AlertType.INFORMATION, "Succès", "Candidature enregistrée avec succès.");
-
-                // Fermer l'interface actuelle (fenêtre de l'ajout)
-                Stage currentStage = (Stage) cvLabel.getScene().getWindow();
-                currentStage.close();
             } catch (IOException e) {
                 System.err.println("Erreur lors de la sauvegarde des fichiers : " + e.getMessage());
                 showAlert(AlertType.ERROR, "Erreur de fichier", "Une erreur est survenue lors de la sauvegarde des fichiers.");
             }
         }
     }
-
 
     @FXML
     private void annuler(ActionEvent event) {

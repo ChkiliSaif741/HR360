@@ -209,4 +209,20 @@ public class ListeCondidaturesController {
             alert.showAndWait();
         }
     }
+    public void VoirEntretien()
+    {
+        int selectedIndex = listViewCondidatures.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+
+        }else {
+            showAlert("Aucune sélection", "Veuillez sélectionner une candidature Pour voir entretien.");
+        }
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.stage.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.UploadJobOffer"
+            prefHeight="400.0" prefWidth="600.0"
+            style="-fx-background-color: linear-gradient(to bottom, #f4f4f4, #e0e0e0);">
+
+    <VBox spacing="15" alignment="CENTER"
+          layoutX="100.0" layoutY="50.0"
+          prefWidth="400.0" prefHeight="300.0"
+          style="-fx-background-color: white; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);">
+
+        <!-- Title Label -->
+        <Label text="Upload Job Offer To Analyse"
+               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+
+        <!-- File Upload Button -->
+        <Button text="📁 Select File"
+                fx:id="uploadButton"
+                onAction="#handleUploadButtonClick"
+                style="-fx-background-color: #da0e0e; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-background-radius: 8px;"/>
+
+        <!-- Label to show selected file name -->
+        <Label fx:id="fileNameLabel"
+               text="No file selected"
+               style="-fx-font-size: 14px; -fx-text-fill: #666;" />
+
+        <!-- Label to show the result message -->
+        <HBox spacing="10" alignment="CENTER">
+            <!-- Label pour afficher le message -->
+            <Label fx:id="resultMessageLabel"
+                   text=""
+                   wrapText="true"
+                   style="-fx-font-size: 14px; -fx-text-fill: #d9534f; -fx-font-weight: bold;" />
+
+            <Button fx:id="pdfIcon"
+                    onAction="#handleOpenPdf"
+                    style="-fx-background-color: transparent; -fx-cursor: hand;">
+                <graphic>
+                    <HBox spacing="5">
+                        <ImageView fitWidth="24" fitHeight="24">
+                            <image>
+                                <Image url="@/icons/analysing.png"/>
+                            </image>
+                        </ImageView>
+                        <Label text="Voir Détails" style="-fx-font-size: 14px;"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+
+        </HBox>
+
+
+    </VBox>
+
+</AnchorPane>
