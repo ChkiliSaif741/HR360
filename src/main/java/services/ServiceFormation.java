@@ -1,7 +1,7 @@
 package services;
 
-import entities.Employe;
 import entities.Formation;
+import entities.Utilisateur;
 import utils.MyDatabase;
 
 import java.sql.*;
@@ -54,9 +54,7 @@ public class ServiceFormation implements IService<Formation> {
     @Override
     public List<Formation> afficher() throws SQLException {
         List<Formation> formations = new ArrayList<>();
-        String req = "SELECT f.id, f.titre, f.description, f.duree, f.dateFormation, e.idEmploye, e.poste, e.salaire " +
-                "FROM formation f " +
-                "LEFT JOIN employe e ON f.id = e.idFormation"; // Utilisez LEFT JOIN pour inclure les formations sans employés
+        String req = "SELECT * FROM formation f "; // Utilisez LEFT JOIN pour inclure les formations sans employés
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(req);
 
@@ -68,50 +66,9 @@ public class ServiceFormation implements IService<Formation> {
             formation.setDuree(rs.getInt("duree"));
             formation.setDateFormation(rs.getString("dateFormation"));
 
-            if (rs.getInt("idEmploye") != 0) { // Vérifiez si l'employé existe
-                Employe employe = new Employe();
-                employe.setId(rs.getInt("idEmploye"));
-                employe.setPoste(rs.getString("poste"));
-                employe.setSalaire(rs.getInt("salaire"));
-                formation.getEmployees().add(employe);
-            }
-
             formations.add(formation);
         }
         return formations;
     }
 
-    /*public void afficherEmployesFormation(int idFormation) throws SQLException {
-        String req = "select f.id , f.titre , f.description , f.duree , f.dateFormation " +
-                "e.poste AS poste_employe , e.salaire AS salaire_employe" +
-                "from formation f" +
-                "join employe e on f.id = e.idFormation" +
-                "where f.id = ?";
-
-        PreparedStatement stmt = connection.prepareStatement(req);
-        stmt.setInt(1, idFormation);
-        ResultSet resultSet = stmt.executeQuery();
-        while (resultSet.next()) {
-
-            // Récupérer les informations de la formation
-            String titreFormation = resultSet.getString("titre");
-            String descriptionFormation = resultSet.getString("description");
-            int dureeFormation = resultSet.getInt("duree");
-            String dateFormation = resultSet.getString("dateFormation");
-
-            // Récupérer les informations des employés
-            String posteEmploye = resultSet.getString("poste");
-            float salaireEmploye = resultSet.getFloat("salaire");
-
-            // Afficher les informations
-            System.out.println("Formation: " + titreFormation);
-            System.out.println("Description: " + descriptionFormation);
-            System.out.println("Durée: " + dureeFormation + " jours");
-            System.out.println("Date: " + dateFormation);
-            System.out.println("Employé: " +" (poste : " + posteEmploye + "salaire : " + salaireEmploye +")");
-            System.out.println("-----------------------------");
-
-
-        }
-    }*/
 }

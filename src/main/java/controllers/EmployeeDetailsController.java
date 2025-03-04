@@ -1,11 +1,11 @@
 package controllers;
 
-import entities.Employe;
+import entities.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import services.ServiceEmploye;
+import services.ServiceUtilisateur;
 
 public class EmployeeDetailsController {
 
@@ -18,16 +18,15 @@ public class EmployeeDetailsController {
     @FXML
     private TextField idFormationField; // Nouveau champ
 
-    private Employe employe;
-    private final ServiceEmploye serviceEmploye = new ServiceEmploye();
+    private Utilisateur employe;
+    private final ServiceUtilisateur serviceEmploye = new ServiceUtilisateur();
 
-    public void setEmploye(Employe employe) {
+    public void setEmploye(Utilisateur employe) {
         this.employe = employe;
         // Remplir les champs avec les informations de l'employé (si elles existent)
         if (employe != null) {
             posteField.setText(employe.getPoste());
             salaireField.setText(String.valueOf(employe.getSalaire()));
-            idFormationField.setText(String.valueOf(employe.getIdFormation()));
         }
     }
 
@@ -50,7 +49,6 @@ public class EmployeeDetailsController {
         // Mettre à jour l'employé avec les nouvelles informations
         employe.setPoste(poste);
         employe.setSalaire((float) salaire);
-        employe.setIdFormation(idFormation);
 
         try {
             // Vérifier si l'employé existe déjà dans la base de données

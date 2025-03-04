@@ -1,0 +1,65 @@
+/* Style de l'élément employé */
+.employee-item {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #28966c; /* Bordure verte */
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 5, 0, 0); /* Ombre légère */
+    -fx-transition: all 0.3s ease;
+}
+
+/* Effet au survol */
+.employee-item:hover {
+    -fx-background-color: #f0f0f0; /* Fond gris clair au survol */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 8, 8, 0, 0); /* Ombre plus prononcée */
+    -fx-translate-y: -3px; /* Légère translation vers le haut */
+}
+
+/* Style des labels */
+.employee-label {
+    -fx-font-family: "Poppins", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333; /* Texte gris foncé */
+}
+
+/* Style spécifique pour le prénom et le nom */
+.firstName, .lastName {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3a4368; /* Texte bleu foncé */
+}
+
+/* Style pour le poste */
+.position {
+    -fx-font-size: 14px;
+    -fx-text-fill: #777777; /* Texte gris moyen */
+}
+
+/* Style pour l'image de profil */
+.profilePhoto {
+    -fx-border-radius: 50%;
+    -fx-border-color: #28966c; /* Bordure verte */
+    -fx-border-width: 3px;
+    -fx-fit-width: 90px;
+    -fx-fit-height: 90px;
+    -fx-preserve-ratio: true;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1); /* Ombre légère */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .employee-item {
+        -fx-padding: 10px;
+        -fx-alignment: center;
+    }
+
+    .profilePhoto {
+        -fx-fit-width: 70px;
+        -fx-fit-height: 70px;
+    }
+
+    .employee-label, .firstName, .lastName {
+        -fx-font-size: 13px;
+    }
+}

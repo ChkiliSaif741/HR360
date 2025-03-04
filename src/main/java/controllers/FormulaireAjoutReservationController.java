@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 public class FormulaireAjoutReservationController implements Initializable {
-
 
     @FXML
     private DatePicker dateDebutPicker;
@@ -41,8 +41,6 @@ public class FormulaireAjoutReservationController implements Initializable {
 
     }
 
-
-
     @FXML
     private void ajouterReservation(ActionEvent event) {
         try {
@@ -51,16 +49,23 @@ public class FormulaireAjoutReservationController implements Initializable {
                 return;
             }
 
-            Date dateDebut = Date.valueOf(dateDebutPicker.getValue());
-            Date dateFin = Date.valueOf(dateFinPicker.getValue());
-            String utilisateur = utilisateurField.getText().trim();
+            LocalDate today = LocalDate.now();
+            LocalDate dateDebutLocal = dateDebutPicker.getValue();
+            LocalDate dateFinLocal = dateFinPicker.getValue();
 
+            if (dateDebutLocal.isBefore(today) || dateFinLocal.isBefore(today)) {
+                afficherAlerte(Alert.AlertType.ERROR, "Erreur de date", "Les dates doivent être égales ou postérieures à aujourd'hui.");
+                return;
+            }
+
+            Date dateDebut = Date.valueOf(dateDebutLocal);
+            Date dateFin = Date.valueOf(dateFinLocal);
+            String utilisateur = utilisateurField.getText().trim();
 
             if (!dateDebut.before(dateFin)) {
                 afficherAlerte(Alert.AlertType.ERROR, "Erreur de date", "La date de début doit être antérieure à la date de fin.");
                 return;
             }
-
 
             if (!isValidUser(utilisateur)) {
                 afficherAlerte(Alert.AlertType.ERROR, "Erreur de saisie", "L'utilisateur ne doit pas contenir de caractères spéciaux !");
@@ -69,12 +74,10 @@ public class FormulaireAjoutReservationController implements Initializable {
 
             Reservation reservation = new Reservation(idRessource, dateDebut, dateFin, utilisateur);
 
-
             if (!serviceReservation.estDisponible(reservation)) {
                 afficherAlerte(Alert.AlertType.ERROR, "Ressource indisponible", "Cette ressource est déjà réservée pour la période sélectionnée.");
                 return;
             }
-
 
             serviceReservation.ajouter(reservation);
             afficherAlerte(Alert.AlertType.INFORMATION, "Succès", "Réservation ajoutée avec succès !");
@@ -84,8 +87,6 @@ public class FormulaireAjoutReservationController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
 
     @FXML
     private void annulerAjout() {
@@ -107,7 +108,6 @@ public class FormulaireAjoutReservationController implements Initializable {
             //showErrorAlert("Erreur", "Une erreur est survenue lors du chargement de la page.");
         }
     }
-
 
     private boolean isValidUser(String input) {
         return Pattern.matches("^[A-Za-z0-9\\s]+$", input);

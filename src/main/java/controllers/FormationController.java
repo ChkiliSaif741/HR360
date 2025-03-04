@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Formation;
+import entities.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import services.ServiceFormation;
+import services.ServiceParticipation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +26,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class FormationController implements Initializable {
+
+    private ServiceParticipation serviceParticipation;
     private ServiceFormation serviceFormation;
     @FXML
     private GridPane gridPane; // Référence au GridPane dans le FXML
@@ -37,6 +42,7 @@ public class FormationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         serviceFormation = new ServiceFormation();
+        serviceParticipation = new ServiceParticipation();
         configurerStyleGridPane();
         afficherFormations();
         addButton.getStyleClass().add("add-button"); // Applique le style
@@ -65,6 +71,10 @@ public class FormationController implements Initializable {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Barre de défilement horizontale visible si nécessaire
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Barre de défilement verticale visible si nécessaire
     }
+
+    /*public void afficherParticipants(){
+
+    }*/
 
     // Méthode pour afficher les formations dynamiquement avec des en-têtes fixes
     private void afficherFormations() {
@@ -112,9 +122,22 @@ public class FormationController implements Initializable {
                 updateButton.setUserData(formation);  // Associer l'objet formation au bouton
                 updateButton.setOnAction(this::UpdateFormation);
 
+                // Bouton Participants
+                Button participantsButton = new Button("Participants");
+                participantsButton.getStyleClass().add("delete-button");
+                participantsButton.setUserData(formation);
+                participantsButton.setOnAction(e -> {
+                    try {
+                        serviceParticipation.afficherParticipants(formation.getId());
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+
                 // Ajouter les boutons dans la dernière colonne
-                gridPane.add(deleteButton, 6, row);
-                gridPane.add(updateButton, 7, row);
+                HBox buttonsContainer = new HBox(5); // Espacement de 5 entre les boutons
+                buttonsContainer.getChildren().addAll(deleteButton, updateButton, participantsButton);
+                gridPane.add(buttonsContainer, 4, row);
 
                 row++;
             }
@@ -163,7 +186,7 @@ public class FormationController implements Initializable {
     public void DeleteFormation(ActionEvent actionEvent) throws SQLException {
         Button clickedButton = (Button) actionEvent.getSource();
         Formation formation = (Formation) clickedButton.getUserData();  // Récupérer l'Entretien associé au bouton
-
+        System.out.println(formation);
         try {
             serviceFormation.supprimer(formation.getId());
             refreshFormations();  // Rafraîchir l'affichage
