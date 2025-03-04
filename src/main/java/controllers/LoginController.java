@@ -7,12 +7,14 @@ import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -25,9 +27,11 @@ import utils.alertMessage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class LoginController {
 
@@ -104,6 +108,14 @@ public class LoginController {
     @FXML
     private WebView recaptchaWebView;
 
+    @FXML
+    private AnchorPane recaptcha;
+
+
+    @FXML
+    private Button btnCaptcha;
+
+
     private File selectedImageFile;
 
     public void setNom(String nom) {
@@ -138,22 +150,50 @@ public class LoginController {
         changepass_form.setVisible(false);
 
         String siteKey = "6LdIE-cqAAAAADO53d6zqk7I5To8W4CyHfi3-UOV"; // Remplacez par votre clé de site
-        String htmlContent = "<html>" +
-                "<head>" +
-                "<script src='https://www.google.com/recaptcha/api.js'></script>" +
-                "</head>" +
-                "<body>" +
-                "<form action='?' method='POST'>" +
-                "<div class='g-recaptcha' data-sitekey='" + siteKey + "'></div>" +
-                "<br/>" +
-                "<input type='submit' value='Submit'>" +
-                "</form>" +
-                "</body>" +
-                "</html>";
-        recaptchaWebView.getEngine().loadContent(htmlContent);
-
+        recaptchaWebView.getEngine().load("http://localhost/test.html");
 
     }
+
+    /*@Override
+    public void initialize(URL location, ResourceBundle resources) {
+        forgot_form.setVisible(false);
+        login_form.setVisible(true);
+        signup_form.setVisible(false);
+        changepass_form.setVisible(false);
+
+        // Charger la page HTML contenant le widget reCAPTCHA
+        WebEngine webEngine = recaptchaWebView.getEngine();
+        webEngine.load(getClass().getResource("file:///C:/xampp/htdocs/test.html").toExternalForm());
+
+        // Injecter le connecteur Java-JavaScript
+        JSObject window = (JSObject) webEngine.executeScript("window");
+        window.setMember("javaConnector", new JavaConnector(this));
+    }*/
+
+
+
+    public void handleCaptchaResponse(String response) {
+        alertMessage alert = new alertMessage();
+
+        // Vérifier si le CAPTCHA est rempli
+        if (response == null || response.isEmpty()) {
+            alert.errorMessage("Veuillez compléter le CAPTCHA !");
+            return;
+        }
+
+        // Valider le jeton reCAPTCHA côté serveur
+        if (!RecaptchaValidator.verifyCaptcha(response)) {
+            alert.errorMessage("CAPTCHA invalide !");
+            return;
+        }
+
+        // Si le CAPTCHA est valide, masquer l'AnchorPane du CAPTCHA
+        recaptcha.setVisible(false);
+
+        alert.successMessage("CAPTCHA validé avec succès !");
+    }
+
+
 
 
     public void showPassword() {
@@ -323,8 +363,18 @@ public class LoginController {
 
 
     @FXML
-    public void registerBtnOnAction(ActionEvent event) {
+    void captchaValidate(ActionEvent event) {
         alertMessage alert = new alertMessage();
+
+        // Afficher l'AnchorPane contenant le reCAPTCHA
+        recaptcha.setVisible(true);
+
+        // Vérifier que grecaptcha est disponible
+        Object grecaptcha = recaptchaWebView.getEngine().executeScript("typeof grecaptcha !== 'undefined' ? grecaptcha : null");
+        if (grecaptcha == null) {
+            alert.errorMessage("reCAPTCHA n'est pas encore prêt. Veuillez réessayer.");
+            return;
+        }
 
         // Récupérer le jeton reCAPTCHA
         String gRecaptchaResponse = (String) recaptchaWebView.getEngine().executeScript("grecaptcha.getResponse()");
@@ -340,6 +390,17 @@ public class LoginController {
             alert.errorMessage("CAPTCHA invalide !");
             return;
         }
+
+        // Si le CAPTCHA est valide, masquer l'AnchorPane du CAPTCHA
+        recaptcha.setVisible(false);
+
+        alert.successMessage("CAPTCHA validé avec succès !");
+    }
+
+
+    @FXML
+    public void registerBtnOnAction(ActionEvent event) {
+        alertMessage alert = new alertMessage();
 
         // Vérification des champs vides
         if (signup_nom.getText().isEmpty() || signup_prenom.getText().isEmpty() || signup_email.getText().isEmpty()

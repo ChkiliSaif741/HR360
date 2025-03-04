@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class RecaptchaExample extends Application {
 
-    public   static final String SITE_KEY = "6LdIE-cqAAAAADO53d6zqk7I5To8W4CyHfi3-UOV"; // Remplacez par votre clé de site
+    public   static final String SITE_KEY = "6LclYegqAAAAAM8WaQYFGMOlbIk0yKLlibF-7EzW"; // Remplacez par votre clé de site
 
     @Override
     public void start(Stage primaryStage) {
@@ -16,7 +16,7 @@ public class RecaptchaExample extends Application {
         webView.getEngine().loadContent(
                 "<html>" +
                         "<head>" +
-                        "<script src='https://www.google.com/recaptcha/api.js'></script>" +
+                        "<script src='https://www.google.com/recaptcha/api.js' async defer></script>" +
                         "</head>" +
                         "<body>" +
                         "<form action='?' method='POST'>" +

@@ -1,9 +1,6 @@
 package controllers;
 
-import entities.Formation;
-import entities.MyListener;
-import entities.Participation;
-import entities.Session;
+import entities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -30,6 +24,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class FormationsControllerEMP implements Initializable {
 
@@ -51,6 +48,12 @@ public class FormationsControllerEMP implements Initializable {
 
     @FXML
     private ScrollPane scroll;
+
+    @FXML
+    private VBox chatArea; // Conteneur des messages de chat
+
+    @FXML
+    private TextField chatInput; // Champ de saisie de l'utilisateur
 
 
     private Formation selectedFormation;
@@ -141,6 +144,9 @@ public class FormationsControllerEMP implements Initializable {
             myListener = formation -> setChosenFormation(formation);
         }
         refreshFormations();
+
+        // Initialiser la zone de chat
+        chatArea.setSpacing(10); // Espacement entre les messages
     }
 
 
@@ -181,4 +187,60 @@ public class FormationsControllerEMP implements Initializable {
             e.printStackTrace();
         }
     }
+
+
+
+    @FXML
+    private void sendChatMessage() {
+        String message = chatInput.getText().trim();
+        if (!message.isEmpty()) {
+            // Afficher le message de l'utilisateur
+            Label userMessage = new Label("Vous: " + message);
+            userMessage.setStyle("-fx-background-color: #e1f5fe; -fx-padding: 10px; -fx-background-radius: 10px;");
+            chatArea.getChildren().add(userMessage);
+
+            // Réinitialiser le champ de saisie
+            chatInput.clear();
+
+            // Obtenir une réponse du chatbot via Gemini API
+            try {
+                GeminiClient geminiClient = new GeminiClient();
+                String botResponse = geminiClient.sendMessage(message);
+
+                // Parser la réponse JSON
+                JSONObject jsonResponse = new JSONObject(botResponse);
+                JSONArray candidates = jsonResponse.getJSONArray("candidates");
+                if (candidates.length() > 0) {
+                    JSONObject firstCandidate = candidates.getJSONObject(0);
+                    JSONObject content = firstCandidate.getJSONObject("content");
+                    JSONArray parts = content.getJSONArray("parts");
+                    if (parts.length() > 0) {
+                        String botText = parts.getJSONObject(0).getString("text");
+
+                        // Afficher la réponse du chatbot
+                        Label botMessage = new Label("Chatbot: " + botText);
+                        botMessage.setStyle("-fx-background-color: #ffebee; -fx-padding: 10px; -fx-background-radius: 10px;");
+                        chatArea.getChildren().add(botMessage);
+                    } else {
+                        throw new IOException("Aucune partie de réponse trouvée dans le JSON.");
+                    }
+                } else {
+                    throw new IOException("Aucune réponse trouvée dans le JSON.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Label errorMessage = new Label("Chatbot: Désolé, une erreur s'est produite. Veuillez réessayer.");
+                errorMessage.setStyle("-fx-background-color: #ffebee; -fx-padding: 10px; -fx-background-radius: 10px;");
+                chatArea.getChildren().add(errorMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Label errorMessage = new Label("Chatbot: Erreur lors du traitement de la réponse.");
+                errorMessage.setStyle("-fx-background-color: #ffebee; -fx-padding: 10px; -fx-background-radius: 10px;");
+                chatArea.getChildren().add(errorMessage);
+            }
+        }
+    }
+
+
+
 }

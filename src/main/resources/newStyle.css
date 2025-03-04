@@ -49,3 +49,46 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 30;
 }
+
+/* Zone de chat */
+.chat-box {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+}
+
+.chat-title {
+    -fx-font-size: 24px;
+    -fx-text-fill: #878787;
+    -fx-padding: 10px;
+}
+
+.chat-messages {
+    -fx-background-color: #ffffff;
+    -fx-padding: 10px;
+}
+
+.chat-input-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px 0 0 0;
+    -fx-padding: 10px;
+}
+
+.chat-input {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.chat-send-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.chat-send-button:hover {
+    -fx-background-color: #45a049;
+}
