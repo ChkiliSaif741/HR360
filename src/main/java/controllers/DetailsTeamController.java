@@ -106,4 +106,15 @@ public class DetailsTeamController {
         equipeEmployeService.removeEmployeFromEquipe(idUser,idEquipe);
         loadInfo();
     }
+
+    @FXML
+    void VoirChargeEquipe(ActionEvent event) throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+        Parent parent=loader.load();
+        Controller con=loader.getController();
+        ChargeTravailController controller=con.loadPage("/charge_travail.fxml").getController();
+        EquipeService equipeService = new EquipeService();
+        controller.setEquipe(equipeService.getEquipe(idEquipe));
+        nomEquipe.getScene().setRoot(parent);
+    }
 }

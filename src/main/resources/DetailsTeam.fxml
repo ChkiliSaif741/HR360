@@ -13,11 +13,20 @@
    <children>
       <VBox layoutX="17.0" layoutY="13.0" prefHeight="147.0" prefWidth="870.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#BackToListEquipes" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="ARROW_LEFT" size="2em" />
-               </graphic>
-            </Button>
+            <HBox spacing="400.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#BackToListEquipes" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="ARROW_LEFT" size="2em" />
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#VoirChargeEquipe" prefHeight="46.0" prefWidth="144.0" styleClass="button-action-add" stylesheets="@stylesProjet.css" text="Voir charge">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="SUITCASE" size="2em" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
             <Label fx:id="nomEquipe" alignment="TOP_LEFT" prefHeight="47.0" prefWidth="874.0" text="Nom Equipe" textFill="#5eaeff" wrapText="true">
                <font>
                   <Font name="System Bold" size="32.0" />
