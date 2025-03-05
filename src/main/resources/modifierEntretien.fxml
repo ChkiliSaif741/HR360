@@ -13,27 +13,21 @@
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="930.0">
          <children>
-            <VBox layoutX="260.0" layoutY="29.0" prefHeight="585.0" prefWidth="399.0" spacing="5.0" stylesheets="@StyleModifEnt.css">
+            <VBox layoutX="260.0" layoutY="14.0" prefHeight="593.0" prefWidth="398.0" spacing="5.0" stylesheets="@StyleModifEnt.css">
                <children>
                   <Label fx:id="datePickerLabel" text="Date" />
-                  <DatePicker fx:id="datePickerMod" prefHeight="46.0" prefWidth="451.0" />
+                  <DatePicker fx:id="datePickerMod" prefHeight="45.0" prefWidth="399.0" />
+                  <Label fx:id="datePickerLabelC" />
                   <Label fx:id="heureFieldLabel" text="Heure" />
-                  <TextField fx:id="heureFieldMod" prefHeight="33.0" prefWidth="370.0" />
+                  <TextField fx:id="heureFieldMod" prefHeight="50.0" prefWidth="394.0" />
+                  <Label fx:id="heureFieldLabelC" />
                   <Label fx:id="typeComboBoxLabel" text="Type" />
-                  <ComboBox fx:id="typeComboBoxMod" prefHeight="42.0" prefWidth="456.0" />
+                  <ComboBox fx:id="typeComboBoxMod" prefHeight="20.0" prefWidth="399.0" />
                   <Label fx:id="statutComboBoxLabel" text="Statut" />
-                  <ComboBox fx:id="statutComboBoxMod" prefHeight="42.0" prefWidth="446.0" />
-                  <Label fx:id="lienMeetFieldLabel" text="Lien meet" />
-                  <TextField fx:id="lienMeetFieldMod" />
+                  <ComboBox fx:id="statutComboBoxMod" prefHeight="20.0" prefWidth="399.0" />
                   <Label fx:id="localisationFieldLabel" text="Localisation" />
-                  <TextField fx:id="localisationFieldMod" />
-                  <Label fx:id="idCandidatureComboBoxLabel" text="Id candidature" />
-                  <ComboBox fx:id="idCandidatureComboBoxMod" prefHeight="40.0" prefWidth="350.0" />
-                  <Button fx:id="btnMod" lineSpacing="10.0" mnemonicParsing="false" onAction="#ModifierEntretien" prefHeight="41.0" prefWidth="146.0" text="MODIFIER">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
+                  <TextField fx:id="localisationFieldMod" prefHeight="46.0" prefWidth="394.0" />
+                  <Label fx:id="localisationFieldLabelC" />
                </children>
             </VBox>
             <Label layoutX="90.0" layoutY="29.0" prefHeight="40.0" prefWidth="170.0" text="Entretien" textFill="#77aad9">
@@ -41,6 +35,11 @@
                   <Font size="36.0" />
                </font>
             </Label>
+            <Button fx:id="btnMod" layoutX="738.0" layoutY="557.0" lineSpacing="10.0" mnemonicParsing="false" onAction="#ModifierEntretien" prefHeight="41.0" prefWidth="146.0" text="MODIFIER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

@@ -212,11 +212,15 @@ public class ListeCondidaturesController {
             alert.showAndWait();
         }
     }
-    public void VoirEntretien()
-    {
+    public void VoirEntretien() throws IOException, SQLException {
         int selectedIndex = listViewCondidatures.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
-
+            List<Candidature> candidatures = serviceCandidature.afficher();
+            int id = candidatures.get(selectedIndex).getId_candidature();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
+            Controller controller = loader.getController();
+            Affentretienfront controller1 = controller.loadPage("/affentretienfront.fxml").getController();
+            controller1.setIdCandidature(id);
         }else {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature Pour voir entretien.");
         }

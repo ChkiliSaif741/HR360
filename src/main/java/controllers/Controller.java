@@ -173,11 +173,14 @@ public class Controller implements Initializable {
     @FXML
     void AffichcondBack(ActionEvent event) {
         try {
+
             loadPage("/ListCandidatureBack.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -274,5 +277,6 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
 }
 

@@ -7,25 +7,30 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import services.ServiceEntretien;
 import utils.statut;
 import utils.type;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 public class AjoutEntretien implements Initializable {
-    @FXML
-    private TextField lienMeetField;
     @FXML
     private ComboBox<type> typeComboBox;
     @FXML
@@ -34,16 +39,8 @@ public class AjoutEntretien implements Initializable {
     private TextField localisationField;
     @FXML
     private DatePicker datePicker;
-    @FXML
-    private ComboBox idCandidatureComboBox;
-    @FXML
-    private ComboBox<statut> statutComboBox;
 
     private ServiceEntretien serviceEntretien;
-    @FXML
-    private Label labelstatut;
-    @FXML
-    private Label labellienmeet;
     @FXML
     private Label labellocalisation;
     @FXML
@@ -51,44 +48,56 @@ public class AjoutEntretien implements Initializable {
     @FXML
     private Label labelheure;
     @FXML
-    private Label labelidcandidature;
-    @FXML
     private Label labeltype;
 
     @FXML
     private Button btnAdd;
 
     private boolean formSubmitted = false;
+    @FXML
+    private Label labeltypeC;
+    @FXML
+    private Label labeldateC;
+    @FXML
+    private Label labelheureC;
+    @FXML
+    private Label labellocalisationC;
 
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    private int idCandidature;
+
+    public void setIdCandidature(int idCandidature) {
+        this.idCandidature = idCandidature;
         serviceEntretien = new ServiceEntretien();
+
+
+        // Gérer la sélection du nom d'utilisateur pour filtrer les prénoms
 
         // Remplir les ComboBox avec les valeurs des énumérations
         typeComboBox.setItems(FXCollections.observableArrayList(type.values()));
-        statutComboBox.setItems(FXCollections.observableArrayList(statut.values()));
+        //statutComboBox.setItems(FXCollections.observableArrayList(statut.values()));
+
+
+        // Désactiver le ComboBox de statut pour empêcher la modification
+        //statutComboBox.setDisable(true);
         typeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == type.En_ligne) {
-                lienMeetField.setVisible(true);
                 localisationField.setVisible(false);
-                labellienmeet.setVisible(true);
                 labellocalisation.setVisible(false);
+                labellocalisationC.setVisible(false);
             } else {
-                lienMeetField.setVisible(false);
                 localisationField.setVisible(true);
                 labellocalisation.setVisible(true);
-                labellienmeet.setVisible(false);
+                labellocalisationC.setVisible(true);
 
             }
         });
 
-        lienMeetField.setVisible(false);
         localisationField.setVisible(false);
         labellocalisation.setVisible(false);
-        labellienmeet.setVisible(false);
+        labellocalisationC.setVisible(false);
 
-        validateNumericField(idCandidatureComboBox.getEditor());
+        //validateNumericField(idCandidatureComboBox.getEditor());
 
         //validateURLField(lienMeetField);
         //validateTextOnlyField(localisationField);
@@ -96,7 +105,14 @@ public class AjoutEntretien implements Initializable {
         // Vérifier la validité avant d'activer le bouton
         addFormListeners();
         // Charger les idCandidature depuis la base de données
-        chargerIdCandidature();
+    }
+
+    public void setFormFields(){
+
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //chargerIdCandidature();
     }
 
     private void checkFormValidity() {
@@ -135,12 +151,12 @@ public class AjoutEntretien implements Initializable {
         }
 
         // Contrôle du statut
-        if (statutComboBox.getValue() == null) {
+        /*if (statutComboBox.getValue() == null) {
             labelstatut.setText("Sélectionnez un statut !");
             isValid = false;
         } else {
             labelstatut.setText("");
-        }
+        }*/
 
         // Contrôle de la localisation
         if (typeComboBox.getValue() == type.Presentiel) {
@@ -162,13 +178,6 @@ public class AjoutEntretien implements Initializable {
             }
         }*/
 
-        // Contrôle de l'ID Candidature
-        if (idCandidatureComboBox.getValue() == null) {
-            labelidcandidature.setText("Sélectionnez une candidature !");
-            isValid = false;
-        } else {
-            labelidcandidature.setText("");
-        }
 
         // Activer/désactiver le bouton Ajouter
         btnAdd.setDisable(!isValid);
@@ -176,11 +185,9 @@ public class AjoutEntretien implements Initializable {
 
 
     private void addFormListeners() {
-        idCandidatureComboBox.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
-        statutComboBox.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
+        //idCandidatureComboBox.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
         datePicker.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
         typeComboBox.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
-        lienMeetField.textProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
         localisationField.textProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
         heureField.textProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
     }
@@ -201,6 +208,7 @@ public class AjoutEntretien implements Initializable {
         });
     }
 
+
     /*private void validateURLField(TextField field) {
         field.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!isValidURL(newValue)) {
@@ -216,55 +224,69 @@ public class AjoutEntretien implements Initializable {
     }*/
 
     // Méthode pour charger les idCandidature dans la ComboBox
-    private void chargerIdCandidature() {
+    /*private void chargerIdCandidature() {
         try {
             List<Integer> idCandidatures = serviceEntretien.getIdsCandidature(); // À implémenter dans ServiceEntretien
             idCandidatureComboBox.setItems(FXCollections.observableArrayList(idCandidatures));
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de charger les idCandidature : " + e.getMessage());
         }
-    }
+    }*/
 
-    @FXML
-    public void AddEntretien(ActionEvent actionEvent) {
+    //@FXML
+    /*public void AddEntretien(ActionEvent actionEvent) throws GeneralSecurityException, IOException {
         // Récupérer les valeurs des champs
         LocalDate date = datePicker.getValue();
         String heureText = heureField.getText();
         type type = (utils.type) typeComboBox.getValue();
         statut statut = (utils.statut) statutComboBox.getValue();
-        String lienMeet = lienMeetField.getText();
+        //String lienMeet = lienMeetField.getText();
         String localisation = localisationField.getText();
         Integer idCandidature = (Integer) idCandidatureComboBox.getValue();
+
+        String meetLink = GoogleCalendarAPI.createEventWithMeet();
+
+        //Entretien entretien = new Entretien();
+
+
 
         // Contrôle de saisie
         if (date == null || heureText == null || heureText.isEmpty() || type == null || statut == null || idCandidature == null) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Tous les champs obligatoires doivent être remplis.");
             return;
-        }
+        }*/
 
-        // Vérifier si le type est "En_ligne" et que le lien Meet est vide
-        if (type == type.En_ligne && (lienMeet == null || lienMeet.isEmpty())) {
+    // Vérifier si le type est "En_ligne" et que le lien Meet est vide
+        /*if (type == type.En_ligne && (lienMeet == null || lienMeet.isEmpty())) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le lien Meet est obligatoire pour un entretien en ligne.");
             return;
-        }
+        }*/
 
-        // Vérifier si le type est "Presentiel" et que la localisation est vide
-        if (type == type.Presentiel && (localisation == null || localisation.isEmpty())) {
+    // Vérifier si le type est "Presentiel" et que la localisation est vide
+        /*if (type == type.Presentiel && (localisation == null || localisation.isEmpty())) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "La localisation est obligatoire pour un entretien présentiel.");
             return;
-        }
+        }*/
 
-        // Convertir l'heure en LocalTime
-        LocalTime heure;
+    // Convertir l'heure en LocalTime
+        /*LocalTime heure;
         try {
             heure = LocalTime.parse(heureText);
         } catch (DateTimeParseException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le format de l'heure est invalide. Utilisez HH:mm.");
             return;
         }
+        if (typeComboBox.getValue() == type.En_ligne) {
+            if (lienMeetField.getText().isEmpty() || !isValidURL(lienMeetField.getText())) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Lien Meet invalide !");
+                return;
+            }
+        }
 
         // Créer l'objet Entretien
-        Entretien entretien = new Entretien(date, heure, type, statut, lienMeet, localisation, idCandidature);
+        Entretien entretien = new Entretien(date, heure, type, statut,  meetLink, localisation, idCandidature);
+
+        //entretien.setLien_meet(meetLink);
 
         // Ajouter l'entretien dans la base de données
         try {
@@ -304,6 +326,8 @@ public class AjoutEntretien implements Initializable {
 
                 // Fermer la fenêtre actuelle
                 //currentStage.close();
+                System.out.println("Entretien ajouté avec succès ! Lien Meet : " + meetLink);
+
             } catch (IOException e) {
                 e.printStackTrace();
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre d'affichage.");
@@ -311,18 +335,164 @@ public class AjoutEntretien implements Initializable {
 
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible d'ajouter l'entretien : " + e.getMessage());
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+
+
+
+    @FXML
+    public void AddEntretien(ActionEvent actionEvent) throws IOException, URISyntaxException {
+
+        boolean isValid = true;
+
+
+        // Récupérer les valeurs des champs
+        LocalDate date = datePicker.getValue();
+        String heureText = heureField.getText();
+        type type = (utils.type) typeComboBox.getValue();
+        //statut statut = (utils.statut) statutComboBox.getValue();
+        String localisation = localisationField.getText();
+        //Integer idCandidature = (Integer) idCandidatureComboBox.getValue();
+
+        // Contrôle de saisie
+        if (date == null || heureText == null || heureText.isEmpty() || type == null || statut.Planifié == null ) {
+            labelheureC.setText("Sélectionnez une heure !");
+            labellocalisationC.setText("Sélectionnez une localisation !");
+            labeldateC.setText("Sélectionnez une date !");
+            labeltypeC.setText("Sélectionnez un type !");
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Tous les champs obligatoires doivent être remplis.");
+            return;
+        }
+
+        // Vérifier si le type est "Presentiel" et que la localisation est vide
+
+        if (type == type.Presentiel && (localisation == null || localisation.isEmpty())) {
+            labellocalisationC.setText("Sélectionnez une localisation !");
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "La localisation est obligatoire pour un entretien présentiel.");
+            return;
+        }
+        if (heureField == null) {
+            labelheureC.setText("Sélectionnez une heure !");
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "L'heure est obligatoire pour un entretien.");
+            return;
+        }
+        if (datePicker == null) {
+            labeldateC.setText("Sélectionnez un date !");
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "L'heure est obligatoire pour un entretien.");
+            return;
+        }
+        if (typeComboBox == null) {
+            labeltypeC.setText("Sélectionnez un type !");
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "L'heure est obligatoire pour un entretien.");
+            return;
+        }
+
+        // Convertir l'heure en LocalTime
+        /*LocalTime heure;
+        try {
+            heure = LocalTime.parse(heureText);
+        } catch (DateTimeParseException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le format de l'heure est invalide. Utilisez HH:mm.");
+            return;
+        }*/
+
+        // Contrôle de la date
+        if (datePicker.getValue() == null || !datePicker.getValue().isAfter(LocalDate.now())) {
+            labeldateC.setText("Sélectionnez une date future !");
+            isValid = false;
+        } else {
+            labeldateC.setText("");
+        }
+
+        // Contrôle de l'heure
+        LocalTime heure = null;
+        try {
+            heure = LocalTime.parse(heureField.getText());
+            if (heure.isBefore(LocalTime.of(8, 0)) || heure.isAfter(LocalTime.of(20, 0))) {
+                labelheureC.setText("L'heure doit être entre 8h et 18h !");
+                isValid = false;
+            } else {
+                labelheureC.setText("");
+            }
+        } catch (DateTimeParseException e) {
+            labelheureC.setText("Format d'heure invalide (HH:mm) !");
+            isValid = false;
+        }
+
+        // Contrôle du type
+        if (typeComboBox.getValue() == null) {
+            labeltypeC.setText("Sélectionnez un type !");
+            isValid = false;
+        } else {
+            labeltypeC.setText("");
+        }
+        // Contrôle de la localisation
+        if (typeComboBox.getValue() == type.Presentiel) {
+            if (localisationField.getText().isEmpty() || !localisationField.getText().matches("^[a-zA-Z\\s]+$")) {
+                labellocalisationC.setText("Localisation invalide (lettres et espaces uniquement) !");
+                isValid = false;
+            } else {
+                labellocalisationC.setText("");
+            }
+        }
+
+
+        // Si le formulaire est invalide, ne pas continuer
+        if (!isValid) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Veuillez soumettre des champs valides.");
+            return;
+        }
+
+        // Vérifier que l'heure n'est pas null
+        if (heure == null) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "L'heure est invalide ou manquante.");
+            return;
+        }
+
+
+        // Créer l'objet Entretien
+
+        Entretien entretien = new Entretien(date, heure, type, statut.Planifié, null, localisation ,idCandidature);
+
+        // Ajouter l'entretien dans la base de données
+        try {
+            serviceEntretien.ajouter(entretien);
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "L'entretien a été ajouté avec succès !");
+
+            // Réinitialiser les champs après l'ajout
+            reinitialiserChamps();
+
+            // Naviguer vers la page d'affichage
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent root = loader.load();
+            Controller con = loader.getController();
+            Affentretien cont=con.loadPage("/affentretien.fxml").getController();
+            cont.setIdCandidature(idCandidature);
+            typeComboBox.getScene().setRoot(root);
+
+            System.out.println("Entretien ajouté avec succès !");
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter l'entretien : " + e.getMessage());
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
         }
     }
+
+
+
 
     // Méthode pour réinitialiser les champs après l'ajout
     private void reinitialiserChamps() {
         datePicker.setValue(null);
         heureField.clear();
         typeComboBox.setValue(null);
-        statutComboBox.setValue(null);
-        lienMeetField.clear();
         localisationField.clear();
-        idCandidatureComboBox.setValue(null);
+        //idCandidatureComboBox.setValue(null);
     }
 
     // Méthode pour afficher des alertes

@@ -23,8 +23,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-
+import javafx.scene.image.ImageView;
 
 
 import java.net.URL;
@@ -39,7 +38,9 @@ public class AfficheEvaluation implements Initializable {
 
     private Connection conn;
     private List<Evaluation> evaluations = new ArrayList<>();
-   // ModifierEvaluation afficheEvaluation;
+    @FXML
+    private ImageView btnAddEvaluation;
+    // ModifierEvaluation afficheEvaluation;
 
     public AfficheEvaluation() {
         this.conn = MyDatabase.getInstance().getConnection();
@@ -67,9 +68,19 @@ public class AfficheEvaluation implements Initializable {
         System.out.println(idEntretien+"Evaluation");
 
         try {
+
+            if (serviceEva.evaluationExistsForEntretien(idEntretien)) {
+                btnAddEvaluation.setDisable(true); // Désactiver le bouton
+                btnAddEvaluation.setVisible(false);
+            } else {
+                btnAddEvaluation.setDisable(false); // Activer le bouton
+                btnAddEvaluation.setVisible(true);
+            }
+
             evaluations.clear();
             evaluations.addAll(serviceEva.afficher().stream().peek(e-> System.out.println(e.getIdEntretien())).filter(e->e.getIdEntretien()==idEntretien).toList());
             System.out.println(evaluations);
+
             int column = 0;
             int row = 0;
 
@@ -84,6 +95,12 @@ public class AfficheEvaluation implements Initializable {
                     column = 0;
                     row++;
                 }
+                // Assurez-vous qu'il n'y a qu'un seul élément à afficher
+                if (evaluations.size() == 1) {
+                    column = 1; // Positionner l'élément au centre (dans la colonne du milieu)
+                    row = 2;
+                }
+
                 gridEva.add(anchorPane, column++, row);
 
 

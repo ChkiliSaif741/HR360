@@ -10,18 +10,28 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 import services.ServiceEntretien;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class AfficheEntretien implements Initializable {
 
@@ -32,6 +42,26 @@ public class AfficheEntretien implements Initializable {
     private ScrollPane scrollPane; // Référence au ScrollPane dans le FXML
     @FXML
     private Button addButton;
+    @FXML
+    private ColumnConstraints typeAff;
+    @FXML
+    private ColumnConstraints LocalisationAff;
+    @FXML
+    private ColumnConstraints dateAff;
+    @FXML
+    private ColumnConstraints statutAff;
+    @FXML
+    private CheckBox tridate;
+    @FXML
+    private ColumnConstraints lienAff;
+    @FXML
+    private ColumnConstraints heureAff;
+    @FXML
+    private TextField Search;
+    @FXML
+    private CheckBox filtreenligne;
+    @FXML
+    private CheckBox filtrepresentiel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,12 +69,147 @@ public class AfficheEntretien implements Initializable {
         configurerStyleGridPane();
         afficherEntretiens();
         addButton.getStyleClass().add("add-button"); // Applique le style
+        startScheduler();
+
+
+
+        // Ajouter un écouteur à la CheckBox pour trier les entretiens par date et heure
+        tridate.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (newValue) {
+                    // Trier les entretiens par date et heure
+                    trierEntretiensParDateEtHeure();
+                } else {
+                    // Afficher les entretiens sans tri
+                    afficherEntretiens();
+                }
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de trier les entretiens : " + e.getMessage());
+            }
+        });
+
+// Ajouter un écouteur au champ de recherche pour filtrer par statut
+        Search.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                rechercherEntretiensParStatut(newValue);
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de rechercher les entretiens : " + e.getMessage());
+            }
+        });
+
+
+
+        // Ajouter des écouteurs aux CheckBox pour filtrer par type (En_ligne ou Presentiel)
+        filtreenligne.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                filtrerEntretiensParType();
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de filtrer les entretiens : " + e.getMessage());
+            }
+        });
+
+        filtrepresentiel.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                filtrerEntretiensParType();
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de filtrer les entretiens : " + e.getMessage());
+            }
+        });
+
     }
+
+
+    private void filtrerEntretiensParType() throws SQLException {
+        System.out.println("Filtrage par type : En_ligne = " + filtreenligne.isSelected() + ", Presentiel = " + filtrepresentiel.isSelected()); // Log pour vérifier les filtres
+
+        List<Entretien> entretiens = serviceEntretien.afficher(); // Récupérer tous les entretiens
+
+        if (entretiens == null || entretiens.isEmpty()) {
+            showAlert(Alert.AlertType.INFORMATION, "Aucun entretien", "Aucun entretien trouvé !");
+            return;
+        }
+
+        // Filtrer les entretiens en fonction des CheckBox cochés
+        List<Entretien> entretiensFiltres = new ArrayList<>();
+        for (Entretien entretien : entretiens) {
+            System.out.println("Type de l'entretien : " + entretien.getType()); // Log pour vérifier le type de chaque entretien
+            if (filtreenligne.isSelected() && entretien.getType().toString().equalsIgnoreCase("En_ligne")) {
+                entretiensFiltres.add(entretien);
+            } else if (filtrepresentiel.isSelected() && entretien.getType().toString().equalsIgnoreCase("Presentiel")) {
+                entretiensFiltres.add(entretien);
+            }
+        }
+
+        // Si aucun CheckBox n'est coché, afficher tous les entretiens
+        if (!filtreenligne.isSelected() && !filtrepresentiel.isSelected()) {
+            entretiensFiltres = entretiens;
+        }
+
+        System.out.println("Nombre d'entretiens filtrés : " + entretiensFiltres.size()); // Log pour vérifier le nombre d'entretiens filtrés
+
+        // Afficher les entretiens filtrés
+        afficherEntretiensTries(entretiensFiltres);
+    }
+
+
+
+    private void rechercherEntretiensParStatut(String statutRecherche) throws SQLException {
+        System.out.println("Recherche par statut : " + statutRecherche); // Log pour vérifier la valeur de recherche
+
+        List<Entretien> entretiens = serviceEntretien.afficher(); // Récupérer tous les entretiens
+
+        if (entretiens == null || entretiens.isEmpty()) {
+            showAlert(Alert.AlertType.INFORMATION, "Aucun entretien", "Aucun entretien trouvé !");
+            return;
+        }
+
+        // Filtrer les entretiens par statut (Planifié, Terminé, Annulé, Reporté)
+        List<Entretien> entretiensFiltres = new ArrayList<>();
+        for (Entretien entretien : entretiens) {
+            System.out.println("Statut de l'entretien : " + entretien.getStatut()); // Log pour vérifier le statut de chaque entretien
+            if (entretien.getStatut().toString().toLowerCase().contains(statutRecherche.toLowerCase())) {
+                entretiensFiltres.add(entretien);
+            }
+        }
+
+        System.out.println("Nombre d'entretiens filtrés : " + entretiensFiltres.size()); // Log pour vérifier le nombre d'entretiens filtrés
+
+        // Afficher les entretiens filtrés
+        afficherEntretiensTries(entretiensFiltres);
+    }
+
+    private void trierEntretiensParDateEtHeure() throws SQLException {
+        List<Entretien> entretiens = serviceEntretien.afficher(); // Récupérer tous les entretiens
+
+        if (entretiens == null || entretiens.isEmpty()) {
+            showAlert(Alert.AlertType.INFORMATION, "Aucun entretien", "Aucun entretien trouvé !");
+            return;
+        }
+
+        // Trier les entretiens par date et heure (du plus récent au plus ancien)
+        entretiens.sort((e1, e2) -> {
+            // Comparer d'abord par date
+            int compareDate = e1.getDate().compareTo(e2.getDate());
+            if (compareDate != 0) {
+                return compareDate; // Si les dates sont différentes, retourner le résultat de la comparaison des dates
+            } else {
+                // Si les dates sont identiques, comparer par heure
+                return e1.getHeure().compareTo(e2.getHeure());
+            }
+        });
+
+        // Afficher les entretiens triés
+        afficherEntretiensTries(entretiens);
+
+                
+    }
+
+
 
     // Configuration du GridPane (espacements, couleurs, styles)
     private void configurerStyleGridPane() {
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        gridPane.setHgap(0.5);
+        gridPane.setVgap(1);
         gridPane.setPadding(new Insets(5));
         gridPane.getStyleClass().add("grid-pane"); // Appliquer la classe CSS
 
@@ -63,6 +228,81 @@ public class AfficheEntretien implements Initializable {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Barre de défilement horizontale visible si nécessaire
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Barre de défilement verticale visible si nécessaire
     }
+
+
+    private void afficherEntretiensTries(List<Entretien> entretiens) {
+        // Nettoyer le GridPane tout en gardant les en-têtes
+        gridPane.getChildren().clear();
+        gridPane.getRowConstraints().clear();
+
+        // Ajouter les en-têtes
+        String[] headers = {"Date", "Heure", "Type", "Statut", "Lien Meet", "Localisation"};
+        for (int col = 0; col < headers.length; col++) {
+            Label headerLabel = creerLabel(headers[col], true);
+            gridPane.add(headerLabel, col, 0); // Ajout des en-têtes à la première ligne
+        }
+
+        // Ajout des données à partir de la ligne 1
+        int row = 1;
+        for (Entretien entretien : entretiens) {
+            gridPane.add(creerLabel(safeToString(entretien.getDate()), false), 0, row);
+            gridPane.add(creerLabel(safeToString(entretien.getHeure()), false), 1, row);
+            gridPane.add(creerLabel(safeToString(entretien.getType()), false), 2, row);
+            gridPane.add(creerLabel(safeToString(entretien.getStatut()), false), 3, row);
+            gridPane.add(creerLabel(safeToString(entretien.getLien_meet()), false), 4, row);
+            gridPane.add(creerLabel(safeToString(entretien.getLocalisation()), false), 5, row);
+
+            // Bouton Delete (remplacé par une ImageView)
+            ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/delete.png")));
+            deleteIcon.setFitWidth(20); // Ajuster la taille de l'icône
+            deleteIcon.setFitHeight(20);
+            deleteIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+            deleteIcon.setOnMouseClicked(e -> {
+                try {
+                    DeleteEntretien(e); // Appeler la méthode de suppression
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+// Bouton Update (remplacé par une ImageView)
+            ImageView updateIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/update.png")));
+            updateIcon.setFitWidth(20); // Ajuster la taille de l'icône
+            updateIcon.setFitHeight(20);
+            updateIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+            updateIcon.setOnMouseClicked(e -> UpdateEntretien(e)); // Appeler la méthode de mise à jour
+
+// Bouton Evaluation (remplacé par une ImageView)
+            ImageView evaluationIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/evaluation.png")));
+            evaluationIcon.setFitWidth(20); // Ajuster la taille de l'icône
+            evaluationIcon.setFitHeight(20);
+            evaluationIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+            evaluationIcon.setOnMouseClicked(e -> EntretienEva(e)); // Appeler la méthode d'évaluation
+
+// Ajouter les icônes dans la dernière colonne
+            gridPane.add(deleteIcon, 6, row);
+            gridPane.add(updateIcon, 7, row);
+            gridPane.add(evaluationIcon, 8, row);
+
+            //
+            deleteIcon.getStyleClass().add("image-view");
+            updateIcon.getStyleClass().add("image-view");
+            evaluationIcon.getStyleClass().add("image-view");
+
+            // Supprimer les marges entre les icônes
+            GridPane.setMargin(deleteIcon, Insets.EMPTY);
+            GridPane.setMargin(updateIcon, Insets.EMPTY);
+            GridPane.setMargin(evaluationIcon, Insets.EMPTY);
+
+// Appliquer la classe CSS aux cellules contenant les icônes
+            deleteIcon.getStyleClass().add("icon-cell");
+            updateIcon.getStyleClass().add("icon-cell");
+            evaluationIcon.getStyleClass().add("icon-cell");
+
+            row++;
+        }
+    }
+
 
     // Méthode pour afficher les entretiens dynamiquement avec des en-têtes fixes
     private void afficherEntretiens() {
@@ -96,35 +336,51 @@ public class AfficheEntretien implements Initializable {
                 gridPane.add(creerLabel(safeToString(entretien.getLien_meet()), false), 4, row);
                 gridPane.add(creerLabel(safeToString(entretien.getLocalisation()), false), 5, row);
 
-                // Bouton Delete
-                Button deleteButton = new Button("Delete");
-                deleteButton.getStyleClass().add("delete-button"); // Appliquer la classe CSS
-                deleteButton.setUserData(entretien);  // Associer l'objet entretien au bouton
-                deleteButton.setOnAction(e -> {
+                // Bouton Delete (remplacé par une ImageView)
+                ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/delete.png")));
+                deleteIcon.setFitWidth(30); // Ajuster la taille de l'icône
+                deleteIcon.setFitHeight(30);
+                deleteIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+                deleteIcon.setOnMouseClicked(e -> {
                     try {
-                        DeleteEntretien(e);
+                        DeleteEntretien(e); // Appeler la méthode de suppression
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
                 });
 
-                // Bouton Update
-                Button updateButton = new Button("Update");
-                updateButton.getStyleClass().add("update-button"); // Appliquer la classe CSS
-                updateButton.setUserData(entretien);  // Associer l'objet entretien au bouton
-                updateButton.setOnAction(this::UpdateEntretien);
+// Bouton Update (remplacé par une ImageView)
+                ImageView updateIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/update.png")));
+                updateIcon.setFitWidth(30); // Ajuster la taille de l'icône
+                updateIcon.setFitHeight(30);
+                updateIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+                updateIcon.setOnMouseClicked(e -> UpdateEntretien(e)); // Appeler la méthode de mise à jour
 
-                // Bouton Update
-                Button evaluationButton = new Button("Evaluation");
-                evaluationButton.getStyleClass().add("evaluation-button");
-                ActionEvent Event =new ActionEvent();
-                evaluationButton.setUserData(entretien);
-                evaluationButton.setOnAction(this::EntretienEva);
+// Bouton Evaluation (remplacé par une ImageView)
+                ImageView evaluationIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/evaluation.png")));
+                evaluationIcon.setFitWidth(30); // Ajuster la taille de l'icône
+                evaluationIcon.setFitHeight(30);
+                evaluationIcon.setUserData(entretien); // Associer l'objet entretien à l'icône
+                evaluationIcon.setOnMouseClicked(e -> EntretienEva(e)); // Appeler la méthode d'évaluation
 
-                // Ajouter les boutons dans la dernière colonne
-                gridPane.add(deleteButton, 6, row);
-                gridPane.add(updateButton, 7, row);
-                gridPane.add(evaluationButton, 8, row);
+// Ajouter les icônes dans la dernière colonne
+                gridPane.add(deleteIcon, 6, row);
+                gridPane.add(updateIcon, 7, row);
+                gridPane.add(evaluationIcon, 8, row);
+
+                deleteIcon.getStyleClass().add("image-view");
+                updateIcon.getStyleClass().add("image-view");
+                evaluationIcon.getStyleClass().add("image-view");
+
+                // Supprimer les marges entre les icônes
+                GridPane.setMargin(deleteIcon, Insets.EMPTY);
+                GridPane.setMargin(updateIcon, Insets.EMPTY);
+                GridPane.setMargin(evaluationIcon, Insets.EMPTY);
+
+// Appliquer la classe CSS aux cellules contenant les icônes
+                deleteIcon.getStyleClass().add("icon-cell");
+                updateIcon.getStyleClass().add("icon-cell");
+                evaluationIcon.getStyleClass().add("icon-cell");
 
                 row++;
             }
@@ -136,10 +392,10 @@ public class AfficheEntretien implements Initializable {
 
 
 
-    private void EntretienEva(ActionEvent actionEvent) {
+    private void EntretienEva(MouseEvent mouseEvent) {
         // Récupérer l'objet Entretien à partir du bouton
-        Button clickedButton = (Button) actionEvent.getSource();
-        Entretien entretien = (Entretien) clickedButton.getUserData();
+        ImageView clickedIcon = (ImageView) mouseEvent.getSource();
+        Entretien entretien = (Entretien) clickedIcon.getUserData(); // Récupérer l'Entretien associé à l'icône
         System.out.println(entretien);
 
         // Fermer la fenêtre actuelle
@@ -220,9 +476,9 @@ public class AfficheEntretien implements Initializable {
     }
 
     // Méthode de suppression
-    public void DeleteEntretien(ActionEvent actionEvent) throws SQLException {
-        Button clickedButton = (Button) actionEvent.getSource();
-        Entretien entretien = (Entretien) clickedButton.getUserData();  // Récupérer l'Entretien associé au bouton
+    public void DeleteEntretien(MouseEvent mouseEvent) throws SQLException {
+        ImageView clickedIcon = (ImageView) mouseEvent.getSource();
+        Entretien entretien = (Entretien) clickedIcon.getUserData(); // Récupérer l'Entretien associé à l'icône
 
         try {
             serviceEntretien.supprimer(entretien.getIdEntretien());
@@ -234,13 +490,13 @@ public class AfficheEntretien implements Initializable {
     }
 
     // Méthode pour ouvrir la fenêtre de modification
-    public void UpdateEntretien(ActionEvent actionEvent) {
+    public void UpdateEntretien(MouseEvent mouseEvent) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
 
         try {
             // Récupérer l'objet Entretien à partir du bouton
-            Button clickedButton = (Button) actionEvent.getSource();
-            Entretien entretien = (Entretien) clickedButton.getUserData();
+            ImageView clickedIcon = (ImageView) mouseEvent.getSource();
+            Entretien entretien = (Entretien) clickedIcon.getUserData(); // Récupérer l'Entretien associé à l'icône
             //System.out.println(entretien.getIdEntretien());
             // Fermer la fenêtre actuelle
             /*Stage currentStage = (Stage) gridPane.getScene().getWindow();
@@ -308,6 +564,72 @@ public class AfficheEntretien implements Initializable {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre d'ajout.");
         }
+    }
+
+
+
+
+/////////////NOTIF
+
+
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+
+
+    @FXML
+    public void startScheduler() {
+        System.out.println("Démarrage du planificateur...");
+        scheduler.scheduleAtFixedRate(this::checkUpcomingEntretiens, 0, 3, TimeUnit.HOURS);
+    }
+
+    private void checkUpcomingEntretiens() {
+        try {
+            List<Entretien> entretiens = serviceEntretien.afficher(); // Récupérer tous les entretiens
+            System.out.println("Nombre total d'entretiens : " + entretiens.size());
+
+            for (Entretien entretien : entretiens) {
+                LocalDateTime maintenant = LocalDateTime.now();
+                LocalDateTime dateHeureEntretien = LocalDateTime.of(entretien.getDate(), entretien.getHeure());
+                long delai = ChronoUnit.MILLIS.between(maintenant, dateHeureEntretien.minusHours(24)); // 24 heures avant l'entretien
+
+                if (delai > 0) {
+                    System.out.println("Planification de la notification pour : " + dateHeureEntretien.minusHours(24));
+                    scheduleNotification(entretien);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération des entretiens : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void scheduleNotification(Entretien entretien) {
+        LocalDateTime maintenant = LocalDateTime.now();
+        LocalDateTime dateHeureEntretien = LocalDateTime.of(entretien.getDate(), entretien.getHeure());
+        long delai = ChronoUnit.MILLIS.between(maintenant, dateHeureEntretien.minusHours(24)); // 24 heures avant l'entretien
+
+        if (delai > 0) {
+            scheduler.schedule(() -> showNotification(entretien), delai, TimeUnit.MILLISECONDS);
+            System.out.println("Notification planifiée pour : " + dateHeureEntretien.minusHours(24));
+        }
+    }
+
+    private void showNotification(Entretien entretien) {
+        javafx.application.Platform.runLater(() -> {
+            // Charger l'image depuis les ressources
+            Image image = new Image("/image/error.png"); // Chemin de l'image dans le dossier des ressources
+
+            // Créer la notification
+            Notifications notifications = Notifications.create()
+                    .title("Rappel d'entretien") // Titre de la notification
+                    .text("Un entretien est prévu dans 24 heures : " + entretien.getDate() + " à " + entretien.getHeure()) // Texte de la notification
+                    .graphic(new ImageView(image)) // Ajouter l'image à la notification
+                    .hideAfter(Duration.seconds(4)); // Durée d'affichage de la notification (4 secondes)
+
+            // Afficher la notification
+            notifications.show();
+        });
     }
 
 

@@ -330,11 +330,15 @@ public class ListCandidatureBack implements Initializable {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature à analyser.");
         }
     }
-    public void AfficherEntretien()
-    {
-        Candidature selectedCandidature = listViewCandidatures.getSelectionModel().getSelectedItem();
-        if (selectedCandidature != null) {
-
+    public void AfficherEntretien() throws SQLException, IOException {
+        int selectedIndex = listViewCandidatures.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+            List<Candidature> candidatures = serviceCandidature.afficher();
+            int id = candidatures.get(selectedIndex).getId_candidature();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
+            Controller controller = loader.getController();
+            Affentretien controller1 = controller.loadPage("/affentretien.fxml").getController();
+            controller1.setIdCandidature(id);
         }else {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature Pour voir entretien.");
         }
