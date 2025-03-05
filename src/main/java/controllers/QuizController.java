@@ -163,7 +163,7 @@ public class QuizController {
         stage.show();
 
 
-            // Rafraîchir l'affichage après la validation
+        // Rafraîchir l'affichage après la validation
         if (afficheEvaluation != null) {
             afficheEvaluation.refresh();
         }
@@ -178,9 +178,6 @@ public class QuizController {
         if (itemEvaluationFront != null) {
             itemEvaluationFront.updateStars(score); // Mettre à jour les étoiles
         }
-
-
-
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
