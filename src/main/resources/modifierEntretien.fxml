@@ -13,8 +13,12 @@
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="930.0">
          <children>
-            <VBox layoutX="260.0" layoutY="14.0" prefHeight="590.0" prefWidth="394.0" spacing="5.0" stylesheets="@StyleModifEnt.css">
+            <VBox layoutX="260.0" layoutY="14.0" prefHeight="593.0" prefWidth="398.0" spacing="5.0" stylesheets="@StyleModifEnt.css">
                <children>
+                  <Label text="Nom user" />
+                  <ComboBox fx:id="NOMUTILISATEUR" prefWidth="150.0" />
+                  <Label text="Prenom user" />
+                  <ComboBox fx:id="PRENOMUTILISATEUR" prefWidth="150.0" />
                   <Label fx:id="datePickerLabel" text="Date" />
                   <DatePicker fx:id="datePickerMod" prefHeight="45.0" prefWidth="399.0" />
                   <Label fx:id="datePickerLabelC" />
@@ -28,13 +32,6 @@
                   <Label fx:id="localisationFieldLabel" text="Localisation" />
                   <TextField fx:id="localisationFieldMod" prefHeight="46.0" prefWidth="394.0" />
                   <Label fx:id="localisationFieldLabelC" />
-                  <Label fx:id="idCandidatureComboBoxLabel" text="Id candidature" />
-                  <ComboBox fx:id="idCandidatureComboBoxMod" prefHeight="20.0" prefWidth="399.0" />
-                  <Button fx:id="btnMod" lineSpacing="10.0" mnemonicParsing="false" onAction="#ModifierEntretien" prefHeight="41.0" prefWidth="146.0" text="MODIFIER">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
                </children>
             </VBox>
             <Label layoutX="90.0" layoutY="29.0" prefHeight="40.0" prefWidth="170.0" text="Entretien" textFill="#77aad9">
@@ -42,6 +39,11 @@
                   <Font size="36.0" />
                </font>
             </Label>
+            <Button fx:id="btnMod" layoutX="738.0" layoutY="557.0" lineSpacing="10.0" mnemonicParsing="false" onAction="#ModifierEntretien" prefHeight="41.0" prefWidth="146.0" text="MODIFIER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

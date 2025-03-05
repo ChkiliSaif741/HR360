@@ -60,6 +60,13 @@ public class Controller implements Initializable {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }@FXML
+    void AffichEntretienCAN(ActionEvent event) {
+        try {
+            loadPage("/affentretienfront.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

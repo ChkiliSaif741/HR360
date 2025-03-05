@@ -18,13 +18,12 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 public class ModifierEntretien {
 
     @FXML
     private ComboBox<type> typeComboBoxMod;
-    @FXML
-    private ComboBox<Integer> idCandidatureComboBoxMod;
     @FXML
     private TextField heureFieldMod;
     @FXML
@@ -46,8 +45,6 @@ public class ModifierEntretien {
     @FXML
     private Label statutComboBoxLabel;
     @FXML
-    private Label idCandidatureComboBoxLabel;
-    @FXML
     private Label heureFieldLabel;
     @FXML
     private Button btnMod;
@@ -59,6 +56,10 @@ public class ModifierEntretien {
     private Label heureFieldLabelC;
     @FXML
     private Label datePickerLabelC;
+    @FXML
+    private ComboBox<String> NOMUTILISATEUR;
+    @FXML
+    private ComboBox<String> PRENOMUTILISATEUR;
 
 
     public void setEntretien(Entretien entretien) {
@@ -69,7 +70,9 @@ public class ModifierEntretien {
         statutComboBoxMod.setValue(entretien.getStatut());
         //lienMeetFieldMod.setText(entretien.getLien_meet());
         localisationFieldMod.setText(entretien.getLocalisation());
-        idCandidatureComboBoxMod.setValue(entretien.getIdCandidature());
+        //idCandidatureComboBoxMod.setValue(entretien.getIdCandidature());
+        NOMUTILISATEUR.setValue(entretien.getNom());
+        PRENOMUTILISATEUR.setValue(entretien.getPrenom());
     }
 
     @FXML
@@ -78,14 +81,32 @@ public class ModifierEntretien {
 
         typeComboBoxMod.getItems().setAll(type.values());
         statutComboBoxMod.getItems().setAll(statut.values());
-        try {
+        /*try {
             idCandidatureComboBoxMod.getItems().addAll(new ServiceEntretien().getIdsCandidature());
         } catch (SQLException e) {
             e.printStackTrace();
+        }*/
+
+// Charger les noms d'utilisateurs dans le ComboBox NOMUTILISATEUR
+        try {
+            List<String> nomsUtilisateurs = serviceEntretien.getAllNomsUtilisateurs();
+            NOMUTILISATEUR.getItems().setAll(nomsUtilisateurs);
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors du chargement des noms d'utilisateurs : " + e.getMessage());
         }
 
-
-
+        // Ajouter un écouteur pour charger les prénoms correspondants au nom sélectionné
+        NOMUTILISATEUR.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    List<String> prenoms = serviceEntretien.getPrenomsUtilisateurByNom(newValue);
+                    PRENOMUTILISATEUR.getItems().setAll(prenoms);
+                    PRENOMUTILISATEUR.getSelectionModel().selectFirst(); // Sélectionner le premier prénom par défaut
+                } catch (SQLException e) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors du chargement des prénoms : " + e.getMessage());
+                }
+            }
+        });
         // Remplir les ComboBox avec les valeurs des énumérations
         //typeComboBoxMod.setItems(FXCollections.observableArrayList(type.values()));
         //statutComboBoxMod.setItems(FXCollections.observableArrayList(statut.values()));
@@ -161,10 +182,10 @@ public class ModifierEntretien {
                 }
             }*/
 
-            if (idCandidatureComboBoxMod.getValue() == null) {
+            /*if (idCandidatureComboBoxMod.getValue() == null) {
                 showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "L'ID Candidature est obligatoire !");
                 return;
-            }
+            }*/
 
 
 
@@ -237,7 +258,11 @@ public class ModifierEntretien {
             entretien.setStatut(statutComboBoxMod.getValue());
             //entretien.setLien_meet(lienMeetFieldMod.getText());
             entretien.setLocalisation(localisationFieldMod.getText());
-            entretien.setIdCandidature(idCandidatureComboBoxMod.getValue());
+            //entretien.setIdCandidature(idCandidatureComboBoxMod.getValue());
+            // Mettre à jour les informations de l'entretien
+            entretien.setNom(NOMUTILISATEUR.getValue());
+            entretien.setPrenom(PRENOMUTILISATEUR.getValue());
+
 
             // Enregistrer les modifications dans la base de données
             ServiceEntretien serviceEntretien = new ServiceEntretien();

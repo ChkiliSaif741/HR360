@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import services.ServiceEvaluation;
 import utils.statut;
 import utils.type;
-
+import utils.commentaire;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -25,8 +25,6 @@ public class AjoutEvaluation {
     private TextField noteTechnique;
     @javafx.fxml.FXML
     private TextField noteSoftSkills;
-    @javafx.fxml.FXML
-    private TextField commentaire;
 
     private ServiceEvaluation serviceEvaluation;
 
@@ -37,6 +35,12 @@ public class AjoutEvaluation {
     private Label noteTechniqueC;
     @FXML
     private Label commentaireC;
+    @FXML
+    private ComboBox commentaire;
+    @FXML
+    private TextField titreEva;
+    @FXML
+    private Label titreEvaC;
 
 
     @FXML
@@ -44,6 +48,8 @@ public class AjoutEvaluation {
         serviceEvaluation = new ServiceEvaluation();
         //chargerIdEntretien(); // Charger les idEntretien dans la ComboBox
         //chargerIdEvaluateur(); // Charger les id dans la ComboBox
+        commentaire.setItems(FXCollections.observableArrayList(utils.commentaire.EN_ATTENTE));
+
     }
 
 
@@ -108,20 +114,23 @@ public class AjoutEvaluation {
         }
 
         // Vérification du champ commentaire
-        if (commentaire.getText().trim().isEmpty()) {
+        if (commentaire.getValue() == null) {
             commentaireC.setText("Le commentaire est obligatoire !");
             isValid = false;
         } else {
             commentaireC.setText(""); // Effacer le message d'erreur
         }
 
+
+        if (titreEva.getText() == null) {
+            titreEvaC.setText("Le titre est obligatoire !");
+            isValid = false;
+        } else {
+            titreEvaC.setText(""); // Effacer le message d'erreur
+        }
+
         return isValid;
     }
-
-
-
-
-
 
     @FXML
     public void AddEvaluation(ActionEvent actionEvent) {
@@ -138,16 +147,26 @@ public class AjoutEvaluation {
             }
 
             // Récupérer les valeurs validées
+            String titre = titreEva.getText();
             float noteTech = Float.parseFloat(noteTechnique.getText());
             float noteSS = Float.parseFloat(noteSoftSkills.getText());
             //LocalDate dateEva = dateEvaluation.getValue();
-            String comment = commentaire.getText();
+            //commentaire comment = (utils.commentaire) commentaire.getValue();
             int idEva = idEntretien;
             //int idE = (int) id.getValue();
             LocalDateTime dateEvaluation = LocalDateTime.now();
 
+            // Contrôle de saisie
+            if (titreEva == null || noteTechnique == null || noteSoftSkills == null || utils.commentaire.EN_ATTENTE == null ) {
+                titreEvaC.setText("Sélectionnez une heure !");
+                noteTechniqueC.setText("Sélectionnez une localisation !");
+                noteSoftSkillsC.setText("Sélectionnez une date !");
+                commentaireC.setText("Sélectionnez un type !");
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Tous les champs obligatoires doivent être remplis.");
+                return;
+            }
             // Créer et ajouter l'évaluation
-            Evaluation evaluation = new Evaluation(noteTech, noteSS, comment, dateEvaluation, idEva);
+            Evaluation evaluation = new Evaluation(titre,noteTech, noteSS, utils.commentaire.EN_ATTENTE, dateEvaluation, idEva);
             serviceEvaluation.ajouter(evaluation);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation ajoutée avec succès !");
 

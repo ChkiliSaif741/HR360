@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
+import utils.*;
 
 public class ModifierEvaluation implements Initializable {
     @javafx.fxml.FXML
@@ -23,8 +24,6 @@ public class ModifierEvaluation implements Initializable {
     //private ComboBox<Integer> idEntretienMod;
     @javafx.fxml.FXML
     private TextField noteTechniqueMod;
-    @javafx.fxml.FXML
-    private TextField commentaireMod;
     @javafx.fxml.FXML
     private Button ModEvaluation;
 
@@ -42,6 +41,12 @@ public class ModifierEvaluation implements Initializable {
     private Label noteSoftSkillsModC;
     @FXML
     private Label noteTechniqueModC;
+    @FXML
+    private ComboBox commentaireMod;
+    @FXML
+    private Label titreEvaModC;
+    @FXML
+    private TextField titreEvaMod;
 
 
     @Override
@@ -49,6 +54,7 @@ public class ModifierEvaluation implements Initializable {
         serviceEvaluation = new ServiceEvaluation();
         //chargerIdEntretien(); // Charger les ID des entretiens dans la ComboBox
         //chargerIdEvaluateur(); // Charger les ID des évaluateurs dans la ComboBox
+        commentaireMod.getItems().setAll(commentaire.values());
 
         /*try {
             //idEntretienMod.getItems().addAll(new ServiceEvaluation().getIdsEntretien());
@@ -123,11 +129,18 @@ public class ModifierEvaluation implements Initializable {
         }
 
         // Vérification du champ commentaire
-        if (commentaireMod.getText().trim().isEmpty()) {
+        if (commentaireMod.getValue() == null) {
             commentaireModC.setText("Le commentaire est obligatoire !");
             isValid = false;
         } else {
             commentaireModC.setText(""); // Effacer le message d'erreur
+        }
+
+        if (titreEvaMod.getText() == null) {
+            titreEvaModC.setText("Le titre est obligatoire !");
+            isValid = false;
+        } else {
+            titreEvaModC.setText(""); // Effacer le message d'erreur
         }
 
         return isValid;
@@ -143,15 +156,20 @@ public class ModifierEvaluation implements Initializable {
         }
         try {
             // Récupérer les valeurs des champs
+            String titre = titreEvaMod.getText();
             float noteTech = Float.parseFloat(noteTechniqueMod.getText());
             float noteSS = Float.parseFloat(noteSoftSkillsMod.getText());
             //LocalDate dateEva = dateEvaluationMod.getValue();
-            String comment = commentaireMod.getText();
+            commentaire comment = (utils.commentaire) commentaireMod.getValue();
+
             int idEva = idEntretien; // Utiliser l'idEntretien déjà défini
             //int idE = idMod.getValue(); // Récupérer l'ID de l'évaluateur sélectionné
-
+// Récupérer l'évaluation existante pour conserver le score du quiz
+            Evaluation existingEvaluation = serviceEvaluation.getById(idEvaluation);
+            int scorequiz = existingEvaluation.getScorequiz();
             // Créer l'objet Evaluation avec l'ID de l'évaluation à modifier
-            Evaluation evaluation = new Evaluation(idEvaluation, noteTech, noteSS, comment, LocalDateTime.now(), idEva);
+            Evaluation evaluation = new Evaluation(idEvaluation,titre, noteTech, noteSS, comment, LocalDateTime.now(), idEva);
+            evaluation.setScorequiz(scorequiz); // Conserver le score du quiz existant
 
             // Modifier l'évaluation dans la base de données
             serviceEvaluation.modifier(evaluation);
@@ -164,7 +182,7 @@ public class ModifierEvaluation implements Initializable {
             Controller controller0 = loader.getController();
             AfficheEvaluation controller = controller0.loadPage("/afficheevaluation.fxml").getController();
             controller.setIdEntretien(idEntretien);
-            commentaireMod.getScene().setRoot(root);            // Rediriger vers l'affichage des évaluations
+            noteSoftSkillsMod.getScene().setRoot(root);            // Rediriger vers l'affichage des évaluations
             /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/afficheevaluation.fxml"));
             Parent root = loader.load();
             AfficheEvaluation controller = loader.getController();
@@ -198,8 +216,11 @@ public class ModifierEvaluation implements Initializable {
         this.noteSoftSkillsMod.setText(String.valueOf(noteSoftSkills));
     }
 
-    public void setCommentaireMod(String commentaire) {
-        this.commentaireMod.setText(commentaire);
+    public void setCommentaireMod(commentaire commentaire) {
+        this.commentaireMod.setValue(commentaire);
+    }
+    public void settitreMod(String titre) {
+        this.titreEvaMod.setText(titre);
     }
 
     /*public void setDateEvaluationMod(LocalDateTime dateEvaluation) {
@@ -234,6 +255,7 @@ public class ModifierEvaluation implements Initializable {
     public void setEvaluationData(Evaluation evaluation) {
         this.evaluation = evaluation;
         setIdEvaluation(evaluation.getIdEvaluation());
+        settitreMod(evaluation.getTitreEva());
         setNoteTechniqueMod(evaluation.getNoteTechnique());
         setNoteSoftSkillsMod(evaluation.getNoteSoftSkills());
         setCommentaireMod(evaluation.getCommentaire());

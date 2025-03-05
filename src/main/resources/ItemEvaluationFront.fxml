@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorEva" prefHeight="350.0" prefWidth="350.0" stylesheets="@styleEva.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ItemEvaluationFront">
+    <children>
+        <VBox prefHeight="350.0" prefWidth="350.0">
+            <children>
+                <HBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="350.0">
+                    <children>
+                        <Label prefHeight="78.0" prefWidth="146.0" text="Titre Evaluation :">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Label fx:id="titreEva" prefHeight="50.0" prefWidth="218.0">
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox prefHeight="80.0" prefWidth="350.0">
+                    <children>
+                        <Label prefHeight="78.0" prefWidth="146.0" text="Note Technique : ">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Label fx:id="noteTechnique" prefHeight="70.0" prefWidth="215.0">
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox prefHeight="80.0" prefWidth="350.0">
+                    <children>
+                        <Label prefHeight="78.0" prefWidth="130.0" text="Note SoftSkills : ">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Label fx:id="noteSoftSkills" prefHeight="70.0" prefWidth="226.0">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox prefHeight="80.0" prefWidth="350.0">
+                    <children>
+                        <Label prefHeight="77.0" prefWidth="126.0" text="Commentaire : ">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Label fx:id="commentaire" prefHeight="58.0" prefWidth="234.0">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox prefHeight="80.0" prefWidth="350.0">
+                    <children>
+                        <Label prefHeight="73.0" prefWidth="144.0" text="Date Evaluation : ">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Label fx:id="dateEvaluation" prefHeight="70.0" prefWidth="218.0">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox layoutX="10.0" layoutY="220.0" prefHeight="80.0" prefWidth="350.0">
+                    <children>
+                        <Label prefHeight="73.0" prefWidth="144.0" text="Score Quiz :">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Label fx:id="scorequiz" prefHeight="58.0" prefWidth="299.0">
+                            <font>
+                                <Font name="Cambria" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox layoutX="10.0" layoutY="260.0" prefHeight="34.0" prefWidth="350.0">
+                    <children>
+                        <ImageView fx:id="star1" fitHeight="38.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/rate.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="star2" fitHeight="38.0" fitWidth="37.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/rate.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="star3" fitHeight="38.0" fitWidth="37.0" layoutX="48.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/rate.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="star4" fitHeight="38.0" fitWidth="37.0" layoutX="85.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/rate.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="star5" fitHeight="38.0" fitWidth="37.0" layoutX="123.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/rate.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <HBox prefHeight="80.0" prefWidth="350.0">
+                    <children>
+                        <ImageView fitHeight="30.0" fitWidth="42.0" onMouseClicked="#handleAssociateQuiz" pickOnBounds="true" preserveRatio="true" translateX="290.0" translateY="13.0">
+                            <image>
+                                <Image url="@image/quizTime.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="21.0" fitWidth="31.0" onMouseClicked="#showQuiz" pickOnBounds="true" preserveRatio="true" translateX="230.0" translateY="18.0">
+                            <image>
+                                <Image url="@image/quiz.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+    <styleClass>
+        <String fx:value="shadow" />
+        <String fx:value="fruit-item" />
+    </styleClass>
+</AnchorPane>

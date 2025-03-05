@@ -11,28 +11,24 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" stylesheets="@StyleAjoutEnt.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutEntretien">
     <children>
-        <VBox layoutX="262.0" layoutY="16.0" prefHeight="450.0" prefWidth="400.0" spacing="5.0">
+        <VBox layoutX="263.0" layoutY="14.0" prefHeight="580.0" prefWidth="398.0" spacing="5.0">
             <children>
-            <Label fx:id="labeldate" text="Date" />
+            <Label text="Nom user" />
+            <ComboBox fx:id="NOMUTILISATEUR" prefWidth="150.0" />
+            <Label text="Prenom user" />
+            <ComboBox fx:id="PRENOMUTILISATEUR" prefWidth="150.0" />
+                <Label fx:id="labeldate" text="Date" />
                 <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="460.0" />
-            <Label fx:id="labeldateC" />
-            <Label fx:id="labelheure" text="Heure" />
+                <Label fx:id="labeldateC" />
+                <Label fx:id="labelheure" text="Heure" />
                 <TextField fx:id="heureField" />
-            <Label fx:id="labelheureC" />
-            <Label fx:id="labeltype" text="Type" />
+                <Label fx:id="labelheureC" />
+                <Label fx:id="labeltype" text="Type" />
                 <ComboBox fx:id="typeComboBox" prefHeight="42.0" prefWidth="407.0" stylesheets="@StyleAjoutEnt.css" />
-            <Label fx:id="labeltypeC" />
-            <Label fx:id="labellocalisation" text="Localisation" />
+                <Label fx:id="labeltypeC" />
+                <Label fx:id="labellocalisation" text="Localisation" />
                 <TextField fx:id="localisationField" />
-            <Label fx:id="labellocalisationC" />
-            <Label fx:id="labelidcandidature" text="Id candidature" />
-                <ComboBox fx:id="idCandidatureComboBox" prefHeight="26.0" prefWidth="459.0" />
-            <Label />
-            <Button fx:id="btnAdd" lineSpacing="10.0" mnemonicParsing="false" onAction="#AddEntretien" prefHeight="40.0" prefWidth="93.0" text="ADD">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
+                <Label fx:id="labellocalisationC" />
             </children>
         </VBox>
         <Label layoutX="75.0" layoutY="14.0" prefHeight="40.0" prefWidth="170.0" text="Entretien" textFill="#77aad9">
@@ -40,5 +36,10 @@
                 <Font size="36.0" />
             </font>
         </Label>
+          <Button fx:id="btnAdd" layoutX="750.0" layoutY="559.0" lineSpacing="10.0" mnemonicParsing="false" onAction="#AddEntretien" prefHeight="40.0" prefWidth="93.0" text="ADD">
+              <font>
+                  <Font size="14.0" />
+              </font>
+          </Button>
     </children>
 </AnchorPane>

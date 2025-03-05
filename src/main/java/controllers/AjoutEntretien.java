@@ -39,8 +39,6 @@ public class AjoutEntretien implements Initializable {
     private TextField localisationField;
     @FXML
     private DatePicker datePicker;
-    @FXML
-    private ComboBox idCandidatureComboBox;
 
     private ServiceEntretien serviceEntretien;
     @FXML
@@ -49,8 +47,6 @@ public class AjoutEntretien implements Initializable {
     private Label labeldate;
     @FXML
     private Label labelheure;
-    @FXML
-    private Label labelidcandidature;
     @FXML
     private Label labeltype;
 
@@ -66,11 +62,24 @@ public class AjoutEntretien implements Initializable {
     private Label labelheureC;
     @FXML
     private Label labellocalisationC;
+    @FXML
+    private ComboBox NOMUTILISATEUR;
+    @FXML
+    private ComboBox PRENOMUTILISATEUR;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         serviceEntretien = new ServiceEntretien();
+
+        loadNomsUtilisateurs();
+
+        // Gérer la sélection du nom d'utilisateur pour filtrer les prénoms
+        NOMUTILISATEUR.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                loadPrenomsUtilisateurs(newValue.toString());
+            }
+        });
 
         // Remplir les ComboBox avec les valeurs des énumérations
         typeComboBox.setItems(FXCollections.observableArrayList(type.values()));
@@ -83,17 +92,20 @@ public class AjoutEntretien implements Initializable {
             if (newValue == type.En_ligne) {
                 localisationField.setVisible(false);
                 labellocalisation.setVisible(false);
+                labellocalisationC.setVisible(false);
             } else {
                 localisationField.setVisible(true);
                 labellocalisation.setVisible(true);
+                labellocalisationC.setVisible(true);
 
             }
         });
 
         localisationField.setVisible(false);
         labellocalisation.setVisible(false);
+        labellocalisationC.setVisible(false);
 
-        validateNumericField(idCandidatureComboBox.getEditor());
+        //validateNumericField(idCandidatureComboBox.getEditor());
 
         //validateURLField(lienMeetField);
         //validateTextOnlyField(localisationField);
@@ -101,7 +113,7 @@ public class AjoutEntretien implements Initializable {
         // Vérifier la validité avant d'activer le bouton
         addFormListeners();
         // Charger les idCandidature depuis la base de données
-        chargerIdCandidature();
+        //chargerIdCandidature();
     }
 
     private void checkFormValidity() {
@@ -167,13 +179,6 @@ public class AjoutEntretien implements Initializable {
             }
         }*/
 
-        // Contrôle de l'ID Candidature
-        if (idCandidatureComboBox.getValue() == null) {
-            labelidcandidature.setText("Sélectionnez une candidature !");
-            isValid = false;
-        } else {
-            labelidcandidature.setText("");
-        }
 
         // Activer/désactiver le bouton Ajouter
         btnAdd.setDisable(!isValid);
@@ -181,7 +186,7 @@ public class AjoutEntretien implements Initializable {
 
 
     private void addFormListeners() {
-        idCandidatureComboBox.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
+        //idCandidatureComboBox.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
         datePicker.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
         typeComboBox.valueProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
         localisationField.textProperty().addListener((obs, oldVal, newVal) -> checkFormValidity());
@@ -220,14 +225,14 @@ public class AjoutEntretien implements Initializable {
     }*/
 
     // Méthode pour charger les idCandidature dans la ComboBox
-    private void chargerIdCandidature() {
+    /*private void chargerIdCandidature() {
         try {
             List<Integer> idCandidatures = serviceEntretien.getIdsCandidature(); // À implémenter dans ServiceEntretien
             idCandidatureComboBox.setItems(FXCollections.observableArrayList(idCandidatures));
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Impossible de charger les idCandidature : " + e.getMessage());
         }
-    }
+    }*/
 
     //@FXML
     /*public void AddEntretien(ActionEvent actionEvent) throws GeneralSecurityException, IOException {
@@ -252,19 +257,19 @@ public class AjoutEntretien implements Initializable {
             return;
         }*/
 
-        // Vérifier si le type est "En_ligne" et que le lien Meet est vide
+    // Vérifier si le type est "En_ligne" et que le lien Meet est vide
         /*if (type == type.En_ligne && (lienMeet == null || lienMeet.isEmpty())) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le lien Meet est obligatoire pour un entretien en ligne.");
             return;
         }*/
 
-        // Vérifier si le type est "Presentiel" et que la localisation est vide
+    // Vérifier si le type est "Presentiel" et que la localisation est vide
         /*if (type == type.Presentiel && (localisation == null || localisation.isEmpty())) {
             showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "La localisation est obligatoire pour un entretien présentiel.");
             return;
         }*/
 
-        // Convertir l'heure en LocalTime
+    // Convertir l'heure en LocalTime
         /*LocalTime heure;
         try {
             heure = LocalTime.parse(heureText);
@@ -339,6 +344,23 @@ public class AjoutEntretien implements Initializable {
     }*/
 
 
+    public void loadNomsUtilisateurs() {
+        try {
+            List<String> noms = serviceEntretien.getAllNomsUtilisateurs();
+            NOMUTILISATEUR.setItems(FXCollections.observableArrayList(noms));
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur lors du chargement des prénoms d'utilisateurs : ", "nom inconnu!");
+        }
+    }
+    public void loadPrenomsUtilisateurs(String nom) {
+        try {
+            List<String> prenoms = serviceEntretien.getPrenomsUtilisateurByNom(nom);
+            PRENOMUTILISATEUR.setItems(FXCollections.observableArrayList(prenoms));
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur lors du chargement des prénoms d'utilisateurs : ", "prenom inconnu!");
+        }
+    }
+
     @FXML
     public void AddEntretien(ActionEvent actionEvent) throws IOException, URISyntaxException {
 
@@ -351,10 +373,12 @@ public class AjoutEntretien implements Initializable {
         type type = (utils.type) typeComboBox.getValue();
         //statut statut = (utils.statut) statutComboBox.getValue();
         String localisation = localisationField.getText();
-        Integer idCandidature = (Integer) idCandidatureComboBox.getValue();
+        //Integer idCandidature = (Integer) idCandidatureComboBox.getValue();
+        String nom = (String) NOMUTILISATEUR.getValue(); // Nom de l'utilisateur
+        String prenom = (String) PRENOMUTILISATEUR.getValue();// Prénom de l'utilisateur
 
         // Contrôle de saisie
-        if (date == null || heureText == null || heureText.isEmpty() || type == null || statut.Planifié == null || idCandidature == null) {
+        if (date == null || heureText == null || heureText.isEmpty() || type == null || statut.Planifié == null ) {
             labelheureC.setText("Sélectionnez une heure !");
             labellocalisationC.setText("Sélectionnez une localisation !");
             labeldateC.setText("Sélectionnez une date !");
@@ -451,7 +475,7 @@ public class AjoutEntretien implements Initializable {
 
         // Créer l'objet Entretien
 
-        Entretien entretien = new Entretien(date, heure, type, statut.Planifié, null, localisation, idCandidature);
+        Entretien entretien = new Entretien(date, heure, type, statut.Planifié, null, localisation ,nom,prenom);
 
         // Ajouter l'entretien dans la base de données
         try {
@@ -486,7 +510,7 @@ public class AjoutEntretien implements Initializable {
         heureField.clear();
         typeComboBox.setValue(null);
         localisationField.clear();
-        idCandidatureComboBox.setValue(null);
+        //idCandidatureComboBox.setValue(null);
     }
 
     // Méthode pour afficher des alertes

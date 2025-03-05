@@ -123,6 +123,11 @@
       </VBox>
       <HBox layoutY="175.0" prefHeight="39.0" prefWidth="200.0">
          <children>
+            <ImageView fitHeight="22.0" fitWidth="23.0" onMouseClicked="#handleOpenMeet" pickOnBounds="true" preserveRatio="true" translateX="120.0" translateY="15.0">
+               <image>
+                  <Image url="@image/meet.png" />
+               </image>
+            </ImageView>
             <ImageView fitHeight="30.0" fitWidth="29.0" onMouseClicked="#modifierEnt" pickOnBounds="true" preserveRatio="true" translateX="120.0" translateY="10.0">
                <image>
                   <Image url="@image/modifier.png" />

@@ -15,6 +15,7 @@ import com.google.api.services.calendar.CalendarScopes;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +24,11 @@ public class GoogleOAuth {
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
-    private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
+    //private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
+    private static final List<String> SCOPES = Arrays.asList(
+            CalendarScopes.CALENDAR,
+            CalendarScopes.CALENDAR_EVENTS
+    );
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";  // Placez ce fichier dans src/main/resources
 
     public static Credential getCredentials(final HttpTransport HTTP_TRANSPORT) throws IOException {
