@@ -39,6 +39,15 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
+                        <JFXButton fx:id="favoris" layoutX="10.0" layoutY="10.0" onAction="#onFavorisBtn" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Favoris">
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/favoriss.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                         <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="ADD">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">

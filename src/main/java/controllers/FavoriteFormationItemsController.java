@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Formation;
+import entities.MyListener;
 import entities.Participation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,13 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import entities.MyListener;
 import services.ServiceFormation;
-import services.ServiceParticipation;
 
 import java.sql.SQLException;
 
-public class FormationItemsController {
+public class FavoriteFormationItemsController {
+
     @FXML
     private Label nameLabel;
 
@@ -26,6 +26,9 @@ public class FormationItemsController {
 
     @FXML
     private Button favoriteBtn;
+
+
+    private FavoriteFormationsEMPController parentControler;
 
 
     @FXML
@@ -45,6 +48,7 @@ public class FormationItemsController {
         // Vérifier si la formation est favorite et mettre à jour le bouton
         boolean isFavorite = formation.isFavorite();
         updateFavoriteButton(isFavorite);
+
     }
 
     private void updateFavoriteButton(boolean isFavorite) {
@@ -77,15 +81,13 @@ public class FormationItemsController {
             }
             // Mettre à jour le bouton après l'action
             updateFavoriteButton(!isFavorite);
+            parentControler.refreshFormations();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
-
-
-
-
-
+    public void setParentControler(FavoriteFormationsEMPController parentControler) {
+        this.parentControler = parentControler;
+    }
 }

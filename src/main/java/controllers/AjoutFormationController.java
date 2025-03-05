@@ -99,24 +99,13 @@ public class AjoutFormationController implements Initializable {
             // Réinitialiser les champs après l'ajout
             reinitialiserChamps();
 
-            // Fermer la fenêtre actuelle et ouvrir la fenêtre d'affichage
-            Stage currentStage = (Stage) titreField.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FormationsRH.fxml"));
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent parent = loader.load();
+            Controller controller = loader.getController();
+            controller.loadPage("/FormationsRH.fxml");
+            titreField.getScene().setRoot(parent);
 
-            // Créer une nouvelle scène
-            Scene scene = new Scene(root);
 
-            // Créer une nouvelle fenêtre (Stage)
-            Stage newStage = new Stage();
-            newStage.setScene(scene);
-            newStage.setTitle("Affichage des formations");
-
-            // Afficher la fenêtre
-            newStage.show();
-
-            // Fermer la fenêtre actuelle
-            currentStage.close();
 
         } catch (SQLException | IOException e) {
             alert.errorMessage("Erreur lors de l'ajout de la formation : " + e.getMessage());

@@ -42,6 +42,9 @@ public class Controller implements Initializable {
 
 
     @FXML
+    private JFXButton favoris;
+
+    @FXML
     private JFXButton formationBtn;
 
     @FXML
@@ -89,6 +92,16 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void onFavorisBtn(ActionEvent event) {
+        try {
+            loadPage("/FavoriteFormationsEMP.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
 
 

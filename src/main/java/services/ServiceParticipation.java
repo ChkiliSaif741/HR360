@@ -132,5 +132,25 @@ public class ServiceParticipation implements IService<Participation> {
         }
     }
 
+    public List<Participation> getParticipationsByUser(int idUser) throws SQLException {
+        List<Participation> participations = new ArrayList<>();
+        String query = "SELECT * FROM participation WHERE idUser = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, idUser);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Participation participation = new Participation(
+                        resultSet.getInt("idFormation"),
+                        resultSet.getInt("idUser")
+                );
+                participations.add(participation);
+            }
+        }
+        return participations;
+    }
+
+
+
+
 
 }
