@@ -1,0 +1,92 @@
+/* Style général */
+.root {
+    -fx-background-color: #f5f5f5; /* Fond gris clair */
+}
+
+/* Barre latérale */
+.right-bar {
+    -fx-background-color: #2c3e50; /* Bleu foncé */
+    -fx-padding: 20px;
+    -fx-border-radius: 10px;
+}
+
+/* Titre principal */
+.Label {
+    -fx-font-family: "Poppins", "Arial", sans-serif;
+    -fx-text-fill: #ecf0f1; /* Blanc cassé */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.Label[text="Formations"] {
+    -fx-font-size: 36px;
+    -fx-text-fill: #3498db; /* Bleu clair */
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+}
+
+/* Champs de texte */
+.TextField {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+.TextField:focused {
+    -fx-border-color: #2980b9; /* Bleu dynamique */
+    -fx-background-color: #ecf0f1;
+}
+
+/* Boutons */
+.Button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px 15px;
+}
+
+.Button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.Button:pressed {
+    -fx-background-color: #1f618d;
+}
+
+/* Carte de formation sélectionnée */
+.chosen-fruit-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 5, 0, 0, 2);
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Style des boutons "Modifier", "Supprimer" et "Participants" */
+.add-btn {
+    -fx-background-color: #e74c3c; /* Rouge */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+.add-btn:hover {
+    -fx-background-color: #c0392b;
+}
+
+.add-btn:pressed {
+    -fx-background-color: #922b21;
+}

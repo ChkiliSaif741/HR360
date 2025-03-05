@@ -1,0 +1,103 @@
+/* Appliquer un fond clair avec un léger dégradé */
+.AnchorPane {
+    -fx-background-color: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
+}
+
+/* Style du titre principal */
+.Label {
+    -fx-font-family: "Arial";
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+}
+
+/* Style global des Labels */
+.Label {
+    -fx-font-family: "Poppins", "Arial", sans-serif;
+    -fx-text-fill: #34495e; /* Bleu foncé doux */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 10px;
+}
+
+/* Style spécifique pour les titres */
+.Label[titre] {
+    -fx-font-size: 20px;
+    -fx-text-fill: #2c3e50; /* Bleu foncé */
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
+
+/* Style spécifique pour le titre principal "Formation" */
+.Label[text="Formation"] {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2980b9; /* Bleu dynamique */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+
+/* Mise en forme des champs de saisie */
+.TextField, DatePicker {
+    -fx-pref-height: 35px;
+    -fx-pref-width: 350px;
+    -fx-padding: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #2980b9;
+    -fx-background-color: #ffffff;
+    -fx-font-size: 14px;
+}
+
+/* Effet au survol des champs */
+.TextField:hover, DatePicker:hover {
+    -fx-border-color: #1abc9c;
+}
+
+/* Style des boutons */
+.Button {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-pref-height: 40px;
+    -fx-pref-width: 150px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s;
+}
+
+/* Effet au survol des boutons */
+.Button:hover {
+    -fx-background-color: #1abc9c;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Mise en forme du conteneur principal */
+.VBox {
+    -fx-alignment: center;
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #2980b9;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
+}
+
+/* Personnalisation du DatePicker */
+.DatePicker .arrow-button {
+    -fx-background-color: #2980b9;
+}
+
+.DatePicker .arrow-button:hover {
+    -fx-background-color: #1abc9c;
+}
+
+.DatePicker .text-field {
+    -fx-background-color: white;
+}

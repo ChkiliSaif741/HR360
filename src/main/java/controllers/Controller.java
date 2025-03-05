@@ -103,6 +103,14 @@ public class Controller implements Initializable {
     }
 
 
+    @FXML
+    void onInfoBtn(ActionEvent event) {
+        try {
+            loadPage("/profilEMP.fxml");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
 
     @FXML

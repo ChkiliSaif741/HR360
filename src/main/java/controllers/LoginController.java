@@ -343,7 +343,8 @@ public class LoginController implements Initializable {
                     root = loader.load();
 
                     Controller controller = loader.getController();
-                    FormationsControllerEMP formationsController = controller.loadPage("/FormationsEMP.fxml").getController();
+                    profilEMPController profilController = controller.loadPage("/profilEMP.fxml").getController();
+                    profilController.setUtilisateur(utilisateur);
                 } else if (role.equals("Candidat")) {
                     loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
                     root = loader.load();

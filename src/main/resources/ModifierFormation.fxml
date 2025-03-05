@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="575.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierFormation">
+<AnchorPane prefHeight="575.0" prefWidth="743.0" stylesheets="StyleAjoutFormation.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierFormation">
    <children>
       <AnchorPane layoutX="10.0" layoutY="38.0" prefHeight="538.0" prefWidth="758.0">
          <children>

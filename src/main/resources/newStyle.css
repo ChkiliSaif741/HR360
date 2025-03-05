@@ -45,10 +45,87 @@
     -fx-background-radius: 30;
 }
 
-.fruit-item{
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 30;
+.fruit-item {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15px; /* Réduction pour un look plus équilibré */
+    -fx-border-color: #dcdde1; /* Ajout d'une bordure subtile */
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2); /* Ajout d'un ombrage doux */
+    -fx-transition: all 0.3s ease-in-out;
 }
+
+/* Effet au survol */
+.fruit-item:hover {
+    -fx-background-color: #f8f9fa; /* Légère variation pour un effet interactif */
+    -fx-border-color: #b2bec3;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 8, 0, 0, 3);
+}
+
+/* Effet lorsqu'on clique */
+.fruit-item:pressed {
+    -fx-background-color: #ecf0f1;
+    -fx-border-color: #95a5a6;
+}
+
+
+.item {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f8f9fa); /* Dégradé subtil */
+    -fx-background-radius: 20px;
+    -fx-border-color: #dcdde1;
+    -fx-border-width: 1px;
+    -fx-padding: 15px;
+    -fx-spacing: 10px; /* Espacement interne */
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 3);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Effet au survol */
+.item:hover {
+    -fx-background-color: linear-gradient(to bottom, #f1f2f6, #dfe4ea);
+    -fx-border-color: #b2bec3;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 8, 0, 0, 3);
+}
+
+/* Effet lorsqu'on clique */
+.item:pressed {
+    -fx-background-color: #dcdde1;
+    -fx-border-color: #95a5a6;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 5, 0, 0, 2);
+}
+
+/* Style du texte dans l'item */
+.item Label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+/* Style des boutons dans l'item */
+.item Button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 10px;
+    -fx-padding: 8px 15px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+
+
+/* Effet au survol du bouton */
+.item Button:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Effet lorsqu'on clique sur le bouton */
+.item Button:pressed {
+    -fx-background-color: #1f618d;
+}
+
 
 /* Zone de chat */
 .chat-box {

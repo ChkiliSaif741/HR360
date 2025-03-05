@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -116,11 +115,6 @@
                             </VBox.margin>
                             <children>
                                 <Pane prefHeight="65.0" prefWidth="393.0" HBox.hgrow="ALWAYS" />
-                                <Button mnemonicParsing="false">
-                                    <graphic>
-                                        <FontAwesomeIcon glyphName="PLUS" />
-                                    </graphic>
-                                </Button>
                             </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
@@ -160,9 +154,9 @@
 
             <right>
                 <!-- Zone de chat -->
-                <VBox prefHeight="600.0" prefWidth="300.0" styleClass="chat-box" stylesheets="@newStyle.css" BorderPane.alignment="CENTER">
+                <VBox prefHeight="600.0" prefWidth="300.0" stylesheets="@styless.css" BorderPane.alignment="CENTER">
                     <children>
-                        <Label styleClass="chat-title" stylesheets="@newStyle.css" text="Chatbot" textFill="#878787">
+                        <Label stylesheets="@newStyle.css" text="Chatbot" textFill="#878787">
                             <font>
                                 <Font name="Cambria Bold" size="24.0" />
                             </font>

@@ -186,6 +186,29 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         int rowsUpdated = statement.executeUpdate();
 
         if (rowsUpdated > 0) {
+            System.out.println("Candidat modifié avec succès !");
+        } else {
+            System.out.println("Aucune modification effectuée !");
+        }
+    }
+
+
+    public void modifier_employe(Utilisateur utilisateur) throws SQLException {
+        // Requête SQL sans la colonne 'role'
+        String req = "UPDATE utilisateur SET nom=?, prenom=?, email=?, image=? WHERE id=?";
+        PreparedStatement statement = connection.prepareStatement(req);
+
+        // Définir les valeurs des colonnes
+        statement.setString(1, utilisateur.getNom());
+        statement.setString(2, utilisateur.getPrenom());
+        statement.setString(3, utilisateur.getEmail());
+        statement.setString(4, utilisateur.getImgSrc()); // Ajouter l'image
+        statement.setInt(5, utilisateur.getId()); // L'ID pour localiser l'utilisateur à modifier
+
+        // Exécution de la mise à jour
+        int rowsUpdated = statement.executeUpdate();
+
+        if (rowsUpdated > 0) {
             System.out.println("Utilisateur modifié avec succès !");
         } else {
             System.out.println("Aucune modification effectuée !");
