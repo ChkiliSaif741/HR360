@@ -111,9 +111,11 @@ public class LoginController implements Initializable {
     @FXML
     private AnchorPane recaptcha;
 
-
     @FXML
     private Button btnCaptcha;
+
+    @FXML
+    private Button btnCaptchaValidate;
 
 
     private File selectedImageFile;
@@ -206,6 +208,7 @@ public class LoginController implements Initializable {
 
         recaptcha.setVisible(false);
         alert.successMessage("CAPTCHA validé avec succès !");
+
     }
 
 
@@ -409,6 +412,7 @@ public class LoginController implements Initializable {
         signup_btn.setDisable(false);
 
         alert.successMessage("reCAPTCHA validé avec succès !");
+        recaptcha.setVisible(false);
     }
 
 
