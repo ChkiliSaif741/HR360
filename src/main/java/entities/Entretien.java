@@ -14,10 +14,6 @@ public class Entretien {
     private String lien_meet;
     private String localisation;
     private int idCandidature;
-    private int id;
-    private String nom;
-    private String prenom;
-
 
 
 
@@ -33,7 +29,6 @@ public class Entretien {
         this.lien_meet = lien_meet;
         this.localisation = localisation;
         this.idCandidature = idCandidature;
-        this.id = id;
 
     }
 
@@ -46,7 +41,6 @@ public class Entretien {
         this.lien_meet = lien_meet;
         this.localisation = localisation;
         this.idCandidature = idCandidature;
-        this.id = id;
     }
 
     public Entretien(LocalDate date, LocalTime heure, utils.type type, utils.statut statut,String lien_meet, String localisation) {
@@ -59,18 +53,7 @@ public class Entretien {
 
     }
 
-    public Entretien(LocalDate date, LocalTime heure, utils.type type, utils.statut statut,String lien_meet, String localisation, String nom, String prenom) {
-        this.date = date;
-        this.heure = heure;
-        this.type = type;
-        this.statut = statut;
-        this.lien_meet = lien_meet;
-        this.localisation = localisation;
-        this.nom = nom;
-        this.prenom = prenom;
 
-
-    }
 
 
     public int getIdEntretien() {
@@ -127,29 +110,6 @@ public class Entretien {
         this.idCandidature = idCandidature;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 
     @Override
     public String toString() {
@@ -160,10 +120,6 @@ public class Entretien {
                 ", type=" + type +
                 ", statut=" + statut +
                 ", idCandidature=" + idCandidature +
-                ", id=" + id +
-                ", nom=" + nom +
-                ", prenom=" + prenom +
-
                 '}';
     }
 

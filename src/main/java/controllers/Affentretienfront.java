@@ -177,9 +177,6 @@ public class Affentretienfront implements Initializable {
                 entretien.setLien_meet(rs.getString("lien_meet") != null ? rs.getString("lien_meet") : "Aucun");
                 entretien.setLocalisation(rs.getString("localisation") != null ? rs.getString("localisation") : "Aucune");
                 entretien.setIdCandidature(rs.getInt("idCandidature"));
-                entretien.setNom(rs.getString("nom"));
-                entretien.setPrenom(rs.getString("prenom"));
-                entretien.setId(rs.getInt("id"));
 
                 entretiens.add(entretien); // Ajouter l'entretien à la liste
                 System.out.println("Entretien trouvé : " + entretien.getIdEntretien());

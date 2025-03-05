@@ -457,7 +457,7 @@ public class AjoutEntretien implements Initializable {
         // Créer l'objet Entretien
 
         Entretien entretien = new Entretien(date, heure, type, statut.Planifié, null, localisation ,idCandidature);
-
+        System.out.println(entretien);
         // Ajouter l'entretien dans la base de données
         try {
             serviceEntretien.ajouter(entretien);

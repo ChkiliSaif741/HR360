@@ -218,9 +218,11 @@ public class ListeCondidaturesController {
             List<Candidature> candidatures = serviceCandidature.afficher();
             int id = candidatures.get(selectedIndex).getId_candidature();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
+            Parent parent=loader.load();
             Controller controller = loader.getController();
             Affentretienfront controller1 = controller.loadPage("/affentretienfront.fxml").getController();
             controller1.setIdCandidature(id);
+            listViewCondidatures.getScene().setRoot(parent);
         }else {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature Pour voir entretien.");
         }

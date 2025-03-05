@@ -335,10 +335,12 @@ public class ListCandidatureBack implements Initializable {
         if (selectedIndex >= 0) {
             List<Candidature> candidatures = serviceCandidature.afficher();
             int id = candidatures.get(selectedIndex).getId_candidature();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
+            Parent parent=loader.load();
             Controller controller = loader.getController();
             Affentretien controller1 = controller.loadPage("/affentretien.fxml").getController();
             controller1.setIdCandidature(id);
+            listViewCandidatures.getScene().setRoot(parent);
         }else {
             showAlert("Aucune sélection", "Veuillez sélectionner une candidature Pour voir entretien.");
         }
