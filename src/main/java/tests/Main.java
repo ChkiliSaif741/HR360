@@ -1,11 +1,20 @@
 
 package tests;
 
+import entities.Tache;
+import entities.TacheStatus;
+import services.ServiceTache;
+
 import entities.Entretien;
 import services.ServiceEntretien;
 import entities.Evaluation;
 import services.ServiceEvaluation;
 import utils.MyDatabase;
+import entities.Formation;
+import entities.Utilisateur;
+import services.ServiceFormation;
+import services.ServiceUtilisateur;
+
 
 import utils.type;
 import utils.statut;
@@ -24,5 +33,4 @@ public class Main {
 
     }
 }
-
 

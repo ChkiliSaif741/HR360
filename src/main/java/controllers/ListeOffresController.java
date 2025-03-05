@@ -20,10 +20,21 @@ import services.ServiceOffre;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ListeOffresController {
 
+    @FXML
+    private ComboBox<String> comboTrieDateExpiration;
+
+    @FXML
+    private ComboBox<String> comboTrieStatut;
+
+    @FXML
+    private TextField textFieldRecherche;
     @FXML
     private Button btnModifier, btnSupprimer;
 
@@ -31,8 +42,13 @@ public class ListeOffresController {
     private ImageView imageViewModifier, imageViewSupprimer ,imageViewAjouter;
     @FXML
     private ListView<Offre> listViewOffres;
+    @FXML
+    private ComboBox<String> comboFiltreStatut;
 
     private ServiceOffre serviceOffre;
+    private Map<Offre, Boolean> expandedItems = new HashMap<>();
+
+
 
     public void initialize() {
         // Appliquer l'effet pour rendre l'image blanche
@@ -46,12 +62,21 @@ public class ListeOffresController {
         imageViewAjouter.setEffect(colorAdjust);
         serviceOffre = new ServiceOffre();
 
+        // Initialiser les ComboBox pour le tri
+        comboTrieDateExpiration.getItems().addAll("Croissant", "Décroissant");
+        comboTrieStatut.getItems().addAll("Publiée", "Expirée");
+
+        // Modification en temps réel
+        textFieldRecherche.textProperty().addListener((observable, oldValue, newValue) -> rechercherOffre());
+
+        // Filtre
+        comboFiltreStatut.getItems().addAll("Tous", "Publiée", "Expirée");
+        comboFiltreStatut.setValue("Tous"); // Valeur par défaut
+
         // Charger les offres depuis la base de données
         try {
             List<Offre> offres = serviceOffre.afficher();
             listViewOffres.getItems().setAll(offres);
-            // Récupérer les offres et mettre à jour leur statut
-
 
             // Utilisation d'une CellFactory personnalisée pour afficher les détails comme un tableau
             listViewOffres.setCellFactory(param -> new ListCell<Offre>() {
@@ -62,20 +87,57 @@ public class ListeOffresController {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        // Créer un HBox pour afficher les titres et les attributs horizontalement
+                        // Créer un HBox pour afficher les éléments horizontalement
                         HBox hbox = new HBox(20); // Espacement entre les éléments
 
-                        // Ajouter chaque attribut avec son titre et sa valeur dans un cadre
-                        hbox.getChildren().addAll(
-                                createLabeledItem("Titre", offre.getTitre()),
-                                createLabeledItem("Description", offre.getDescription()),
-                                createLabeledItem("Date de Publication", offre.getDatePublication().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
-                                createLabeledItem("Date d'Expiration", offre.getDateExpiration().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
-                                createLabeledItem("Statut", offre.getStatut())
-                        );
+                        // Si c'est la première ligne, afficher uniquement les titres
+                        if (getIndex() == 0) {
+                            hbox.getChildren().addAll(
+                                    createLabeledItem("Titre", ""),
+                                    createLabeledItem("Description", ""),
+                                    createLabeledItem("Date de Publication", ""),
+                                    createLabeledItem("Date d'Expiration", ""),
+                                    createLabeledItem("Statut", "")
+                            );
+                        } else {
+                            // Créer un Label pour la description
+                            Label descriptionLabel = new Label();
+                            String fullDescription = offre.getDescription();
+                            String shortDescription = (fullDescription.length() > 50) ? fullDescription.substring(0, 50) + "..." : fullDescription;
 
-                        setGraphic(hbox); // Appliquer le HBox à la cellule
+                            // Vérifier si l'élément est déjà étendu ou non
+                            Boolean isExpanded = expandedItems.getOrDefault(offre, false);
+                            if (isExpanded) {
+                                descriptionLabel.setText(fullDescription); // Afficher la description complète
+                            } else {
+                                descriptionLabel.setText(shortDescription); // Afficher la description tronquée
+                            }
+                            descriptionLabel.setWrapText(true); // Activer le retour à la ligne
+
+                            // Ajouter les éléments au HBox
+                            hbox.getChildren().addAll(
+                                    createLabeledItem("", offre.getTitre()),
+                                    createLabeledItem("", descriptionLabel.getText()), // Utiliser le texte du label
+                                    createLabeledItem("", offre.getDatePublication().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
+                                    createLabeledItem("", offre.getDateExpiration().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
+                                    createLabeledItem("", offre.getStatut())
+                            );
+                        }
+
+                        // Appliquer le HBox à la cellule
+                        setGraphic(hbox);
                     }
+                }
+            });
+
+            // Écouter la sélection d'une ligne dans la ListView
+            listViewOffres.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    // Basculer l'état de l'élément sélectionné
+                    boolean isExpanded = expandedItems.getOrDefault(newValue, false);
+                    expandedItems.put(newValue, !isExpanded); // Inverser l'état actuel
+                    // Forcer la mise à jour de la cellule pour refléter le changement
+                    listViewOffres.refresh();
                 }
             });
 
@@ -85,8 +147,6 @@ public class ListeOffresController {
         }
     }
 
-    // Méthode pour créer des éléments Label avec titre et valeur dans un cadre
-    // Méthode pour créer des éléments Label avec titre et valeur dans un cadre
     private VBox createLabeledItem(String title, String value) {
         // Création des Labels pour le titre et la valeur
         Label titleLabel = new Label(title);
@@ -123,15 +183,111 @@ public class ListeOffresController {
             showAlert("Erreur", "Erreur lors de l'ouverture de la fenêtre d'ajout.");
         }
     }
+    @FXML
+    private void trierParDateExpiration() {
+        String choix = comboTrieDateExpiration.getValue();
+        if (choix != null) {
+            List<Offre> offresTriees = listViewOffres.getItems().stream()
+                    .sorted((o1, o2) -> choix.equals("Croissant") ?
+                            o1.getDateExpiration().compareTo(o2.getDateExpiration()) :
+                            o2.getDateExpiration().compareTo(o1.getDateExpiration()))
+                    .collect(Collectors.toList());
+            listViewOffres.getItems().setAll(offresTriees);
+        }
+    }
+
+    @FXML
+    private void trierParStatut() {
+        String choix = comboTrieStatut.getValue();
+        if (choix != null) {
+            try {
+                List<Offre> offres = serviceOffre.afficher(); // Récupérer toutes les offres depuis la base de données
+
+                // Trier en plaçant les offres avec le statut sélectionné en premier
+                List<Offre> offresTriees = offres.stream()
+                        .sorted((o1, o2) -> {
+                            if (o1.getStatut().equals(choix) && !o2.getStatut().equals(choix)) {
+                                return -1; // o1 avant o2
+                            } else if (!o1.getStatut().equals(choix) && o2.getStatut().equals(choix)) {
+                                return 1; // o2 avant o1
+                            }
+                            return 0; // Conserver l'ordre relatif sinon
+                        })
+                        .collect(Collectors.toList());
+
+                listViewOffres.getItems().setAll(offresTriees);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                showAlert("Erreur", "Erreur lors du tri des offres : " + e.getMessage());
+            }
+        }
+    }
+
+
+
+    @FXML
+    private void filtrerParStatut() {
+        String statutChoisi = comboFiltreStatut.getValue();
+
+        try {
+            List<Offre> toutesLesOffres = serviceOffre.afficher(); // Toujours récupérer toutes les offres depuis la base de données
+
+            List<Offre> offresFiltrees;
+            if (statutChoisi == null || statutChoisi.equals("Tous")) {
+                offresFiltrees = toutesLesOffres; // Afficher toutes les offres
+            } else {
+                offresFiltrees = toutesLesOffres.stream()
+                        .filter(offre -> offre.getStatut().equals(statutChoisi))
+                        .collect(Collectors.toList());
+            }
+
+            listViewOffres.getItems().setAll(offresFiltrees);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du filtrage des offres : " + e.getMessage());
+        }
+    }
+
+
+
+    @FXML
+    private void rechercherOffre() {
+        String recherche = textFieldRecherche.getText().trim().toLowerCase();
+
+        if (recherche.isEmpty()) {
+            // Si la recherche est vide, afficher la liste complète
+            refreshListView();
+        } else {
+            // Filtrer uniquement selon le titre
+            List<Offre> offresFiltrees = listViewOffres.getItems().stream()
+                    .filter(offre -> offre.getTitre().toLowerCase().contains(recherche))
+                    .collect(Collectors.toList());
+
+            listViewOffres.getItems().setAll(offresFiltrees);
+        }
+    }
+
+
     public void refreshListView() {
         try {
-            List<Offre> offres = serviceOffre.afficher(); // Recharger les offres depuis la base de données
-            listViewOffres.getItems().setAll(offres); // Mettre à jour la ListView
+            List<Offre> offres = serviceOffre.afficher();
+
+            // Appliquer le filtre actuel après le rafraîchissement
+            String statutChoisi = comboFiltreStatut.getValue();
+            if (statutChoisi != null && !statutChoisi.equals("Tous")) {
+                offres = offres.stream()
+                        .filter(offre -> offre.getStatut().equals(statutChoisi))
+                        .collect(Collectors.toList());
+            }
+
+            listViewOffres.getItems().setAll(offres);
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Erreur", "Erreur lors du chargement des offres : " + e.getMessage());
         }
     }
+
+
 
 
 

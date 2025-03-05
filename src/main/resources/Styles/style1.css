@@ -104,7 +104,9 @@
 /* Style pour le TextArea */
 .modernTextArea {
     -fx-pref-width: 300px;
-    -fx-pref-height: 100px;
+    -fx-pref-height: 500px; /* Hauteur préférée */
+    -fx-min-height: 150px; /* Hauteur minimale */
+    -fx-max-height: 700px; /* Hauteur maximale */
     -fx-padding: 10;
     -fx-border-color: #bdbdbd;
     -fx-border-radius: 5;
@@ -158,6 +160,26 @@
     -fx-font-weight: bold; /* Mettre en gras pour attirer l'attention */
     -fx-padding: 5px; /* Ajouter de l'espace autour du texte */
 }
+/* Style général des boutons */
+.generate-button,
+.pdf-button,
+.translate-button {
+    -fx-background-color: #da0e0e; /* Rouge */
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+}
 
+/* Effet de survol */
+.generate-button:hover,
+.pdf-button:hover,
+.translate-button:hover {
+    -fx-background-color: #b70c0c; /* Rouge foncé */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 8, 0, 0, 3);
+}
 
 

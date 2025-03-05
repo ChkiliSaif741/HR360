@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.StatistiquesCandidatures"
+      alignment="CENTER" spacing="20" stylesheets="@/Styles/style1.css">
+
+    <PieChart fx:id="pieChart" title="Répartition des Candidatures" prefWidth="600" prefHeight="400"/>
+
+</VBox>

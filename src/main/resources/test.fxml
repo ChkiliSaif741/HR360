@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionEmployesController">
+      <AnchorPane prefHeight="528.0" prefWidth="859.0" stylesheets="@dashboardDesign.css">
+          <children>
+              <Label layoutX="35.0" layoutY="333.0" text="First Name:">
+                  <font>
+                      <Font name="Tahoma" size="14.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="addEmployee_firstName" layoutX="117.0" layoutY="329.0" prefHeight="25.0" prefWidth="172.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
+              <Label layoutX="36.0" layoutY="371.0" text="Last Name:">
+                  <font>
+                      <Font name="Tahoma" size="14.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="addEmployee_lastName" layoutX="117.0" layoutY="367.0" prefHeight="25.0" prefWidth="172.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
+              <Label layoutX="354.0" layoutY="333.0" text="Salaire : ">
+                  <font>
+                      <Font name="Tahoma" size="14.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="addEmployee_email" layoutX="430.0" layoutY="366.0" prefHeight="26.0" prefWidth="180.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
+              <ComboBox fx:id="addEmployee_position" layoutX="117.0" layoutY="407.0" onAction="#addEmployeePositionList" prefHeight="25.0" prefWidth="172.0" promptText="Choose" styleClass="textfield" stylesheets="@dashboardDesign.css" />
+              <AnchorPane layoutX="716.0" layoutY="316.0" prefHeight="127.0" prefWidth="101.0" stylesheets="@dashboardDesign.css">
+                  <styleClass>
+                      <String fx:value="white-bg" />
+                      <String fx:value="shadow" />
+                  </styleClass>
+                  <children>
+                      <ImageView fx:id="addEmployee_image" fitHeight="127.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true" />
+                      <Button fx:id="addEmployee_importBtn" layoutY="101.0" mnemonicParsing="false" onAction="#addEmployeeImportImage" onMouseClicked="#addEmployeeInsertImage" prefWidth="101.0" styleClass="import-btn" stylesheets="@dashboardDesign.css" text="Import" />
+                  </children>
+              </AnchorPane>
+              <Button fx:id="addEmployee_addBtn" layoutX="701.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmployeeAdd" prefHeight="41.0" prefWidth="94.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="Add" />
+              <Button fx:id="addEmployee_updateBtn" layoutX="588.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmployeeUpdate" prefHeight="41.0" prefWidth="94.0" styleClass="update-btn" stylesheets="@dashboardDesign.css" text="Update" />
+              <Button fx:id="addEmployee_deleteBtn" layoutX="433.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmployeeDelete" prefHeight="41.0" prefWidth="94.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Delete" />
+              <Button fx:id="addEmployee_clearBtn" layoutX="320.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmployeeReset" prefHeight="41.0" prefWidth="94.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Clear" />
+              <AnchorPane prefHeight="303.0" prefWidth="859.0" stylesheets="@dashboardDesign.css">
+                  <styleClass>
+                      <String fx:value="white-bg" />
+                      <String fx:value="shadow" />
+                  </styleClass>
+                  <children>
+               <HBox layoutY="52.0" prefHeight="251.0" prefWidth="859.0">
+                  <children>
+                     <ScrollPane fx:id="scroll" prefHeight="251.0" prefWidth="904.0">
+                        <content>
+                           <Pane maxWidth="1187.0" minWidth="1187.0" prefWidth="1187.0">
+                              <children>
+                                 <GridPane fx:id="grid" hgap="150.0" vgap="60.0">
+                                     <columnConstraints>
+                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                                     </columnConstraints>
+                                   <rowConstraints>
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                   </rowConstraints>
+                                    <padding>
+                                       <Insets top="100.0" />
+                                    </padding>
+                                 </GridPane>
+                              </children>
+                              <padding>
+                                 <Insets top="90.0" />
+                              </padding>
+                           </Pane>
+                        </content>
+                     </ScrollPane>
+                  </children>
+               </HBox>
+                      <TextField fx:id="addEmployee_search" layoutX="14.0" layoutY="14.0" onKeyTyped="#addEmployeeSearch" prefHeight="30.0" prefWidth="277.0" promptText="Seach" styleClass="search" stylesheets="@dashboardDesign.css" />
+                      <FontAwesomeIcon glyphName="SEARCH" layoutX="21.0" layoutY="35.0" size="1.5em" />
+                  </children>
+              </AnchorPane>
+         <Label layoutX="36.0" layoutY="410.0" prefHeight="18.0" prefWidth="70.0" text="Poste:">
+            <font>
+               <Font name="Tahoma" size="14.0" />
+            </font>
+         </Label>
+         <PasswordField fx:id="addEmployee_password" layoutX="430.0" layoutY="406.0" prefHeight="26.0" prefWidth="180.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
+         <Label layoutX="344.0" layoutY="410.0" text="Password : ">
+            <font>
+               <Font name="Tahoma" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="354.0" layoutY="370.0" text="Email :">
+            <font>
+               <Font name="Tahoma" size="14.0" />
+            </font>
+         </Label>
+         <TextField fx:id="addEmployee_salaire" layoutX="430.0" layoutY="328.0" prefHeight="26.0" prefWidth="180.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
+         <Button fx:id="addEmployee_selectBtn" layoutX="169.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmploySelect" prefHeight="41.0" prefWidth="94.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Select" />
+         <Button fx:id="addEmployee_unselectBtn" layoutX="60.0" layoutY="469.0" mnemonicParsing="false" onAction="#addEmployeeUnselect" prefHeight="41.0" prefWidth="94.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Unselect" />
+          </children>
+          <styleClass>
+              <String fx:value="white-bg" />
+              <String fx:value="shadow" />
+          </styleClass>
+      </AnchorPane>
+
+</AnchorPane>

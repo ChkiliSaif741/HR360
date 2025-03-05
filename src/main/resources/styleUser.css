@@ -1,0 +1,82 @@
+.white-bg {
+    -fx-background-color: #fff;
+}
+
+
+
+.btn {
+    -fx-background-color: linear-gradient(to bottom right, #d32f2f, #b71c1c);
+    -fx-cursor: hand;
+    -fx-text-fill: #fff;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 16px;
+    -fx-border-width: 0;
+    -fx-transition: 0.3s;
+}
+
+.btn:hover {
+    -fx-opacity: 0.85;
+}
+
+
+
+.text-field {
+    -fx-border-color: #000;
+    -fx-border-width: 1px;
+    -fx-background-radius: 3px;
+    -fx-padding: 5px;
+}
+
+.text-field:focused {
+    -fx-border-color: linear-gradient(to bottom right, #d32f2f, #b71c1c);
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(211, 47, 47, 0.5), 5, 0, 0, 0);
+}
+
+
+
+.combo-box {
+    -fx-border-color: #b71c1c;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-color: white;
+}
+
+/* Apparence de la liste déroulante */
+.combo-box-popup .list-view {
+    -fx-border-color: #b71c1c;
+    -fx-border-width: 2px;
+    -fx-background-color: white;
+}
+
+/* Amélioration des options de la liste */
+.combo-box-popup .list-cell {
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+/* Effet au survol */
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #e53935;
+    -fx-text-fill: white;
+}
+
+/* Effet sur l'élément sélectionné */
+.combo-box .list-cell:selected {
+    -fx-background-color: #c62828;
+    -fx-text-fill: white;
+}
+
+/* Style pour les labels */
+.label {
+    -fx-text-fill: #b71c1c;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Ombre pour une meilleure lisibilité */
+.shadow {
+    -fx-effect: dropshadow(three-pass-box, rgba(183, 28, 28, 0.5), 10, 0, 0, 5);
+}

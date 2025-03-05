@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.dlsc.gemsfx.daterange.DateRangeView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsProjetController">
+   <children>
+      <VBox layoutX="17.0" layoutY="13.0" prefHeight="226.0" prefWidth="420.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#BackToListProjet" prefHeight="38.0" prefWidth="54.0" styleClass="button-action-add" stylesheets="@stylesProjet.css">
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="ARROW_LEFT" size="2em" />
+               </graphic>
+            </Button>
+            <TextFlow VBox.vgrow="SOMETIMES">
+               <children>
+                  <Label fx:id="nomProjetL" alignment="TOP_LEFT" prefHeight="47.0" prefWidth="350.0" text="Nom Projet" textFill="#5eaeff" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </TextFlow>
+            <TextFlow maxWidth="354.0" minWidth="354.0" prefHeight="133.0" prefWidth="354.0">
+               <children>
+                  <Label fx:id="DescriptionProjet" alignment="TOP_LEFT" disable="true" maxWidth="354.0" minWidth="354.0" prefHeight="118.0" prefWidth="354.0" styleClass="task-description" stylesheets="@stylesProjet.css" wrapText="true" />
+               </children>
+            </TextFlow>
+         </children>
+      </VBox>
+      <BarChart fx:id="BarChartTasks" barGap="10.0" layoutX="462.0" layoutY="341.0" legendVisible="false" prefHeight="271.0" prefWidth="428.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+       <DateRangeView fx:id="DureeProjet" focusTraversable="false" layoutX="563.0" layoutY="75.0" maxHeight="222.0" maxWidth="150.0" minHeight="46.0" minWidth="150.0" mouseTransparent="true" prefHeight="174.0" prefWidth="150.0" showCancelAndApplyButton="false" showPresets="false" styleClass="date-picker" />
+      <VBox alignment="TOP_CENTER" layoutX="79.0" layoutY="360.0" prefHeight="251.0" prefWidth="340.0" spacing="20.0">
+         <children>
+            <Label fx:id="PourcentProgress" alignment="CENTER" contentDisplay="CENTER" prefHeight="99.0" prefWidth="266.0" text="78%" textAlignment="CENTER" textFill="#5eff8f">
+               <font>
+                  <Font name="System Bold" size="67.0" />
+               </font>
+            </Label>
+            <ProgressBar fx:id="progressTasks" prefHeight="38.0" prefWidth="270.0" progress="0.0" />
+            <Button mnemonicParsing="false" onAction="#ViewTasks" prefHeight="41.0" prefWidth="190.0" styleClass="button-44" stylesheets="@stylesProjet.css" text="Voir Taches" />
+         </children>
+      </VBox>
+      <HBox layoutX="35.0" layoutY="239.0" prefHeight="54.0" prefWidth="327.0">
+         <children>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="nomEquipe" alignment="TOP_LEFT" prefHeight="47.0" prefWidth="111.0" text="Nom Equipe" textFill="#ff5e8a" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="BtnAssocier" mnemonicParsing="false" onAction="#AssocierEquipe" prefHeight="42.0" prefWidth="344.0" styleClass="button-44" stylesheets="@stylesProjet.css" text="Associer Equipe" />
+               </children>
+            </StackPane>
+            <Button fx:id="DissasocierBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#DisaocierEquipe" prefHeight="42.0" prefWidth="198.0" styleClass="button-44" stylesheets="@stylesProjet.css" text="Dissasocier" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

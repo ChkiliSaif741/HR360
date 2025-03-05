@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Offre;
+import entities.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListeCondidaturesController {
 
@@ -38,7 +40,8 @@ public class ListeCondidaturesController {
 
         try {
             // Retrieve data from the database
-            List<Candidature> candidatures = serviceCandidature.afficher();
+            int iduser= Session.getInstance().getIdUtilisateur();
+            List<Candidature> candidatures = serviceCandidature.afficher().stream().filter(c->c.getId_user()==iduser).collect(Collectors.toList());
             items.addAll(candidatures);
 
             // Set the items in the ListView
@@ -208,5 +211,21 @@ public class ListeCondidaturesController {
             alert.setContentText("Veuillez sélectionner une candidature à supprimer.");
             alert.showAndWait();
         }
+    }
+    public void VoirEntretien()
+    {
+        int selectedIndex = listViewCondidatures.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+
+        }else {
+            showAlert("Aucune sélection", "Veuillez sélectionner une candidature Pour voir entretien.");
+        }
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

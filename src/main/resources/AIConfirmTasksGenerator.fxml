@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AIConfirmTasksGeneratorController">
+    <children>
+        <HBox layoutX="456.0" layoutY="96.0" prefHeight="413.0" prefWidth="422.0">
+            <children>
+                <VBox prefHeight="207.0" prefWidth="168.0" spacing="40.0">
+                    <children>
+                        <Label text="Nom Tache" textFill="#262525">
+                            <font>
+                                <Font size="19.0" />
+                            </font>
+                        </Label>
+                        <Label text="Description">
+                            <font>
+                                <Font size="19.0" />
+                            </font>
+                        </Label>
+                        <VBox spacing="40.0">
+                            <children>
+                                <Label text="Date début">
+                                    <font>
+                                        <Font size="19.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Date fin">
+                                    <font>
+                                        <Font size="19.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="100.0" />
+                            </VBox.margin>
+                        </VBox>
+                    </children>
+                </VBox>
+                <VBox prefHeight="270.0" prefWidth="257.0" spacing="40.0">
+                    <children>
+                        <TextField fx:id="nomTaskTF" stylesheets="@stylesProjet.css" />
+                        <JFXTextArea fx:id="descriptionTaskTF" focusColor="#ffffff00" minHeight="125.0" prefHeight="125.0" prefWidth="256.0" styleClass="text-field" stylesheets="@stylesProjet.css" unFocusColor="#ffffff00" />
+                        <DatePicker fx:id="dateStartTask" prefHeight="32.0" stylesheets="@stylesProjet.css" />
+                        <DatePicker fx:id="dateEndTask" prefHeight="32.0" stylesheets="@stylesProjet.css" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+            <Button layoutX="704.0" layoutY="544.0" mnemonicParsing="false" onAction="#ConfirmGeneration" prefHeight="41.0" prefWidth="181.0" styleClass="button-44" stylesheets="@stylesProjet.css" text="Confirm">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Button>
+        <VBox fx:id="cardContainer" alignment="TOP_CENTER" layoutX="11.2" layoutY="11.0" minWidth="202.0" prefHeight="604.0" prefWidth="410.0" styleClass="vbox-card" stylesheets="@stylesProjet.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="503.0">
+            <HBox alignment="CENTER" maxHeight="70.0" prefHeight="73.0" prefWidth="203.0" styleClass="hbox-header" stylesheets="@stylesProjet.css" VBox.vgrow="ALWAYS">
+                <children>
+                    <Label fx:id="nomProjet" alignment="CENTER_RIGHT" text="Nom du projet" textAlignment="CENTER" />
+                </children>
+                <VBox.margin>
+                    <Insets left="-20.0" right="-20.0" top="-20.0" />
+                </VBox.margin>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="38.0" prefWidth="410.0" styleClass="hbox-dates" stylesheets="@stylesProjet.css">
+                <children>
+                    <Label fx:id="dateDebut" text="01/01/2024">
+                        <HBox.margin>
+                            <Insets left="4.0" />
+                        </HBox.margin>
+                    </Label>
+                    <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" size="1.3em">
+                        <HBox.margin>
+                            <Insets left="10.0" right="10.0" top="2.0" />
+                        </HBox.margin>
+                    </FontAwesomeIcon>
+                    <Label fx:id="dateFin" text="01/06/2024">
+                  <font>
+                     <Font size="96.0" />
+                  </font></Label>
+                </children>
+                <VBox.margin>
+                    <Insets left="-20.0" right="-20.0" top="-11.0" />
+                </VBox.margin>
+            </HBox>
+         <JFXTextArea fx:id="descriptionProjetTF" focusColor="#ffffff00" maxHeight="210.0" minHeight="210.0" prefHeight="210.0" prefWidth="370.0" styleClass="text-field" stylesheets="@stylesProjet.css" unFocusColor="#ffffff00" />
+         <ScrollPane prefHeight="246.0" prefWidth="370.0">
+            <content>
+               <VBox fx:id="TasksNamesButtons" alignment="TOP_CENTER" prefHeight="247.0" prefWidth="370.0" spacing="20.0" />
+            </content>
+         </ScrollPane>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </VBox>
+    </children>
+</AnchorPane>

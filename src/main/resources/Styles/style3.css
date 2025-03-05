@@ -142,6 +142,42 @@
     -fx-alignment: CENTER; /* Centrer le texte */
     -fx-font-family: "Arial", sans-serif; /* Police moderne */
 }
+/* Appliquer un style moderne aux labels */
+.modern-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Style pour les ComboBox */
+.modern-combobox {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-border-color: #ddd;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0, 0, 2);
+}
+
+/* Effet au survol */
+.modern-combobox:hover {
+    -fx-border-color: #007bff;
+}
+
+/* Style pour le champ de recherche */
+.modern-textfield {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-border-color: #ddd;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0, 0, 2);
+}
+
+/* Effet au survol */
+.modern-textfield:focused {
+    -fx-border-color: #007bff;
+}
 
 
 
