@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -223,7 +224,7 @@ public class AjouterCondidature implements Initializable {
 
                 // Initialiser le statut à "En attente"
                 String statut = "En attente";
-
+                int iduser= Session.getInstance().getIdUtilisateur();
                 // Création de l'objet Candidature avec la description corrigée
                 Candidature candidature = new Candidature(
                         LocalDateTime.now(),          // Date de candidature
@@ -233,7 +234,7 @@ public class AjouterCondidature implements Initializable {
                         idOffre,                      // ID de l'offre
                         description,                  // Description corrigée
                         LocalDateTime.now(),         // Date de modification (initialisée à maintenant)
-                        1                            // ID utilisateur (à adapter selon votre logique)
+                        iduser                            // ID utilisateur (à adapter selon votre logique)
                 );
 
                 // Enregistrement dans la base de données

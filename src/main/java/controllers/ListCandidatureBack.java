@@ -2,6 +2,7 @@ package controllers;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.element.Cell;
 import entities.Offre;
+import entities.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +34,7 @@ import java.io.*;
 import javafx.stage.Stage;
 import services.ServiceCandidature;
 import services.ServiceOffre;
+import services.ServiceUtilisateur;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -79,11 +81,14 @@ public class ListCandidatureBack implements Initializable {
                         // Récupérer l'offre en fonction de l'id_offre de la candidature
                         Offre offre = getOffreById(candidature.getId_offre());
                         String titreOffre = (offre != null) ? offre.getTitre() : "Offre non trouvée";
-
+                        ServiceUtilisateur serviceUtilisateur=new ServiceUtilisateur();
+                        Utilisateur can=serviceUtilisateur.getUserById(candidature.getId_user());
+                        String nomC=can.getNom()+" "+can.getPrenom();
                         // Si c'est la première ligne, afficher uniquement les titres
                         if (getIndex() == 0) {
                             hbox.getChildren().addAll(
                                     createLabeledItem("Titre Offre", ""),
+                                    createLabeledItem("Candidat", ""),
                                     createLabeledItem("Date Candidature", ""),
                                     createLabeledItem("Statut", ""),
                                     createLabeledItem("CV", ""),
@@ -95,6 +100,7 @@ public class ListCandidatureBack implements Initializable {
                             // Ajouter chaque attribut avec son titre et sa valeur dans un cadre
                             hbox.getChildren().addAll(
                                     createLabeledItem("", titreOffre),
+                                    createLabeledItem("", nomC),
                                     createLabeledItem("", candidature.getDateCandidature().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))),
                                     createLabeledItem("", candidature.getStatut()),
                                     createLabeledItem("", extractFileName(candidature.getCv())), // Afficher uniquement le nom du fichier
