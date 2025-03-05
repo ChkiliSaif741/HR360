@@ -33,7 +33,7 @@ public class ModifierRessourceController {
     private TextField typeField;
 
     @FXML
-    private TextField utilisateurField;
+    private TextField prixField;
 
     private int idRessource;
 
@@ -43,16 +43,16 @@ public class ModifierRessourceController {
         nomField.clear();
         typeField.clear();
         etatComboBox.getSelectionModel().clearSelection();
-        utilisateurField.clear();
+        prixField.clear();
     }
 
     public void ModifierRessource(ActionEvent actionEvent) {
         String nouveauNom = nomField.getText().trim();
         String nouveauType = typeField.getText().trim();
         String nouvelEtat = etatComboBox.getValue();
-        String nouvelUtilisateur = utilisateurField.getText().trim();
+        double nouvelPrix = Double.parseDouble(prixField.getText().trim());
 
-        if (nouveauNom.isEmpty() || nouveauType.isEmpty() || nouvelEtat == null || nouvelUtilisateur.isEmpty()) {
+        if (nouveauNom.isEmpty() || nouveauType.isEmpty() || nouvelEtat == null ) {
             showErrorAlert("Erreur", "Veuillez remplir tous les champs !");
             return;
         }
@@ -67,13 +67,15 @@ public class ModifierRessourceController {
             return;
         }
 
-        if (!isValidUser(nouvelUtilisateur)) {
-            showErrorAlert("Erreur de saisie", "L'utilisateur ne doit pas contenir de caractères spéciaux !");
+        if (nouvelPrix <= 0) {
+            showErrorAlert("Erreur", "Le prix doit être un nombre positif !");
             return;
         }
 
+
+
         ServiceRessource serviceRessource = new ServiceRessource();
-        Ressource res = new Ressource(ressource.getId(), nouveauNom, nouveauType, nouvelEtat, nouvelUtilisateur);
+        Ressource res = new Ressource(ressource.getId(), nouveauNom, nouveauType, nouvelEtat, nouvelPrix);
         try {
             serviceRessource.modifier(res);
             showConfirmationAlert("Succès", "Ressource mise à jour avec succès !");
@@ -104,7 +106,7 @@ public class ModifierRessourceController {
         nomField.setText(ressource.getNom());
         typeField.setText(ressource.getType());
         etatComboBox.setValue(ressource.getEtat());
-        utilisateurField.setText(ressource.getUtilisateur());
+        prixField.setText(String.valueOf(ressource.getPrix()));
     }
 
     public void setIdRessource(int idRessource) {

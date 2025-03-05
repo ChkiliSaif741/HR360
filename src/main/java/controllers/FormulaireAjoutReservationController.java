@@ -25,8 +25,6 @@ public class FormulaireAjoutReservationController implements Initializable {
     @FXML
     private DatePicker dateFinPicker;
 
-    @FXML
-    private TextField utilisateurField;
 
     @FXML
     private Button btnRetour;
@@ -44,7 +42,7 @@ public class FormulaireAjoutReservationController implements Initializable {
     @FXML
     private void ajouterReservation(ActionEvent event) {
         try {
-            if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null || utilisateurField.getText().isEmpty()) {
+            if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null ) {
                 afficherAlerte(Alert.AlertType.WARNING, "Champs vides", "Veuillez remplir tous les champs.");
                 return;
             }
@@ -60,19 +58,15 @@ public class FormulaireAjoutReservationController implements Initializable {
 
             Date dateDebut = Date.valueOf(dateDebutLocal);
             Date dateFin = Date.valueOf(dateFinLocal);
-            String utilisateur = utilisateurField.getText().trim();
+
 
             if (!dateDebut.before(dateFin)) {
                 afficherAlerte(Alert.AlertType.ERROR, "Erreur de date", "La date de début doit être antérieure à la date de fin.");
                 return;
             }
 
-            if (!isValidUser(utilisateur)) {
-                afficherAlerte(Alert.AlertType.ERROR, "Erreur de saisie", "L'utilisateur ne doit pas contenir de caractères spéciaux !");
-                return;
-            }
 
-            Reservation reservation = new Reservation(idRessource, dateDebut, dateFin, utilisateur);
+            Reservation reservation = new Reservation(idRessource, dateDebut, dateFin, 1);
 
             if (!serviceReservation.estDisponible(reservation)) {
                 afficherAlerte(Alert.AlertType.ERROR, "Ressource indisponible", "Cette ressource est déjà réservée pour la période sélectionnée.");
@@ -92,7 +86,6 @@ public class FormulaireAjoutReservationController implements Initializable {
     private void annulerAjout() {
         dateDebutPicker.setValue(null);
         dateFinPicker.setValue(null);
-        utilisateurField.clear();
     }
 
     @FXML
@@ -102,7 +95,7 @@ public class FormulaireAjoutReservationController implements Initializable {
             Parent parent=loader.load();
             Controller controller = loader.getController();
             controller.loadPage("/AfficherRessource.fxml");
-            utilisateurField.getScene().setRoot(parent);
+            dateDebutPicker.getScene().setRoot(parent);
 
         } catch (IOException e) {
             //showErrorAlert("Erreur", "Une erreur est survenue lors du chargement de la page.");

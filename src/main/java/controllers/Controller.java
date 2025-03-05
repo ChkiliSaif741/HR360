@@ -18,6 +18,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Duration;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,6 +43,7 @@ public class Controller implements Initializable {
 
     @FXML
     private JFXButton formationBtn;
+
     FXMLLoader loadPage(String page) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(page));
         try {
@@ -178,11 +181,14 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        Exit.setOnMouseClicked(event -> System.exit(0));
         Exit.setOnMouseClicked(event -> {
             System.exit(0);
         });
         slider.setTranslateX(0);
+        Menu.setVisible(true);
+        MenuClose.setVisible(false);
+
         Menu.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
@@ -199,21 +205,16 @@ public class Controller implements Initializable {
             });
         });
 
-        MenuClose.setOnMouseClicked(event -> {
-            TranslateTransition slide = new TranslateTransition();
-            slide.setDuration(Duration.seconds(0.4));
-            slide.setNode(slider);
 
-            slide.setToX(-176);
-            slide.play();
+    }
 
-            slider.setTranslateX(0);
-
-            slide.setOnFinished((ActionEvent e) -> {
-                Menu.setVisible(true);
-                MenuClose.setVisible(false);
-            });
-        });
+    @FXML
+    void afficherTableauDeBord(ActionEvent event) {
+        try {
+            loadPage("/TableauDeBord.fxml"); // Assurez-vous que le fichier TableauDeBord.fxml existe
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -257,4 +258,21 @@ public class Controller implements Initializable {
         }
     }
 
+
+    public void afficherRessourceEMP(ActionEvent actionEvent) {
+        try {
+            loadPage("/AfficherRessourceEMP.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void afficherReservationEMP(ActionEvent actionEvent) {
+        try {
+            loadPage("/AfficherReservationEMP.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

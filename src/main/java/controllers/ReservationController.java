@@ -13,6 +13,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import services.ServiceReservation;
+import services.ServiceUtilisateur;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -39,12 +41,16 @@ public class ReservationController {
 
     private AfficherReservationController parentController;
 
+
     private ServiceReservation serviceReservation = new ServiceReservation();
 
     public void setData(Reservation reservation) {
 
         this.reservation=reservation;
-        labelRessource.setText(reservation.getUtilisateur().toString());
+        //labelRessource.setText(String.valueOf(reservation.getIduser())); affichage de l'utilisateur qui a reserver
+        ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
+        String nom=serviceUtilisateur.getUserById(reservation.getIduser()).getNom();
+        labelRessource.setText("Employée: "+nom);
         labelDateDebut.setText("Début: " + reservation.getDateDebut().toString());
         labelDateFin.setText("Fin: " + reservation.getDateFin().toString());
         resourceIdLabel.setText(String.valueOf(reservation.getId()));

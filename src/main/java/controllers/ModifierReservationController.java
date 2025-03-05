@@ -16,8 +16,7 @@ import java.util.regex.Pattern;
 
 public class ModifierReservationController {
 
-    @FXML
-    private TextField utilisateurField;
+
 
     @FXML
     private DatePicker dateDebutPicker;
@@ -32,21 +31,20 @@ public class ModifierReservationController {
 
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
-        utilisateurField.setText(reservation.getUtilisateur());
         dateDebutPicker.setValue(reservation.getDateDebut().toLocalDate());
         dateFinPicker.setValue(reservation.getDateFin().toLocalDate());
     }
 
     public void updateReservation() {
         // Vérifier si les champs sont vides
-        if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null || utilisateurField.getText().isEmpty()) {
+        if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null ) {
             showErrorAlert("Erreur", "Veuillez remplir tous les champs !");
             return;
         }
 
         Date nouveauDebut = Date.valueOf(dateDebutPicker.getValue());
         Date nouveauFin = Date.valueOf(dateFinPicker.getValue());
-        String nouvelUtilisateur = utilisateurField.getText().trim();
+        int nouvelIduser=1;
 
 
         if (nouveauDebut.after(nouveauFin) || nouveauDebut.equals(nouveauFin)) {
@@ -55,19 +53,9 @@ public class ModifierReservationController {
         }
 
 
-        if (!isValidUser(nouvelUtilisateur)) {
-            showErrorAlert("Erreur de saisie", "L'utilisateur ne doit pas contenir de caractères spéciaux !");
-            return;
-        }
-
-
-        if (nouvelUtilisateur.length() > 50) {
-            showErrorAlert("Erreur de saisie", "Le nom d'utilisateur ne doit pas dépasser 50 caractères !");
-            return;
-        }
 
         try {
-            Reservation rs = new Reservation(reservation.getId(), reservation.getIdRessource(), nouveauDebut, nouveauFin, nouvelUtilisateur);
+            Reservation rs = new Reservation(reservation.getId(), reservation.getIdRessource(), nouveauDebut, nouveauFin, nouvelIduser);
             serviceReservation.modifier(rs);
             showConfirmationAlert("Succès", "Réservation mise à jour avec succès !");
 
@@ -76,7 +64,7 @@ public class ModifierReservationController {
             Controller controller = loader.getController();
             AfficherReservationController controller1 = controller.loadPage("/AfficherReservation.fxml").getController();
             controller1.setIdRessource(reservation.getIdRessource());
-            utilisateurField.getScene().setRoot(parent);
+            dateDebutPicker.getScene().setRoot(parent);
 
         } catch (SQLException | IOException e) {
             showErrorAlert("Erreur", "Erreur lors de la modification de la réservation : " + e.getMessage());
@@ -86,7 +74,6 @@ public class ModifierReservationController {
     public void annulerModification(ActionEvent actionEvent) {
         dateDebutPicker.setValue(null);
         dateFinPicker.setValue(null);
-        utilisateurField.clear();
     }
 
     public void retour(ActionEvent actionEvent) {
@@ -94,9 +81,9 @@ public class ModifierReservationController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
             Parent parent = loader.load();
             Controller controller = loader.getController();
-            AfficherReservationController controller1=controller.loadPage("/AfficherReservation.fxml").getController();
+            AfficherReservationEMPController controller1=controller.loadPage("/AfficherReservationEMP.fxml").getController();
             controller1.setIdRessource(reservation.getIdRessource());
-            utilisateurField.getScene().setRoot(parent);
+            dateDebutPicker.getScene().setRoot(parent);
         } catch (IOException e) {
             showErrorAlert("Erreur", "Une erreur est survenue lors du chargement de la page.");
         }

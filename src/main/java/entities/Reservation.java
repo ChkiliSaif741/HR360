@@ -7,22 +7,22 @@ public class Reservation {
     private int idRessource;
     private Date dateDebut;
     private Date dateFin;
-    private String utilisateur;
+    private int iduser;
     private Ressource ressource;
 
-    public Reservation(int id, int idRessource, Date dateDebut, Date dateFin, String utilisateur) {
+    public Reservation(int id, int idRessource, Date dateDebut, Date dateFin, int iduser) {
         this.id = id;
         this.idRessource = idRessource;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.utilisateur = utilisateur;
+        this.iduser = iduser;
     }
 
-    public Reservation(int idRessource, Date dateDebut, Date dateFin, String utilisateur) {
+    public Reservation(int idRessource, Date dateDebut, Date dateFin, int iduser) {
         this.idRessource = idRessource;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.utilisateur = utilisateur;
+        this.iduser = iduser;
     }
 
     public int getId() { return id; }
@@ -33,8 +33,14 @@ public class Reservation {
     public void setDateDebut(Date dateDebut) { this.dateDebut = dateDebut; }
     public Date getDateFin() { return dateFin; }
     public void setDateFin(Date dateFin) { this.dateFin = dateFin; }
-    public String getUtilisateur() { return utilisateur; }
-    public void setUtilisateur(String utilisateur) { this.utilisateur = utilisateur; }
+    public int getIduser() {
+        return iduser;
+    }
+
+    public void setIduser(int iduser) {
+        this.iduser = iduser;
+    }
+
     public Ressource getRessource() {return ressource;}
     public void setRessource(Ressource ressource) {this.ressource = ressource;}
 
@@ -45,7 +51,7 @@ public class Reservation {
                 ", idRessource=" + idRessource +
                 ", dateDebut=" + dateDebut +
                 ", dateFin=" + dateFin +
-                ", utilisateur='" + utilisateur + '\'' +
+                ", iduser='" + iduser + '\'' +
                 '}';
     }
 }

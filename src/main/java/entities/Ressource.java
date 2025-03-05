@@ -5,22 +5,29 @@ public class Ressource {
     private String nom;
     private String type;
     private String etat;
-    private String utilisateur;
+    private double prix;
 
-    public Ressource(){};
-    public Ressource(int id, String nom, String type, String etat, String utilisateur) {
+
+    public Ressource(String nom, String type, String etat, double prix) {
+        this.nom = nom;
+        this.type = type;
+        this.etat = etat;
+        this.prix = prix;
+    }
+    public Ressource(int id, String nom, String type, String etat, double prix) {
         this.id = id;
         this.nom = nom;
         this.type = type;
         this.etat = etat;
-        this.utilisateur = utilisateur;
+        this.prix = prix;
+
     }
 
-    public Ressource(String nom, String type, String etat, String utilisateur) {
+    public Ressource(String nom, String type, String etat) {
         this.nom = nom;
         this.type = type;
         this.etat = etat;
-        this.utilisateur = utilisateur;
+        this.prix = prix;
     }
 
     public int getId() { return id; }
@@ -31,8 +38,14 @@ public class Ressource {
     public void setType(String type) { this.type = type; }
     public String getEtat() { return etat; }
     public void setEtat(String etat) { this.etat = etat; }
-    public String getUtilisateur() { return utilisateur; }
-    public void setUtilisateur(String utilisateur) { this.utilisateur = utilisateur; }
+
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
 
     @Override
     public String toString() {
@@ -41,7 +54,7 @@ public class Ressource {
                 ", nom='" + nom + '\'' +
                 ", type='" + type + '\'' +
                 ", etat='" + etat + '\'' +
-                ", utilisateur='" + utilisateur + '\'' +
+                ", prix='" + prix + '\'' +
                 '}';
     }
 }

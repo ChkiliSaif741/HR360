@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="972.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherRessourceEMPController">
+   <children>
+      <BorderPane fx:id="borderpane" layoutX="47.0" layoutY="2.4" prefHeight="698.0" prefWidth="924.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
+         <center>
+            <VBox alignment="TOP_RIGHT" prefHeight="698.0" prefWidth="1076.0" styleClass="card" stylesheets="@CSSFiles/styles.css" BorderPane.alignment="CENTER">
+               <children>
+                  <!-- ScrollPane pour tout le contenu -->
+                  <ScrollPane fx:id="scroll" prefHeight="799.0" prefWidth="925.0" styleClass="transparent" stylesheets="@CSSFiles/styles.css">
+                     <content>
+                        <VBox spacing="20">
+                           <!-- Section des recommandations -->
+                           <VBox spacing="10" alignment="CENTER">
+                              <Label text="Ressources Recommandées" styleClass="title" style="-fx-text-fill: #0A4969"/>
+                              <GridPane fx:id="gridRecommandations" hgap="10" vgap="10" />
+                           </VBox>
+
+                           <!-- Section des ressources normales -->
+                           <VBox spacing="10" alignment="CENTER">
+                           <Label text="Tous les Ressources" styleClass="title" style="-fx-text-fill: #0A4969"/>
+                           </VBox>
+                           <GridPane fx:id="grid" prefHeight="16.0" prefWidth="48.0">
+                              <rowConstraints>
+                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                              </rowConstraints>
+                           </GridPane>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

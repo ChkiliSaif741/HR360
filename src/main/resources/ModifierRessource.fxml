@@ -38,6 +38,7 @@
                                         </HBox>
                                         <TextField fx:id="nomField" promptText="Nom de la ressource" styleClass="input-field" />
                                         <TextField fx:id="typeField" promptText="Type de ressource" styleClass="input-field" />
+                              <TextField fx:id="prixField" promptText="Prix de ressource" styleClass="input-field" />
                                         <ComboBox fx:id="etatComboBox" prefHeight="52.0" prefWidth="733.0" styleClass="combo-box">
                                             <items>
                                                 <FXCollections fx:factory="observableArrayList">
@@ -47,7 +48,6 @@
                                                 </FXCollections>
                                             </items>
                                         </ComboBox>
-                                        <TextField fx:id="utilisateurField" promptText="Utilisateur" styleClass="input-field" />
                                         <HBox alignment="CENTER" spacing="15">
                                             <children>
                                                 <Button fx:id="btnAnnuler" onAction="#annulerModification" styleClass="cancel-button" text="Annuler" />

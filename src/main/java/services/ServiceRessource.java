@@ -15,12 +15,17 @@ public class ServiceRessource implements IService<Ressource> {
 
     @Override
     public void ajouter(Ressource ressource) throws SQLException {
-        String query = "INSERT INTO ressource (nom, type, etat, utilisateur) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO ressource (nom, type, etat, prix) VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, ressource.getNom());
         stmt.setString(2, ressource.getType());
         stmt.setString(3, ressource.getEtat());
-        stmt.setString(4, ressource.getUtilisateur());
+        stmt.setDouble(4, ressource.getPrix());
+
+        // DEBUG : Afficher les valeurs avant l'insertion
+        System.out.println("Insertion en base : " + ressource.getNom() + ", " + ressource.getType() + ", " + ressource.getEtat() + ", " + ressource.getPrix());
+
+
         stmt.executeUpdate();
     }
 
@@ -33,12 +38,14 @@ public class ServiceRessource implements IService<Ressource> {
         ResultSet rs = checkStmt.executeQuery();
 
         if (rs.next() && rs.getInt(1) > 0) {
-            String query = "UPDATE ressource SET nom = ?, type = ?, etat = ?, utilisateur = ? WHERE id = ?";
+            String query = "UPDATE ressource SET nom = ?, type = ?, etat = ?, prix = ? WHERE id = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, ressource.getNom());
             stmt.setString(2, ressource.getType());
             stmt.setString(3, ressource.getEtat());
-            stmt.setString(4, ressource.getUtilisateur());
+            stmt.setDouble(4, ressource.getPrix());
+
+
             stmt.setInt(5, ressource.getId());
             stmt.executeUpdate();
         } else {
@@ -79,11 +86,43 @@ public class ServiceRessource implements IService<Ressource> {
                     rs.getString("nom"),
                     rs.getString("type"),
                     rs.getString("etat"),
-                    rs.getString("utilisateur")
+                    rs.getDouble("prix")
             );
             ressources.add(ressource);
         }
         return ressources;
+    }
+
+
+    public Ressource getRessourceById(int id) throws SQLException {
+        String query = "SELECT * FROM ressource WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return new Ressource(
+                    rs.getInt("id"),
+                    rs.getString("nom"),
+                    rs.getString("type"),
+                    rs.getString("etat"),
+                    rs.getDouble("prix")
+            );
+        }
+        return null; // Si aucune ressource trouvée
+    }
+
+
+    public double getPrixRessource(int idRessource) throws SQLException {
+        String query = "SELECT prix FROM ressource WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, idRessource);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getDouble("prix");
+        }
+        return 0.0;
     }
 
 

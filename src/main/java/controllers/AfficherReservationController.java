@@ -36,12 +36,15 @@ public class AfficherReservationController implements Initializable {
 
     private List<Reservation> getData() {
         try {
-            return serviceReservation.afficher();
+            List<Reservation> reservations = serviceReservation.afficherEMP();
+            System.out.println("Nombre de réservations trouvées: " + reservations.size());
+            return reservations;
         } catch (SQLException e) {
             e.printStackTrace();
             return List.of();
         }
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
