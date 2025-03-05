@@ -63,6 +63,7 @@ public class ListCandidatureBack implements Initializable {
 
         // Charger les candidatures depuis la base de données
         try {
+
             List<Candidature> candidatures = serviceCandidature.afficher();
             listViewCandidatures.getItems().setAll(candidatures);
 
