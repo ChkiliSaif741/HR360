@@ -39,6 +39,19 @@ public class ServiceChargeTravail {
         return chargeParJour;
     }
 
+    public double calculerChargeMaximale(LocalDate dateDebut, LocalDate dateFin, Equipe equipe) throws SQLException {
+        Map<LocalDate, Integer> chargeParJour = calculerChargeParJour(equipe);
+
+        double chargeMax = 0.0;
+
+        for (LocalDate date = dateDebut; !date.isAfter(dateFin); date = date.plusDays(1)) {
+            chargeMax = Math.max(chargeMax, chargeParJour.getOrDefault(date, 0));
+        }
+
+        return chargeMax;
+    }
+
+
     public void afficherCharge(Equipe equipe) throws SQLException {
         Map<LocalDate, Integer> chargeParJour = calculerChargeParJour(equipe);
 
