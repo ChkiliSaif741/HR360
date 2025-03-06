@@ -84,7 +84,7 @@ public class ReservationController {
                     ServiceNotification serviceNotification = new ServiceNotification();
                     ServiceRessource serviceRessource=new ServiceRessource();
                     Notification notification=new Notification(reservation.getId(),
-                            1,
+                            reservation.getIduser(),
                             "Votre reservation pour "+serviceRessource.getRessourceById(reservation.getIdRessource()).getNom()+" a ete annulee par l' RH !",
                             Timestamp.valueOf(LocalDate.now().atStartOfDay())
                     );

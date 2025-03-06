@@ -28,40 +28,13 @@
                         </ImageView>
                      </children>
                   </Pane>
-                  <HBox layoutX="239.0" layoutY="1.0" prefHeight="43.0" prefWidth="525.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+                  <HBox layoutX="239.0" layoutY="1.0" prefHeight="41.0" prefWidth="170.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                      <children>
-                        <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Dashboard">
+                        <JFXButton onAction="#afficherNotification" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Notification">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@Images/dash1.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="ADD">
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/add1.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Report">
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/report1.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton onAction="#afficherNotification" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Notifs">
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/data1.png" />
+                                    <Image url="@Images/icons8-notification-50.png" />
                                  </image>
                               </ImageView>
                            </graphic>

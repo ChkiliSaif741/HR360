@@ -2,6 +2,7 @@ package controllers;
 import entities.Notification;
 import entities.Notification;
 import entities.Notification;
+import entities.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,7 +37,7 @@ public class AfficherNotificationController implements Initializable {
 
     private List<Notification> getData() {
         try {
-            notifications = serviceNotification.getNotificationsByUserId(1);
+            notifications = serviceNotification.getNotificationsByUserId(Session.getInstance().getIdUtilisateur());
             System.out.println("Nombre de réservations trouvées: " + notifications.size());
             return notifications;
         } catch (SQLException e) {
