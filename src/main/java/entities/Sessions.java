@@ -3,6 +3,7 @@ package entities;
 public class Sessions {
     private static Sessions instance;
     private int idUtilisateur;
+    private String role;
 
     // 🔒 Constructeur privé pour empêcher l'instanciation directe
     private Sessions(int idUtilisateur) {
@@ -19,12 +20,24 @@ public class Sessions {
 
     // 📌 Méthode pour obtenir l'instance sans créer
     public static Sessions getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Sessions non initialisée !");
+        }
         return instance;
     }
 
     // 📌 Getter pour l'ID utilisateur
     public int getIdUtilisateur() {
         return idUtilisateur;
+    }
+
+    // 📌 Getter et setter pour le rôle
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     // 📌 Pour déconnecter l'utilisateur

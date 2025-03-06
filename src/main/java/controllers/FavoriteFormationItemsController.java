@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Formation;
+import entities.MyListener;
 import entities.Participation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,20 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import entities.MyListener;
 import services.ServiceFormation;
-import services.ServiceParticipation;
-import entities.Sessions;
 
 import java.sql.SQLException;
 
-public class FormationItemsController {
+public class FavoriteFormationItemsController {
+
     @FXML
     private Label nameLabel;
-
-    @FXML
-    private Label dateLable;
-
 
     @FXML
     private Label priceLable;
@@ -31,6 +26,10 @@ public class FormationItemsController {
 
     @FXML
     private Button favoriteBtn;
+
+
+    private FavoriteFormationsEMPController parentControler;
+
 
     @FXML
     private void click(MouseEvent mouseEvent) {
@@ -45,16 +44,11 @@ public class FormationItemsController {
         this.formation = formation;
         this.myListener = myListener;
         nameLabel.setText(formation.getTitre());
-        dateLable.setText(formation.getDateFormation());
 
-        // Vérifier si l'utilisateur connecté est un responsable RH
-        if (Sessions.getInstance().getRole().equals("RH") || Sessions.getInstance().getRole().equals("ResponsableRH")) {
-            favoriteBtn.setVisible(false); // Masquer le bouton de favoris
-        } else {
-            // Vérifier si la formation est favorite et mettre à jour le bouton
-            boolean isFavorite = formation.isFavorite();
-            updateFavoriteButton(isFavorite);
-        }
+        // Vérifier si la formation est favorite et mettre à jour le bouton
+        boolean isFavorite = formation.isFavorite();
+        updateFavoriteButton(isFavorite);
+
     }
 
     private void updateFavoriteButton(boolean isFavorite) {
@@ -66,6 +60,8 @@ public class FormationItemsController {
             favoriteBtn.setStyle("-fx-text-fill: black;");
         }
     }
+
+
 
     public void setParticipationData(Participation participation,  MyListener myListener) {
         this.participation = participation;
@@ -85,8 +81,13 @@ public class FormationItemsController {
             }
             // Mettre à jour le bouton après l'action
             updateFavoriteButton(!isFavorite);
+            parentControler.refreshFormations();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setParentControler(FavoriteFormationsEMPController parentControler) {
+        this.parentControler = parentControler;
     }
 }

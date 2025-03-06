@@ -22,7 +22,7 @@
     <children>
         <BorderPane layoutX="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
-                <VBox prefHeight="600.0" prefWidth="313.0" styleClass="right-bar" stylesheets="@newStyle.css" BorderPane.alignment="CENTER">
+                <VBox prefHeight="600.0" prefWidth="313.0" styleClass="right-bar" stylesheets="@newStyleRH.css" BorderPane.alignment="CENTER">
                     <children>
                         <HBox alignment="CENTER" prefHeight="110.0" prefWidth="200.0">
                             <children>
@@ -33,12 +33,12 @@
                                 </Label>
                             </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="65.0" prefWidth="200.0" stylesheets="@newStyle.css" VBox.vgrow="NEVER">
+                        <HBox alignment="CENTER" prefHeight="65.0" prefWidth="200.0" stylesheets="@newStyleRH.css" VBox.vgrow="NEVER">
                             <VBox.margin>
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
                             <children>
-                                <TextField prefHeight="40.0" prefWidth="235.0" promptText="Type here to search" styleClass="transparent" stylesheets="@newStyle.css">
+                                <TextField prefHeight="40.0" prefWidth="235.0" promptText="Type here to search" styleClass="transparent" stylesheets="@newStyleRH.css">
                                     <HBox.margin>
                                         <Insets left="20.0" />
                                     </HBox.margin>
@@ -46,7 +46,7 @@
                                         <Font name="Cambria" size="18.0" />
                                     </font>
                                 </TextField>
-                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="search-button" stylesheets="@newStyle.css" text="Search" textFill="WHITE" />
+                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="search-button" stylesheets="@newStyleRH.css" text="Search" textFill="WHITE" />
                             </children>
                             <styleClass>
                                 <String fx:value="search-box" />
@@ -54,26 +54,26 @@
                             </styleClass>
                         </HBox>
                         <Pane prefHeight="57.0" prefWidth="435.0" VBox.vgrow="ALWAYS" />
-                        <VBox fx:id="chosenFormationCard" alignment="CENTER" maxHeight="450.0" minHeight="450.0" prefHeight="451.0" prefWidth="213.0" stylesheets="@newStyle.css">
+                        <VBox fx:id="chosenFormationCard" alignment="CENTER" maxHeight="450.0" minHeight="450.0" prefHeight="451.0" prefWidth="213.0" stylesheets="@newStyleRH.css">
                             <VBox.margin>
                                 <Insets left="50.0" right="50.0" />
                             </VBox.margin>
                             <children>
-                                <HBox prefHeight="60.0" prefWidth="335.0">
+                                <HBox prefHeight="30.0" prefWidth="229.0">
                                     <children>
-                                        <Label fx:id="formationNameLable" prefHeight="48.0" prefWidth="276.0" text="Farhani" textFill="WHITE">
+                                        <Label fx:id="formationNameLable" prefHeight="30.0" prefWidth="66.0" text="Farhani" textFill="WHITE">
                                             <font>
                                                 <Font name="Cambria" size="24.0" />
                                             </font>
                                         </Label>
-                                        <Label fx:id="fruitPriceLabel" prefHeight="57.0" prefWidth="171.0" text="Hamza" textFill="WHITE">
+                                        <Label fx:id="formationDateLabel" prefHeight="30.0" prefWidth="106.0" text="Hamza" textFill="WHITE">
                                             <font>
                                                 <Font name="Cambria" size="24.0" />
                                             </font>
                                         </Label>
                                     </children>
                                     <VBox.margin>
-                                        <Insets left="20.0" top="30.0" />
+                                        <Insets top="30.0" />
                                     </VBox.margin>
                                 </HBox>
                                 <ImageView fx:id="fruitImg" fitHeight="170.0" fitWidth="285.0" pickOnBounds="true" preserveRatio="true">
@@ -89,17 +89,17 @@
                                         <Insets bottom="20.0" top="30.0" />
                                     </VBox.margin>
                                     <children>
-                                        <Button mnemonicParsing="false" onAction="#modifierBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Modifier" textFill="#828282">
+                                        <Button mnemonicParsing="false" onAction="#modifierBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyleRH.css" text="Modifier" textFill="#828282">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
                                             </font>
                                         </Button>
-                                        <Button mnemonicParsing="false" onAction="#supprimerBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Supprimer" textFill="#828282">
+                                        <Button mnemonicParsing="false" onAction="#supprimerBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyleRH.css" text="Supprimer" textFill="#828282">
                                             <font>
                                                 <Font name="System Bold" size="18.0" />
                                             </font>
                                         </Button>
-                                        <Button mnemonicParsing="false" onAction="#onParticipantsBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Participants" textFill="#828282">
+                                        <Button mnemonicParsing="false" onAction="#onParticipantsBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyleRH.css" text="Participants" textFill="#828282">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
                                             </font>
@@ -125,7 +125,7 @@
                             </VBox.margin>
                             <children>
                                 <Pane prefHeight="65.0" prefWidth="393.0" HBox.hgrow="ALWAYS" />
-                                <Button mnemonicParsing="false" onAction="#onajouterBtn">
+                                <Button mnemonicParsing="false" onAction="#onajouterBtn" styleClass="add-button" stylesheets="@newStyleRH.css">
                                     <graphic>
                                         <FontAwesomeIcon glyphName="PLUS" />
                                     </graphic>
@@ -144,7 +144,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <ScrollPane fx:id="scroll" prefHeight="570.0" prefWidth="785.0" styleClass="transparent" stylesheets="@newStyle.css">
+                                <ScrollPane fx:id="scroll" prefHeight="570.0" prefWidth="785.0" styleClass="transparent" stylesheets="@newStyleRH.css">
                                     <content>
                                         <GridPane fx:id="grid" prefHeight="0.0" prefWidth="0.0">
                                             <rowConstraints>

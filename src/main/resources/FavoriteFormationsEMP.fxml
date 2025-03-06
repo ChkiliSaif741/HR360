@@ -11,6 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -18,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MarketController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.4" prefWidth="924.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FavoriteFormationsEMPController">
     <children>
         <BorderPane layoutX="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
@@ -26,14 +27,9 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="110.0" prefWidth="200.0">
                             <children>
-                                <Label prefHeight="49.0" prefWidth="128.0" text="Fruits" textFill="#878787">
+                                <Label prefHeight="50.0" prefWidth="234.0" text="Formations" textFill="#878787">
                                     <font>
                                         <Font name="Cambria Bold" size="40.0" />
-                                    </font>
-                                </Label>
-                                <Label text="Market" textFill="#878787">
-                                    <font>
-                                        <Font name="Cambria" size="40.0" />
                                     </font>
                                 </Label>
                             </children>
@@ -89,28 +85,18 @@
                                         <Insets top="20.0" />
                                     </VBox.margin>
                                 </ImageView>
-                        <VBox alignment="CENTER" maxHeight="237.0" minHeight="182.0" prefHeight="237.0" prefWidth="213.0" spacing="20.0">
-                           <VBox.margin>
-                              <Insets bottom="20.0" top="30.0" />
-                           </VBox.margin>
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#modifierBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Modifier" textFill="#828282">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Button>
-                                      <Button mnemonicParsing="false" onAction="#supprimerBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Supprimer" textFill="#828282">
-                                          <font>
-                                              <Font name="System Bold" size="18.0" />
-                                          </font>
-                                      </Button>
-                              <Button mnemonicParsing="false" onAction="#onParticipantsBtn" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Participants" textFill="#828282">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </VBox>
+                                <VBox alignment="CENTER" maxHeight="237.0" minHeight="182.0" prefHeight="237.0" prefWidth="213.0" spacing="20.0">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" top="30.0" />
+                                    </VBox.margin>
+                                    <children>
+                                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@newStyle.css" text="Participer" textFill="#828282">
+                                            <font>
+                                                <Font name="System Bold" size="18.0" />
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </VBox>
                             </children>
                             <styleClass>
                                 <String fx:value="chosen-fruit-card" />
@@ -130,11 +116,11 @@
                             </VBox.margin>
                             <children>
                                 <Pane prefHeight="65.0" prefWidth="393.0" HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#onajouterBtn">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="PLUS" />
-                           </graphic>
-                        </Button>
+                                <Button mnemonicParsing="false">
+                                    <graphic>
+                                        <FontAwesomeIcon glyphName="PLUS" />
+                                    </graphic>
+                                </Button>
                             </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
@@ -151,15 +137,26 @@
                             <children>
                                 <ScrollPane fx:id="scroll" prefHeight="570.0" prefWidth="785.0" styleClass="transparent" stylesheets="@newStyle.css">
                                     <content>
-                                        <GridPane fx:id="grid" prefHeight="0.0" prefWidth="0.0">
+                                        <GridPane fx:id="grid" hgap="50.0" prefHeight="0.0" prefWidth="0.0" vgap="20.0">
                                             <rowConstraints>
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                             </rowConstraints>
+                                            <columnConstraints>
+                                                <ColumnConstraints prefWidth="200.0" />
+                                                <ColumnConstraints prefWidth="200.0" />
+                                                <ColumnConstraints prefWidth="200.0" />
+                                            </columnConstraints>
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
                                         </GridPane>
                                     </content>
                                     <HBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets />
                                     </HBox.margin>
+                           <padding>
+                              <Insets top="30.0" />
+                           </padding>
                                 </ScrollPane>
                             </children>
                         </HBox>

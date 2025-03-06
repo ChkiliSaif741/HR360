@@ -1,0 +1,102 @@
+/* Style général */
+.root {
+    -fx-background-color: #f5f5f5; /* Fond gris clair */
+}
+
+/* Barre latérale */
+.right-bar {
+    -fx-background-color: #2c3e50; /* Bleu foncé */
+    -fx-padding: 20px;
+    -fx-border-radius: 10px;
+}
+
+/* Titre principal */
+.Label {
+    -fx-font-family: "Poppins", "Arial", sans-serif;
+    -fx-text-fill: #ecf0f1; /* Blanc cassé */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.Label[text="Formations"] {
+    -fx-font-size: 36px;
+    -fx-text-fill: #3498db; /* Bleu clair */
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+}
+
+/* Champs de texte */
+.TextField {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+.TextField:focused {
+    -fx-border-color: #2980b9; /* Bleu dynamique */
+    -fx-background-color: #ecf0f1;
+}
+
+/* Boutons */
+.Button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px 15px;
+}
+
+.Button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.Button:pressed {
+    -fx-background-color: #1f618d;
+}
+
+/* Carte de formation sélectionnée */
+.chosen-fruit-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 5, 0, 0, 2);
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Style de base pour le bouton onajouterBtn */
+.add-button {
+    -fx-background-color: #27ae60; /* Vert */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-font-weight: bold; /* Gras */
+    -fx-border-radius: 5px; /* Bord arrondi */
+    -fx-background-radius: 5px; /* Bord arrondi */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-cursor: hand; /* Curseur en forme de main */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2); /* Ombre */
+}
+
+/* Effet de survol */
+.add-button:hover {
+    -fx-background-color: #2ecc71; /* Changement de couleur de fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 3); /* Ombre plus prononcée */
+}
+
+/* Effet lors du clic */
+.add-button:pressed {
+    -fx-background-color: #219653; /* Changement de couleur de fond */
+    -fx-scale-x: 0.95; /* Réduction de la taille en X */
+    -fx-scale-y: 0.95; /* Réduction de la taille en Y */
+}

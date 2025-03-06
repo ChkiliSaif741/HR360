@@ -168,18 +168,6 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" layoutX="11.0" layoutY="239.0" onAction="#AffichEntretien" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Entretien" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="15.0" />
-                                    </font>
-                                    <graphic>
-                                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                            <image>
-                                                <Image url="@image/entretien.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </JFXButton>
                                 <JFXButton alignment="BASELINE_LEFT" layoutX="11.0" layoutY="277.0" onAction="#AffichcondBack" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Candidature" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
@@ -188,18 +176,6 @@
                                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@image/candidature.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </JFXButton>
-                                <JFXButton alignment="BASELINE_LEFT" layoutX="11.0" layoutY="316.0" onAction="#AffichUser" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Users" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="15.0" />
-                                    </font>
-                                    <graphic>
-                                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                            <image>
-                                                <Image url="@image/user.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -228,7 +204,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <VBox alignment="CENTER" prefHeight="110.0" prefWidth="177.0" />
+                        <VBox alignment="CENTER" prefHeight="150.0" prefWidth="177.0" />
                         <Button mnemonicParsing="false" onAction="#onLogoutbtn" text="Log out" />
                             </children>
                         </VBox>

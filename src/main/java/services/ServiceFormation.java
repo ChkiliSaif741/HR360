@@ -65,10 +65,53 @@ public class ServiceFormation implements IService<Formation> {
             formation.setDescription(rs.getString("description"));
             formation.setDuree(rs.getInt("duree"));
             formation.setDateFormation(rs.getString("dateFormation"));
+            formation.setFavorite(rs.getBoolean("isFavorite"));
 
             formations.add(formation);
         }
         return formations;
+    }
+
+    public Formation getFormationById(int idFormation) throws SQLException {
+        String query = "SELECT * FROM formation WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, idFormation);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Formation(
+                        resultSet.getInt("id"),
+                        resultSet.getString("titre"),
+                        resultSet.getString("description"),
+                        resultSet.getInt("duree"),
+                        resultSet.getString("dateFormation"),
+                        resultSet.getBoolean("isFavorite")
+                );
+            }
+        }
+        return null;
+    }
+
+
+    public void addFavoris(Formation formation) throws SQLException {
+        String req = "update formation " +
+                "set isFavorite=true where id =?";
+
+        PreparedStatement stmt = connection.prepareStatement(req);
+        stmt.setInt(1, formation.getId());
+        stmt.executeUpdate();
+        System.out.println("Formation ajoutée aux favoris!");
+    }
+
+
+
+    public void removeFavoris(Formation formation) throws SQLException {
+        String req = "update formation " +
+                "set isFavorite=false where id =?";
+
+        PreparedStatement stmt = connection.prepareStatement(req);
+        stmt.setInt(1, formation.getId());
+        stmt.executeUpdate();
+        System.out.println("Formation supprimée des favoris!");
     }
 
 }

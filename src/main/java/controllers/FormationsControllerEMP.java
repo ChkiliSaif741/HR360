@@ -1,8 +1,6 @@
 package controllers;
 
-import entities.Formation;
-import entities.MyListener;
-import entities.Participation;
+import entities.*;
 import entities.Sessions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,10 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -30,6 +25,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class FormationsControllerEMP implements Initializable {
 
@@ -44,13 +42,19 @@ public class FormationsControllerEMP implements Initializable {
     private ImageView fruitImg;
 
     @FXML
-    private Label fruitPriceLabel;
+    private Label formationDateLabel;
 
     @FXML
     private GridPane grid;
 
     @FXML
     private ScrollPane scroll;
+
+    @FXML
+    private VBox chatArea; // Conteneur des messages de chat
+
+    @FXML
+    private TextField chatInput; // Champ de saisie de l'utilisateur
 
 
     private Formation selectedFormation;
@@ -103,6 +107,7 @@ public class FormationsControllerEMP implements Initializable {
 
     private void setChosenFormation(Formation formation) {
         formationNameLable.setText(formation.getTitre());
+        formationDateLabel.setText(formation.getDateFormation());
         chosenFormationCard.setStyle(
                 "-fx-background-color: #146886;\n" + // Couleur de fond
                         "    -fx-background-radius: 30;\n" + // Bord arrondi
@@ -141,6 +146,9 @@ public class FormationsControllerEMP implements Initializable {
             myListener = formation -> setChosenFormation(formation);
         }
         refreshFormations();
+
+        // Initialiser la zone de chat
+        chatArea.setSpacing(10); // Espacement entre les messages
     }
 
 
@@ -181,4 +189,85 @@ public class FormationsControllerEMP implements Initializable {
             e.printStackTrace();
         }
     }
+
+
+
+    @FXML
+    private void sendChatMessage() {
+        String message = chatInput.getText().trim();
+        if (!message.isEmpty()) {
+            // Afficher le message de l'utilisateur
+            Label userMessage = new Label("Vous: " + message);
+            userMessage.setStyle("-fx-background-color: #e1f5fe; -fx-padding: 10px; -fx-background-radius: 10px;");
+            chatArea.getChildren().add(userMessage);
+
+            // Réinitialiser le champ de saisie
+            chatInput.clear();
+
+            // Récupérer les formations de l'employé
+            int idEmployee = Sessions.getInstance().getIdUtilisateur();
+            List<Formation> employeeFormations = getFormationsByEmployee(idEmployee);
+
+            // Construire le contexte pour l'API Gemini
+            StringBuilder context = new StringBuilder();
+            context.append("Vous êtes un assistant spécialisé dans les formations. Voici les formations auxquelles l'employé participe :\n");
+            for (Formation formation : employeeFormations) {
+                context.append("- ").append(formation.getTitre()).append(": ").append(formation.getDescription()).append("\n");
+            }
+            context.append("\nRépondez uniquement aux questions relatives à ces formations.\n");
+
+            // Ajouter le contexte au message de l'utilisateur
+            String fullMessage = context.toString() + "Question : " + message;
+
+            // Obtenir une réponse du chatbot via Gemini API
+            try {
+                GeminiClient geminiClient = new GeminiClient();
+                String botResponse = geminiClient.sendMessage(fullMessage);
+
+                // Parser la réponse JSON
+                JSONObject jsonResponse = new JSONObject(botResponse);
+                JSONArray candidates = jsonResponse.getJSONArray("candidates");
+                if (candidates.length() > 0) {
+                    JSONObject firstCandidate = candidates.getJSONObject(0);
+                    JSONObject content = firstCandidate.getJSONObject("content");
+                    JSONArray parts = content.getJSONArray("parts");
+                    if (parts.length() > 0) {
+                        String botText = parts.getJSONObject(0).getString("text");
+
+                        // Afficher la réponse du chatbot
+                        Label botMessage = new Label("Chatbot: " + botText);
+                        botMessage.setStyle("-fx-background-color: #ffebee; -fx-padding: 10px; -fx-background-radius: 10px;");
+                        chatArea.getChildren().add(botMessage);
+                    } else {
+                        throw new IOException("Aucune partie de réponse trouvée dans le JSON.");
+                    }
+                } else {
+                    throw new IOException("Aucune réponse trouvée dans le JSON.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Label errorMessage = new Label("Chatbot: Désolé, une erreur s'est produite. Veuillez réessayer.");
+                errorMessage.setStyle("-fx-background-color: #ffebee; -fx-padding: 10px; -fx-background-radius: 10px;");
+                chatArea.getChildren().add(errorMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Label errorMessage = new Label("Chatbot: Erreur lors du traitement de la réponse.");
+                errorMessage.setStyle("-fx-background-color: #ffebee; -fx-padding: 10px; -fx-background-radius: 10px;");
+                chatArea.getChildren().add(errorMessage);
+            }
+        }
+    }
+
+    private List<Formation> getFormationsByEmployee(int idEmployee) {
+        List<Formation> formations = new ArrayList<>();
+        try {
+            formations = serviceParticipation.getFormationsByEmployee(idEmployee);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return formations;
+    }
+
+
+
 }

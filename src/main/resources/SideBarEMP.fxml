@@ -28,9 +28,18 @@
                         </ImageView>
                      </children>
                   </Pane>
-                  <HBox layoutX="239.0" layoutY="1.0" prefHeight="41.0" prefWidth="170.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+                  <HBox layoutX="239.0" layoutY="1.0" prefHeight="41.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                      <children>
-                        <JFXButton onAction="#afficherNotification" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Notification">
+                        <JFXButton onAction="#onFavorisBtn" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Favoris">
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/favoriss.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton layoutX="10.0" layoutY="10.0" onAction="#afficherNotification" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Notification">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -81,7 +90,7 @@
                               <Insets bottom="-25.0" top="-30.0" />
                            </VBox.margin>
                         </ImageView>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Info Personnelle" textFill="WHITE">
+                        <JFXButton alignment="BASELINE_LEFT" onAction="#onInfoBtn" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Info Personnelle" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>

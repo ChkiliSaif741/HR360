@@ -1,5 +1,6 @@
 package services;
 
+import entities.Formation;
 import entities.Participation;
 import entities.Utilisateur;
 import utils.MyDatabase;
@@ -131,6 +132,56 @@ public class ServiceParticipation implements IService<Participation> {
             e.printStackTrace();
         }
     }
+
+    public List<Participation> getParticipationsByUser(int idUser) throws SQLException {
+        List<Participation> participations = new ArrayList<>();
+        String query = "SELECT * FROM participation WHERE idUser = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, idUser);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Participation participation = new Participation(
+                        resultSet.getInt("idFormation"),
+                        resultSet.getInt("idUser")
+                );
+                participations.add(participation);
+            }
+        }
+        return participations;
+    }
+
+    public List<Formation> getFormationsByEmployee(int idEmployee) throws SQLException {
+        List<Formation> formations = new ArrayList<>();
+        String query = "SELECT f.id, f.titre, f.description, f.duree, f.dateFormation " +
+                "FROM formation f " +
+                "JOIN participation p ON f.id = p.idFormation " +
+                "WHERE p.idUser = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, idEmployee);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Formation formation = new Formation(
+                        rs.getInt("id"),
+                        rs.getString("titre"),
+                        rs.getString("description"),
+                        rs.getInt("duree"),
+                        rs.getString("dateFormation")
+                );
+                formations.add(formation);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Vous pouvez choisir de relancer l'exception ou de la gérer différemment
+        }
+
+        return formations;
+    }
+
+
+
+
 
 
 }

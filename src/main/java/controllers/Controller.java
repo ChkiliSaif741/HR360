@@ -1,6 +1,7 @@
 
 package controllers;
 import com.jfoenix.controls.JFXButton;
+import entities.Sessions;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +19,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Duration;
+import services.ServiceUtilisateur;
+import utils.alertMessage;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,6 +45,9 @@ public class Controller implements Initializable {
 
     @FXML
     private BorderPane mainPane;
+
+    @FXML
+    private JFXButton favoris;
 
     @FXML
     private JFXButton formationBtn;
@@ -68,15 +74,6 @@ public class Controller implements Initializable {
     }
 
 
-    @FXML
-    void AffichEntretien(ActionEvent event) {
-
-        try {
-            loadPage("/afficheentretien.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     void onFormationsEMPBtn(ActionEvent event) {
@@ -124,16 +121,27 @@ public class Controller implements Initializable {
         }
     }
 
-
-
     @FXML
-    void AffichUser(ActionEvent event) {
+    void onFavorisBtn(ActionEvent event) {
         try {
-            loadPage("/Display.fxml");
+            loadPage("/FavoriteFormationsEMP.fxml");
         }catch (IOException e){
             e.printStackTrace();
         }
     }
+
+
+    @FXML
+    void onInfoBtn(ActionEvent event) {
+        try {
+            ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
+            profilEMPController con=loadPage("/profilEMP.fxml").getController();
+            con.setUtilisateur(serviceUtilisateur.getUserById(Sessions.getInstance().getIdUtilisateur()));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
 
     @FXML
@@ -147,6 +155,14 @@ public class Controller implements Initializable {
         // Attendre la réponse de l'utilisateur
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) { // Si l'utilisateur confirme
+                // Détruire la session
+                Sessions.destroySession();
+
+                // Afficher un message de confirmation
+                alertMessage alertMsg = new alertMessage();
+                alertMsg.successMessage("Déconnexion réussie !");
+
+                // Rediriger vers la page de connexion
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
                     Parent root = loader.load();
@@ -157,6 +173,7 @@ public class Controller implements Initializable {
                     stage.show();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    System.err.println("Erreur lors du chargement de la page de connexion.");
                 }
             }
         });
@@ -292,6 +309,17 @@ public class Controller implements Initializable {
             //afficherAlerte(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors du chargement de la page.");
         }
 
+    }
+
+    @FXML
+    void OnprofilBtn(ActionEvent event) {
+        try {
+            ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
+            ProfileController con=loadPage("/Profile.fxml").getController();
+            con.setUtilisateur(serviceUtilisateur.getUserById(Sessions.getInstance().getIdUtilisateur()));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
 
