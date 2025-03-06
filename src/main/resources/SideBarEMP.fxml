@@ -47,7 +47,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Report" onAction="#afficherTableauDeBord">
+                        <JFXButton onAction="#afficherTableauDeBord" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="Report">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -56,11 +56,11 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="BackUp">
+                        <JFXButton onAction="#afficherNotification" prefHeight="38.0" prefWidth="136.0" styleClass="menuItem" text="BackUp">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@Images/data1.png" />
+                                    <Image url="@../../../../../workshop/WorkshopJDBC/src/main/resources/Images/notification.png" />
                                  </image>
                               </ImageView>
                            </graphic>

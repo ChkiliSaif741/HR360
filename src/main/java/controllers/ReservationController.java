@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Notification;
 import entities.Reservation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,9 +13,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import services.ServiceNotification;
 import services.ServiceReservation;
+import services.ServiceRessource;
+
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class ReservationController {
 
@@ -75,7 +81,22 @@ public class ReservationController {
             if (response == ButtonType.OK) {
                 try {
                     int id = Integer.parseInt(resourceIdLabel.getText());
+                    ServiceNotification serviceNotification = new ServiceNotification();
+                    ServiceRessource serviceRessource=new ServiceRessource();
+                    Notification notification=new Notification(reservation.getId(),
+                            1,
+                            "Votre reservation pour "+serviceRessource.getRessourceById(reservation.getIdRessource()).getNom()+" a ete annulee par l' RH !",
+                            Timestamp.valueOf(LocalDate.now().atStartOfDay())
+                    );
+
+                    System.out.println("Tentative d'ajout de notification avec :");
+                    System.out.println("Reservation ID: " + notification.getReservationId());
+                    System.out.println("User ID: " + notification.getUserId());
+                    System.out.println("Message: " + notification.getMessage());
+                    System.out.println("Date: " + notification.getDate());
+                    serviceNotification.ajouterNotification(notification);
                     serviceReservation.supprimer(id);
+
 
 
                     Platform.runLater(() -> {
@@ -84,6 +105,9 @@ public class ReservationController {
                             ((GridPane) cardToRemove.getParent()).getChildren().remove(cardToRemove);
                         }
                     });
+
+
+
 
                 } catch (SQLException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
