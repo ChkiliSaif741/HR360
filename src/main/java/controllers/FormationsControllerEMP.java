@@ -203,10 +203,25 @@ public class FormationsControllerEMP implements Initializable {
             // Réinitialiser le champ de saisie
             chatInput.clear();
 
+            // Récupérer les formations de l'employé
+            int idEmployee = Sessions.getInstance().getIdUtilisateur();
+            List<Formation> employeeFormations = getFormationsByEmployee(idEmployee);
+
+            // Construire le contexte pour l'API Gemini
+            StringBuilder context = new StringBuilder();
+            context.append("Vous êtes un assistant spécialisé dans les formations. Voici les formations auxquelles l'employé participe :\n");
+            for (Formation formation : employeeFormations) {
+                context.append("- ").append(formation.getTitre()).append(": ").append(formation.getDescription()).append("\n");
+            }
+            context.append("\nRépondez uniquement aux questions relatives à ces formations.\n");
+
+            // Ajouter le contexte au message de l'utilisateur
+            String fullMessage = context.toString() + "Question : " + message;
+
             // Obtenir une réponse du chatbot via Gemini API
             try {
                 GeminiClient geminiClient = new GeminiClient();
-                String botResponse = geminiClient.sendMessage(message);
+                String botResponse = geminiClient.sendMessage(fullMessage);
 
                 // Parser la réponse JSON
                 JSONObject jsonResponse = new JSONObject(botResponse);
@@ -240,6 +255,16 @@ public class FormationsControllerEMP implements Initializable {
                 chatArea.getChildren().add(errorMessage);
             }
         }
+    }
+
+    private List<Formation> getFormationsByEmployee(int idEmployee) {
+        List<Formation> formations = new ArrayList<>();
+        try {
+            formations = serviceParticipation.getFormationsByEmployee(idEmployee);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return formations;
     }
 
 

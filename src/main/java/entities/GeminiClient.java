@@ -48,13 +48,4 @@ public class GeminiClient {
             throw new IOException("Erreur lors de la requête : " + responseCode);
         }
     }
-
-    public static void main(String[] args) {
-        try {
-            String response = sendMessage("Quelles formations recommandez-vous pour améliorer mes compétences ?");
-            System.out.println("Réponse de l'API : " + response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

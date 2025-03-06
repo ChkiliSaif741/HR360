@@ -35,6 +35,7 @@ public class Mailpass {
             message.setSubject(sujet);
             message.setText(contenu);
 
+
             // Envoi du message
             Transport.send(message);
             System.out.println("Email envoyé avec succès à " + destinataire);

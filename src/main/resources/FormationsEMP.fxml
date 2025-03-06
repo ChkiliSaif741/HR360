@@ -117,16 +117,6 @@
                                 <Pane prefHeight="65.0" prefWidth="393.0" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                            <children>
-                                <Pane prefHeight="84.0" prefWidth="96.0" />
-                                <Pane prefHeight="84.0" prefWidth="96.0" HBox.hgrow="ALWAYS" />
-                                <Pane prefHeight="84.0" prefWidth="96.0" />
-                            </children>
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" top="10.0" />
-                            </VBox.margin>
-                        </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                             <children>
                                 <ScrollPane fx:id="scroll" prefHeight="570.0" prefWidth="785.0" styleClass="transparent" stylesheets="@newStyle.css">

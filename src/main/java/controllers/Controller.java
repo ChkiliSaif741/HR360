@@ -1,6 +1,7 @@
 package controllers;
 
 import com.jfoenix.controls.JFXButton;
+import entities.Sessions;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.layout.BorderPane;
+import utils.alertMessage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -134,6 +136,14 @@ public class Controller implements Initializable {
         // Attendre la réponse de l'utilisateur
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) { // Si l'utilisateur confirme
+                // Détruire la session
+                Sessions.destroySession();
+
+                // Afficher un message de confirmation
+                alertMessage alertMsg = new alertMessage();
+                alertMsg.successMessage("Déconnexion réussie !");
+
+                // Rediriger vers la page de connexion
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
                     Parent root = loader.load();
@@ -144,6 +154,7 @@ public class Controller implements Initializable {
                     stage.show();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    System.err.println("Erreur lors du chargement de la page de connexion.");
                 }
             }
         });
