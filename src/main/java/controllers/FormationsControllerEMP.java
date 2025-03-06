@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.*;
+import entities.Sessions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,11 +71,11 @@ public class FormationsControllerEMP implements Initializable {
     private Button btnParticiper; // Ajoute un bouton "Participer" dans ton FXML
     //private ServiceParticipation serviceParticipation = new ServiceParticipation();
     private int idFormationSelectionnee; // Stocke l'ID de la formation sélectionnée
-    private int idUser = Session.getInstance().getIdUtilisateur(); // Remplace par l'ID réel de l'utilisateur connecté
+    private int idUser = Sessions.getInstance().getIdUtilisateur(); // Remplace par l'ID réel de l'utilisateur connecté
 
     @FXML
     void participerFormation(ActionEvent event) {
-        idUser = Session.getInstance().getIdUtilisateur();
+        idUser = Sessions.getInstance().getIdUtilisateur();
         try {
             Participation participation = new Participation(idFormationSelectionnee, idUser);
             serviceParticipation.ajouter(participation);
@@ -123,7 +124,7 @@ public class FormationsControllerEMP implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Vérifier si la session est initialisée
-        if (Session.getInstance() == null || Session.getInstance().getIdUtilisateur() == 0) {
+        if (Sessions.getInstance() == null || Sessions.getInstance().getIdUtilisateur() == 0) {
             try {
                 // Rediriger vers la page de connexion
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
@@ -137,7 +138,7 @@ public class FormationsControllerEMP implements Initializable {
             return;
         }
 
-        idUser = Session.getInstance().getIdUtilisateur();
+        idUser = Sessions.getInstance().getIdUtilisateur();
         formations.addAll(getData());
         if (formations.size() > 0) {
             setChosenFormation(formations.get(0));

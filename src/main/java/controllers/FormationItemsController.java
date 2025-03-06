@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import entities.MyListener;
 import services.ServiceFormation;
 import services.ServiceParticipation;
+import entities.Sessions;
 
 import java.sql.SQLException;
 
@@ -27,7 +28,6 @@ public class FormationItemsController {
     @FXML
     private Button favoriteBtn;
 
-
     @FXML
     private void click(MouseEvent mouseEvent) {
         myListener.onClickListener(formation);
@@ -42,9 +42,14 @@ public class FormationItemsController {
         this.myListener = myListener;
         nameLabel.setText(formation.getTitre());
 
-        // Vérifier si la formation est favorite et mettre à jour le bouton
-        boolean isFavorite = formation.isFavorite();
-        updateFavoriteButton(isFavorite);
+        // Vérifier si l'utilisateur connecté est un responsable RH
+        if (Sessions.getInstance().getRole().equals("RH") || Sessions.getInstance().getRole().equals("ResponsableRH")) {
+            favoriteBtn.setVisible(false); // Masquer le bouton de favoris
+        } else {
+            // Vérifier si la formation est favorite et mettre à jour le bouton
+            boolean isFavorite = formation.isFavorite();
+            updateFavoriteButton(isFavorite);
+        }
     }
 
     private void updateFavoriteButton(boolean isFavorite) {
@@ -56,8 +61,6 @@ public class FormationItemsController {
             favoriteBtn.setStyle("-fx-text-fill: black;");
         }
     }
-
-
 
     public void setParticipationData(Participation participation,  MyListener myListener) {
         this.participation = participation;
@@ -81,11 +84,4 @@ public class FormationItemsController {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
 }

@@ -19,7 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ServiceFormation;
 import services.ServiceParticipation;
-import entities.Session;
+import entities.Sessions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -56,7 +56,7 @@ public class FavoriteFormationsEMPController implements Initializable {
     private ServiceFormation serviceFormation = new ServiceFormation();
     private ServiceParticipation serviceParticipation = new ServiceParticipation();
 
-    private int idUser = Session.getInstance().getIdUtilisateur(); // ID de l'utilisateur connecté
+    private int idUser = Sessions.getInstance().getIdUtilisateur(); // ID de l'utilisateur connecté
 
 
 
@@ -89,7 +89,7 @@ public class FavoriteFormationsEMPController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Vérifier si la session est initialisée
-        if (Session.getInstance() == null || Session.getInstance().getIdUtilisateur() == 0) {
+        if (Sessions.getInstance() == null || Sessions.getInstance().getIdUtilisateur() == 0) {
             try {
                 // Rediriger vers la page de connexion
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
@@ -103,7 +103,7 @@ public class FavoriteFormationsEMPController implements Initializable {
             return;
         }
 
-        idUser = Session.getInstance().getIdUtilisateur();
+        idUser = Sessions.getInstance().getIdUtilisateur();
         formations.addAll(getData());
         if (formations.size() > 0) {
             setChosenFormation(formations.get(0));

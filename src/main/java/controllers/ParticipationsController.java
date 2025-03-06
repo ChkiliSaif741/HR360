@@ -37,13 +37,13 @@ public class ParticipationsController implements Initializable {
     private MyListener1 myListener1;
     private Participation selectedParticipation;
     private int idParticipationSelectionnee;
-    private int idUser = Session.getInstance().getIdUtilisateur();
+    private int idUser = Sessions.getInstance().getIdUtilisateur();
     private alertMessage alert = new alertMessage();
 
 
     @FXML
     void annulerParticipation(ActionEvent event) {
-        idUser = Session.getInstance().getIdUtilisateur();
+        idUser = Sessions.getInstance().getIdUtilisateur();
 
         try {
             // Utiliser la méthode supprimer pour annuler la participation
@@ -74,7 +74,7 @@ public class ParticipationsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Vérifier si l'utilisateur est connecté
-        if (Session.getInstance() == null || Session.getInstance().getIdUtilisateur() == 0) {
+        if (Sessions.getInstance() == null || Sessions.getInstance().getIdUtilisateur() == 0) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
                 Parent root = loader.load();
@@ -101,7 +101,7 @@ public class ParticipationsController implements Initializable {
     }
 
     private List<Participation> getData() {
-        int employeId = Session.getInstance().getIdUtilisateur();
+        int employeId = Sessions.getInstance().getIdUtilisateur();
         return serviceParticipation.getParticipationsByEmploye(employeId);
     }
 

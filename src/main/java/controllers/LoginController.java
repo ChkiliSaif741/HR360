@@ -1,8 +1,7 @@
 package controllers;
 
 import entities.*;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
+import jakarta.mail.MessagingException;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,9 +17,6 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
 import services.ServiceUtilisateur;
 import utils.CryptageUtil;
 import utils.alertMessage;
@@ -35,87 +31,109 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    @FXML
-    private TextField signup_competence;
-
-    @FXML
-    private ImageView photoProfil;
-
-    @FXML
-    private Button btnChangerPhoto;
-
-    @FXML
-    private TextField changepass_cPassword;
-
-    @FXML
-    private TextField changePass_password;
-
-    @FXML
-    private TextField forgot_email;
-
-    @FXML
-    private TextField forgot_username;
-
-
-    @FXML
-    private Button forgot_backBtn;
-
-    @FXML
-    private Button changepass_backBtn;
-
-    @FXML
-    private Hyperlink login_forgotP;
-
-    @FXML
-    private TextField login_showPassword;
-
-    @FXML
-    private CheckBox login_selectShowPassword;
-
-    @FXML
-    private TextField login_email;
-
-    @FXML
-    private PasswordField login_password;
-
-    @FXML
-    private Button login_btn;
-
-    @FXML
-    private AnchorPane changepass_form;
-
-    @FXML
-    private Button login_createAccount;
-
-    @FXML
-    private AnchorPane login_form;
-
-    @FXML
-    private AnchorPane signup_form;
-
-    @FXML
-    private AnchorPane forgot_form;
-
-    @FXML
-    private TextField signup_nom, signup_prenom, signup_email;
-
-    @FXML
-    private PasswordField signup_password, signup_cPassword;
-
-    @FXML
-    private Button signup_btn, signup_loginAccount;
-
-    @FXML
-    private WebView recaptchaWebView;
-
-    @FXML
-    private AnchorPane recaptcha;
 
     @FXML
     private Button btnCaptcha;
 
     @FXML
     private Button btnCaptchaValidate;
+
+    @FXML
+    private Button btnChangerPhoto;
+
+    @FXML
+    private Button changepass_backBtn;
+
+    @FXML
+    private PasswordField confirmPasswordField;
+
+    @FXML
+    private Button forgot_backBtn;
+
+    @FXML
+    private TextField forgot_email;
+
+    @FXML
+    private AnchorPane forgot_form;
+
+    @FXML
+    private Button forgot_proceedBtn;
+
+    @FXML
+    private Button login_btn;
+
+    @FXML
+    private Button login_createAccount;
+
+    @FXML
+    private TextField login_email;
+
+    @FXML
+    private Hyperlink login_forgotP;
+
+    @FXML
+    private AnchorPane login_form;
+
+    @FXML
+    private PasswordField login_password;
+
+    @FXML
+    private CheckBox login_selectShowPassword;
+
+    @FXML
+    private TextField login_showPassword;
+
+    @FXML
+    private AnchorPane main_form;
+
+    @FXML
+    private PasswordField newPasswordField;
+
+    @FXML
+    private ImageView photoProfil;
+
+    @FXML
+    private AnchorPane recaptcha;
+
+    @FXML
+    private WebView recaptchaWebView;
+
+    @FXML
+    private TextField resetCodeField;
+
+    @FXML
+    private Button resetPasswordButton;
+
+    @FXML
+    private AnchorPane resetPasswordForm;
+
+    @FXML
+    private Button signup_btn;
+
+    @FXML
+    private PasswordField signup_cPassword;
+
+    @FXML
+    private TextField signup_competence;
+
+    @FXML
+    private TextField signup_email;
+
+    @FXML
+    private AnchorPane signup_form;
+
+    @FXML
+    private Button signup_loginAccount;
+
+    @FXML
+    private TextField signup_nom;
+
+    @FXML
+    private PasswordField signup_password;
+
+    @FXML
+    private TextField signup_prenom;
+
 
 
     private File selectedImageFile;
@@ -152,7 +170,7 @@ public class LoginController implements Initializable {
         forgot_form.setVisible(false);
         login_form.setVisible(true);
         signup_form.setVisible(false);
-        changepass_form.setVisible(false);
+        resetPasswordForm.setVisible(false);
 
         String siteKey = "6LdIE-cqAAAAADO53d6zqk7I5To8W4CyHfi3-UOV"; // Remplacez par votre clé de site
         //recaptchaWebView.getEngine().load(getClass().getResource("/test.html").toExternalForm());
@@ -168,7 +186,7 @@ public class LoginController implements Initializable {
         forgot_form.setVisible(false);
         login_form.setVisible(true);
         signup_form.setVisible(false);
-        changepass_form.setVisible(false);
+        resetPasswordForm.setVisible(false);
 
         // Désactiver le bouton "Sign Up" par défaut
         signup_btn.setDisable(true);
@@ -227,63 +245,109 @@ public class LoginController implements Initializable {
     }
 
 
-    public void forgotPassword() {
+    public void forgotPassword() throws MessagingException {
         alertMessage alert = new alertMessage();
 
         // Vérification des champs vides
-        if (forgot_username.getText().isEmpty() ||
-                forgot_email.getText().isEmpty()) {
-
+        if (forgot_email.getText().isEmpty()) {
             alert.errorMessage("Veuillez remplir tous les champs vides !");
             return;
         }
 
         // Récupération des données saisies
-        String username = forgot_username.getText();
         String email = forgot_email.getText();
-        ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
 
-        try {
-            Utilisateur user = serviceUtilisateur.getUserForPasswordReset(username, email);
+        // Générer un code de vérification (exemple simplifié)
+        String resetCode = generateResetCode(); // Méthode pour générer un code aléatoire
 
-            if (user != null) {
-                utilisateurVerifie = user;
-                alert.successMessage("Utilisateur trouvé ! Vous pouvez réinitialiser votre mot de passe.");
-                login_form.setVisible(false);
-                changepass_form.setVisible(true);
-                forgot_form.setVisible(false);
-                signup_form.setVisible(false);
-            } else {
-                alert.errorMessage("Aucun utilisateur trouvé avec ces informations !");
-            }
-        } catch (SQLException e) {
-            alert.errorMessage("Erreur lors de la récupération des données : " + e.getMessage());
+        // Envoyer l'e-mail de récupération via InfoBip
+        //InfoBipSmtpClient.sendPasswordRecoveryEmail(email, resetCode);
+        Mailpass mailpass=new Mailpass();
+        mailpass.envoyerEmail(forgot_email.getText(),"Reset Password",
+                "Voici votre reset Code :"+resetCode);
+        // Afficher un message à l'utilisateur
+        alert.successMessage("Un e-mail de récupération a été envoyé à " + email);
+
+        // Afficher le formulaire de réinitialisation de mot de passe dans l'application
+        forgot_form.setVisible(false);
+        resetPasswordForm.setVisible(true); // Afficher le formulaire de réinitialisation
+    }
+
+    // Méthode pour générer un code de vérification aléatoire
+    private String generateResetCode() {
+        return String.valueOf((int) (Math.random() * 900000) + 100000); // Code à 6 chiffres
+    }
+
+    public void resetPassword() {
+        alertMessage alert = new alertMessage();
+
+        // Vérification des champs vides
+        if (resetCodeField.getText().isEmpty() || newPasswordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty()) {
+            alert.errorMessage("Veuillez remplir tous les champs !");
+            return;
         }
+
+        // Vérification de la correspondance des mots de passe
+        if (!newPasswordField.getText().equals(confirmPasswordField.getText())) {
+            alert.errorMessage("Les mots de passe ne correspondent pas !");
+            return;
+        }
+
+        // Vérification du code de vérification
+        String resetCode = resetCodeField.getText();
+        if (!isValidResetCode(resetCode)) { // Implémentez cette méthode pour valider le code
+            alert.errorMessage("Code de vérification invalide !");
+            return;
+        }
+
+        // Mettre à jour le mot de passe dans la base de données
+        try {
+            ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
+            Utilisateur utilisateur = serviceUtilisateur.getUserByEmail(forgot_email.getText());
+            utilisateur.setPassword(newPasswordField.getText());
+            serviceUtilisateur.modifierMotDePasse(utilisateur);
+            alert.successMessage("Mot de passe mis à jour avec succès !");
+
+            // Réinitialiser les champs et revenir au formulaire de connexion
+            resetCodeField.clear();
+            newPasswordField.clear();
+            confirmPasswordField.clear();
+            resetPasswordForm.setVisible(false);
+            login_form.setVisible(true);
+        } catch (SQLException e) {
+            alert.errorMessage("Erreur lors de la mise à jour du mot de passe : " + e.getMessage());
+        }
+    }
+
+    // Méthode pour valider le code de vérification
+    private boolean isValidResetCode(String code) {
+        // Implémentez la logique de validation du code ici
+        return true; // Retourne true pour l'exemple
     }
 
     public void changePassword() {
         alertMessage alert = new alertMessage();
-        if (changePass_password.getText().isEmpty()
-                || changepass_cPassword.getText().isEmpty()) {
+        if (newPasswordField.getText().isEmpty()
+                || confirmPasswordField.getText().isEmpty()) {
             alert.errorMessage("Veuillez remplir tous les champs vides!");
         }
 
-        if (!changePass_password.getText().equals(changepass_cPassword.getText())) {
+        if (!newPasswordField.getText().equals(confirmPasswordField.getText())) {
             alert.errorMessage("Les mots de passe ne correspondent pas!");
-        } else if (changePass_password.getText().length() < 5) {
+        } else if (newPasswordField.getText().length() < 5) {
             alert.errorMessage("Mot de passe invalide ! , 5 caractères au moins!");
         }
 
         if (utilisateurVerifie != null) {
             try {
 
-                utilisateurVerifie.setPassword(changePass_password.getText());
+                utilisateurVerifie.setPassword(newPasswordField.getText());
                 serviceUtilisateur.modifierMotDePasse(utilisateurVerifie);
                 alert.successMessage("Mot de passe modifié avec succès!");
 
                 login_form.setVisible(true);
                 signup_form.setVisible(false);
-                changepass_form.setVisible(false);
+                resetPasswordForm.setVisible(false);
                 forgot_form.setVisible(false);
 
                 login_email.setText("");
@@ -292,8 +356,8 @@ public class LoginController implements Initializable {
                 login_showPassword.setVisible(false);
                 login_selectShowPassword.setSelected(false);
 
-                changePass_password.setText("");
-                changepass_cPassword.setText("");
+                newPasswordField.setText("");
+                confirmPasswordField.setText("");
                 utilisateurVerifie = null;
 
             } catch (SQLException e) {
@@ -326,9 +390,11 @@ public class LoginController implements Initializable {
             System.out.println("Utilisateur authentifié : " + utilisateur.getEmail());
             System.out.println("Rôle utilisateur connecté : " + utilisateur.getRole());
 
-            // Initialisation de la session utilisateur
-            Session.getInstance(utilisateur.getId());
+            // Initialisation de la sessions utilisateur
+            Sessions sessions = Sessions.getInstance(utilisateur.getId()); // Créer ou récupérer la sessions
+            sessions.setRole(utilisateur.getRole()); // Définir le rôle dans la sessions
 
+            // Redirection en fonction du rôle
             try {
                 FXMLLoader loader;
                 Parent root;
@@ -361,6 +427,7 @@ public class LoginController implements Initializable {
                 Stage stage = (Stage) login_email.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.show();
+
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -638,22 +705,22 @@ public class LoginController implements Initializable {
         if (event.getSource() == signup_loginAccount || event.getSource() == forgot_backBtn) {
             signup_form.setVisible(false);
             login_form.setVisible(true);
-            changepass_form.setVisible(false);
+            resetPasswordForm.setVisible(false);
             forgot_form.setVisible(false);
         } else if (event.getSource() == login_createAccount) {
             signup_form.setVisible(true);
             login_form.setVisible(false);
-            changepass_form.setVisible(false);
+            resetPasswordForm.setVisible(false);
             forgot_form.setVisible(false);
         } else if (event.getSource() == login_forgotP) {
             signup_form.setVisible(false);
             login_form.setVisible(false);
             forgot_form.setVisible(true);
-            changepass_form.setVisible(false);
+            resetPasswordForm.setVisible(false);
 
         } else if (event.getSource() == changepass_backBtn) {
             login_form.setVisible(false);
-            changepass_form.setVisible(false);
+            resetPasswordForm.setVisible(false);
             forgot_form.setVisible(true);
             signup_form.setVisible(false);
         }
