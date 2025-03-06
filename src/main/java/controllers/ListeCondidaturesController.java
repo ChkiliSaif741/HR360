@@ -1,7 +1,7 @@
 package controllers;
 
 import entities.Offre;
-import entities.Session;
+import entities.Sessions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -40,7 +40,7 @@ public class ListeCondidaturesController {
 
         try {
             // Retrieve data from the database
-            int iduser= Session.getInstance().getIdUtilisateur();
+            int iduser= Sessions.getInstance().getIdUtilisateur();
             List<Candidature> candidatures = serviceCandidature.afficher().stream().filter(c->c.getId_user()==iduser).collect(Collectors.toList());
             items.addAll(candidatures);
 

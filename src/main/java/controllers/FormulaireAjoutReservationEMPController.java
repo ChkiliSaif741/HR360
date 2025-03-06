@@ -5,6 +5,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import entities.Reservation;
+import entities.Sessions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,7 +96,7 @@ public class FormulaireAjoutReservationEMPController implements Initializable {
 
 
             double montantReservation = serviceRessource.getPrixRessource(idRessource);
-            int iduser= entities.Session.getInstance().getIdUtilisateur();
+            int iduser= Sessions.getInstance().getIdUtilisateur();
             reservation = new Reservation(idRessource, dateDebut, dateFin, iduser);
 
 

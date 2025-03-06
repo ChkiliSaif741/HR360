@@ -1,7 +1,7 @@
 package controllers;
 
 import entities.Reservation;
-import entities.Session;
+import entities.Sessions;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,7 +18,6 @@ import services.ServiceReservation;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -45,7 +44,7 @@ public class AfficherReservationEMPController implements Initializable {
 
     public List<Reservation> getData() {
         try {
-            int iduser= Session.getInstance().getIdUtilisateur();
+            int iduser= Sessions.getInstance().getIdUtilisateur();
             return serviceReservation.afficherEMP().stream().filter(r->r.getIduser()==iduser).toList();
         } catch (SQLException e) {
             e.printStackTrace();

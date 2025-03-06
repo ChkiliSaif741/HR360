@@ -1,12 +1,11 @@
 package controllers;
 
 import entities.Projet;
-import entities.Session;
+import entities.Sessions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -48,7 +47,7 @@ public class AffichageProjetEMPController implements Initializable {
 
     public void getProjects() throws SQLException
     {
-        int idEmploye = Session.getInstance().getIdUtilisateur();
+        int idEmploye = Sessions.getInstance().getIdUtilisateur();
         EquipeEmployeService equipeEmployeService = new EquipeEmployeService();
         List<Integer> equipesIDS = equipeEmployeService.getEquipesByEmploye(idEmploye);
 

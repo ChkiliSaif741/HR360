@@ -1,6 +1,6 @@
 package controllers;
 
-import entities.Session;
+import entities.Sessions;
 import entities.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -243,7 +243,7 @@ public class LoginController {
             System.out.println("Rôle utilisateur connecté : " + utilisateur.getRole());
 
             // Initialisation de la session utilisateur
-            Session.getInstance(utilisateur.getId());
+            Sessions.getInstance(utilisateur.getId());
 
             try {
                 FXMLLoader loader;

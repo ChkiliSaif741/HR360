@@ -7,6 +7,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import services.ServiceCandidature;
+import services.ServiceUtilisateur;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -86,7 +87,9 @@ public class ModifCandidatureBack {
                             + "</body></html>";
 
                     // Envoyer l'e-mail à kousay.najar@esprit.tn avec le logo et le contenu HTML
-                    serviceMail.envoyerEmailAvecLogo("kousay.najar@esprit.tn", sujet, message, logoPath);
+                    ServiceUtilisateur serviceUtilisateur=new ServiceUtilisateur();
+                    String mail=serviceUtilisateur.getUserById(candidatureSelectionnee.getId_user()).getEmail();
+                    serviceMail.envoyerEmailAvecLogo(mail, sujet, message, logoPath);
 
                     System.out.println("Email envoyé avec succès à kousay.najar@esprit.tn");
 
