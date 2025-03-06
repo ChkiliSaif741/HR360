@@ -22,7 +22,7 @@ import java.util.List;
 public class GoogleOAuth {
     private static final String APPLICATION_NAME = "Intellij";  // Utiliser le nom correct
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    private static final String TOKENS_DIRECTORY_PATH = "token";
 
     //private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
     private static final List<String> SCOPES = Arrays.asList(

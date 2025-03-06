@@ -22,6 +22,7 @@ public class Entretien {
 
 
 
+
     public Entretien() {}
 
 
@@ -48,6 +49,7 @@ public class Entretien {
         this.idCandidature = idCandidature;
         this.id = id;
     }
+
 
     public Entretien(LocalDate date, LocalTime heure, utils.type type, utils.statut statut,String lien_meet, String localisation) {
         this.date = date;
@@ -150,6 +152,8 @@ public class Entretien {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+
 
     @Override
     public String toString() {

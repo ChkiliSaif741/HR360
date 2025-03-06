@@ -151,14 +151,14 @@
                   </ImageView>
                </children>
             </HBox>
-            <HBox prefHeight="80.0" prefWidth="350.0">
+            <HBox prefHeight="18.0" prefWidth="350.0">
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="29.0" onMouseClicked="#modifierEva" pickOnBounds="true" preserveRatio="true" translateX="260.0" translateY="12.0">
+                  <ImageView fitHeight="30.0" fitWidth="29.0" onMouseClicked="#modifierEva" pickOnBounds="true" preserveRatio="true" translateX="260.0" translateY="4.0">
                      <image>
                         <Image url="@image/modifier.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="23.0" onMouseClicked="#deleteEva" pickOnBounds="true" preserveRatio="true" translateX="270.0" translateY="15.0">
+                  <ImageView fitHeight="21.0" fitWidth="23.0" onMouseClicked="#deleteEva" pickOnBounds="true" preserveRatio="true" translateX="270.0" translateY="7.0">
                      <image>
                         <Image url="@image/delete.png" />
                      </image>

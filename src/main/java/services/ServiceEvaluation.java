@@ -28,7 +28,7 @@ public class ServiceEvaluation implements IService<Evaluation> {
     public void ajouter(Evaluation evaluation) throws SQLException {
         evaluation.setCommentaire(commentaire.EN_ATTENTE);
 
-        String req = "INSERT INTO evaluation (titreEva, noteTechnique, noteSoftSkills, commentaire, dateEvaluation, scorequiz, idEntretien) VALUES (?, ?, ?, ?, ?, ?,?)";
+        String req = "INSERT INTO evaluation (titreEva, noteTechnique, noteSoftSkills, commentaire, dateEvaluation, scorequiz, idEntretien) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(req);
         preparedStatement.setString(1, evaluation.getTitreEva());
         preparedStatement.setFloat(2, evaluation.getNoteTechnique());
@@ -37,6 +37,7 @@ public class ServiceEvaluation implements IService<Evaluation> {
         preparedStatement.setTimestamp(5, Timestamp.valueOf(evaluation.getDateEvaluation()));
         preparedStatement.setInt(6, evaluation.getScorequiz());
         preparedStatement.setInt(7, evaluation.getIdEntretien());
+
         //preparedStatement.setInt(6, evaluation.getId());
         preparedStatement.executeUpdate();
         System.out.println("Évaluation ajoutée avec succès !");
@@ -59,6 +60,7 @@ public class ServiceEvaluation implements IService<Evaluation> {
         preparedStatement.setInt(8, evaluation.getIdEntretien()); // Correction ici
         //preparedStatement.setInt(6, evaluation.getId()); // Correction ici
         preparedStatement.setInt(9, evaluation.getIdEvaluation()); // Correction ici
+
 
 
         preparedStatement.executeUpdate();

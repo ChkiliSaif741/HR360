@@ -19,6 +19,7 @@ public class Evaluation {
     private int idEntretien;
     private int scorequiz;
     private List<QuizQuestion> questions;
+
     //private int id;
 
     public Evaluation() {}
@@ -50,6 +51,9 @@ public class Evaluation {
         this.idEntretien = idEntretien;
         //this.id = id;
     }
+
+
+
     public Evaluation(int idEvaluation,String titreEva,float noteTechnique, float noteSoftSkills, commentaire commentaire, LocalDateTime dateEvaluation, int idEntretien) {
         this.idEvaluation = idEvaluation;
         this.titreEva = titreEva;
@@ -58,8 +62,9 @@ public class Evaluation {
         this.commentaire = commentaire;
         this.dateEvaluation = dateEvaluation;
         this.idEntretien = idEntretien;
-        //this.id = id;
     }
+
+
 
 
     public int getIdEvaluation() {
@@ -111,6 +116,8 @@ public class Evaluation {
     public void setTitreEva(String titreEva) {this.titreEva = titreEva;}
     //public int getId() {return id;}
     //public void setId(int id) {this.id = id;}
+
+
 
     @Override
     public String toString() {

@@ -111,7 +111,7 @@ public class AfficheEvaluation implements Initializable {
                 gridEva.setMaxWidth(Region.USE_PREF_SIZE);
                 gridEva.setMaxHeight(Region.USE_PREF_SIZE);
 
-
+                // Ajouter l'analyse des évaluations
 
                 //GridPane.setMargin(anchorPane, new Insets(20));
 
@@ -173,5 +173,17 @@ public class AfficheEvaluation implements Initializable {
         }
 
     }
+
+
+
+
+        @FXML
+        private void showRecommendation(String recommendation) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Recommandation");
+            alert.setHeaderText(null);
+            alert.setContentText(recommendation);
+            alert.show();
+        }
 
 }

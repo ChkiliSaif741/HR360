@@ -43,6 +43,8 @@ public class AjoutEvaluation {
     private Label titreEvaC;
 
 
+
+
     @FXML
     public void initialize() {
         serviceEvaluation = new ServiceEvaluation();
@@ -156,6 +158,7 @@ public class AjoutEvaluation {
             //int idE = (int) id.getValue();
             LocalDateTime dateEvaluation = LocalDateTime.now();
 
+
             // Contrôle de saisie
             if (titreEva == null || noteTechnique == null || noteSoftSkills == null || utils.commentaire.EN_ATTENTE == null ) {
                 titreEvaC.setText("Sélectionnez une heure !");
@@ -203,4 +206,5 @@ public class AjoutEvaluation {
     public void setIdEntretien(int idEntretien) {
         this.idEntretien = idEntretien;
     }
+
 }

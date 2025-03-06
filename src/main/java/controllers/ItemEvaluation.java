@@ -1,37 +1,28 @@
 package controllers;
 
-import entities.Entretien;
 import entities.QuizQuestion;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import entities.Evaluation;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.QuizApiService;
-import services.ServiceEntretien;
 import services.ServiceEvaluation;
-import controllers.AfficheEvaluation;
+
 import java.io.IOException;
-import java.net.URL;
+import java.net.SocketTimeoutException;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
-import utils.commentaire;
 
 public class ItemEvaluation {
 
@@ -76,6 +67,8 @@ public class ItemEvaluation {
     private ServiceEvaluation serviceEvaluation;
 
 
+
+
     private static Map<Integer, List<QuizQuestion>> quizMap = new HashMap<>();
 
     public void setData(Evaluation evaluation) {
@@ -88,7 +81,6 @@ public class ItemEvaluation {
 
         dateEvaluation.setText("" + evaluation.getDateEvaluation().toString());
         scorequiz.setText("" + evaluation.getScorequiz());
-
         // Mettre à jour les étoiles en fonction du score du quiz
         updateStars(evaluation.getScorequiz());
     }
@@ -140,7 +132,7 @@ public class ItemEvaluation {
         alert.show();
     }
 
-    @FXML
+    @Deprecated
     public void showQuiz(MouseEvent mouseEvent) {
         if (evaluation == null) {
             System.out.println("Aucune évaluation sélectionnée.");
@@ -183,7 +175,7 @@ public class ItemEvaluation {
         }
     }
 
-    @FXML
+    @Deprecated
     void handleAssociateQuiz(Event event) {
         if (evaluation == null) {
             System.out.println("Aucune évaluation sélectionnée.");
@@ -326,4 +318,7 @@ public class ItemEvaluation {
             star5.setImage(new Image(getClass().getResourceAsStream("/image/ratej.png")));
         }
     }
+
+
+
 }
