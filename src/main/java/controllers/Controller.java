@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static org.apache.poi.sl.usermodel.PresetColor.Menu;
+
 public class Controller implements Initializable {
 
     @FXML
@@ -278,5 +280,18 @@ public class Controller implements Initializable {
         }
     }
 
+
+
+
+
+    public void afficherNotification(ActionEvent actionEvent) {
+
+        try {
+            loadPage("/AfficherNotification.fxml");
+        } catch (IOException e) {
+            //afficherAlerte(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors du chargement de la page.");
+        }
+
+    }
 }
 
