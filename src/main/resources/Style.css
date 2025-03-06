@@ -8,3 +8,29 @@
     -fx-border-color: WHITE;
     -fx-border-width: 0px 0px 0px 3px;
 }
+
+/* Style de base pour le bouton LogOut */
+.logoutButton {
+    -fx-background-color: #0A4969; /* Couleur de fond */
+    -fx-text-fill: WHITE; /* Couleur du texte */
+    -fx-font-size: 15px; /* Taille de la police */
+    -fx-font-weight: bold; /* Gras */
+    -fx-border-radius: 5px; /* Bord arrondi */
+    -fx-background-radius: 5px; /* Bord arrondi */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-cursor: hand; /* Curseur en forme de main */
+}
+
+/* Effet de survol */
+.logoutButton:hover {
+    -fx-background-color: #146886; /* Changement de couleur de fond */
+    -fx-border-color: WHITE; /* Couleur de la bordure */
+    -fx-border-width: 0px 0px 0px 3px; /* Largeur de la bordure (gauche uniquement) */
+}
+
+/* Effet lors du clic */
+.logoutButton:pressed {
+    -fx-background-color: #0A4969; /* Changement de couleur de fond */
+    -fx-scale-x: 0.95; /* Réduction de la taille en X */
+    -fx-scale-y: 0.95; /* Réduction de la taille en Y */
+}

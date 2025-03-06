@@ -42,7 +42,7 @@ public class FormationsControllerEMP implements Initializable {
     private ImageView fruitImg;
 
     @FXML
-    private Label fruitPriceLabel;
+    private Label formationDateLabel;
 
     @FXML
     private GridPane grid;
@@ -107,6 +107,7 @@ public class FormationsControllerEMP implements Initializable {
 
     private void setChosenFormation(Formation formation) {
         formationNameLable.setText(formation.getTitre());
+        formationDateLabel.setText(formation.getDateFormation());
         chosenFormationCard.setStyle(
                 "-fx-background-color: #146886;\n" + // Couleur de fond
                         "    -fx-background-radius: 30;\n" + // Bord arrondi

@@ -75,18 +75,28 @@
     -fx-background-color: transparent;
 }
 
-/* Style des boutons "Modifier", "Supprimer" et "Participants" */
-.add-btn {
-    -fx-background-color: #e74c3c; /* Rouge */
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-border-radius: 5px;
+/* Style de base pour le bouton onajouterBtn */
+.add-button {
+    -fx-background-color: #27ae60; /* Vert */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-font-weight: bold; /* Gras */
+    -fx-border-radius: 5px; /* Bord arrondi */
+    -fx-background-radius: 5px; /* Bord arrondi */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-cursor: hand; /* Curseur en forme de main */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2); /* Ombre */
 }
 
-.add-btn:hover {
-    -fx-background-color: #c0392b;
+/* Effet de survol */
+.add-button:hover {
+    -fx-background-color: #2ecc71; /* Changement de couleur de fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 3); /* Ombre plus prononcée */
 }
 
-.add-btn:pressed {
-    -fx-background-color: #922b21;
+/* Effet lors du clic */
+.add-button:pressed {
+    -fx-background-color: #219653; /* Changement de couleur de fond */
+    -fx-scale-x: 0.95; /* Réduction de la taille en X */
+    -fx-scale-y: 0.95; /* Réduction de la taille en Y */
 }

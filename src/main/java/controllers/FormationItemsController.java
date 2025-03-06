@@ -20,6 +20,10 @@ public class FormationItemsController {
     private Label nameLabel;
 
     @FXML
+    private Label dateLable;
+
+
+    @FXML
     private Label priceLable;
 
     @FXML
@@ -41,6 +45,7 @@ public class FormationItemsController {
         this.formation = formation;
         this.myListener = myListener;
         nameLabel.setText(formation.getTitre());
+        dateLable.setText(formation.getDateFormation());
 
         // Vérifier si l'utilisateur connecté est un responsable RH
         if (Sessions.getInstance().getRole().equals("RH") || Sessions.getInstance().getRole().equals("ResponsableRH")) {

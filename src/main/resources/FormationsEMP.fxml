@@ -61,12 +61,12 @@
                             <children>
                                 <HBox prefHeight="60.0" prefWidth="335.0">
                                     <children>
-                                        <Label fx:id="formationNameLable" prefHeight="48.0" prefWidth="276.0" text="Farhani" textFill="WHITE">
+                                        <Label fx:id="formationNameLable" prefHeight="30.0" prefWidth="69.0" text="Farhani" textFill="WHITE">
                                             <font>
                                                 <Font name="Cambria" size="24.0" />
                                             </font>
                                         </Label>
-                                        <Label fx:id="fruitPriceLabel" prefHeight="57.0" prefWidth="171.0" text="Hamza" textFill="WHITE">
+                                        <Label fx:id="formationDateLabel" prefHeight="57.0" prefWidth="171.0" text="Hamza" textFill="WHITE">
                                             <font>
                                                 <Font name="Cambria" size="24.0" />
                                             </font>

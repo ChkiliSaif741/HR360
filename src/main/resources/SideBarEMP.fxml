@@ -178,7 +178,7 @@
                            </graphic>
                         </JFXButton>
                         <VBox prefHeight="236.0" prefWidth="176.0" />
-                        <Button mnemonicParsing="false" onAction="#onLogoutbtn" text="LogOut" />
+                        <Button mnemonicParsing="false" onAction="#onLogoutbtn" styleClass="logoutButton" stylesheets="@Style.css" text="LogOut" />
                      </children>
                   </VBox>
                </children>
