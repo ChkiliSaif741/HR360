@@ -35,7 +35,7 @@ public class GoogleMeetAPI {
                 .setStart(start)
                 .setEnd(end)
                 .setConferenceData(conferenceData)
-                .setAttendees(Collections.singletonList(new EventAttendee().setEmail("gaithhmidi16@gmail.com"))); // Remplace par un vrai email
+                .setAttendees(Collections.singletonList(new EventAttendee().setEmail("ghaith.hmidi@esprit.tn"))); // Remplace par un vrai email
 
         // Insérer l'événement dans Google Calendar
         Event createdEvent = service.events().insert("primary", event)
