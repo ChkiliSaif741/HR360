@@ -538,14 +538,14 @@
             System.out.println("Chemin de l'image : " + imagePath);
 
             // Cryptage du mot de passe
-            String motDePasseCrypte = CryptageUtil.crypterMotDePasse(signup_password.getText());
+            //String motDePasseCrypte = CryptageUtil.crypterMotDePasse(signup_password.getText());
 
             // Création de l'utilisateur, de l'employé ou du candidat
             Utilisateur candidat = new Utilisateur();
             candidat.setNom(signup_nom.getText());
             candidat.setPrenom(signup_prenom.getText());
             candidat.setEmail(signup_email.getText());
-            candidat.setPassword(motDePasseCrypte); // Utiliser le mot de passe crypté
+            candidat.setPassword(signup_password.getText()); // Utiliser le mot de passe crypté
             candidat.setRole("Candidat");
             candidat.setImgSrc(imagePath);
             candidat.setCompetence(signup_competence.getText());
