@@ -16,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import services.ServiceNotification;
 import services.ServiceReservation;
 import services.ServiceRessource;
+import services.ServiceUtilisateur;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -51,8 +52,8 @@ public class ReservationController {
     public void setData(Reservation reservation) {
 
         this.reservation=reservation;
-        //labelRessource.setText(String.valueOf(reservation.getIduser())); affichage de l'utilisateur qui a reserver
-        labelRessource.setText("Employée: Oussema");
+        ServiceUtilisateur serviceUtilisateur=new ServiceUtilisateur();
+        labelRessource.setText("Nom: "+serviceUtilisateur.getUserById(reservation.getIduser()));
         labelDateDebut.setText("Début: " + reservation.getDateDebut().toString());
         labelDateFin.setText("Fin: " + reservation.getDateFin().toString());
         resourceIdLabel.setText(String.valueOf(reservation.getId()));

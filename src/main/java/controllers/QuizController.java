@@ -91,7 +91,7 @@ public class QuizController {
     }
 
     @FXML
-    private void handleValidate() throws IOException {
+    private void handleValidate() throws IOException, SQLException {
         int score = 0;
         int totalQuestions = quizQuestions.size();
 
@@ -115,11 +115,12 @@ public class QuizController {
         evaluation.setScorequiz(score); // Enregistrer le score du quiz
 
         // Mettre à jour le statut du test technique en fonction du score
-        if (score >= 7) {
+        if (score >= 2) {
             evaluation.setCommentaire(commentaire.ACCEPTE);
             ServiceUtilisateur serviceUtilisateur=new ServiceUtilisateur();
             Utilisateur user= serviceUtilisateur.getUserById(Sessions.getInstance().getIdUtilisateur());
             user.setRole("Employe");
+            serviceUtilisateur.updateRole(user);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText(null);

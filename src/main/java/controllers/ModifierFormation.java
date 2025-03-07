@@ -98,8 +98,10 @@ public class ModifierFormation{
 
     private void ouvrirAfficheFormation() throws IOException {
         // Charger le fichier FXML de la fenêtre afficheFormation.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FormationsRH.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
         Parent root = loader.load();
+        Controller con=loader.getController();
+        con.loadPage("/FormationsRH.fxml");
 
         // Créer une nouvelle scène
         Scene scene = new Scene(root);
