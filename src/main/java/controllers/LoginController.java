@@ -397,7 +397,7 @@
             if (utilisateur != null) {
                 System.out.println("Utilisateur authentifié : " + utilisateur.getEmail());
                 System.out.println("Rôle utilisateur connecté : " + utilisateur.getRole());
-                startScheduler();
+                //startScheduler();
                 // Initialisation de la sessions utilisateur
                 Sessions sessions = Sessions.getInstance(utilisateur.getId()); // Créer ou récupérer la sessions
                 sessions.setRole(utilisateur.getRole()); // Définir le rôle dans la sessions
