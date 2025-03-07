@@ -116,7 +116,8 @@ public class QuizController {
             evaluation.setCommentaire(commentaire.REFUSE);
         }
 
-
+ItemEvaluationFront itemEvaluationFront = new ItemEvaluationFront();
+        itemEvaluationFront.updateStars(evaluation.getScorequiz());
 
         // Mettre à jour l'évaluation dans la base de données
         try {
