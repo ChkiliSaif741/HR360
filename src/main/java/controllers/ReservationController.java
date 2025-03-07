@@ -53,7 +53,7 @@ public class ReservationController {
 
         this.reservation=reservation;
         ServiceUtilisateur serviceUtilisateur=new ServiceUtilisateur();
-        labelRessource.setText("Nom: "+serviceUtilisateur.getUserById(reservation.getIduser()));
+        labelRessource.setText("Nom: "+serviceUtilisateur.getUserById(reservation.getIduser()).getNom());
         labelDateDebut.setText("Début: " + reservation.getDateDebut().toString());
         labelDateFin.setText("Fin: " + reservation.getDateFin().toString());
         resourceIdLabel.setText(String.valueOf(reservation.getId()));

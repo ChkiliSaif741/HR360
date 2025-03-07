@@ -1,6 +1,8 @@
 package services;
 
 import entities.Utilisateur;
+import interfaces.IService;
+import org.mindrot.jbcrypt.BCrypt;
 import utils.CryptageUtil;
 import utils.MyDatabase;
 
@@ -18,26 +20,35 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             System.err.println("Erreur : la connexion est null !");
         }
     }
-
-    public Utilisateur authentifier(String email, String password) throws SQLException {
+    public Utilisateur authentifier1(String email, String password) throws SQLException {
         String query = "SELECT id, nom, prenom, email, password, role, image FROM utilisateur WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     String motDePasseStocke = resultSet.getString("password");
+                    System.out.println("Mot de passe stocké : " + motDePasseStocke); // Debugging
 
-                    // Vérifier si le mot de passe stocké est crypté (commence par "$2a$")
-                    if (motDePasseStocke.startsWith("$2a$")) {
-                        // Le mot de passe est crypté, utiliser BCrypt pour vérifier
+                    // Vérifier si le mot de passe est crypté avec BCrypt
+                    if (motDePasseStocke != null && motDePasseStocke.startsWith("$2a$")) {
+                        System.out.println("Mot de passe crypté avec BCrypt détecté"); // Debugging
+                        if (BCrypt.checkpw(password, motDePasseStocke)) {
+                            return creerUtilisateurDepuisResultSet(resultSet);
+                        }
+                    }
+                    // Vérifier si le mot de passe est crypté avec SHA-256 (format sel:hash)
+                    else if (motDePasseStocke != null && motDePasseStocke.contains(":")) {
+                        System.out.println("Mot de passe crypté avec SHA-256 détecté"); // Debugging
                         if (CryptageUtil.verifierMotDePasse(password, motDePasseStocke)) {
                             return creerUtilisateurDepuisResultSet(resultSet);
                         }
-                    } else {
-                        // Le mot de passe est en clair, vérifier directement
-                        if (password.equals(motDePasseStocke)) {
-                            // Crypter le mot de passe et mettre à jour la base de données
-                            String motDePasseCrypte = CryptageUtil.crypterMotDePasse(password);
+                    }
+                    // Vérifier si le mot de passe est en clair
+                    else {
+                        System.out.println("Mot de passe en clair détecté"); // Debugging
+                        if (CryptageUtil.verifierMotDePasse(password, motDePasseStocke)) {
+                            // Crypter le mot de passe avec BCrypt et mettre à jour la base de données
+                            String motDePasseCrypte = BCrypt.hashpw(password, BCrypt.gensalt());
                             mettreAJourMotDePasse(resultSet.getInt("id"), motDePasseCrypte);
                             return creerUtilisateurDepuisResultSet(resultSet);
                         }
@@ -47,6 +58,67 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         }
         return null;
     }
+
+    public void migrerMotsDePasseVersBCrypt() throws SQLException {
+        String query = "SELECT id, password FROM utilisateur";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String motDePasseStocke = resultSet.getString("password");
+
+                // Vérifier si le mot de passe est crypté avec SHA-256
+                if (motDePasseStocke != null && motDePasseStocke.contains(":")) {
+                    System.out.println("Migration du mot de passe pour l'utilisateur ID : " + id);
+                    String motDePasseClair = extraireMotDePasseClair(motDePasseStocke); // Extraire le mot de passe en clair (si possible)
+                    if (motDePasseClair != null) {
+                        String motDePasseCrypte = BCrypt.hashpw(motDePasseClair, BCrypt.gensalt());
+                        mettreAJourMotDePasse(id, motDePasseCrypte);
+                        System.out.println("Mot de passe migré avec succès pour l'utilisateur ID : " + id);
+                    } else {
+                        System.out.println("Impossible de migrer le mot de passe pour l'utilisateur ID : " + id);
+                    }
+                }
+            }
+        }
+    }
+
+    private String extraireMotDePasseClair(String motDePasseCrypte) {
+        // Implémentez cette méthode si vous pouvez extraire le mot de passe en clair à partir du hash SHA-256
+        // Sinon, vous devrez demander aux utilisateurs de réinitialiser leur mot de passe
+        return null;
+    }
+
+
+    /*public Utilisateur authentifier1(String email, String password) throws SQLException {
+        String query = "SELECT id, nom, prenom, email, password, role, image FROM utilisateur WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String motDePasseStocke = resultSet.getString("password");
+                    try {
+                        if (motDePasseStocke.startsWith("$2a$")) {
+                            if (CryptageUtil.verifierMotDePasse(password, motDePasseStocke)) {
+                                return creerUtilisateurDepuisResultSet(resultSet);
+                            }
+                        } else {
+                            System.out.println(motDePasseStocke);
+                            if (password.equals(motDePasseStocke)) {
+                                String motDePasseCrypte = CryptageUtil.crypterMotDePasse(password);
+                                mettreAJourMotDePasse(resultSet.getInt("id"), motDePasseCrypte);
+                                return creerUtilisateurDepuisResultSet(resultSet);
+                            }
+                        }
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Invalid password hash for user: " + email);
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return null;
+    }*/
 
     private Utilisateur creerUtilisateurDepuisResultSet(ResultSet resultSet) throws SQLException {
         Utilisateur utilisateur = new Utilisateur();
@@ -323,6 +395,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             ps.executeUpdate();
         }
     }
+
     public void updateRole(Utilisateur utilisateur) throws SQLException {
         // Requête SQL sans la colonne 'password'
         String req = "UPDATE utilisateur SET role=? WHERE id=?";
@@ -342,5 +415,9 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         }
     }
 
+
 }
+
+
+
 
