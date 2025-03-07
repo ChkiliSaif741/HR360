@@ -321,5 +321,13 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+    @FXML
+    void ViewDash(ActionEvent event) {
+        try {
+            loadPage("/dash.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 

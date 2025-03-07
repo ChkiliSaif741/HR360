@@ -108,7 +108,7 @@
                                         <Insets bottom="-25.0" top="-30.0" />
                                     </VBox.margin>
                                 </ImageView>
-                                <JFXButton alignment="BASELINE_LEFT" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Dashboard" textFill="WHITE">
+                                <JFXButton alignment="BASELINE_LEFT" onAction="#ViewDash" prefHeight="38.0" prefWidth="176.0" styleClass="sidebarItem" text="Dashboard" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>
@@ -205,7 +205,7 @@
                            </graphic>
                         </JFXButton>
                         <VBox alignment="CENTER" prefHeight="150.0" prefWidth="177.0" />
-                        <Button mnemonicParsing="false" onAction="#onLogoutbtn" text="Log out" />
+                        <Button mnemonicParsing="false" onAction="#onLogoutbtn" styleClass="button-action-add" stylesheets="@stylesProjet.css" text="Log out" />
                             </children>
                         </VBox>
                     </children>

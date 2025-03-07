@@ -2,14 +2,19 @@ package controllers;
 
 import entities.Evaluation;
 import entities.QuizQuestion;
+import entities.Sessions;
+import entities.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ServiceEvaluation;
+import services.ServiceUtilisateur;
+import utils.alertMessage;
 import utils.commentaire;
 
 import java.io.IOException;
@@ -112,6 +117,33 @@ public class QuizController {
         // Mettre à jour le statut du test technique en fonction du score
         if (score >= 7) {
             evaluation.setCommentaire(commentaire.ACCEPTE);
+            ServiceUtilisateur serviceUtilisateur=new ServiceUtilisateur();
+            Utilisateur user= serviceUtilisateur.getUserById(Sessions.getInstance().getIdUtilisateur());
+            user.setRole("Employe");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("Vous avez devenu un employee,Félicitations!(Vous allez etre déconnecté!)");
+            alert.showAndWait();
+            Sessions.destroySession();
+
+            // Afficher un message de confirmation
+            alertMessage alertMsg = new alertMessage();
+            alertMsg.successMessage("Déconnexion réussie !");
+
+            // Rediriger vers la page de connexion
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) quizContainer.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Login");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Erreur lors du chargement de la page de connexion.");
+            }
         } else {
             evaluation.setCommentaire(commentaire.REFUSE);
         }

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~    Copyright (C) Gleidson Neves da Silveira
+  ~
+  ~    This program is free software: you can redistribute it and/or modify
+  ~    it under the terms of the GNU General Public License as published by
+  ~    the Free Software Foundation, either version 3 of the License, or
+  ~    (at your option) any later version.
+  ~
+  ~    This program is distributed in the hope that it will be useful,
+  ~    but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~    GNU General Public License for more details.
+  ~
+  ~    You should have received a copy of the GNU General Public License
+  ~    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="root" prefHeight="634.4" prefWidth="924.0" style="-fx-border-color : transparent; -fx-background-color : white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.dashController">
+   <stylesheets>
+      <URL value="@style/css/colors.css" />
+      <URL value="@style/css/skeleton.css" />
+      <URL value="@style/css/bootstrap.css" />
+      <URL value="@style/css/helpers.css" />
+      <URL value="@style/css/typographic.css" />
+   </stylesheets>
+   <ScrollPane fitToWidth="true">
+      <StackPane.margin>
+         <Insets />
+      </StackPane.margin>
+      <VBox fx:id="body" spacing="10.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <GridPane fx:id="gridTiles" alignment="CENTER_LEFT" hgap="20.0" prefHeight="126.0" prefWidth="734.0" vgap="20.0">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="0.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: -light-gray-2;">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+                  <Rectangle fill="#6cc7ff" height="75.0" style="-fx-background-color: -info; -fx-padding: 20; -fx-background-radius: 10;" width="82.0" />
+                  <ImageView fitHeight="64.0" fitWidth="86.0" preserveRatio="true">
+                     <image>
+                        <Image url="@img/user.png" />
+                     </image>
+                  </ImageView>
+               </StackPane>
+               <VBox alignment="CENTER" prefHeight="85.0" prefWidth="69.0" HBox.hgrow="ALWAYS">
+                  <padding>
+                     <Insets right="20.0" />
+                  </padding>
+                  <Text fx:id="NbrEmployes" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -info;" text="39">
+                     <styleClass>
+                        <String fx:value="info-text" />
+                        <String fx:value="text-36" />
+                     </styleClass>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -aqua;" styleClass="subtitle" text="Employes" />
+                  <opaqueInsets>
+                     <Insets left="20.0" />
+                  </opaqueInsets>
+               </VBox>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="199.0" layoutY="10.0" minHeight="-Infinity" minWidth="0.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: -light-gray-2;" GridPane.columnIndex="3">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+                  <Rectangle fill="#ff2121" height="77.0" style="-fx-background-color: -info; -fx-padding: 20; -fx-background-radius: 10;" width="86.0" />
+                  <ImageView fitHeight="68.0" fitWidth="54.0" preserveRatio="true">
+                     <image>
+                        <Image url="@img/employees.png" />
+                     </image>
+                  </ImageView>
+               </StackPane>
+               <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <padding>
+                     <Insets right="20.0" />
+                  </padding>
+                  <Text fx:id="NbrEquipes" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -grapefruit;" text="125">
+                     <styleClass>
+                        <String fx:value="info-text" />
+                        <String fx:value="text-36" />
+                     </styleClass>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -grapefruit;" styleClass="subtitle" text="Equipes" />
+               </VBox>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="388.0" layoutY="10.0" minHeight="-Infinity" minWidth="0.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: -light-gray-2;" GridPane.columnIndex="2">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+                  <Rectangle fill="#f2bf82" height="77.0" style="-fx-background-color: -info; -fx-padding: 20; -fx-background-radius: 10;" width="81.0" />
+                  <ImageView fitHeight="68.0" fitWidth="54.0" preserveRatio="true">
+                     <image>
+                        <Image url="@img/talent.png" />
+                     </image>
+                  </ImageView>
+               </StackPane>
+               <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <padding>
+                     <Insets right="20.0" />
+                  </padding>
+                  <Text fx:id="nbrCandidatures" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -amber;" text="4">
+                     <styleClass>
+                        <String fx:value="info-text" />
+                        <String fx:value="text-36" />
+                     </styleClass>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -amber;" styleClass="subtitle" text="Candidatures" />
+               </VBox>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="388.0" layoutY="10.0" minHeight="-Infinity" minWidth="0.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: -light-gray-2;" GridPane.columnIndex="1">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+                  <Rectangle fill="#24fa20" height="74.0" style="-fx-background-color: -info; -fx-padding: 20; -fx-background-radius: 10;" width="86.0" />
+                  <ImageView fitHeight="68.0" fitWidth="54.0" preserveRatio="true">
+                     <image>
+                        <Image url="@img/projet.png" />
+                     </image>
+                  </ImageView>
+               </StackPane>
+               <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <padding>
+                     <Insets right="20.0" />
+                  </padding>
+                  <Text fx:id="nbrProjets" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-36" text="18" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -mint;" styleClass="subtitle" text="Projets" />
+               </VBox>
+            </HBox>
+         </GridPane>
+         <GridPane fx:id="footer" hgap="10.0" vgap="10.0">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+         </GridPane>
+      </VBox>
+   </ScrollPane>
+   <VBox alignment="CENTER" prefHeight="485.0" prefWidth="922.0">
+      <children>
+         <Label alignment="CENTER" contentDisplay="CENTER" text="Bienvenue dans">
+            <font>
+               <Font size="71.0" />
+            </font>
+            <VBox.margin>
+               <Insets top="150.0" />
+            </VBox.margin>
+         </Label>
+         <ImageView fitHeight="463.0" fitWidth="478.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@Images/logoRH360.png" />
+            </image>
+            <VBox.margin>
+               <Insets top="-100.0" />
+            </VBox.margin>
+         </ImageView>
+      </children>
+   </VBox>
+</StackPane>

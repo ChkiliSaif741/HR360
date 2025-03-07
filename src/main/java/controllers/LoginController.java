@@ -17,6 +17,9 @@
     import javafx.scene.web.WebView;
     import javafx.stage.FileChooser;
     import javafx.stage.Stage;
+    import javafx.util.Duration;
+    import org.controlsfx.control.Notifications;
+    import services.ServiceEntretien;
     import services.ServiceUtilisateur;
     import utils.CryptageUtil;
     import utils.alertMessage;
@@ -25,9 +28,14 @@
     import java.io.IOException;
     import java.net.URL;
     import java.sql.SQLException;
+    import java.time.LocalDateTime;
+    import java.time.temporal.ChronoUnit;
     import java.util.Arrays;
     import java.util.List;
     import java.util.ResourceBundle;
+    import java.util.concurrent.Executors;
+    import java.util.concurrent.ScheduledExecutorService;
+    import java.util.concurrent.TimeUnit;
 
     public class LoginController implements Initializable {
 
@@ -389,7 +397,7 @@
             if (utilisateur != null) {
                 System.out.println("Utilisateur authentifié : " + utilisateur.getEmail());
                 System.out.println("Rôle utilisateur connecté : " + utilisateur.getRole());
-
+                startScheduler();
                 // Initialisation de la sessions utilisateur
                 Sessions sessions = Sessions.getInstance(utilisateur.getId()); // Créer ou récupérer la sessions
                 sessions.setRole(utilisateur.getRole()); // Définir le rôle dans la sessions
@@ -404,6 +412,9 @@
                     if (role.equals("RH") || role.equals("ResponsableRH")) {  // Vérification multiple
                         loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                         root = loader.load();
+
+                        Controller controller = loader.getController();
+                        controller.loadPage("/dash.fxml");
                     } else if (role.equals("Employe")) {
                         loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
                         root = loader.load();
@@ -645,6 +656,66 @@
             }
         }
 
+
+        private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+
+
+        @FXML
+        public void startScheduler() {
+            System.out.println("Démarrage du planificateur...");
+            scheduler.scheduleAtFixedRate(this::checkUpcomingEntretiens, 0, 3, TimeUnit.HOURS);
+        }
+
+        private void checkUpcomingEntretiens() {
+            try {
+                ServiceEntretien serviceEntretien=new ServiceEntretien();
+                List<Entretien> entretiens = serviceEntretien.afficher(); // Récupérer tous les entretiens
+                System.out.println("Nombre total d'entretiens : " + entretiens.size());
+
+                for (Entretien entretien : entretiens) {
+                    LocalDateTime maintenant = LocalDateTime.now();
+                    LocalDateTime dateHeureEntretien = LocalDateTime.of(entretien.getDate(), entretien.getHeure());
+                    long delai = ChronoUnit.MILLIS.between(maintenant, dateHeureEntretien.minusHours(24)); // 24 heures avant l'entretien
+
+                    if (delai > 0) {
+                        System.out.println("Planification de la notification pour : " + dateHeureEntretien.minusHours(24));
+                        scheduleNotification(entretien);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Erreur lors de la récupération des entretiens : " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        private void scheduleNotification(Entretien entretien) {
+            LocalDateTime maintenant = LocalDateTime.now();
+            LocalDateTime dateHeureEntretien = LocalDateTime.of(entretien.getDate(), entretien.getHeure());
+            long delai = ChronoUnit.MILLIS.between(maintenant, dateHeureEntretien.minusHours(24)); // 24 heures avant l'entretien
+
+            if (delai > 0) {
+                scheduler.schedule(() -> showNotification(entretien), delai, TimeUnit.MILLISECONDS);
+                System.out.println("Notification planifiée pour : " + dateHeureEntretien.minusHours(24));
+            }
+        }
+
+        private void showNotification(Entretien entretien) {
+            javafx.application.Platform.runLater(() -> {
+                // Charger l'image depuis les ressources
+                Image image = new Image("/image/error.png"); // Chemin de l'image dans le dossier des ressources
+
+                // Créer la notification
+                Notifications notifications = Notifications.create()
+                        .title("Rappel d'entretien") // Titre de la notification
+                        .text("Un entretien est prévu dans 24 heures : " + entretien.getDate() + " à " + entretien.getHeure()) // Texte de la notification
+                        .graphic(new ImageView(image)) // Ajouter l'image à la notification
+                        .hideAfter(Duration.seconds(4)); // Durée d'affichage de la notification (4 secondes)
+
+                // Afficher la notification
+                notifications.show();
+            });
+        }
 
     }
 
