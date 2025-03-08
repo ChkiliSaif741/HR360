@@ -60,6 +60,7 @@ public class Affentretienfront implements Initializable {
 
     public void setIdCandidature(int idCandidature) {
         this.idCandidature = idCandidature;
+        System.out.println(idCandidature);
         affichCondEntr();
     }
 

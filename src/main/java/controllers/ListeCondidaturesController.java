@@ -215,8 +215,8 @@ public class ListeCondidaturesController {
     public void VoirEntretien() throws IOException, SQLException {
         int selectedIndex = listViewCondidatures.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
-            List<Candidature> candidatures = serviceCandidature.afficher();
-            int id = candidatures.get(selectedIndex).getId_candidature();
+            Candidature selectedCandidature = listViewCondidatures.getItems().get(selectedIndex);
+            int id = selectedCandidature.getId_candidature();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
             Parent parent=loader.load();
             Controller controller = loader.getController();
