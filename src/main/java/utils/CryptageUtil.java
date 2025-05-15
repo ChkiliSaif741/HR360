@@ -5,23 +5,30 @@ import org.mindrot.jbcrypt.BCrypt;
 public class CryptageUtil {
 
     /**
-     * Crypte un mot de passe en utilisant BCrypt.
-     *
-     * @param motDePasse Le mot de passe en clair.
-     * @return Le mot de passe crypté.
+     * Crypte un mot de passe en format compatible Symfony
      */
     public static String crypterMotDePasse(String motDePasse) {
-        return BCrypt.hashpw(motDePasse, BCrypt.gensalt());
+        // Solution 100% compatible qui fonctionne avec jBCrypt
+        String hash = BCrypt.hashpw(motDePasse, BCrypt.gensalt(13));
+
+        // Conversion du hash en format Symfony (après génération)
+        return convertToSymfonyFormat(hash);
     }
 
     /**
-     * Vérifie si un mot de passe en clair correspond à un mot de passe crypté.
-     *
-     * @param motDePasseClair Le mot de passe en clair.
-     * @param motDePasseCrypte Le mot de passe crypté.
-     * @return true si les mots de passe correspondent, sinon false.
+     * Vérifie un mot de passe contre un hash Symfony
      */
     public static boolean verifierMotDePasse(String motDePasseClair, String motDePasseCrypte) {
-        return BCrypt.checkpw(motDePasseClair, motDePasseCrypte);
+        // Conversion du format Symfony vers format jBCrypt
+        String jbcryptHash = convertToJBCryptFormat(motDePasseCrypte);
+        return BCrypt.checkpw(motDePasseClair, jbcryptHash);
+    }
+
+    private static String convertToSymfonyFormat(String jbcryptHash) {
+        return jbcryptHash.replaceFirst("\\$2a\\$", "\\$2y\\$");
+    }
+
+    private static String convertToJBCryptFormat(String symfonyHash) {
+        return symfonyHash.replaceFirst("\\$2y\\$", "\\$2a\\$");
     }
 }

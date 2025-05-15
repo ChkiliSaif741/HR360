@@ -2,6 +2,7 @@ package services;
 
 import entities.Reservation;
 import entities.Ressource;
+import interfaces.IService;
 import utils.MyDatabase;
 
 import java.sql.*;

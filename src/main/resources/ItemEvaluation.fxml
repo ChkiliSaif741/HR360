@@ -153,12 +153,22 @@
             </HBox>
             <HBox prefHeight="80.0" prefWidth="350.0">
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="29.0" onMouseClicked="#modifierEva" pickOnBounds="true" preserveRatio="true" translateX="260.0" translateY="12.0">
+                  <ImageView fitHeight="30.0" fitWidth="42.0" onMouseClicked="#handleAssociateQuiz" pickOnBounds="true" preserveRatio="true" translateX="230.0" translateY="13.0">
+                     <image>
+                        <Image url="@image/quizTime.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="31.0" onMouseClicked="#showQuiz" pickOnBounds="true" preserveRatio="true" translateX="225.0" translateY="18.0">
+                     <image>
+                        <Image url="@image/quiz.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="29.0" onMouseClicked="#modifierEva" pickOnBounds="true" preserveRatio="true" translateX="230.0" translateY="12.0">
                      <image>
                         <Image url="@image/modifier.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="23.0" onMouseClicked="#deleteEva" pickOnBounds="true" preserveRatio="true" translateX="270.0" translateY="15.0">
+                  <ImageView fitHeight="21.0" fitWidth="23.0" onMouseClicked="#deleteEva" pickOnBounds="true" preserveRatio="true" translateX="230.0" translateY="15.0">
                      <image>
                         <Image url="@image/delete.png" />
                      </image>

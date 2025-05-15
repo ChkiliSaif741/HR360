@@ -3,6 +3,7 @@ package services;
 import entities.Formation;
 import entities.Participation;
 import entities.Utilisateur;
+import interfaces.IService;
 import utils.MyDatabase;
 
 import java.sql.Connection;

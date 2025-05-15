@@ -1,6 +1,7 @@
 package services;
 
 import entities.Utilisateur;
+import interfaces.IService;
 import utils.CryptageUtil;
 import utils.MyDatabase;
 

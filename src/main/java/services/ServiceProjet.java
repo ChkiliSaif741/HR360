@@ -1,6 +1,7 @@
 package services;
 
 import entities.Projet;
+import interfaces.IService;
 import utils.MyDatabase;
 
 import java.sql.*;

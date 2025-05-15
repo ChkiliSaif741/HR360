@@ -1,5 +1,6 @@
     package controllers;
 
+    import com.google.gson.stream.JsonReader;
     import entities.*;
     import jakarta.mail.MessagingException;
     import javafx.concurrent.Worker;
@@ -24,8 +25,8 @@
     import utils.CryptageUtil;
     import utils.alertMessage;
 
-    import java.io.File;
-    import java.io.IOException;
+    import java.io.*;
+    import java.net.HttpURLConnection;
     import java.net.URL;
     import java.sql.SQLException;
     import java.time.LocalDateTime;
@@ -36,6 +37,9 @@
     import java.util.concurrent.Executors;
     import java.util.concurrent.ScheduledExecutorService;
     import java.util.concurrent.TimeUnit;
+
+    import com.google.gson.JsonObject;
+    import com.google.gson.JsonParser;
 
     public class LoginController implements Initializable {
 
@@ -238,6 +242,36 @@
         }
 
 
+        @FXML
+        void captchaValidate(ActionEvent event) {
+            alertMessage alert = new alertMessage();
+
+            WebEngine webEngine = recaptchaWebView.getEngine();
+
+            // Vérifier si le reCAPTCHA est chargé
+            if (webEngine.getLoadWorker().getState() != Worker.State.SUCCEEDED) {
+                alert.errorMessage("Le reCAPTCHA n'est pas encore chargé. Veuillez patienter...");
+                return;
+            }
+
+            // Récupérer la réponse du reCAPTCHA
+            String gRecaptchaResponse = (String) webEngine.executeScript("grecaptcha.getResponse()");
+
+            // Vérifier si le reCAPTCHA est rempli
+            if (gRecaptchaResponse == null || gRecaptchaResponse.isEmpty()) {
+                alert.errorMessage("Veuillez compléter le reCAPTCHA !");
+                return;
+            }
+
+            // Si le reCAPTCHA est valide, masquer le WebView et activer le bouton "Sign Up"
+            recaptchaWebView.setVisible(false);
+            signup_btn.setDisable(false);
+
+            alert.successMessage("reCAPTCHA validé avec succès !");
+            recaptcha.setVisible(false);
+        }
+
+
 
 
         public void showPassword() {
@@ -269,7 +303,6 @@
             String resetCode = generateResetCode(); // Méthode pour générer un code aléatoire
 
             // Envoyer l'e-mail de récupération via InfoBip
-            //InfoBipSmtpClient.sendPasswordRecoveryEmail(email, resetCode);
             Mailpass mailpass=new Mailpass();
             mailpass.envoyerEmail(forgot_email.getText(),"Reset Password",
                     "Voici votre reset Code :"+resetCode);
@@ -287,6 +320,7 @@
         }
 
         public void resetPassword() {
+
             alertMessage alert = new alertMessage();
 
             // Vérification des champs vides
@@ -310,21 +344,49 @@
 
             // Mettre à jour le mot de passe dans la base de données
             try {
-                ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-                Utilisateur utilisateur = serviceUtilisateur.getUserByEmail(forgot_email.getText());
-                utilisateur.setPassword(newPasswordField.getText());
-                serviceUtilisateur.modifierMotDePasse(utilisateur);
-                alert.successMessage("Mot de passe mis à jour avec succès !");
+                String email = forgot_email.getText();
+                String newPassword = newPasswordField.getText();
 
-                // Réinitialiser les champs et revenir au formulaire de connexion
-                resetCodeField.clear();
-                newPasswordField.clear();
-                confirmPasswordField.clear();
-                resetPasswordForm.setVisible(false);
-                login_form.setVisible(true);
-            } catch (SQLException e) {
-                alert.errorMessage("Erreur lors de la mise à jour du mot de passe : " + e.getMessage());
+                String jsonInput = String.format(
+                        "{\"email\": \"%s\", \"password\": \"%s\"}", email, newPassword
+                );
+
+                URL url = new URL("http://127.0.0.1:8000/reset-password/api/reset-password");
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.setRequestProperty("Content-Type", "application/json");
+                con.setDoOutput(true);
+
+                try (OutputStream os = con.getOutputStream()) {
+                    os.write(jsonInput.getBytes("utf-8"));
+                }
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    response.append(line);
+                }
+                in.close();
+
+                JsonObject json = JsonParser.parseString(response.toString()).getAsJsonObject();
+                if (json.get("success").getAsBoolean()) {
+                    alert.successMessage("Mot de passe réinitialisé avec succès !");
+                    resetCodeField.clear();
+                    newPasswordField.clear();
+                    confirmPasswordField.clear();
+                    resetPasswordForm.setVisible(false);
+                    login_form.setVisible(true);
+                } else {
+                    alert.errorMessage("Erreur : " + json.get("message").getAsString());
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                alert.errorMessage("Erreur lors de la réinitialisation du mot de passe !");
             }
+
+
         }
 
         // Méthode pour valider le code de vérification
@@ -378,11 +440,36 @@
 
         }
 
+        private String loginAPI(String email, String password) throws IOException {
+            URL url = new URL("http://127.0.0.1:8000/api/login"); // ← remplace par l'URL réelle
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setDoOutput(true);
+            String jsonInput = String.format("{\"email\": \"%s\", \"password\": \"%s\"}", email, password);
 
-        public void loginBtnOnAction(ActionEvent actionEvent) throws SQLException {
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = jsonInput.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            int code = con.getResponseCode();
+
+            InputStream responseStream = (code >= 400) ? con.getErrorStream() : con.getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(responseStream, "utf-8"));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
+            in.close();
+
+            return response.toString();
+        }
+
+
+        public void loginBtnOnAction(ActionEvent actionEvent) {
             alertMessage alert = new alertMessage();
-
-            // Vérification des champs vides
             String email = login_email.getText().trim();
             String password = login_password.getText().trim();
 
@@ -391,41 +478,46 @@
                 return;
             }
 
-            ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-            Utilisateur utilisateur = serviceUtilisateur.authentifier(email, password);
+            try {
+                String jsonResponse = loginAPI(email, password);
 
-            if (utilisateur != null) {
-                System.out.println("Utilisateur authentifié : " + utilisateur.getEmail());
-                System.out.println("Rôle utilisateur connecté : " + utilisateur.getRole());
-                //startScheduler();
-                // Initialisation de la sessions utilisateur
-                Sessions sessions = Sessions.getInstance(utilisateur.getId()); // Créer ou récupérer la sessions
-                sessions.setRole(utilisateur.getRole()); // Définir le rôle dans la sessions
+                JsonObject json = JsonParser.parseString(jsonResponse).getAsJsonObject();
 
-                // Redirection en fonction du rôle
-                try {
+                if (json.get("success").getAsBoolean()) {
+                    int id = json.get("id").getAsInt();
+                    String role = json.get("role").getAsString();
+                    String emailUser = json.get("email").getAsString();
+                    String nom = json.has("nom") ? json.get("nom").getAsString() : "";
+
+                    // Création d’un utilisateur
+                    Utilisateur utilisateur = new Utilisateur();
+                    utilisateur.setId(id);
+                    utilisateur.setEmail(emailUser);
+                    utilisateur.setRole(role);
+                    utilisateur.setNom(nom);
+
+                    // Session utilisateur
+                    Sessions sessions = Sessions.getInstance(utilisateur.getId());
+                    sessions.setRole(utilisateur.getRole());
+
+                    // Redirection en fonction du rôle
                     FXMLLoader loader;
                     Parent root;
 
-                    String role = utilisateur.getRole().trim(); // Suppression des espaces parasites
-
-                    if (role.equals("RH") || role.equals("ResponsableRH")) {  // Vérification multiple
+                    if (role.equals("RH") || role.equals("ResponsableRH")) {
                         loader = new FXMLLoader(getClass().getResource("/SideBarRH.fxml"));
                         root = loader.load();
-
                         Controller controller = loader.getController();
                         controller.loadPage("/dash.fxml");
                     } else if (role.equals("Employe")) {
                         loader = new FXMLLoader(getClass().getResource("/SideBarEMP.fxml"));
                         root = loader.load();
-
                         Controller controller = loader.getController();
                         profilEMPController profilController = controller.loadPage("/profilEMP.fxml").getController();
                         profilController.setUtilisateur(utilisateur);
                     } else if (role.equals("Candidat")) {
                         loader = new FXMLLoader(getClass().getResource("/SideBarCAN.fxml"));
                         root = loader.load();
-
                         Controller controller = loader.getController();
                         ProfileController profileController = controller.loadPage("/Profile.fxml").getController();
                         profileController.setUtilisateur(utilisateur);
@@ -439,14 +531,14 @@
                     stage.setScene(new Scene(root));
                     stage.show();
 
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    alert.errorMessage("Erreur lors du chargement de la page !");
+                } else {
+                    String message = json.has("message") ? json.get("message").getAsString() : "Email ou mot de passe incorrect !";
+                    alert.errorMessage(message);
                 }
 
-            } else {
-                alert.errorMessage("Email ou mot de passe incorrect !");
+            } catch (IOException | RuntimeException e) {
+                e.printStackTrace();
+                alert.errorMessage("Erreur de connexion avec le serveur !");
             }
         }
 
@@ -460,139 +552,114 @@
 
 
         @FXML
-        void captchaValidate(ActionEvent event) {
-            alertMessage alert = new alertMessage();
-
-            WebEngine webEngine = recaptchaWebView.getEngine();
-
-            // Vérifier si le reCAPTCHA est chargé
-            if (webEngine.getLoadWorker().getState() != Worker.State.SUCCEEDED) {
-                alert.errorMessage("Le reCAPTCHA n'est pas encore chargé. Veuillez patienter...");
-                return;
-            }
-
-            // Récupérer la réponse du reCAPTCHA
-            String gRecaptchaResponse = (String) webEngine.executeScript("grecaptcha.getResponse()");
-
-            // Vérifier si le reCAPTCHA est rempli
-            if (gRecaptchaResponse == null || gRecaptchaResponse.isEmpty()) {
-                alert.errorMessage("Veuillez compléter le reCAPTCHA !");
-                return;
-            }
-
-            // Valider la réponse du reCAPTCHA côté serveur
-            if (!RecaptchaValidator.verifyCaptcha(gRecaptchaResponse)) {
-                alert.errorMessage("reCAPTCHA invalide !");
-                return;
-            }
-
-            // Si le reCAPTCHA est valide, masquer le WebView et activer le bouton "Sign Up"
-            recaptchaWebView.setVisible(false);
-            signup_btn.setDisable(false);
-
-            alert.successMessage("reCAPTCHA validé avec succès !");
-            recaptcha.setVisible(false);
-        }
-
-
-        @FXML
         public void registerBtnOnAction(ActionEvent event) {
             alertMessage alert = new alertMessage();
-
-            // Vérifier si le CAPTCHA a été validé
             if (signup_btn.isDisabled()) {
                 alert.errorMessage("Veuillez d'abord valider le CAPTCHA !");
                 return;
             }
 
-            // Vérification des champs vides
             if (signup_nom.getText().isEmpty() || signup_prenom.getText().isEmpty() || signup_email.getText().isEmpty()
                     || signup_password.getText().isEmpty() || signup_cPassword.getText().isEmpty()) {
                 alert.errorMessage("Tous les champs doivent être remplis !");
                 return;
             }
 
-            // Validation de l'email
             if (!isValidEmail(signup_email.getText())) {
                 alert.errorMessage("Veuillez entrer une adresse email valide !");
                 return;
             }
 
-            // Vérification de l'unicité de l'email
-            try {
-                ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-                if (serviceUtilisateur.emailExists(signup_email.getText())) {
-                    alert.errorMessage("Cet email est déjà utilisé. Veuillez en choisir un autre !");
-                    return;
-                }
-            } catch (SQLException e) {
-                alert.errorMessage("Erreur lors de la vérification de l'email : " + e.getMessage());
-                return;
-            }
-
-            // Validation du mot de passe
             if (!isStrongPassword(signup_password.getText())) {
                 alert.errorMessage("Le mot de passe doit contenir au moins 8 caractères, " +
                         "une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial !");
                 return;
             }
 
-            // Vérification de la correspondance des mots de passe
             if (!signup_password.getText().equals(signup_cPassword.getText())) {
                 alert.errorMessage("Les mots de passe ne correspondent pas !");
                 return;
             }
 
-            // Définition du chemin de l'image de profil (par défaut si aucune sélectionnée)
-            String imagePath = (selectedImageFile != null) ? selectedImageFile.toURI().toString() : getClass().getResource("/img/user.png").toString();
-
-            System.out.println("Chemin de l'image : " + imagePath);
-
-            // Cryptage du mot de passe
-            String motDePasseCrypte = CryptageUtil.crypterMotDePasse(signup_password.getText());
-
-            // Création de l'utilisateur, de l'employé ou du candidat
-            Utilisateur candidat = new Utilisateur();
-            candidat.setNom(signup_nom.getText());
-            candidat.setPrenom(signup_prenom.getText());
-            candidat.setEmail(signup_email.getText());
-            candidat.setPassword(motDePasseCrypte); // Utiliser le mot de passe crypté
-            candidat.setRole("Candidat");
-            candidat.setImgSrc(imagePath);
-            candidat.setCompetence(signup_competence.getText());
+            String imagePath = (selectedImageFile != null)
+                    ? selectedImageFile.toURI().toString()
+                    : getClass().getResource("/img/user.png").toString();
 
             try {
-                // Ajouter le candidat à la table Candidat
-                ServiceUtilisateur serviceCandidat = new ServiceUtilisateur();
-                serviceCandidat.ajouter(candidat);
-                alert.successMessage("Candidat ajouté avec succès !");
-            } catch (SQLException e) {
-                alert.errorMessage("Erreur lors de l'ajout du candidat : " + e.getMessage());
-                return;
-            }
+                String jsonInput = String.format(
+                        "{" +
+                                "\"nom\": \"%s\", " +
+                                "\"prenom\": \"%s\", " +
+                                "\"email\": \"%s\", " +
+                                "\"password\": \"%s\", " +
+                                "\"imgSrc\": \"%s\", " +
+                                "\"competence\": \"%s\"" +
+                                "}",
+                        signup_nom.getText(), signup_prenom.getText(), signup_email.getText(),
+                        signup_password.getText(), imagePath, signup_competence.getText()
+                );
 
-            // Chargement du contrôleur de connexion
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
-                Parent parent = loader.load();
-                LoginController controller = loader.getController();
+                URL url = new URL("http://127.0.0.1:8000/api/register"); // Vérifie que cette URL retourne bien du JSON
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.setRequestProperty("Content-Type", "application/json");
+                con.setDoOutput(true);
 
-                // Passage des informations à la page de connexion
-                controller.setNom(signup_nom.getText());
-                controller.setPrenom(signup_prenom.getText());
-                controller.setEmail(signup_email.getText());
-                controller.setPassword(signup_password.getText());
-                controller.setImgSrc(imagePath); // Passage de l'image de profil
+                try (OutputStream os = con.getOutputStream()) {
+                    os.write(jsonInput.getBytes("utf-8"));
+                }
 
-                // Passage à la page de connexion
-                signup_nom.getScene().setRoot(parent);
+                int status = con.getResponseCode();
+                InputStream responseStream = (status >= 400) ? con.getErrorStream() : con.getInputStream();
 
-                // Réinitialisation des champs
-                registerClearFields();
+                BufferedReader in = new BufferedReader(new InputStreamReader(responseStream));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    response.append(line);
+                }
+                in.close();
+
+                System.out.println("Réponse brute : " + response);
+
+                String rawResponse = response.toString().trim();
+
+                if (!rawResponse.startsWith("{")) {
+                    alert.errorMessage("La réponse du serveur n'est pas au format JSON : " + rawResponse);
+                    return;
+                }
+
+                JsonReader reader = new JsonReader(new StringReader(rawResponse));
+                reader.setLenient(true);
+                JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+
+                if (json.get("success").getAsBoolean()) {
+                    alert.successMessage("Inscription réussie !");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+                    Parent parent = loader.load();
+                    LoginController controller = loader.getController();
+                    controller.setNom(signup_nom.getText());
+                    controller.setPrenom(signup_prenom.getText());
+                    controller.setEmail(signup_email.getText());
+                    controller.setPassword(signup_password.getText());
+                    controller.setImgSrc(imagePath);
+
+                    signup_nom.getScene().setRoot(parent);
+                    registerClearFields();
+                } else {
+                    String msg = json.has("message") ? json.get("message").getAsString() : "Erreur inconnue";
+                    alert.errorMessage("Échec de l'inscription : " + msg);
+                }
+
             } catch (IOException e) {
-                alert.errorMessage("Erreur de chargement de la page de connexion.");
+                e.printStackTrace();
+                alert.errorMessage("Erreur lors de la requête d'inscription !");
+            } catch (Exception e) {
+                e.printStackTrace();
+                alert.errorMessage("Erreur inattendue lors de la lecture de la réponse !");
             }
         }
+
 
 
         private boolean isValidEmail(String email) {

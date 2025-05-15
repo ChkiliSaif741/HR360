@@ -55,8 +55,9 @@ public class AfficherReservationEMPController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        int iduser= Sessions.getInstance().getIdUtilisateur();
         afficherRessource(getData().stream()
-                .filter(t -> t.getIduser() == 1)
+                .filter(t -> t.getIduser() == iduser)
                 .toList());
     }
 

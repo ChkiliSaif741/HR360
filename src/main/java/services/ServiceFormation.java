@@ -2,6 +2,7 @@ package services;
 
 import entities.Formation;
 import entities.Utilisateur;
+import interfaces.IService;
 import utils.MyDatabase;
 
 import java.sql.*;
