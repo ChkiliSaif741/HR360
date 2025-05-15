@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class DeepTranslateAPI {
-    private static final String API_KEY = "f9a37674aemsh1dfa3f25c817e70p173399jsna7ba37200cbd";
+    private static final String API_KEY = "58781479a8msh50ee0c2c7fb876ap1b2da2jsnaf8f922475b2";
     private static final String DETECT_URL = "https://deep-translate1.p.rapidapi.com/language/translate/v2/detect";
     private static final String TRANSLATE_URL = "https://deep-translate1.p.rapidapi.com/language/translate/v2";
 

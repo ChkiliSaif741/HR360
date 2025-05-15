@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Reservation;
+import entities.Sessions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,7 +51,7 @@ public class ModifierReservationEMPController {
 
         Date nouveauDebut = Date.valueOf(dateDebutPicker.getValue());
         Date nouveauFin = Date.valueOf(dateFinPicker.getValue());
-        int nouvelIduser = 1;
+        int nouvelIduser = Sessions.getInstance().getIdUtilisateur();
 
 
         if (nouveauDebut.after(nouveauFin) || nouveauDebut.equals(nouveauFin)) {

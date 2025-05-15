@@ -108,8 +108,9 @@ public class AfficherReservationEMPController implements Initializable {
 
     @FXML
     private void sortReservations() {
+        int iduser= Sessions.getInstance().getIdUtilisateur();
         List<Reservation> sortedReservations = getData().stream()
-                .filter(t -> t.getIduser() == 1) // Filtrage si nécessaire
+                .filter(t -> t.getIduser() == iduser) // Filtrage si nécessaire
                 .sorted(Comparator.comparing(Reservation::getDateDebut)) // Change selon ton critère
                 .toList();
 
